@@ -36,6 +36,7 @@ export default function HomePage() {
       <ExperiencePanel />
       <Separator />
       <ProjectsPanel />
+      <Separator />
     </>
   );
 }
@@ -80,7 +81,7 @@ function SocialPanel() {
   return (
     <Panel>
       <h2 className="sr-only">Social</h2>
-      <PanelContent className="divide-y divide-x divide-edge grid grid-cols-2">
+      <PanelContent className="divide-x divide-edge grid grid-cols-2">
         {social.map((item) => (
           <a key={item.name} href={item.href} target="_blank">
             <div className="flex p-4 items-center gap-4 group">
@@ -169,7 +170,7 @@ function ProjectsPanel() {
       <PanelHeader>
         <PanelTitle>Projects</PanelTitle>
       </PanelHeader>
-      <PanelContent className="divide-y divide-edge">
+      <PanelContent className="divide-y divide-edge grid">
         {projects.map((project) => (
           <a href={project.href} target="_blank" key={project.name}>
             <div className="hover:bg-muted/40 group">
