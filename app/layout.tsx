@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 import {
   IBM_Plex_Mono as FontMono,
@@ -31,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontMono.variable}`}>
+      <body className={cn(fontSans.variable, fontMono.variable)}>
         {children}
       </body>
     </html>

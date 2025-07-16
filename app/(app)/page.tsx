@@ -146,7 +146,7 @@ function ExperiencePanel() {
                 </div>
               </div>
               {/*  */}
-              <div className="relative z-1 mb-1 flex items-center gap-3 bg-background rounded-lg border p-2">
+              <div className="relative z-1 mb-1 flex items-center gap-3 bg-background rounded-lg ring ring-border p-2">
                 <ul className="gap-2 flex">
                   {work.tech.map((item) => (
                     <Badge asChild key={item}>

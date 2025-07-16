@@ -39,8 +39,6 @@
 
     body {
         @apply overscroll-y-none bg-background text-foreground font-sans antialiased;
-        font-synthesis-weight: none;
-        text-rendering: optimizeLegibility;
     }
 }
 
