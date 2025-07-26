@@ -1,7 +1,7 @@
 export const experience = [
   {
     company: "Netision",
-    title: "Full Stack Web Developer",
+    title: "Full-Stack Engineer",
     type: "Full-time",
     duration: {
       from: "2024",

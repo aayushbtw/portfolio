@@ -4,8 +4,12 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="px-2">
-      <div className="mx-auto md:max-w-3xl">{children}</div>
+    <main className="grid grid-cols-12 max-w-screen overflow-x-hidden">
+      <div className="col-span-3" />
+      <div className="col-span-6 grid grid-cols-1 gap-10 border-x">
+        {children}
+      </div>
+      <div className="col-span-3" />
     </main>
   );
 }

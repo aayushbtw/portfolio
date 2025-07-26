@@ -12,14 +12,12 @@
     --color-badge: var(--color-zinc-900);
     --color-badge-foreground: var(--color-zinc-400);
 
-    --color-border: var(--color-zinc-800);
-
     --font-sans: var(--font-ibm-sans);
     --font-mono: var(--font-ibm-mono);
 
-    --color-edge: color-mix(
+    --color-border: color-mix(
         in oklab,
-        var(--color-border) 64%,
+        var(--color-zinc-800) 64%,
         var(--color-background)
     );
 }
@@ -43,11 +41,11 @@
 }
 
 @utility line-before {
-    @apply relative before:absolute before:top-0 before:-left-[100vw] before:-z-1 before:h-px before:w-[200vw] before:bg-edge;
+    @apply relative before:absolute before:top-0 before:-left-[100vw] before:-z-1 before:h-px before:w-[200vw] before:bg-border;
 }
 
 @utility line-after {
-    @apply relative after:absolute after:bottom-0 after:-left-[100vw] after:-z-1 after:h-px after:w-[200vw] after:bg-edge;
+    @apply relative after:absolute after:bottom-0 after:-left-[100vw] after:-z-1 after:h-px after:w-[200vw] after:bg-border;
 }
 
 @utility link {

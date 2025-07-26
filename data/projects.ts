@@ -3,6 +3,7 @@ export const projects = [
     name: "monit",
     description: "Monitor server stats via ssh",
     href: "https://github.com/aayushbtw/monit",
+    img: "/monit.png",
     tech: ["GoLang", "BubbleTea", "Bubbles", "Wish"],
   },
   {
