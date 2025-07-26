@@ -14,7 +14,7 @@ export const projects = [
   },
   {
     name: "tt",
-    description: "Monitor server stats via ssh",
+    description: "CLI based typing test",
     href: "https://github.com/aayushbtw/tt",
     tech: ["GoLang", "BubbleTea", "Bubbles"],
   },
