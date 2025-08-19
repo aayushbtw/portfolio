@@ -65,8 +65,9 @@ function UserPanel() {
           </a>
         ))} */}
       </PanelHeader>
-
-      <SeparatorPattern />
+      <PanelContent className="p-0">
+        <SeparatorPattern />
+      </PanelContent>
     </Panel>
   );
 }
@@ -83,15 +84,10 @@ function ExperiencePanel() {
           build.
         </PanelDescription>
       </PanelHeader>
-      <PanelContent className="p-2 line-after">
-        {experience.map((work) => (
-          <div
-            key={work.company}
-            className="outline outline-border rounded-xl overflow-hidden flex"
-          >
-            <div className="w-10 bg-[radial-gradient(var(--pattern-foreground)_1px,transparent_0)] bg-[length:6px_6px] [--pattern-foreground:theme(colors.white)]/10 border-r"></div>
-
-            <div className="flex flex-col text-base/7 text-muted-foreground w-full">
+      <PanelContent className="p-0 line-after">
+        <ul className="divide-y">
+          {experience.map((work) => (
+            <li key={work.company}>
               <div className="flex font-mono font-semibold text-sm tracking-widest text-foreground/40 uppercase p-4 border-b">
                 {work.company} / {work.title}
                 <span className="ml-auto">
@@ -99,7 +95,7 @@ function ExperiencePanel() {
                 </span>
               </div>
 
-              <ul className="text-base/7 text-muted-foreground p-4">
+              <ul className="text-sm/7 text-muted-foreground p-4">
                 {work.responsibilities.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -112,9 +108,9 @@ function ExperiencePanel() {
                   </Badge>
                 ))}
               </ul>
-            </div>
-          </div>
-        ))}
+            </li>
+          ))}
+        </ul>
       </PanelContent>
       <SeparatorPattern />
     </Panel>
@@ -134,37 +130,86 @@ function ProjectsPanel() {
         </PanelDescription>
       </PanelHeader>
       <PanelContent className="p-0">
-        {/* Grid Lines (overlay layer) */}
-        <div className="pointer-events-none absolute inset-0 z-10 grid grid-cols-2 gap-5">
-          <div className="border-r border"></div>
-          <div className="border-l border"></div>
-        </div>
-
-        {/* Project Cards */}
-        <ul className="grid grid-cols-2 gap-5">
-          {projects.map((project, index) => (
-            <a
-              key={project.name}
-              href={project.href}
-              target="_blank"
-              className={cn(
-                "grid p-2",
-                index % 2 === 0 ? "line-before line-after" : "",
-              )}
-            >
-              <div className="h-48 border rounded-xl w-full flex flex-col justify-center px-10">
-                <div className="max-w-sm">
-                  <h6 className="font-mono">{project.name}</h6>
+        <ul className="divide-y">
+          {projects.map((project) => (
+            <li key={project.name} className="p-4 pr-2 group">
+              <a
+                href={project.href}
+                target="_blank"
+                className="flex items-center"
+              >
+                <div className="space-y-1">
+                  <h3 className="group-hover:underline underline-offset-4 leading-snug">
+                    {project.name}
+                  </h3>
                   <p className="text-sm font-sans text-muted-foreground">
                     {project.description}
                   </p>
+                  <ul className="gap-2 flex pt-2">
+                    {project.tech.map((t) => (
+                      <Badge asChild key={t}>
+                        <li>{t}</li>
+                      </Badge>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </a>
+
+                <IconArrowUpRight className="text-muted-foreground size-4 ml-auto" />
+              </a>
+            </li>
           ))}
         </ul>
       </PanelContent>
+
       <SeparatorPattern />
     </Panel>
   );
 }
+
+// function ProjectsPanel() {
+//   return (
+//     <Panel>
+//       <PanelHeader>
+//         <PanelEyebrow>Projects</PanelEyebrow>
+//         <PanelTitle>Things I’ve Built</PanelTitle>
+//         <SeparatorLabel>text-base/7 text-muted-foreground</SeparatorLabel>
+//         <PanelDescription>
+//           A selection of tools, experiments, and ideas I’ve designed, developed,
+//           or contributed to.
+//         </PanelDescription>
+//       </PanelHeader>
+//       <PanelContent className="p-0">
+//         {/* Grid Lines (overlay layer) */}
+//         <div className="pointer-events-none absolute inset-0 z-10 grid grid-cols-2 gap-5">
+//           <div className="border-r border"></div>
+//           <div className="border-l border"></div>
+//         </div>
+
+//         {/* Project Cards */}
+//         <ul className="grid grid-cols-2 gap-5">
+//           {projects.map((project, index) => (
+//             <a
+//               key={project.name}
+//               href={project.href}
+//               target="_blank"
+//               className={cn(
+//                 "grid p-2",
+//                 index % 2 === 0 ? "line-before line-after" : "",
+//               )}
+//             >
+//               <div className="h-48 border rounded-xl w-full flex flex-col justify-center px-10">
+//                 <div className="max-w-sm">
+//                   <h6 className="font-mono">{project.name}</h6>
+//                   <p className="text-sm font-sans text-muted-foreground">
+//                     {project.description}
+//                   </p>
+//                 </div>
+//               </div>
+//             </a>
+//           ))}
+//         </ul>
+//       </PanelContent>
+//       <SeparatorPattern />
+//     </Panel>
+//   );
+// }
