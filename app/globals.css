@@ -3,23 +3,37 @@
 @plugin "@tailwindcss/typography";
 
 @theme inline {
-    --color-background: var(--color-zinc-950);
-    --color-foreground: var(--color-zinc-50);
+    --color-background: var(--gray-0);
+    --color-foreground: var(--gray-1300);
 
-    --color-muted: var(--color-zinc-800);
-    --color-muted-foreground: var(--color-zinc-400);
+    --color-card-primary: var(--gray-100);
+    --color-card-secondary: var(--gray-200);
 
-    --color-badge: var(--color-zinc-900);
-    --color-badge-foreground: var(--color-zinc-400);
+    --color-muted: var(--gray-50);
+    --color-muted-foreground: var(--gray-1100);
 
-    --font-sans: var(--font-ibm-sans);
-    --font-mono: var(--font-ibm-mono);
+    --font-sans: var(--sans);
+    --font-mono: var(--mono);
 
-    --color-border: color-mix(
-        in oklab,
-        var(--color-zinc-800) 64%,
-        var(--color-background)
-    );
+    --color-border: var(--gray-300);
+}
+
+:root {
+    --gray-0: oklch(16.8% 0 0);
+    --gray-50: oklch(17.8% 0 0);
+    --gray-100: oklch(18.7% 0 0);
+    --gray-200: oklch(21.3% 0 0);
+    --gray-300: oklch(25.2% 0 0);
+    --gray-400: oklch(28.5% 0 0);
+    --gray-500: oklch(31.3% 0 0);
+    --gray-600: oklch(34.8% 0 0);
+    --gray-700: oklch(40.2% 0 0);
+    --gray-800: oklch(48.9% 0 0);
+    --gray-900: oklch(53.8% 0 0);
+    --gray-1000: oklch(58.3% 0 0);
+    --gray-1100: oklch(77.3% 0 0);
+    --gray-1200: oklch(83.3% 0 0);
+    --gray-1300: oklch(94.9% 0 0);
 }
 
 @layer base {
@@ -34,20 +48,4 @@
     html {
         @apply motion-safe:scroll-smooth;
     }
-
-    body {
-        @apply overscroll-y-none bg-background text-foreground font-sans antialiased;
-    }
-}
-
-@utility line-before {
-    @apply relative before:absolute before:top-0 before:-left-[100vw] before:-z-1 before:h-px before:w-[200vw] before:bg-border;
-}
-
-@utility line-after {
-    @apply relative after:absolute after:bottom-0 after:-left-[100vw] after:-z-1 after:h-px after:w-[200vw] after:bg-border;
-}
-
-@utility link {
-    @apply group-hover:underline hover:underline underline-offset-4 font-medium;
 }

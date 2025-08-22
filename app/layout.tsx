@@ -1,23 +1,20 @@
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import "./globals.css";
-import {
-  IBM_Plex_Mono as FontMono,
-  IBM_Plex_Sans as FontSans,
-} from "next/font/google";
+import { IBM_Plex_Mono as FontMono, Inter as FontSans } from "next/font/google";
 
 const fontSans = FontSans({
   weight: ["400", "500", "600"],
   display: "swap",
   subsets: ["latin"],
-  variable: "--font-ibm-sans",
+  variable: "--sans",
 });
 
 const fontMono = FontMono({
   weight: ["400", "500", "600"],
   display: "swap",
   subsets: ["latin"],
-  variable: "--font-ibm-mono",
+  variable: "--mono",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(fontSans.variable, fontMono.variable)}>
+      <body
+        className={cn(
+          "bg-background text-foreground font-sans leading-relaxed antialiased",
+          fontSans.variable,
+          fontMono.variable,
+        )}
+      >
         {children}
       </body>
     </html>
