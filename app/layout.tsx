@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import { IBM_Plex_Mono as FontMono, Inter as FontSans } from "next/font/google";
+import Link from "next/link";
+import { Navbar } from "@/components/navbar";
 
 const fontSans = FontSans({
   weight: ["400", "500", "600"],
@@ -36,7 +38,10 @@ export default function RootLayout({
           fontMono.variable,
         )}
       >
-        {children}
+        <Navbar />
+        <main className="max-w-2xl mx-auto px-4 pb-20 space-y-20">
+          {children}
+        </main>
       </body>
     </html>
   );
