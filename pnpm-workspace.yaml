@@ -1,2 +1,6 @@
 onlyBuiltDependencies:
   - workerd
+
+packages:
+  - "packages/*"
+  - "apps/*"
