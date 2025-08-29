@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/card";
 import {
   Panel,
   PanelContent,
@@ -5,23 +6,15 @@ import {
   PanelTitle,
   PanelDescription,
 } from "@/components/panel";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/card";
-import { CraftCard } from "@/components/crafts/card/card";
 import { IconEye } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function CraftsPage() {
   const items = [
     {
       icon: IconEye,
       name: "Card",
-      description: "Monitor server stats via ssh",
-      url: "https://github.com/aayushbtw/monit",
+      url: "/crafts/card",
     },
   ];
   return (
@@ -40,11 +33,7 @@ export default function CraftsPage() {
           {items.map((item) => (
             <li key={item.name}>
               <Card className="hover:bg-card-secondary">
-                <a
-                  href={item.url}
-                  target="_blank"
-                  className="h-64 flex flex-col"
-                >
+                <Link href={item.url} className="h-64 flex flex-col">
                   <CardContent>
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:128px_96px] bg-center" />
                     <div className="shadow-xl relative z-10 size-14 rounded-xl border bg-[linear-gradient(135deg,var(--color-card-primary)_0%,var(--color-card-secondary)_100%)] flex items-center justify-center">
@@ -54,9 +43,8 @@ export default function CraftsPage() {
 
                   <CardHeader>
                     <CardTitle>{item.name}</CardTitle>
-                    {/*<CardDescription>{project.description}</CardDescription>*/}
                   </CardHeader>
-                </a>
+                </Link>
               </Card>
             </li>
           ))}

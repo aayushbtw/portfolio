@@ -15,6 +15,7 @@ import {
 } from "@/components/panel";
 import { projects } from "@/data/projects";
 import { user } from "@/data/user";
+import { IconArrowUpRight } from "@tabler/icons-react";
 
 export default function HomePage() {
   return (
@@ -77,7 +78,10 @@ function ProjectsPanel() {
                   </CardContent>
 
                   <CardHeader>
-                    <CardTitle>{project.name}</CardTitle>
+                    <CardTitle>
+                      {project.name}
+                      <IconArrowUpRight />
+                    </CardTitle>
                     <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                 </a>

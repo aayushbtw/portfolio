@@ -41,7 +41,10 @@ function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
   return (
     <h3
       data-slot="card-title"
-      className={cn("font-medium", className)}
+      className={cn(
+        "font-medium [&__svg]:size-3.5 inline-flex items-center has-[>svg]:gap-1.5",
+        className,
+      )}
       {...props}
     />
   );
