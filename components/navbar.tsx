@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 function Navbar() {
   const links = [
     { name: "Crafts", url: "/crafts" },
-    { name: "Writings", url: "/writings" },
+    // { name: "Writings", url: "/writings" },
   ];
   const pathname = usePathname();
   return (

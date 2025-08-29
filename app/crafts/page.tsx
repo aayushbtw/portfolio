@@ -16,12 +16,12 @@ import { CraftCard } from "@/components/crafts/card/card";
 import { IconEye } from "@tabler/icons-react";
 
 export default function CraftsPage() {
-  const projects = [
+  const items = [
     {
       icon: IconEye,
       name: "Card",
       description: "Monitor server stats via ssh",
-      href: "https://github.com/aayushbtw/monit",
+      url: "https://github.com/aayushbtw/monit",
     },
   ];
   return (
@@ -37,23 +37,23 @@ export default function CraftsPage() {
 
       <PanelContent>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {projects.map((project) => (
-            <li key={project.name}>
+          {items.map((item) => (
+            <li key={item.name}>
               <Card className="hover:bg-card-secondary">
                 <a
-                  href={project.href}
+                  href={item.url}
                   target="_blank"
                   className="h-64 flex flex-col"
                 >
                   <CardContent>
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:128px_96px] bg-center" />
                     <div className="shadow-xl relative z-10 size-14 rounded-xl border bg-[linear-gradient(135deg,var(--color-card-primary)_0%,var(--color-card-secondary)_100%)] flex items-center justify-center">
-                      <project.icon className="size-8 text-foreground/80" />
+                      <item.icon className="size-8 text-foreground/80" />
                     </div>
                   </CardContent>
 
                   <CardHeader>
-                    <CardTitle>{project.name}</CardTitle>
+                    <CardTitle>{item.name}</CardTitle>
                     {/*<CardDescription>{project.description}</CardDescription>*/}
                   </CardHeader>
                 </a>

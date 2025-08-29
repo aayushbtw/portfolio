@@ -65,7 +65,7 @@ function ProjectsPanel() {
             <li key={project.name}>
               <Card className="hover:bg-card-secondary">
                 <a
-                  href={project.href}
+                  href={project.url}
                   target="_blank"
                   className="h-64 flex flex-col"
                 >
