@@ -1,6 +1,7 @@
-onlyBuiltDependencies:
-  - workerd
-
 packages:
-  - "packages/*"
-  - "apps/*"
+  - packages/*
+  - apps/*
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - workerd
