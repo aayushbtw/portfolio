@@ -22,6 +22,7 @@
   --spacing-sm: calc(var(--spacing) * 2);
   --spacing-md: calc(var(--spacing) * 4);
   --spacing-lg: calc(var(--spacing) * 6);
+  --spacing-xl: calc(var(--spacing) * 8);
 }
 
 @layer base {
@@ -56,4 +57,8 @@
 
 @utility paragraph {
   @apply typography font-normal text-fg-3;
+}
+
+@utility link {
+  @apply underline-offset-3 underline decoration-brand/70 hover:underline-offset-4 transition-all duration-300;
 }

@@ -2,7 +2,7 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { projects } from "@/data/projects";
 import { user } from "@/data/user";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 const writings = [
   {
@@ -17,10 +17,24 @@ export default function HomePage() {
     <>
       <section className="flex flex-col gap-y-sm">
         <header>
-          <h1 className="heading">{user.name}</h1>
+          <h1 className="heading text-lg">{user.name}</h1>
           <h2 className="subheading">{user.designation}</h2>
         </header>
-        <p className="paragraph">{user.about}</p>
+
+        <div className="flex flex-col gap-y-xs">
+          <p className="paragraph">{user.about}</p>
+          <p className="paragraph">
+            I'm currently a full-stack engineer at{" "}
+            <Link
+              className="link"
+              href="https://www.netision.com/"
+              target="_blank"
+            >
+              Netision
+            </Link>
+            .
+          </p>
+        </div>
       </section>
 
       <section className="flex flex-col gap-y-sm">
@@ -41,6 +55,7 @@ export default function HomePage() {
               )}
               href={item.url}
               key={item.name}
+              target="_blank"
             >
               <h4 className="subheading font-medium text-[0.9rem]">
                 {item.name}
@@ -65,7 +80,7 @@ export default function HomePage() {
           {writings.map((item) => (
             <Link
               className={cn(
-                "flex items-center",
+                "flex items-center gap-sm",
                 "transition-all duration-300 hover:ps-sm"
               )}
               href={item.url}
@@ -74,8 +89,10 @@ export default function HomePage() {
               <h4 className="subheading font-medium text-[0.9rem]">
                 {item.name}
               </h4>
-              <div className="flex grow border-b" />
-              <p className="paragraph text-[0.9rem]">{item.date}</p>
+              <div className="flex grow border-b border-dashed" />
+              <p className="paragraph font-light text-xs">
+                {formatDate(item.date)}
+              </p>
             </Link>
           ))}
         </div>

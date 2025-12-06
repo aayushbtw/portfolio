@@ -12,8 +12,11 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <section className="flex flex-col gap-y-sm">
-      <h1 className="heading">{TITLE}</h1>
-      <h2 className="subheading">{DESCRIPTION}</h2>
+      <header>
+        <h1 className="heading text-lg">{TITLE}</h1>
+        <h2 className="subheading">{DESCRIPTION}</h2>
+      </header>
+
       <p className="paragraph">WIP</p>
     </section>
   );
