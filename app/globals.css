@@ -1,51 +1,59 @@
-@import "tailwindcss";
+/* biome-ignore-all lint/suspicious/noUnknownAtRules: invalid for tailwind*/
 
+@import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@theme inline {
-    --color-background: var(--gray-0);
-    --color-foreground: var(--gray-1300);
+@theme {
+  --color-bg-1: var(--color-white);
+  --color-bg-2: var(--color-gray-100);
 
-    --color-card-primary: var(--gray-100);
-    --color-card-secondary: var(--gray-200);
+  --color-fg-1: var(--color-gray-950);
+  --color-fg-2: var(--color-gray-800);
+  --color-fg-3: var(--color-gray-600);
 
-    --color-muted: var(--gray-50);
-    --color-muted-foreground: var(--gray-1100);
+  --color-brand: var(--color-orange-500);
 
-    --font-sans: var(--sans);
-    --font-mono: var(--mono);
+  --color-border: var(--color-gray-300);
 
-    --color-border: var(--gray-300);
-}
+  /*  */
 
-:root {
-    --gray-0: oklch(16.8% 0 0);
-    --gray-50: oklch(17.8% 0 0);
-    --gray-100: oklch(18.7% 0 0);
-    --gray-200: oklch(21.3% 0 0);
-    --gray-300: oklch(25.2% 0 0);
-    --gray-400: oklch(28.5% 0 0);
-    --gray-500: oklch(31.3% 0 0);
-    --gray-600: oklch(34.8% 0 0);
-    --gray-700: oklch(40.2% 0 0);
-    --gray-800: oklch(48.9% 0 0);
-    --gray-900: oklch(53.8% 0 0);
-    --gray-1000: oklch(58.3% 0 0);
-    --gray-1100: oklch(77.3% 0 0);
-    --gray-1200: oklch(83.3% 0 0);
-    --gray-1300: oklch(94.9% 0 0);
+  --spacing: 0.25rem;
+  --spacing-xs: calc(var(--spacing) * 1);
+  --spacing-sm: calc(var(--spacing) * 2);
+  --spacing-md: calc(var(--spacing) * 4);
+  --spacing-lg: calc(var(--spacing) * 6);
 }
 
 @layer base {
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        @apply border-border;
-    }
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    @apply border-border outline-border;
+  }
 
-    html {
-        @apply motion-safe:scroll-smooth;
-    }
+  html {
+    @apply motion-safe:scroll-smooth;
+  }
+
+  body {
+    @apply bg-bg-1 text-fg-3 selection:bg-brand/10 mx-auto flex w-full max-w-280 sm:py-20 antialiased;
+  }
+}
+
+@utility typography {
+  @apply sm:text-base text-sm leading-relaxed;
+}
+
+@utility heading {
+  @apply typography font-medium text-fg-1;
+}
+
+@utility subheading {
+  @apply typography font-normal text-fg-2;
+}
+
+@utility paragraph {
+  @apply typography font-normal text-fg-3;
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { cn } from "@/lib/utils";
 import { IBM_Plex_Mono as FontMono, Inter as FontSans } from "next/font/google";
-import { Navbar } from "@/components/navbar";
+import { cn } from "@/lib/utils";
 import "./globals.css";
+import { Navbar } from "@/components/navbar";
+import { user } from "@/data/user";
 
 const fontSans = FontSans({
   weight: ["400", "500", "600"],
@@ -19,9 +20,8 @@ const fontMono = FontMono({
 });
 
 export const metadata: Metadata = {
-  title: "Aayush",
-  description:
-    "Building things that feel simple and useful, with attention to clarity and thoughtful interfaces while keeping it reliable and professional.",
+  title: user.name,
+  description: user.about,
 };
 
 export default function RootLayout({
@@ -31,17 +31,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "bg-background text-foreground font-sans leading-relaxed antialiased",
-          fontSans.variable,
-          fontMono.variable,
-        )}
-      >
+      <body className={cn(fontSans.variable, fontMono.variable)}>
         <Navbar />
-        <main className="max-w-2xl mx-auto px-4 pb-20 space-y-20">
-          {children}
-        </main>
+        <main className="flex flex-3 flex-col gap-lg">{children}</main>
+        <div className="flex flex-1 justify-end" />
       </body>
     </html>
   );
