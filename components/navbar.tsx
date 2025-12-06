@@ -1,41 +1,52 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 function Navbar() {
   const links = [
-    { name: "Crafts", url: "/crafts" },
-    // { name: "Writings", url: "/writings" },
+    { name: "Home", url: "/" },
+    { name: "Projects", url: "/projects" },
+    { name: "Writings", url: "/writings" },
   ];
   const pathname = usePathname();
   return (
-    <header className="max-w-2xl mx-auto px-4 pt-20 pb-10">
-      <nav
-        className="flex justify-between text-base"
-        aria-label="main-navigation"
-      >
-        <Link href="/" className="text-muted-foreground font-bold">
-          A.
-        </Link>
+    <header className="flex flex-1 select-none justify-start">
+      <nav>
+        <ul>
+          {links.map((item) => {
+            const isActive =
+              item.url === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.url);
 
-        <ul className="text-foreground/40 font-medium flex gap-4">
-          {links.map((item) => (
-            <li key={item.name}>
-              <Link
-                href={item.url}
-                className={cn(
-                  "transition-colors duration-300",
-                  pathname.startsWith(item.url)
-                    ? "text-muted-foreground/80"
-                    : "hover:text-muted-foreground/80",
-                )}
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
+            return (
+              <li className="flex" key={item.name}>
+                <Link
+                  className="inline-flex items-center justify-start gap-x-sm"
+                  href={item.url}
+                >
+                  <div
+                    className={cn(
+                      "size-1.5 rounded-full transition-all duration-300",
+                      isActive
+                        ? "translate-x-0 bg-brand opacity-100"
+                        : "-translate-x-2 opacity-0"
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "leading-7",
+                      isActive ? "text-fg-1" : "text-fg-3 hover:text-fg-2"
+                    )}
+                  >
+                    {item.name}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </header>
