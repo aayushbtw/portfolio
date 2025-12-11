@@ -39,7 +39,7 @@
   }
 
   body {
-    @apply bg-bg-1 text-fg-3 selection:bg-brand/10 mx-auto flex w-full max-w-280 sm:py-20 antialiased;
+    @apply bg-bg-1 text-fg-3 selection:bg-brand/10;
   }
 }
 
@@ -60,5 +60,5 @@
 }
 
 @utility link {
-  @apply underline-offset-3 underline decoration-brand/70 hover:underline-offset-4 transition-all duration-300;
+  @apply underline-offset-3 underline decoration-2 decoration-brand/70 hover:underline-offset-4 transition-all duration-300;
 }

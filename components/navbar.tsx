@@ -12,9 +12,9 @@ function Navbar() {
   ];
   const pathname = usePathname();
   return (
-    <header className="flex flex-1 select-none justify-start">
+    <header>
       <nav>
-        <ul>
+        <ul className="flex select-none flex-row gap-x-sm md:flex-col">
           {links.map((item) => {
             const isActive =
               item.url === "/"
@@ -24,25 +24,22 @@ function Navbar() {
             return (
               <li className="flex" key={item.name}>
                 <Link
-                  className="inline-flex items-center justify-start gap-x-sm"
+                  className={cn(
+                    "flex items-center justify-start gap-x-sm leading-7",
+                    isActive ? "text-fg-1" : "text-fg-3 hover:text-fg-2",
+                    isActive ? "link md:no-underline" : ""
+                  )}
                   href={item.url}
                 >
-                  <div
+                  <span
                     className={cn(
-                      "size-1.5 rounded-full transition-all duration-300",
+                      "hidden size-1.5 rounded-full transition-all duration-300 md:block",
                       isActive
                         ? "translate-x-0 bg-brand opacity-100"
                         : "-translate-x-2 opacity-0"
                     )}
                   />
-                  <span
-                    className={cn(
-                      "leading-7",
-                      isActive ? "text-fg-1" : "text-fg-3 hover:text-fg-2"
-                    )}
-                  >
-                    {item.name}
-                  </span>
+                  {item.name}
                 </Link>
               </li>
             );

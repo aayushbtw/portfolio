@@ -21,10 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html className={fontSans.className} lang="en">
-      <body>
-        <Navbar />
+      <body className="mx-auto flex w-full max-w-280 flex-col px-4 py-xl antialiased md:flex-row md:py-20">
+        <div className="mb-sm flex flex-1 justify-start md:mb-0">
+          <Navbar />
+        </div>
         <main className="flex flex-3 flex-col gap-xl">{children}</main>
-        <div className="flex flex-1 justify-end" />
+        <div className="hidden flex-1 justify-end md:flex" />
       </body>
     </html>
   );

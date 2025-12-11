@@ -40,7 +40,7 @@ export default function HomePage() {
       <section className="flex flex-col gap-y-sm">
         <div className="flex items-center justify-between">
           <h2 className="subheading flex items-center gap-x-sm">
-            <span className="block h-0.5 w-3 bg-brand" />
+            <span className="block h-0.5 w-md bg-brand" />
             Projects
           </h2>
           <span className="text-xs">View All</span>
@@ -61,7 +61,9 @@ export default function HomePage() {
                 {item.name}
               </h4>
               <p className="paragraph text-[0.9rem]">{item.description}</p>
-              <IconArrowUpRight className="size-3 text-fg-2" />
+              <span className="paragraph inline-flex items-center">
+                [<IconArrowUpRight className="size-3 text-fg-2" />]
+              </span>
             </Link>
           ))}
         </div>
@@ -70,7 +72,7 @@ export default function HomePage() {
       <section className="flex flex-col gap-y-sm">
         <div className="flex items-center justify-between">
           <h2 className="subheading flex items-center gap-x-sm">
-            <span className="block h-0.5 w-3 bg-brand" />
+            <span className="block h-0.5 w-md bg-brand" />
             Writings
           </h2>
           <span className="text-xs">View All</span>
