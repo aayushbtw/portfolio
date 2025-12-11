@@ -1,4 +1,15 @@
+import { IconArrowUpRight } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/card";
+import { projects } from "@/data/projects";
+import { cn } from "@/lib/utils";
 
 const TITLE = "Projects";
 const DESCRIPTION =
@@ -9,15 +20,35 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
 };
 
-export default function Page() {
+export default function ProjectsPage() {
   return (
-    <section className="flex flex-col gap-y-sm">
-      <header>
-        <h1 className="heading text-lg">{TITLE}</h1>
-        <h2 className="subheading">{DESCRIPTION}</h2>
-      </header>
+    <Card>
+      <CardHeader>
+        <CardTitle>{TITLE}</CardTitle>
+        <CardDescription className="paragraph!">{DESCRIPTION}</CardDescription>
+      </CardHeader>
 
-      <p className="paragraph">WIP</p>
-    </section>
+      <CardContent className="mt-sm">
+        {projects.map((item) => (
+          <Link
+            className={cn(
+              "grid grid-cols-[100px_1fr_auto] items-center gap-4",
+              "transition-all duration-300 hover:ps-sm"
+            )}
+            href={item.url}
+            key={item.name}
+            target="_blank"
+          >
+            <h4 className="subheading font-medium text-[0.9rem]">
+              {item.name}
+            </h4>
+            <p className="paragraph text-[0.9rem]">{item.description}</p>
+            <span className="paragraph inline-flex items-center">
+              [<IconArrowUpRight className="size-3 text-fg-2" />]
+            </span>
+          </Link>
+        ))}
+      </CardContent>
+    </Card>
   );
 }

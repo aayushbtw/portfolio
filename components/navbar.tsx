@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <header>
       <nav>
-        <ul className="flex select-none flex-row gap-x-sm md:flex-col">
+        <ul className="flex select-none flex-row gap-x-3 md:flex-col">
           {links.map((item) => {
             const isActive =
               item.url === "/"

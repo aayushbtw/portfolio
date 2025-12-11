@@ -1,4 +1,11 @@
 import type { Metadata } from "next";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/card";
 
 const TITLE = "Writings";
 const DESCRIPTION =
@@ -9,15 +16,15 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
 };
 
-export default function Page() {
+export default function WritingsPage() {
   return (
-    <section className="flex flex-col gap-y-sm">
-      <header>
-        <h1 className="heading text-lg">{TITLE}</h1>
-        <h2 className="subheading">{DESCRIPTION}</h2>
-      </header>
+    <Card>
+      <CardHeader>
+        <CardTitle>{TITLE}</CardTitle>
+        <CardDescription className="paragraph!">{DESCRIPTION}</CardDescription>
+      </CardHeader>
 
-      <p className="paragraph">WIP</p>
-    </section>
+      <CardContent className="mt-sm">WIP</CardContent>
+    </Card>
   );
 }

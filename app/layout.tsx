@@ -21,11 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html className={fontSans.className} lang="en">
-      <body className="mx-auto flex w-full max-w-280 flex-col px-4 py-xl antialiased md:flex-row md:py-20">
-        <div className="mb-sm flex flex-1 justify-start md:mb-0">
+      <body className="mx-auto flex w-full max-w-280 flex-col px-sm py-xl antialiased md:flex-row md:py-20">
+        <div className="flex flex-1 justify-start">
           <Navbar />
         </div>
-        <main className="flex flex-3 flex-col gap-xl">{children}</main>
+        <main className="mt-md flex flex-3 flex-col gap-xl md:mt-0">
+          {children}
+        </main>
         <div className="hidden flex-1 justify-end md:flex" />
       </body>
     </html>
