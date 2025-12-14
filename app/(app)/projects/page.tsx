@@ -8,6 +8,7 @@ import {
 } from "@/components/card";
 import { ProjectLink } from "@/components/project-link";
 import { projects } from "@/data/projects";
+import { cn } from "@/lib/utils";
 
 const TITLE = "Projects";
 const DESCRIPTION =
@@ -29,7 +30,7 @@ export default function ProjectsPage() {
       </CardHeader>
 
       <CardContent>
-        <ul className="stagger-3">
+        <ul className={cn("group/list", "stagger-3")}>
           {projects.map((item) => (
             <li key={item.name}>
               <ProjectLink item={item} />

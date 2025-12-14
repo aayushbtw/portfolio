@@ -12,6 +12,7 @@ import { WritingLink } from "@/components/writing-link";
 import { projects } from "@/data/projects";
 import { user } from "@/data/user";
 import { writings } from "@/data/writings";
+import { cn } from "@/lib/utils";
 
 export default function HomePage() {
   return (
@@ -67,7 +68,7 @@ function Projects() {
       </CardHeader>
 
       <CardContent>
-        <ul className="stagger-6">
+        <ul className={cn("group/list", "stagger-6")}>
           {projects.map((item) => (
             <li key={item.name}>
               <ProjectLink item={item} />
@@ -93,7 +94,7 @@ function Writings() {
       </CardHeader>
 
       <CardContent>
-        <ul className="stagger-8">
+        <ul className={cn("group/list", "stagger-8")}>
           {writings.map((item) => (
             <li key={item.name}>
               <WritingLink item={item} />

@@ -11,7 +11,8 @@ function ProjectLink({ item }: { item: Project }) {
         "group items-center",
         "flex gap-2",
         "transition-all duration-300",
-        "hover:pl-xs"
+        "group-hover/list:opacity-40",
+        "hover:opacity-100"
       )}
       href={item.url}
       target="_blank"
@@ -20,16 +21,10 @@ function ProjectLink({ item }: { item: Project }) {
         {item.name}
       </h4>
 
-      <p
-        className={cn(
-          "paragraph",
-          "flex-1 text-[0.9rem]",
-          "transition-all duration-300",
-          "text-fg-3 group-hover:text-fg-2"
-        )}
-      >
+      <p className={cn("paragraph", "flex-1 text-[0.9rem]")}>
         {item.description}
       </p>
+
       <LinkText>
         <IconArrowUpRight className="size-3" />
       </LinkText>

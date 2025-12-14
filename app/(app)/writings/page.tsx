@@ -8,6 +8,7 @@ import {
 } from "@/components/card";
 import { WritingLink } from "@/components/writing-link";
 import { writings } from "@/data/writings";
+import { cn } from "@/lib/utils";
 
 const TITLE = "Writings";
 const DESCRIPTION =
@@ -29,7 +30,7 @@ export default function WritingsPage() {
       </CardHeader>
 
       <CardContent>
-        <ul className="stagger-3">
+        <ul className={cn("group/list", "stagger-3")}>
           {writings.map((item) => (
             <li key={item.name}>
               <WritingLink item={item} />

@@ -9,29 +9,17 @@ function WritingLink({ item }: { item: Writing }) {
         "group items-center",
         "flex gap-2",
         "transition-all duration-300",
-        "hover:pl-xs"
+        "group-hover/list:opacity-40",
+        "hover:opacity-100"
       )}
       href={item.url}
       key={item.name}
     >
       <h4 className={cn("subheading", "text-[0.9rem]")}>{item.name}</h4>
 
-      <div
-        className={cn(
-          "flex grow border-b border-dashed",
-          "transition-all duration-300",
-          "group-hover:border-fg-3"
-        )}
-      />
+      <div className={cn("flex grow", "border-b border-dashed")} />
 
-      <time
-        className={cn(
-          "paragraph",
-          "text-xs",
-          "transition-all duration-300",
-          "text-fg-3 group-hover:text-fg-2"
-        )}
-      >
+      <time className={cn("paragraph", "text-xs")}>
         {formatDate(item.date)}
       </time>
     </Link>
