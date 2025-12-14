@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className="flex flex-col gap-y-sm" {...props} />;
+  return <div className={cn("flex flex-col gap-y-sm", className)} {...props} />;
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {

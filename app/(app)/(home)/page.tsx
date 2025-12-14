@@ -65,9 +65,13 @@ function Projects() {
       </CardHeader>
 
       <CardContent>
-        {projects.map((item) => (
-          <ProjectLink item={item} key={item.name} />
-        ))}
+        <ul>
+          {projects.map((item) => (
+            <li key={item.name}>
+              <ProjectLink item={item} />
+            </li>
+          ))}
+        </ul>
       </CardContent>
     </Card>
   );
@@ -87,9 +91,13 @@ function Writings() {
       </CardHeader>
 
       <CardContent>
-        {writings.map((item) => (
-          <WritingLink item={item} key={item.name} />
-        ))}
+        <ul>
+          {writings.map((item) => (
+            <li key={item.name}>
+              <WritingLink item={item} />
+            </li>
+          ))}
+        </ul>
       </CardContent>
     </Card>
   );

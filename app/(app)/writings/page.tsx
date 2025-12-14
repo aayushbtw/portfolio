@@ -6,6 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/card";
+import { WritingLink } from "@/components/writing-link";
+import { writings } from "@/data/writings";
 
 const TITLE = "Writings";
 const DESCRIPTION =
@@ -18,13 +20,21 @@ export const metadata: Metadata = {
 
 export default function WritingsPage() {
   return (
-    <Card>
+    <Card className="gap-y-md">
       <CardHeader>
         <CardTitle>{TITLE}</CardTitle>
         <CardDescription className="paragraph!">{DESCRIPTION}</CardDescription>
       </CardHeader>
 
-      <CardContent className="mt-sm">WIP</CardContent>
+      <CardContent>
+        <ul>
+          {writings.map((item) => (
+            <li key={item.name}>
+              <WritingLink item={item} />
+            </li>
+          ))}
+        </ul>
+      </CardContent>
     </Card>
   );
 }
