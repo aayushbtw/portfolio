@@ -22,12 +22,14 @@ export default function WritingsPage() {
   return (
     <Card className="gap-y-md">
       <CardHeader>
-        <CardTitle>{TITLE}</CardTitle>
-        <CardDescription className="paragraph!">{DESCRIPTION}</CardDescription>
+        <CardTitle className="stagger-1">{TITLE}</CardTitle>
+        <CardDescription className="stagger-2 paragraph!">
+          {DESCRIPTION}
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <ul>
+        <ul className="stagger-3">
           {writings.map((item) => (
             <li key={item.name}>
               <WritingLink item={item} />

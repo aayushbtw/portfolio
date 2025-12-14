@@ -28,13 +28,15 @@ function About() {
     <section>
       <Card>
         <CardHeader>
-          <CardTitle>{user.name}</CardTitle>
-          <CardDescription>{user.designation}</CardDescription>
+          <CardTitle className="stagger-1">{user.name}</CardTitle>
+          <CardDescription className="stagger-2">
+            {user.designation}
+          </CardDescription>
         </CardHeader>
 
         <CardContent>
-          <p>{user.about}</p>
-          <p>
+          <p className="stagger-3">{user.about}</p>
+          <p className="stagger-4">
             I'm currently a full-stack engineer at{" "}
             <Link
               className="link"
@@ -54,7 +56,7 @@ function About() {
 function Projects() {
   return (
     <Card>
-      <CardHeader className="flex items-center justify-between">
+      <CardHeader className="stagger-5 flex items-center justify-between">
         <CardDescription className="flex items-center gap-x-sm">
           <span className="block h-0.5 w-md bg-brand" />
           Projects
@@ -65,7 +67,7 @@ function Projects() {
       </CardHeader>
 
       <CardContent>
-        <ul>
+        <ul className="stagger-6">
           {projects.map((item) => (
             <li key={item.name}>
               <ProjectLink item={item} />
@@ -80,7 +82,7 @@ function Projects() {
 function Writings() {
   return (
     <Card>
-      <CardHeader className="flex items-center justify-between">
+      <CardHeader className="stagger-7 flex items-center justify-between">
         <CardDescription className="flex items-center gap-x-sm">
           <span className="block h-0.5 w-md bg-brand" />
           Writings
@@ -91,7 +93,7 @@ function Writings() {
       </CardHeader>
 
       <CardContent>
-        <ul>
+        <ul className="stagger-8">
           {writings.map((item) => (
             <li key={item.name}>
               <WritingLink item={item} />

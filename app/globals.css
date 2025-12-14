@@ -66,3 +66,21 @@
 @utility link {
   @apply underline-offset-3 underline decoration-2 decoration-brand/70 hover:underline-offset-4 transition-all duration-300;
 }
+
+/* Animtion */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility stagger-* {
+  animation: fade-in-up 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+  animation-delay: calc(--value(integer) * 0.05s);
+}
