@@ -9,7 +9,7 @@
 
   --color-fg-1: var(--color-gray-950);
   --color-fg-2: var(--color-gray-800);
-  --color-fg-3: var(--color-gray-600);
+  --color-fg-3: var(--color-gray-500);
 
   --color-brand: var(--color-orange-500);
 
@@ -40,6 +40,10 @@
 
   body {
     @apply bg-bg-1 text-fg-3 selection:bg-brand/10;
+  }
+
+  svg {
+    @apply stroke-[1.75px];
   }
 }
 

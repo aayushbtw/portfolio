@@ -1,4 +1,3 @@
-import { IconArrowUpRight } from "@tabler/icons-react";
 import Link from "next/link";
 import {
   Card,
@@ -7,9 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/card";
+import { LinkText } from "@/components/link-text";
+import { ProjectLink } from "@/components/project-link";
+import { WritingLink } from "@/components/writing-link";
 import { projects } from "@/data/projects";
 import { user } from "@/data/user";
-import { cn, formatDate } from "@/lib/utils";
+import { writings } from "@/data/writings";
 
 export default function HomePage() {
   return (
@@ -57,28 +59,14 @@ function Projects() {
           <span className="block h-0.5 w-md bg-brand" />
           Projects
         </CardDescription>
-        <span className="text-xs">[ View All ]</span>
+        <Link className="group" href="/projects">
+          <LinkText>View All</LinkText>
+        </Link>
       </CardHeader>
 
       <CardContent>
         {projects.map((item) => (
-          <Link
-            className={cn(
-              "grid grid-cols-[100px_1fr_auto] items-center gap-4",
-              "transition-all duration-300 hover:ps-sm"
-            )}
-            href={item.url}
-            key={item.name}
-            target="_blank"
-          >
-            <h4 className="subheading font-medium text-[0.9rem]">
-              {item.name}
-            </h4>
-            <p className="paragraph text-[0.9rem]">{item.description}</p>
-            <span className="paragraph inline-flex items-center">
-              [<IconArrowUpRight className="size-3 text-fg-2" />]
-            </span>
-          </Link>
+          <ProjectLink item={item} key={item.name} />
         ))}
       </CardContent>
     </Card>
@@ -86,14 +74,6 @@ function Projects() {
 }
 
 function Writings() {
-  const writings = [
-    {
-      name: "Hello World",
-      date: "15-01-2024",
-      url: "#",
-    },
-  ];
-
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
@@ -101,27 +81,14 @@ function Writings() {
           <span className="block h-0.5 w-md bg-brand" />
           Writings
         </CardDescription>
-        <span className="text-xs">[ View All ]</span>
+        <Link className="group" href="/writings">
+          <LinkText>View All</LinkText>
+        </Link>
       </CardHeader>
 
       <CardContent>
         {writings.map((item) => (
-          <Link
-            className={cn(
-              "flex items-center gap-sm",
-              "transition-all duration-300 hover:ps-sm"
-            )}
-            href={item.url}
-            key={item.name}
-          >
-            <h4 className="subheading font-medium text-[0.9rem]">
-              {item.name}
-            </h4>
-            <div className="flex grow border-b border-dashed" />
-            <p className="paragraph font-light text-xs">
-              {formatDate(item.date)}
-            </p>
-          </Link>
+          <WritingLink item={item} key={item.name} />
         ))}
       </CardContent>
     </Card>
