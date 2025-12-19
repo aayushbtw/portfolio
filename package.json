@@ -12,31 +12,25 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.14.4",
-    "@tabler/icons-react": "^3.35.0",
+    "@opennextjs/cloudflare": "^1.14.6",
+    "@tabler/icons-react": "^3.36.0",
     "clsx": "^2.1.1",
     "cva": "1.0.0-beta.4",
-    "next": "16.0.7",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "next": "16.1.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.8",
-    "@tailwindcss/postcss": "^4.1.17",
+    "@biomejs/biome": "2.3.10",
+    "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^20.19.25",
+    "@types/node": "^22.19.3",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "tailwindcss": "^4.1.17",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "ultracite": "6.3.9",
-    "wrangler": "^4.53.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.7",
-      "@types/react-dom": "19.2.3"
-    }
+    "ultracite": "6.4.2",
+    "wrangler": "^4.56.0"
   }
 }
