@@ -48,7 +48,8 @@
 }
 
 @utility heading {
-  @apply font-medium text-fg-1;
+  @apply font-medium text-fg-1 text-lg;
+  letter-spacing: -0.01em;
 }
 
 @utility subheading {

@@ -9,7 +9,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"h1">) {
-  return <h1 className={cn("heading text-lg", className)} {...props} />;
+  return <h1 className={cn("heading", className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"h2">) {

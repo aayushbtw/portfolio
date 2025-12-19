@@ -9,9 +9,7 @@ function LinkText({
     <span
       className={cn(
         "inline-flex items-center text-xs",
-        // visual tone
         "text-fg-2/70 transition-colors duration-200",
-        // assumes parent .group
         "group-hover:text-fg-2 group-focus-visible:text-fg-2",
         className
       )}
