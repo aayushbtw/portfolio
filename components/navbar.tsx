@@ -28,10 +28,11 @@ function Navbar() {
               >
                 <span
                   className={cn(
-                    "hidden size-1.5 rounded-full transition-all duration-300 md:block",
+                    "bg-linear-to-br from-brand to-brand/60",
+                    "hidden size-1.5 rounded-full transition-all md:block",
                     isActive
-                      ? "translate-x-0 bg-brand opacity-100"
-                      : "-translate-x-2 opacity-0"
+                      ? "scale-100 opacity-100 shadow-[0_0_8px_rgba(var(--brand-rgb),0.6)] duration-200 ease-out"
+                      : "scale-0 opacity-0 duration-150 ease-in"
                   )}
                 />
                 <Link
