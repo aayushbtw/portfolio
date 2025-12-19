@@ -23,6 +23,12 @@
   --spacing-md: calc(var(--spacing) * 4);
   --spacing-lg: calc(var(--spacing) * 6);
   --spacing-xl: calc(var(--spacing) * 8);
+  --spacing-2xl: calc(var(--spacing) * 10);
+  --spacing-3xl: calc(var(--spacing) * 12);
+  --spacing-4xl: calc(var(--spacing) * 14);
+  --spacing-5xl: calc(var(--spacing) * 16);
+  --spacing-6xl: calc(var(--spacing) * 18);
+  --spacing-7xl: calc(var(--spacing) * 20);
 }
 
 @layer base {
@@ -36,10 +42,6 @@
 
   html {
     @apply motion-safe:scroll-smooth;
-  }
-
-  body {
-    @apply bg-bg-1 text-fg-3 selection:bg-brand/10 text-[15px] leading-[1.65];
   }
 
   svg {
