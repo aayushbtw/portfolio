@@ -25,7 +25,7 @@ function Navbar() {
               <li className="flex" key={item.name}>
                 <Link
                   className={cn(
-                    "flex items-center justify-start gap-x-sm leading-7",
+                    "flex items-center justify-start gap-x-sm",
                     isActive ? "text-fg-1" : "text-fg-3 hover:text-fg-2",
                     isActive ? "link md:no-underline" : ""
                   )}

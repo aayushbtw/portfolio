@@ -39,7 +39,7 @@
   }
 
   body {
-    @apply bg-bg-1 text-fg-3 selection:bg-brand/10;
+    @apply bg-bg-1 text-fg-3 selection:bg-brand/10 text-[15px] leading-[1.65];
   }
 
   svg {
@@ -47,20 +47,16 @@
   }
 }
 
-@utility typography {
-  @apply sm:text-base text-sm leading-relaxed;
-}
-
 @utility heading {
-  @apply typography font-medium text-fg-1;
+  @apply font-medium text-fg-1;
 }
 
 @utility subheading {
-  @apply typography font-normal text-fg-2;
+  @apply font-normal text-fg-2;
 }
 
 @utility paragraph {
-  @apply typography font-normal text-fg-3;
+  @apply font-normal text-fg-3;
 }
 
 @utility link {

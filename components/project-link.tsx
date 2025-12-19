@@ -17,13 +17,9 @@ function ProjectLink({ item }: { item: Project }) {
       href={item.url}
       target="_blank"
     >
-      <h4 className={cn("subheading", "text-[0.9rem]", "w-[100px] shrink-0")}>
-        {item.name}
-      </h4>
+      <h4 className={cn("subheading", "w-[100px]")}>{item.name}</h4>
 
-      <p className={cn("paragraph", "flex-1 text-[0.9rem]")}>
-        {item.description}
-      </p>
+      <p className={cn("paragraph", "flex-1")}>{item.description}</p>
 
       <LinkText>
         <IconArrowUpRight className="size-3" />

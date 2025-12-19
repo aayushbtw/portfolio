@@ -15,7 +15,7 @@ function WritingLink({ item }: { item: Writing }) {
       href={item.url}
       key={item.name}
     >
-      <h4 className={cn("subheading", "text-[0.9rem]")}>{item.name}</h4>
+      <h4 className={cn("subheading")}>{item.name}</h4>
 
       <div className={cn("flex grow", "border-b border-dashed")} />
 
