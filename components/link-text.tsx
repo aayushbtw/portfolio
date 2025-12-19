@@ -15,11 +15,11 @@ function LinkText({
       )}
       {...props}
     >
-      <span className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-transform duration-300 ease-out">
+      <span className="transition-transform duration-300 ease-out group-hover:-translate-x-1 group-focus-visible:-translate-x-1">
         [
       </span>
 
-      <span className="mx-1 opacity-80 transition-opacity duration-200 group-hover:opacity-100">
+      <span className="mx-xs opacity-80 transition-opacity duration-200 group-hover:opacity-100">
         {children}
       </span>
 
