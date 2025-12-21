@@ -2,7 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "portfolio",
-  "compatibility_date": "2025-05-05",
+  "compatibility_date": "2025-12-19",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".open-next/assets",
@@ -10,5 +10,8 @@
   },
   "observability": {
     "enabled": true
+  },
+  "vars": {
+    "NODE_ENV": "production"
   }
 }
