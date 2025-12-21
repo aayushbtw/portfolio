@@ -12,7 +12,7 @@ export const projects = [
   },
   {
     name: "z",
-    description: "String encoding/decoding CLI",
+    description: "Encode & decode strings through CLI",
     url: "https://github.com/aayushbtw/z",
   },
   {
