@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk as FontSans } from "next/font/google";
-import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { user } from "@/data/user";
+import "@/base/globals.css";
+import { Navbar } from "@/base/navbar";
+import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const fontSans = FontSans({
@@ -12,9 +12,15 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: user.name,
-  description: user.about,
+  title: site.title,
+  description: site.description,
 };
+
+const links = [
+  { name: "Home", url: "/" },
+  { name: "Projects", url: "/projects" },
+  { name: "Writings", url: "/writings" },
+];
 
 export default function RootLayout({
   children,
@@ -23,19 +29,11 @@ export default function RootLayout({
 }>) {
   return (
     <html className={cn(fontSans.variable, "antialiased")} lang="en">
-      <body
-        className={cn(
-          "bg-bg-1 text-[15px] text-fg-3 leading-[1.65] selection:bg-brand/10",
-          // Layout
-          "mx-auto flex w-full max-w-260 flex-col px-sm py-xl md:flex-row md:py-7xl"
-        )}
-      >
-        <div className="flex flex-1 justify-start">
-          <Navbar />
-        </div>
-        <main className="mt-md flex flex-4 flex-col gap-xl md:mt-0">
-          {children}
-        </main>
+      <body>
+        <header>
+          <Navbar links={links} />
+        </header>
+        <main>{children}</main>
         <div className="hidden flex-1 justify-end md:flex" />
       </body>
     </html>

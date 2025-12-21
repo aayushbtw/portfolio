@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card";
+} from "@/base/ui/card";
 import { WritingLink } from "@/components/writing-link";
 import { writings } from "@/data/writings";
 import { cn } from "@/lib/utils";

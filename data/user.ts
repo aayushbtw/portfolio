@@ -1,8 +1,9 @@
+import { site } from "@/config/site";
+
 export const user = {
-  name: "Aayush Agarwal",
+  name: site.title,
   designation: "Full-Stack Engineer",
-  about:
-    "Building things that feel simple and useful, with attention to clarity and thoughtful interfaces while keeping it reliable and professional.",
+  about: site.description,
   social: [
     {
       name: "X",

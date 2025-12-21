@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card";
+} from "@/base/ui/card";
 import { ProjectLink } from "@/components/project-link";
 import { projects } from "@/data/projects";
 import { cn } from "@/lib/utils";

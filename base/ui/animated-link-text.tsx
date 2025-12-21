@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-function LinkText({
+function AnimatedLinkText({
   className,
   children,
   ...props
@@ -30,4 +30,4 @@ function LinkText({
   );
 }
 
-export { LinkText };
+export { AnimatedLinkText };

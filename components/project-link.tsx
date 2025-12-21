@@ -1,6 +1,6 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
 import Link from "next/link";
-import { LinkText } from "@/components/link-text";
+import { AnimatedLinkText } from "@/base/ui/animated-link-text";
 import type { Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
@@ -21,9 +21,9 @@ function ProjectLink({ item }: { item: Project }) {
 
       <p className={cn("paragraph", "flex-1")}>{item.description}</p>
 
-      <LinkText>
+      <AnimatedLinkText>
         <IconArrowUpRight className="size-3" />
-      </LinkText>
+      </AnimatedLinkText>
     </Link>
   );
 }

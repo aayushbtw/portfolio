@@ -1,12 +1,12 @@
 import Link from "next/link";
+import { AnimatedLinkText } from "@/base/ui/animated-link-text";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card";
-import { LinkText } from "@/components/link-text";
+} from "@/base/ui/card";
 import { ProjectLink } from "@/components/project-link";
 import { WritingLink } from "@/components/writing-link";
 import { projects } from "@/data/projects";
@@ -63,7 +63,7 @@ function Projects() {
           Projects
         </CardDescription>
         <Link className="group" href="/projects">
-          <LinkText>View All</LinkText>
+          <AnimatedLinkText>View All</AnimatedLinkText>
         </Link>
       </CardHeader>
 
@@ -89,7 +89,7 @@ function Writings() {
           Writings
         </CardDescription>
         <Link className="group" href="/writings">
-          <LinkText>View All</LinkText>
+          <AnimatedLinkText>View All</AnimatedLinkText>
         </Link>
       </CardHeader>
 
