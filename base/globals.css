@@ -9,7 +9,7 @@
   --color-fg-2: var(--color-gray-800);
   --color-fg-3: var(--color-gray-500);
 
-  --color-brand: var(--color-orange-500);
+  --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
   --color-border: var(--color-gray-300);
 
