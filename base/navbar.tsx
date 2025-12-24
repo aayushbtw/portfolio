@@ -25,7 +25,7 @@ function Navbar({ links }: { links: NavLink[] }) {
             item.url === "/" ? pathname === "/" : pathname.startsWith(item.url);
 
           return (
-            <NavigationMenuItem key={item.name}>
+            <NavigationMenuItem active={isActive} key={item.name}>
               <NavigationMenuLink
                 active={isActive}
                 external={item.external}
