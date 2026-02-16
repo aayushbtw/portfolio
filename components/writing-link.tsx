@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Writing } from "@/data/writings";
+import type { Writing } from "@/lib/writings";
 import { cn, formatDate } from "@/lib/utils";
 
 function WritingLink({ item }: { item: Writing }) {
@@ -12,10 +12,9 @@ function WritingLink({ item }: { item: Writing }) {
         "group-hover/list:opacity-40",
         "hover:opacity-100"
       )}
-      href={item.url}
-      key={item.name}
+      href={`/writings/${item.slug}`}
     >
-      <h4 className="subheading">{item.name}</h4>
+      <h4 className="subheading">{item.title}</h4>
       <div className={cn("flex grow", "border-b border-dashed")} />
       <time className="text-xs">{formatDate(item.date)}</time>
     </Link>

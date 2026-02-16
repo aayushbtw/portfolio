@@ -8,7 +8,7 @@ import {
 } from "@/base/ui/card";
 import { List } from "@/components/list";
 import { WritingLink } from "@/components/writing-link";
-import { writings } from "@/data/writings";
+import { getWritings } from "@/lib/writings";
 
 const TITLE = "Writings";
 const DESCRIPTION =
@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default function WritingsPage() {
+  const writings = getWritings();
+
   return (
     <Card className="gap-y-4">
       <CardHeader>
@@ -32,7 +34,7 @@ export default function WritingsPage() {
       <CardContent>
         <List className="stagger-3">
           {writings.map((item) => (
-            <li key={item.name}>
+            <li key={item.slug}>
               <WritingLink item={item} />
             </li>
           ))}

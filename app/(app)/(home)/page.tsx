@@ -12,7 +12,7 @@ import { ProjectLink } from "@/components/project-link";
 import { WritingLink } from "@/components/writing-link";
 import { projects } from "@/data/projects";
 import { user } from "@/data/user";
-import { writings } from "@/data/writings";
+import { getWritings } from "@/lib/writings";
 
 export default function HomePage() {
   return (
@@ -81,6 +81,8 @@ function Projects() {
 }
 
 function Writings() {
+  const writings = getWritings();
+
   return (
     <Card>
       <CardHeader className="stagger-7 flex items-center justify-between">
@@ -96,7 +98,7 @@ function Writings() {
       <CardContent>
         <List className="stagger-8">
           {writings.map((item) => (
-            <li key={item.name}>
+            <li key={item.slug}>
               <WritingLink item={item} />
             </li>
           ))}
