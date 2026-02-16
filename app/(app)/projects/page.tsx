@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <Card className="gap-y-md">
+    <Card className="gap-y-4">
       <CardHeader>
         <CardTitle className="stagger-1">{TITLE}</CardTitle>
         <CardDescription className="stagger-2 text-fg-3">

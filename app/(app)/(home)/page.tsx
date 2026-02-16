@@ -58,8 +58,8 @@ function Projects() {
   return (
     <Card>
       <CardHeader className="stagger-5 flex items-center justify-between">
-        <CardDescription className="flex items-center gap-x-sm">
-          <span className="block h-0.5 w-md bg-brand" />
+        <CardDescription className="flex items-center gap-x-2">
+          <span className="block h-0.5 w-4 bg-brand" />
           Projects
         </CardDescription>
         <Link className="group" href="/projects">
@@ -84,8 +84,8 @@ function Writings() {
   return (
     <Card>
       <CardHeader className="stagger-7 flex items-center justify-between">
-        <CardDescription className="flex items-center gap-x-sm">
-          <span className="block h-0.5 w-md bg-brand" />
+        <CardDescription className="flex items-center gap-x-2">
+          <span className="block h-0.5 w-4 bg-brand" />
           Writings
         </CardDescription>
         <Link className="group" href="/writings">

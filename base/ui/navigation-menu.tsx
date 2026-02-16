@@ -46,7 +46,7 @@ function NavigationMenuItem({
 }: NavigationMenuItemProps) {
   return (
     <li
-      className={cn("flex items-center justify-start gap-x-sm", className)}
+      className={cn("flex items-center justify-start gap-x-2", className)}
       style={active ? { anchorName: "--active" } : undefined}
       {...props}
     >

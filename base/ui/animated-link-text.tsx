@@ -19,7 +19,7 @@ function AnimatedLinkText({
         [
       </span>
 
-      <span className="mx-xs opacity-80 transition-opacity duration-200 group-hover:opacity-100">
+      <span className="mx-1 opacity-80 transition-opacity duration-200 group-hover:opacity-100">
         {children}
       </span>
 
