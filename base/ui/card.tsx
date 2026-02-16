@@ -37,7 +37,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"h2">) {
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("paragraph flex flex-col gap-y-xs", className)}
+      className={cn("flex flex-col gap-y-xs", className)}
       data-slot="card-content"
       {...props}
     />

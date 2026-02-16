@@ -7,12 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/base/ui/card";
+import { List } from "@/components/list";
 import { ProjectLink } from "@/components/project-link";
 import { WritingLink } from "@/components/writing-link";
 import { projects } from "@/data/projects";
 import { user } from "@/data/user";
 import { writings } from "@/data/writings";
-import { cn } from "@/lib/utils";
 
 export default function HomePage() {
   return (
@@ -68,13 +68,13 @@ function Projects() {
       </CardHeader>
 
       <CardContent>
-        <ul className={cn("group/list", "stagger-6")}>
+        <List className="stagger-6">
           {projects.map((item) => (
             <li key={item.name}>
               <ProjectLink item={item} />
             </li>
           ))}
-        </ul>
+        </List>
       </CardContent>
     </Card>
   );
@@ -94,13 +94,13 @@ function Writings() {
       </CardHeader>
 
       <CardContent>
-        <ul className={cn("group/list", "stagger-8")}>
+        <List className="stagger-8">
           {writings.map((item) => (
             <li key={item.name}>
               <WritingLink item={item} />
             </li>
           ))}
-        </ul>
+        </List>
       </CardContent>
     </Card>
   );

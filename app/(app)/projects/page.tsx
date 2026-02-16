@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/base/ui/card";
+import { List } from "@/components/list";
 import { ProjectLink } from "@/components/project-link";
 import { projects } from "@/data/projects";
-import { cn } from "@/lib/utils";
 
 const TITLE = "Projects";
 const DESCRIPTION =
@@ -24,19 +24,19 @@ export default function ProjectsPage() {
     <Card className="gap-y-md">
       <CardHeader>
         <CardTitle className="stagger-1">{TITLE}</CardTitle>
-        <CardDescription className="stagger-2 paragraph!">
+        <CardDescription className="stagger-2 text-fg-3">
           {DESCRIPTION}
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <ul className={cn("group/list", "stagger-3")}>
+        <List className="stagger-3">
           {projects.map((item) => (
             <li key={item.name}>
               <ProjectLink item={item} />
             </li>
           ))}
-        </ul>
+        </List>
       </CardContent>
     </Card>
   );

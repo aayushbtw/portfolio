@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/base/ui/card";
+import { List } from "@/components/list";
 import { WritingLink } from "@/components/writing-link";
 import { writings } from "@/data/writings";
-import { cn } from "@/lib/utils";
 
 const TITLE = "Writings";
 const DESCRIPTION =
@@ -24,19 +24,19 @@ export default function WritingsPage() {
     <Card className="gap-y-md">
       <CardHeader>
         <CardTitle className="stagger-1">{TITLE}</CardTitle>
-        <CardDescription className="stagger-2 paragraph!">
+        <CardDescription className="stagger-2 text-fg-3">
           {DESCRIPTION}
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <ul className={cn("group/list", "stagger-3")}>
+        <List className="stagger-3">
           {writings.map((item) => (
             <li key={item.name}>
               <WritingLink item={item} />
             </li>
           ))}
-        </ul>
+        </List>
       </CardContent>
     </Card>
   );

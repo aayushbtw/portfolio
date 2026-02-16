@@ -15,13 +15,9 @@ function WritingLink({ item }: { item: Writing }) {
       href={item.url}
       key={item.name}
     >
-      <h4 className={cn("subheading")}>{item.name}</h4>
-
+      <h4 className="subheading">{item.name}</h4>
       <div className={cn("flex grow", "border-b border-dashed")} />
-
-      <time className={cn("paragraph", "text-xs")}>
-        {formatDate(item.date)}
-      </time>
+      <time className="text-xs">{formatDate(item.date)}</time>
     </Link>
   );
 }

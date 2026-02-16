@@ -47,7 +47,7 @@
   }
 
   body {
-    @apply bg-bg-1 text-[15px] text-fg-3 leading-[1.65] selection:bg-brand/10 mx-auto flex w-full max-w-260 flex-col px-sm py-xl md:flex-row md:py-7xl;
+    @apply bg-bg-1 font-normal text-base text-fg-3 selection:bg-brand/10 mx-auto flex w-full max-w-260 flex-col px-sm py-xl md:flex-row md:py-7xl;
   }
 
   header {
@@ -58,17 +58,14 @@
     @apply mt-md flex flex-4 flex-col gap-xl md:mt-0;
   }
 }
+
 @utility heading {
-  @apply font-medium text-fg-1 text-lg;
+  @apply font-medium text-fg-1;
   letter-spacing: -0.01em;
 }
 
 @utility subheading {
   @apply font-normal text-fg-2;
-}
-
-@utility paragraph {
-  @apply font-normal text-fg-3;
 }
 
 @utility link {
