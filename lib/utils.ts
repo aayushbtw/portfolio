@@ -5,13 +5,34 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDate(dateString: string): string {
-  const [day, month, year] = dateString.split("-");
-  const date = new Date(Number(year), Number(month) - 1, Number(day));
+export function formatDate(date: string, includeRelative = false) {
+  const currentDate = new Date();
+  const targetDate = new Date(date.includes("T") ? date : `${date}T00:00:00`);
 
-  const d = String(date.getDate()).padStart(2, "0");
-  const m = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
-  const y = String(date.getFullYear()).slice(-2);
+  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
+  const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
+  const daysAgo = currentDate.getDate() - targetDate.getDate();
 
-  return `${d} ${m} ${y}`;
+  let relativeDate = "";
+  if (yearsAgo > 0) {
+    relativeDate = `${yearsAgo}y ago`;
+  } else if (monthsAgo > 0) {
+    relativeDate = `${monthsAgo}mo ago`;
+  } else if (daysAgo > 0) {
+    relativeDate = `${daysAgo}d ago`;
+  } else {
+    relativeDate = "Today";
+  }
+
+  const fullDate = targetDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  if (!includeRelative) {
+    return fullDate;
+  }
+
+  return `${fullDate} (${relativeDate})`;
 }

@@ -1,10 +1,6 @@
-export type Project = {
-  name: string;
-  description: string;
-  url: string;
-};
+import Link from "next/link";
 
-export const projects = [
+const projects = [
   {
     name: "monit",
     description: "Monitor server stats via ssh",
@@ -26,3 +22,20 @@ export const projects = [
     url: "https://github.com/aayushbtw/time",
   },
 ];
+
+function ListProjects() {
+  return (
+    <ul>
+      {projects.map((item) => (
+        <li key={item.name}>
+          <Link href={item.url}>
+            <h6>{item.name}</h6>
+            <p>{item.description}</p>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export { ListProjects };

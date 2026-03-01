@@ -5,7 +5,12 @@ import type { ComponentPropsWithoutRef, HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 function NavigationMenu({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return <nav className={cn("relative z-10 flex", className)} {...props} />;
+  return (
+    <nav
+      className={cn("sticky top-page-t z-10 min-w-20 self-start", className)}
+      {...props}
+    />
+  );
 }
 
 function NavigationMenuList({

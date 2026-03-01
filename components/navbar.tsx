@@ -6,7 +6,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/base/ui/navigation-menu";
+} from "@/components/ui/navigation-menu";
 
 type NavLink = {
   name: string;
