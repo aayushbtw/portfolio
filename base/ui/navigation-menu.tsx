@@ -15,7 +15,7 @@ function NavigationMenuList({
   return (
     <ul
       className={cn(
-        "relative flex select-none flex-row gap-x-3 md:flex-col",
+        "relative flex select-none flex-row gap-x-4 gap-y-1 md:flex-col",
         className
       )}
       style={{ scrollTargetGroup: "auto" } as React.CSSProperties}

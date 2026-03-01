@@ -35,8 +35,12 @@
     @apply stroke-[1.75px];
   }
 
+  /* body {
+    @apply bg-bg-1 font-normal text-base text-fg-3 selection:bg-brand/10 mx-auto flex w-full max-w-7xl flex-col px-2 py-8 md:flex-row md:py-10;
+  } */
+
   body {
-    @apply bg-bg-1 font-normal text-base text-fg-3 selection:bg-brand/10 mx-auto flex w-full max-w-260 flex-col px-2 py-8 md:flex-row md:py-20;
+    @apply bg-bg-1 font-normal text-base text-fg-3 selection:bg-brand/10 mx-auto flex w-full max-w-7xl md:px-10 py-10 flex-col md:flex-row px-6;
   }
 
   header {
