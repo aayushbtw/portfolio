@@ -20,7 +20,7 @@ function NavigationMenuList({
   return (
     <ul
       className={cn(
-        "relative flex select-none flex-row gap-x-4 gap-y-1 md:flex-col",
+        "relative flex select-none flex-row justify-end gap-x-4 gap-y-1 pb-page-t lg:flex-col lg:justify-start lg:pb-0",
         className
       )}
       style={{ scrollTargetGroup: "auto" } as React.CSSProperties}
@@ -29,10 +29,10 @@ function NavigationMenuList({
       <span
         aria-hidden="true"
         className={cn(
-          "absolute hidden size-1.5 -translate-y-1/2 rounded-full md:block",
+          "absolute hidden size-1.5 -translate-y-1/2 rounded-full lg:block",
           "bg-linear-to-br from-brand to-brand/60 shadow-[0_0_8px_rgba(var(--brand-rgb),0.6)]",
           "transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-          "top-[anchor(center)] md:[position-anchor:--active]"
+          "top-[anchor(center)] lg:[position-anchor:--active]"
         )}
       />
       {props.children}
@@ -55,7 +55,7 @@ function NavigationMenuItem({
       style={active ? { anchorName: "--active" } : undefined}
       {...props}
     >
-      <span className={cn("hidden size-1.5 md:block")} />
+      <span className={cn("hidden size-1.5 lg:block")} />
       {props.children}
     </li>
   );
@@ -76,7 +76,7 @@ function NavigationMenuLink({
   return (
     <Link
       className={cn(
-        active ? "link text-fg-1 md:no-underline" : "text-fg-3 hover:text-fg-2",
+        active ? "link text-fg-1 lg:no-underline" : "text-fg-3 hover:text-fg-2",
         className
       )}
       {...(external && {

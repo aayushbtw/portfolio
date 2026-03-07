@@ -1,23 +1,24 @@
+import { IconArrowUpRight } from "@tabler/icons-react";
 import Link from "next/link";
 
 const projects = [
   {
-    name: "monit",
+    name: "Monit",
     description: "Monitor server stats via ssh",
     url: "https://github.com/aayushbtw/monit",
   },
   {
-    name: "z",
+    name: "Z",
     description: "Encode & decode strings through CLI",
     url: "https://github.com/aayushbtw/z",
   },
   {
-    name: "tt",
+    name: "TT",
     description: "CLI based typing test",
     url: "https://github.com/aayushbtw/tt",
   },
   {
-    name: "time",
+    name: "Time",
     description: "Year progress bar with precision",
     url: "https://github.com/aayushbtw/time",
   },
@@ -25,12 +26,19 @@ const projects = [
 
 function ListProjects() {
   return (
-    <ul>
+    <ul className="group">
       {projects.map((item) => (
-        <li key={item.name}>
-          <Link href={item.url}>
-            <h6>{item.name}</h6>
-            <p>{item.description}</p>
+        <li
+          className="m-0! border-border border-t first:border-t-0"
+          key={item.name}
+        >
+          <Link
+            className="flex items-center gap-4 py-2.5 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+            href={item.url}
+          >
+            <span className="w-22">{item.name}</span>
+            <span className="flex-1 text-fg-3">{item.description}</span>
+            <IconArrowUpRight className="size-4 text-fg-3" />
           </Link>
         </li>
       ))}

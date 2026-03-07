@@ -12,6 +12,15 @@ const withMDX = createMDX({
       "remark-frontmatter",
       ["remark-mdx-frontmatter", { name: "metadata" }],
     ],
+    rehypePlugins: [
+      [
+        "rehype-pretty-code",
+        {
+          theme: "github-light",
+          keepBackground: false,
+        },
+      ],
+    ],
   },
 });
 

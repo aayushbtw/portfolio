@@ -3,14 +3,14 @@ import { notFound } from "next/navigation";
 import { type Frontmatter, getPosts } from "@/lib/blog";
 import { formatDate } from "@/lib/utils";
 
+export const dynamicParams = false;
+
 type Params = { slug: string };
 
 export async function generateStaticParams() {
   const posts = await getPosts();
   return posts.map((w) => ({ slug: w.slug }));
 }
-
-export const dynamicParams = false;
 
 async function importPost(slug: string) {
   try {
@@ -30,9 +30,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const mod = await importPost(slug);
+
   if (!mod) {
     return {};
   }
+
   return {
     title: mod.metadata.title,
     description: mod.metadata.description,

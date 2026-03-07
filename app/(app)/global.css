@@ -7,11 +7,10 @@
   --color-fg-1: var(--color-gray-950);
   --color-fg-2: var(--color-gray-800);
   --color-fg-3: var(--color-gray-500);
-  --color-border: var(--color-gray-300);
+  --color-border: var(--color-gray-200);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
-  --spacing-page-t: calc(var(--spacing) * 10);
-  --spacing-content-width: calc(var(--spacing) * 180);
+  --spacing-page-t: calc(var(--spacing) * 24);
 }
 
 @layer base {
@@ -21,6 +20,21 @@
 
   html {
     @apply motion-safe:scroll-smooth;
+  }
+
+  figure[data-rehype-pretty-code-figure] code {
+    counter-reset: line;
+  }
+
+  figure[data-rehype-pretty-code-figure] code > [data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply inline-block w-4 mr-4.5 text-right text-fg-3;
+  }
+
+  figure[data-rehype-pretty-code-figure] span[data-line] {
+    color: var(--shiki-light);
+    @apply px-4;
   }
 }
 
@@ -33,7 +47,11 @@
 }
 
 @utility link {
-  @apply underline-offset-3 underline decoration-2 decoration-brand/70 text-inherit;
+  @apply underline-offset-4 underline decoration-1 decoration-brand/70 text-inherit;
+}
+
+@utility codeblock {
+  @apply bg-bg-2 font-mono flex overflow-x-scroll px-0 border rounded-xl;
 }
 
 @utility lists {
