@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { getPosts } from "@/lib/blog";
+import { getAllPosts } from "@/lib/blog";
 
 async function ListPosts({ limit }: { limit?: number }) {
-  const posts = await getPosts(limit);
+  const posts = await getAllPosts(limit);
 
   const grouped = posts.map((post) => {
     const d = new Date(`${post.metadata.publishedAt.split("T")[0]}T00:00:00`);

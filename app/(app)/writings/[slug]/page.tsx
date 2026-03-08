@@ -1,26 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { type Frontmatter, getPosts } from "@/lib/blog";
+import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { formatDate } from "@/lib/utils";
-
-export const dynamicParams = false;
 
 type Params = { slug: string };
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const posts = await getAllPosts();
   return posts.map((w) => ({ slug: w.slug }));
-}
-
-async function importPost(slug: string) {
-  try {
-    return (await import(`@/posts/${slug}.mdx`)) as {
-      default: React.ComponentType;
-      metadata: Frontmatter;
-    };
-  } catch {
-    return null;
-  }
 }
 
 export async function generateMetadata({
@@ -29,15 +16,15 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const mod = await importPost(slug);
+  const post = await getPostBySlug(slug);
 
-  if (!mod) {
+  if (!post) {
     return {};
   }
 
   return {
-    title: mod.metadata.title,
-    description: mod.metadata.description,
+    title: post.metadata.title,
+    description: post.metadata.description,
   };
 }
 
@@ -47,13 +34,13 @@ export default async function WritingPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const mod = await importPost(slug);
+  const post = await getPostBySlug(slug);
 
-  if (!mod) {
+  if (!post) {
     notFound();
   }
 
-  const { default: Content, metadata } = mod;
+  const { default: Content, metadata } = post;
 
   return (
     <div>

@@ -13,21 +13,32 @@ export type Post = {
   metadata: Frontmatter;
 };
 
-const postsDir = path.join(process.cwd(), "posts");
+const postsDirectory = path.join(process.cwd(), "_posts");
 
-function getSlugs() {
+export function getPostSlugs() {
   return fs
-    .readdirSync(postsDir)
+    .readdirSync(postsDirectory)
     .filter((file) => path.extname(file) === ".mdx")
     .map((file) => path.basename(file, ".mdx"));
 }
 
-export async function getPosts(limit?: number): Promise<Post[]> {
-  const slugs = getSlugs();
+export async function getPostBySlug(slug: string) {
+  try {
+    return (await import(`@/_posts/${slug}.mdx`)) as {
+      default: React.ComponentType;
+      metadata: Frontmatter;
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getAllPosts(limit?: number): Promise<Post[]> {
+  const slugs = getPostSlugs();
 
   const posts = await Promise.all(
     slugs.map(async (slug) => {
-      const { metadata } = (await import(`@/posts/${slug}.mdx`)) as {
+      const { metadata } = (await import(`@/_posts/${slug}.mdx`)) as {
         metadata: Frontmatter;
       };
 
