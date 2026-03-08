@@ -27,8 +27,8 @@
   }
 
   figure[data-rehype-pretty-code-figure] code > [data-line]::before {
-    counter-increment: line;
     content: counter(line);
+    counter-increment: line;
     @apply inline-block w-4 mr-4.5 text-right text-fg-3;
   }
 

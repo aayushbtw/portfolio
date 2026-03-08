@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { config } from "@/lib/config";
-import { formatDate, generateMetadata as buildMetadata } from "@/lib/utils";
+import { generateMetadata as buildMetadata, formatDate } from "@/lib/utils";
 
 type Props = {
   params: Promise<{ slug: string }>;

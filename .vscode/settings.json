@@ -27,10 +27,7 @@
   "[mdx]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "tailwindCSS.classFunctions": [
-    "cva",
-    "cx"
-  ],
+  "tailwindCSS.classFunctions": ["cva", "cx"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
