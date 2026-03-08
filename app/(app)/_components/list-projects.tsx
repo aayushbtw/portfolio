@@ -5,22 +5,22 @@ const projects = [
   {
     name: "Monit",
     description: "Monitor server stats via ssh",
-    url: "https://github.com/aayushbtw/monit",
+    url: "https://github.com/aayushbtw/monit?utm_source=aayush.page",
   },
   {
     name: "Z",
     description: "Encode & decode strings through CLI",
-    url: "https://github.com/aayushbtw/z",
+    url: "https://github.com/aayushbtw/z?utm_source=aayush.page",
   },
   {
     name: "TT",
     description: "CLI based typing test",
-    url: "https://github.com/aayushbtw/tt",
+    url: "https://github.com/aayushbtw/tt?utm_source=aayush.page",
   },
   {
     name: "Time",
     description: "Year progress bar with precision",
-    url: "https://github.com/aayushbtw/time",
+    url: "https://github.com/aayushbtw/time?utm_source=aayush.page",
   },
 ];
 
