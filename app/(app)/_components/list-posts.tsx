@@ -5,11 +5,13 @@ async function ListPosts({ limit }: { limit?: number }) {
   const posts = await getAllPosts(limit);
 
   const grouped = posts.map((post) => {
-    const d = new Date(`${post.metadata.publishedAt.split("T")[0]}T00:00:00`);
+    const d = new Date(
+      `${post.frontmatter.publishedAt.split("T")[0]}T00:00:00`
+    );
     return {
       year: d.getFullYear(),
       slug: post.slug,
-      title: post.metadata.title,
+      title: post.frontmatter.title,
       date: `${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}`,
     };
   });

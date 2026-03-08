@@ -10,7 +10,7 @@ export type Frontmatter = {
 
 export type Post = {
   slug: string;
-  metadata: Frontmatter;
+  frontmatter: Frontmatter;
 };
 
 const postsDirectory = path.join(process.cwd(), "_posts");
@@ -26,7 +26,7 @@ export async function getPostBySlug(slug: string) {
   try {
     return (await import(`@/_posts/${slug}.mdx`)) as {
       default: React.ComponentType;
-      metadata: Frontmatter;
+      frontmatter: Frontmatter;
     };
   } catch {
     return null;
@@ -38,19 +38,19 @@ export async function getAllPosts(limit?: number): Promise<Post[]> {
 
   const posts = await Promise.all(
     slugs.map(async (slug) => {
-      const { metadata } = (await import(`@/_posts/${slug}.mdx`)) as {
-        metadata: Frontmatter;
+      const { frontmatter } = (await import(`@/_posts/${slug}.mdx`)) as {
+        frontmatter: Frontmatter;
       };
 
-      return { slug, metadata };
+      return { slug, frontmatter };
     })
   );
 
   return posts
     .sort(
       (a, b) =>
-        new Date(b.metadata.publishedAt).getTime() -
-        new Date(a.metadata.publishedAt).getTime()
+        new Date(b.frontmatter.publishedAt).getTime() -
+        new Date(a.frontmatter.publishedAt).getTime()
     )
     .slice(0, limit ?? posts.length);
 }

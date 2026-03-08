@@ -1,20 +1,16 @@
-import type { Metadata } from "next";
 import { Hanken_Grotesk as FontSans } from "next/font/google";
+import { defaultMetadata } from "@/app/_default-metadata";
 import "./global.css";
 import { Navbar } from "@/components/navbar";
 import { cn } from "@/lib/utils";
+
+export const metadata = { ...defaultMetadata };
 
 const fontSans = FontSans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
 });
-
-export const metadata: Metadata = {
-  title: "Aayush Agarwal",
-  description:
-    "I build things for the web. Crafting interfaces that feel natural to use with attention to clarity.",
-};
 
 const links = [
   { name: "Home", url: "/" },

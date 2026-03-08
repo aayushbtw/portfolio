@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { defaultMetadata, name } from "@/app/_default-metadata";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { formatDate } from "@/lib/utils";
 
-type Params = { slug: string };
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  return posts.map((w) => ({ slug: w.slug }));
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<Params>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -23,16 +17,24 @@ export async function generateMetadata({
   }
 
   return {
-    title: post.metadata.title,
-    description: post.metadata.description,
+    ...defaultMetadata,
+    title: post.frontmatter.title,
+    description: post.frontmatter.description,
+    openGraph: {
+      type: "article",
+      siteName: name,
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
+      locale: "en_US",
+      url: `/writings/${slug}`,
+      authors: name,
+      publishedTime: post.frontmatter.publishedAt,
+    },
+    alternates: { canonical: `/writings/${slug}` },
   };
 }
 
-export default async function WritingPage({
-  params,
-}: {
-  params: Promise<Params>;
-}) {
+export default async function WritingPage({ params }: Props) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -40,13 +42,13 @@ export default async function WritingPage({
     notFound();
   }
 
-  const { default: Content, metadata } = post;
+  const { default: Content, frontmatter } = post;
 
   return (
     <div>
-      <h1>{metadata.title}</h1>
+      <h1>{frontmatter.title}</h1>
       <time className="text-fg-3 text-sm">
-        {formatDate(metadata.publishedAt)}
+        {formatDate(frontmatter.publishedAt)}
       </time>
 
       <article>
@@ -54,4 +56,9 @@ export default async function WritingPage({
       </article>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((w) => ({ slug: w.slug }));
 }
