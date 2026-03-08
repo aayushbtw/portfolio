@@ -1,6 +1,4 @@
 /** biome-ignore-all lint/performance/noImgElement: og does not work with <Image/> */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { config } from "@/lib/config";
 
@@ -8,8 +6,7 @@ export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
 const siteUrl = config.url.replace("https://", "");
-const iconData = readFileSync(join(process.cwd(), "public/logo.png"), "base64");
-const iconSrc = `data:image/png;base64,${iconData}`;
+const iconSrc = new URL("/logo.png", config.url).toString();
 
 function Footer() {
   return (
