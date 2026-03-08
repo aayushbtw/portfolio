@@ -24,6 +24,9 @@
   "[graphql]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[mdx]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "tailwindCSS.classFunctions": ["cva", "cx"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,

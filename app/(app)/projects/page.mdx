@@ -1,7 +1,12 @@
-import { defaultMetadata } from "@/app/_default-metadata";
 import { ListProjects } from "../_components/list-projects";
+import { content } from "./_content";
+import { generateMetadata } from "@/lib/utils";
 
-export const metadata = { ...defaultMetadata, alternates: { canonical: "/projects" } };
+export const metadata = generateMetadata({
+    title: content.title,
+    description: content.description,
+    url: content.url
+})
 
 # Projects
 

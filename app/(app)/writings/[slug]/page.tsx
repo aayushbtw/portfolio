@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { defaultMetadata, name } from "@/app/_default-metadata";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
-import { formatDate } from "@/lib/utils";
+import { config } from "@/lib/config";
+import { formatDate, generateMetadata as buildMetadata } from "@/lib/utils";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -17,20 +17,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    ...defaultMetadata,
-    title: post.frontmatter.title,
-    description: post.frontmatter.description,
+    ...buildMetadata({
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
+      url: `/writings/${slug}`,
+    }),
     openGraph: {
       type: "article",
-      siteName: name,
+      siteName: config.name,
       title: post.frontmatter.title,
       description: post.frontmatter.description,
       locale: "en_US",
       url: `/writings/${slug}`,
-      authors: name,
+      authors: config.name,
       publishedTime: post.frontmatter.publishedAt,
     },
-    alternates: { canonical: `/writings/${slug}` },
   };
 }
 
