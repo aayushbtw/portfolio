@@ -32,7 +32,7 @@ export default function RootLayout({
           "mx-auto max-w-7xl px-4 pt-2 pb-8 sm:px-6 sm:pt-page-t"
         )}
       >
-        <div className="lg:grid lg:grid-cols-[1fr_minmax(0,2.5fr)_1fr] lg:gap-8">
+        <div className="lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8">
           <Navbar links={links} />
 
           <main

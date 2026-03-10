@@ -19,7 +19,9 @@
   }
 
   a[target="_blank"] {
-    cursor: url('/cursor-external.svg') 17 7, alias;
+    cursor:
+      url("/cursor-external.svg") 17 7,
+      alias;
   }
 
   html {
