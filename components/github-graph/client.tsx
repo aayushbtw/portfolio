@@ -61,7 +61,7 @@ function GithubCalendar({
 }
 
 function GithubCalendarFallback() {
-  return <div className="h-40" />;
+  return <div className="h-36.5 animate-pulse rounded-xl bg-bg-2" />;
 }
 
 export { GithubCalendar, GithubCalendarFallback };
