@@ -4,6 +4,8 @@ import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { config } from "@/lib/config";
 import { generateMetadata as buildMetadata, formatDate } from "@/lib/utils";
 
+export const dynamicParams = false;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
