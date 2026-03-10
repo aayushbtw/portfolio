@@ -39,7 +39,6 @@
   }
 
   figure[data-rehype-pretty-code-figure] span[data-line] {
-    color: var(--shiki-light);
     @apply px-4;
   }
 }
