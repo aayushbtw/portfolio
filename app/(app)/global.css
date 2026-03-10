@@ -18,6 +18,10 @@
     @apply border-border outline-border;
   }
 
+  a[target="_blank"] {
+    cursor: url('/cursor-external.svg') 17 7, alias;
+  }
+
   html {
     @apply motion-safe:scroll-smooth;
   }
