@@ -1,12 +1,13 @@
 import { unstable_cache } from "next/cache";
 import { Suspense } from "react";
 import type { Activity } from "@/components/kibo-ui/contribution-graph";
+import { config } from "@/lib/config";
 import { GithubCalendar, GithubCalendarFallback } from "./client";
 
 const getContributions = unstable_cache(
   async (): Promise<Activity[]> => {
     const res = await fetch(
-      "https://github-contributions-api.jogruber.de/v4/aayushbtw?y=last"
+      `https://github-contributions-api.jogruber.de/v4/${config.socials.github}?y=last`
     );
     const data = (await res.json()) as { contributions: Activity[] };
     return data.contributions;
