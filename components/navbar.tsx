@@ -8,11 +8,11 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-type NavLink = {
+interface NavLink {
+  external?: boolean;
   name: string;
   url: string;
-  external?: boolean;
-};
+}
 
 function Navbar({ links }: { links: NavLink[] }) {
   const pathname = usePathname();

@@ -4,9 +4,9 @@ import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { config } from "@/lib/config";
 import { generateMetadata as buildMetadata, formatDate } from "@/lib/utils";
 
-type Props = {
+interface Props {
   params: Promise<{ slug: string }>;
-};
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

@@ -1,17 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type Frontmatter = {
-  title: string;
-  publishedAt: string;
+export interface Frontmatter {
   description: string;
   image?: string;
-};
+  publishedAt: string;
+  title: string;
+}
 
-export type Post = {
-  slug: string;
+export interface Post {
   frontmatter: Frontmatter;
-};
+  slug: string;
+}
 
 const postsDirectory = path.join(process.cwd(), "_posts");
 
