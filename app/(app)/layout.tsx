@@ -1,4 +1,7 @@
-import { Hanken_Grotesk as FontSans } from "next/font/google";
+import {
+  JetBrains_Mono as FontMono,
+  Hanken_Grotesk as FontSans,
+} from "next/font/google";
 import "./global.css";
 import { Navbar } from "@/components/navbar";
 import { cn, generateMetadata } from "@/lib/utils";
@@ -9,6 +12,12 @@ const fontSans = FontSans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
+});
+
+const fontMono = FontMono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
 });
 
 const links = [
@@ -23,11 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={fontSans.className} lang="en">
+    <html className={cn(fontSans.variable, fontMono.variable)} lang="en">
       <body
         className={cn(
-          fontSans.variable,
-          "font-normal text-base text-fg-3 antialiased",
+          "font-normal font-sans text-base text-fg-3 antialiased",
           "bg-bg-1 selection:bg-brand/20",
           "mx-auto max-w-7xl px-4 pt-2 pb-8 sm:px-6 sm:pt-page-t"
         )}
