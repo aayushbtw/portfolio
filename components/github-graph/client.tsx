@@ -1,5 +1,6 @@
 "use client";
 
+import { format, parseISO } from "date-fns";
 import { use } from "react";
 import type { Activity } from "@/components/kibo-ui/contribution-graph";
 import {
@@ -10,6 +11,7 @@ import {
   ContributionGraphTotalCount,
 } from "@/components/kibo-ui/contribution-graph";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 function GithubCalendar({
   contributions,
@@ -25,23 +27,31 @@ function GithubCalendar({
       blockSize={12}
       data={data}
     >
-      <ContributionGraphCalendar
-        className="no-scrollbar"
-        title="GitHub Contributions"
-      >
+      <ContributionGraphCalendar className="no-scrollbar">
         {({ activity, dayIndex, weekIndex }) => (
-          <ContributionGraphBlock
-            activity={activity}
-            className={cn(
-              'data-[level="0"]:fill-[#ebedf0]',
-              'data-[level="1"]:fill-[#9be9a8]',
-              'data-[level="2"]:fill-[#40c463]',
-              'data-[level="3"]:fill-[#30a14e]',
-              'data-[level="4"]:fill-[#216e39]'
-            )}
-            dayIndex={dayIndex}
-            weekIndex={weekIndex}
-          />
+          <Tooltip>
+            <TooltipTrigger
+              delay={10}
+              render={
+                <ContributionGraphBlock
+                  activity={activity}
+                  className={cn(
+                    'data-[level="0"]:fill-[#ebedf0]',
+                    'data-[level="1"]:fill-[#9be9a8]',
+                    'data-[level="2"]:fill-[#40c463]',
+                    'data-[level="3"]:fill-[#30a14e]',
+                    'data-[level="4"]:fill-[#216e39]'
+                  )}
+                  dayIndex={dayIndex}
+                  weekIndex={weekIndex}
+                />
+              }
+            />
+            <TooltipContent>
+              {activity.count > 1 ? activity.count : "No"} contributions on{" "}
+              {format(parseISO(activity.date), "do MMMM")}
+            </TooltipContent>
+          </Tooltip>
         )}
       </ContributionGraphCalendar>
 

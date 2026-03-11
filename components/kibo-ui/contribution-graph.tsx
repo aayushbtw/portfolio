@@ -382,12 +382,12 @@ export const ContributionGraphCalendar = ({
       {...props}
     >
       <svg
+        aria-hidden="true"
         className="block overflow-visible"
         height={height}
         viewBox={`0 0 ${width} ${height}`}
         width={width}
       >
-        <title>Contribution Graph</title>
         {!hideMonthLabels && (
           <g className="fill-current">
             {monthLabels.map(({ label, weekIndex }) => (
@@ -492,8 +492,7 @@ export const ContributionGraphLegend = ({
           <Fragment key={level}>{children({ level })}</Fragment>
         ) : (
           // biome-ignore lint/suspicious/noArrayIndexKey: legend level order is stable
-          <svg height={blockSize} key={level} width={blockSize}>
-            <title>{`${level} contributions`}</title>
+          <svg aria-hidden="true" height={blockSize} key={level} width={blockSize}>
             <rect
               className={cn(
                 "stroke-[1px] stroke-border",
