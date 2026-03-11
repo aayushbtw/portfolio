@@ -43,12 +43,13 @@
   }
 }
 
-@utility heading {
+@utility headings {
   @apply font-medium text-base text-fg-1;
+  @apply data-title:font-normal data-title:text-fg-3 data-title:text-xs data-title:uppercase data-title:tracking-widest;
 }
 
 @utility paragraph {
-  @apply text-base/normal text-fg-3 max-w-10/12 font-normal;
+  @apply text-base/normal text-fg-3 max-w-11/12 font-normal;
 }
 
 @utility link {

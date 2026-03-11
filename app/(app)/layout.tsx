@@ -19,7 +19,7 @@ export default function AppLayout({
       <main
         className={cn(
           "prose min-w-0 max-w-full",
-          "prose-headings:heading",
+          "prose-headings:headings",
           "prose-p:paragraph",
           "prose-a:link",
           "prose-ul:lists",
