@@ -16,7 +16,7 @@ export default function AppLayout({
     <div className="mx-auto max-w-7xl px-4 pt-2 pb-8 sm:px-6 sm:pt-page-t lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8">
       <Navbar links={links} />
 
-      <main
+      <div
         className={cn(
           "prose min-w-0 max-w-full",
           "prose-headings:headings",
@@ -26,8 +26,8 @@ export default function AppLayout({
           "prose-pre:codeblock prose-figure:bg-bg-2"
         )}
       >
-        {children}
-      </main>
+        <main>{children}</main>
+      </div>
 
       <div />
     </div>
