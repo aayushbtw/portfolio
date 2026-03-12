@@ -2,6 +2,7 @@ import type { Activity } from "@/components/kibo-ui/contribution-graph";
 import { config } from "@/lib/config";
 
 const USERNAME = config.socials.github;
+const BASE = "https://octo.aayush.page";
 
 export interface ContributionsResponse {
   contributions: Activity[];
@@ -18,34 +19,16 @@ export interface PinnedRepo {
   url: string;
 }
 
-export type OctoResponse<T> = { data: T; ok: true } | { data: null; ok: false };
-
-const OCTO_BASE_URL = process.env.OCTO_API_URL ?? "https://octo.aayush.page";
-
-async function request<T>(path: string): Promise<OctoResponse<T>> {
-  try {
-    const res = await fetch(`${OCTO_BASE_URL}${path}`);
-
-    if (!res.ok) {
-      console.error({
-        source: "octo",
-        path,
-        status: res.status,
-        statusText: res.statusText,
-      });
-      return { data: null, ok: false };
-    }
-
-    return { data: (await res.json()) as T, ok: true };
-  } catch (error) {
-    console.error({ source: "octo", path, error: String(error) });
-    return { data: null, ok: false };
+export const fetcher = async <T>(url: string): Promise<T> => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`octo: ${url} responded with ${res.status}`);
   }
-}
+  return res.json() as Promise<T>;
+};
 
 export const octo = {
   contributions: (year: number) =>
-    request<ContributionsResponse>(`/contributions/${USERNAME}?y=${year}`),
-
-  pinned: () => request<PinnedRepo[]>(`/pinned/${USERNAME}`),
+    `${BASE}/contributions/${USERNAME}?y=${year}`,
+  pinned: `${BASE}/pinned/${USERNAME}`,
 };

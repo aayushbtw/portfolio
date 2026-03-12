@@ -2,24 +2,28 @@
 
 import { IconArrowUpRight } from "@tabler/icons-react";
 import Link from "next/link";
-import { use } from "react";
+import useSWR from "swr";
 import { config } from "@/lib/config";
-import type { OctoResponse, PinnedRepo } from "@/lib/octo";
+import { type PinnedRepo, fetcher, octo } from "@/lib/octo";
 
-function ListProjectsClient({
-  projects,
-}: {
-  projects: Promise<OctoResponse<PinnedRepo[]>>;
-}) {
-  const result = use(projects);
+function ListProjects() {
+  const { data, error, isLoading } = useSWR(
+    octo.pinned,
+    fetcher<PinnedRepo[]>,
+    { revalidateOnFocus: false, dedupingInterval: 86_400_000 }
+  );
 
-  if (!result.ok) {
+  if (isLoading) {
+    return <ListProjectsFallback />;
+  }
+
+  if (error || !data) {
     return <ListProjectsError />;
   }
 
   return (
     <ul className="group">
-      {result.data.map((item) => (
+      {data.map((item) => (
         <li
           className="m-0! border-border border-t first:border-t-0"
           key={item.repo}
@@ -68,4 +72,4 @@ function ListProjectsError() {
   );
 }
 
-export { ListProjectsClient, ListProjectsFallback };
+export { ListProjects };
