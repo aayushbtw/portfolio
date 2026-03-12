@@ -26,10 +26,10 @@ export function generateMetadata({
   url?: string;
 }) {
   return {
-    metadataBase: new URL(config.url),
+    metadataBase: new URL(config.domain),
     title,
     description,
-    authors: [{ name: config.name, url: config.url }],
+    authors: [{ name: config.name, url: config.domain }],
     keywords: [
       "Aayush Agarwal",
       "Fullstack engineer",

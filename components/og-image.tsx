@@ -5,8 +5,8 @@ import { config } from "@/lib/config";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
-const siteUrl = config.url.replace("https://", "");
-const iconSrc = new URL("/logo.png", config.url).toString();
+const siteUrl = config.domain.replace("https://", "");
+const iconSrc = new URL("/logo.png", config.domain).toString();
 
 function Footer() {
   return (

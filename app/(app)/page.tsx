@@ -2,6 +2,7 @@ import Link from "next/link";
 import { GithubGraph } from "@/components/github-graph";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
+import { config } from "@/lib/config";
 import { generateMetadata } from "@/lib/utils";
 import { content } from "./_content";
 
@@ -18,7 +19,7 @@ export default function HomePage() {
       <p>
         {content.description} Full-stack engineer at{" "}
         <Link
-          href="https://www.netision.com/?utm_source=aayush.page"
+          href={`https://www.netision.com/?utm_source=${config.domain}`}
           rel="noopener"
           target="_blank"
         >
