@@ -6,7 +6,12 @@ import { GithubGraphClient, GithubGraphClientFallback } from "./client";
 const lastYear = new Date().getFullYear() - 1;
 
 const getContributions = unstable_cache(
-  () => octo.contributions(lastYear),
+  async () => {
+    console.log({ trace: "octo-debug", source: "github-graph", event: "cache-miss", year: lastYear });
+    const result = await octo.contributions(lastYear);
+    console.log({ trace: "octo-debug", source: "github-graph", event: "result", ok: result.ok, hasData: result.ok && !!result.data });
+    return result;
+  },
   ["github-contributions"],
   { revalidate: 86_400 }
 );

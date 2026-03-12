@@ -23,9 +23,19 @@ export type OctoResponse<T> = { data: T; ok: true } | { data: null; ok: false };
 
 function fetchPath(path: string): Promise<Response> {
   if (process.env.OCTO_API_URL) {
-    return fetch(`${process.env.OCTO_API_URL}${path}`);
+    const url = `${process.env.OCTO_API_URL}${path}`;
+    console.log({ trace: "octo-debug", source: "octo", method: "fetch", mode: "url", url });
+    return fetch(url);
   }
   const { env } = getCloudflareContext();
+  console.log({
+    trace: "octo-debug",
+    source: "octo",
+    method: "fetch",
+    mode: "service-binding",
+    path,
+    hasBinding: !!env.OCTO,
+  });
   return env.OCTO.fetch(new Request(`https://octo${path}`));
 }
 
@@ -33,19 +43,31 @@ async function request<T>(path: string): Promise<OctoResponse<T>> {
   try {
     const res = await fetchPath(path);
 
+    console.log({
+      trace: "octo-debug",
+      source: "octo",
+      path,
+      status: res.status,
+      statusText: res.statusText,
+      headers: Object.fromEntries(res.headers.entries()),
+    });
+
     if (!res.ok) {
+      const body = await res.text();
       console.error({
+        trace: "octo-debug",
         source: "octo",
         path,
         status: res.status,
         statusText: res.statusText,
+        body,
       });
       return { data: null, ok: false };
     }
 
     return { data: (await res.json()) as T, ok: true };
   } catch (error) {
-    console.error({ source: "octo", path, error: String(error) });
+    console.error({ trace: "octo-debug", source: "octo", path, error: String(error) });
     return { data: null, ok: false };
   }
 }

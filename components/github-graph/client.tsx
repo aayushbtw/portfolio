@@ -20,6 +20,7 @@ function GithubGraphClient({
   contributions: Promise<OctoResponse<ContributionsResponse>>;
 }) {
   const result = use(contributions);
+  console.log({ trace: "octo-debug", source: "github-graph-client", ok: result.ok, hasData: result.ok && !!result.data });
 
   if (!result.ok) {
     return <GithubGraphClientError />;
