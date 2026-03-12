@@ -12,7 +12,8 @@
     "enabled": true
   },
   "vars": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "OCTO_API_URL": "https://octo.aayush.page"
   },
   "workers_dev": false,
   "preview_urls": false,

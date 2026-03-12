@@ -1,0 +1,71 @@
+"use client";
+
+import { IconArrowUpRight } from "@tabler/icons-react";
+import Link from "next/link";
+import { use } from "react";
+import { config } from "@/lib/config";
+import type { OctoResponse, PinnedRepo } from "@/lib/octo";
+
+function ListProjectsClient({
+  projects,
+}: {
+  projects: Promise<OctoResponse<PinnedRepo[]>>;
+}) {
+  const result = use(projects);
+
+  if (!result.ok) {
+    return <ListProjectsError />;
+  }
+
+  return (
+    <ul className="group">
+      {result.data.map((item) => (
+        <li
+          className="m-0! border-border border-t first:border-t-0"
+          key={item.repo}
+        >
+          <Link
+            className="flex items-center gap-4 py-2.5 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+            href={`${item.url}?utm_source=${config.domain}`}
+            rel="noopener"
+            target="_blank"
+          >
+            <span className="w-22">{item.repo}</span>
+            <span className="flex-1 text-fg-3">{item.description}</span>
+            <IconArrowUpRight className="size-4 text-fg-3" />
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ListProjectsFallback() {
+  return (
+    <ul>
+      {["a", "b", "c", "d", "e"].map((id) => (
+        <li className="m-0! border-border border-t first:border-t-0" key={id}>
+          <div className="flex items-center gap-4 py-2.5">
+            <span className="h-5 w-22 animate-pulse rounded bg-bg-2" />
+            <span className="h-5 flex-1 animate-pulse rounded bg-bg-2" />
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ListProjectsError() {
+  return (
+    <div className="relative">
+      <div className="pointer-events-none select-none blur-xs">
+        <ListProjectsFallback />
+      </div>
+      <p className="absolute inset-0 flex items-center justify-center text-fg-3 text-sm">
+        Failed to load projects.
+      </p>
+    </div>
+  );
+}
+
+export { ListProjectsClient, ListProjectsFallback };

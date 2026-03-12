@@ -1,29 +1,23 @@
 import { unstable_cache } from "next/cache";
 import { Suspense } from "react";
-import type { Activity } from "@/components/kibo-ui/contribution-graph";
-import { config } from "@/lib/config";
-import { GithubCalendar, GithubCalendarFallback } from "./client";
+import { octo } from "@/lib/octo";
+import { GithubGraphClient, GithubGraphClientFallback } from "./client";
 
 const lastYear = new Date().getFullYear() - 1;
 
 const getContributions = unstable_cache(
-  async (): Promise<Activity[]> => {
-    const res = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${config.socials.github}?y=${lastYear}`
-    );
-    const data = (await res.json()) as { contributions: Activity[] };
-    return data.contributions;
-  },
+  () => octo.contributions(lastYear),
   ["github-contributions"],
   { revalidate: 86_400 }
 );
 
 function GithubGraph() {
   const contributions = getContributions();
+
   return (
     <div className="mt-[1.6em]">
-      <Suspense fallback={<GithubCalendarFallback />}>
-        <GithubCalendar contributions={contributions} />
+      <Suspense fallback={<GithubGraphClientFallback />}>
+        <GithubGraphClient contributions={contributions} />
       </Suspense>
     </div>
   );
