@@ -4,10 +4,12 @@ import type { Activity } from "@/components/kibo-ui/contribution-graph";
 import { config } from "@/lib/config";
 import { GithubCalendar, GithubCalendarFallback } from "./client";
 
+const lastYear = new Date().getFullYear() - 1;
+
 const getContributions = unstable_cache(
   async (): Promise<Activity[]> => {
     const res = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${config.socials.github}?y=last`
+      `https://github-contributions-api.jogruber.de/v4/${config.socials.github}?y=${lastYear}`
     );
     const data = (await res.json()) as { contributions: Activity[] };
     return data.contributions;
