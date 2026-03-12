@@ -12,7 +12,6 @@ function ListProjectsClient({
   projects: Promise<OctoResponse<PinnedRepo[]>>;
 }) {
   const result = use(projects);
-  console.log({ trace: "octo-debug", source: "list-projects-client", ok: result.ok, hasData: result.ok && !!result.data });
 
   if (!result.ok) {
     return <ListProjectsError />;

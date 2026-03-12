@@ -1,4 +1,3 @@
-// import { getCloudflareContext } from "@opennextjs/cloudflare";
 import type { Activity } from "@/components/kibo-ui/contribution-graph";
 import { config } from "@/lib/config";
 
@@ -21,41 +20,25 @@ export interface PinnedRepo {
 
 export type OctoResponse<T> = { data: T; ok: true } | { data: null; ok: false };
 
-function fetchPath(path: string): Promise<Response> {
-  const url = `https://octo.aayush.page${path}`;
-  console.log({ trace: "octo-debug", source: "octo", method: "fetch", url });
-  return fetch(url);
-}
+const OCTO_BASE_URL = process.env.OCTO_API_URL ?? "https://octo.aayush.page";
 
 async function request<T>(path: string): Promise<OctoResponse<T>> {
   try {
-    const res = await fetchPath(path);
-
-    console.log({
-      trace: "octo-debug",
-      source: "octo",
-      path,
-      status: res.status,
-      statusText: res.statusText,
-      headers: Object.fromEntries(res.headers.entries()),
-    });
+    const res = await fetch(`${OCTO_BASE_URL}${path}`);
 
     if (!res.ok) {
-      const body = await res.text();
       console.error({
-        trace: "octo-debug",
         source: "octo",
         path,
         status: res.status,
         statusText: res.statusText,
-        body,
       });
       return { data: null, ok: false };
     }
 
     return { data: (await res.json()) as T, ok: true };
   } catch (error) {
-    console.error({ trace: "octo-debug", source: "octo", path, error: String(error) });
+    console.error({ source: "octo", path, error: String(error) });
     return { data: null, ok: false };
   }
 }

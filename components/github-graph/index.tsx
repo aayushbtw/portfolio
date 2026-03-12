@@ -1,22 +1,15 @@
-// import { unstable_cache } from "next/cache";
+import { unstable_cache } from "next/cache";
 import { Suspense } from "react";
 import { octo } from "@/lib/octo";
 import { GithubGraphClient, GithubGraphClientFallback } from "./client";
 
 const lastYear = new Date().getFullYear() - 1;
 
-// TODO: restore unstable_cache after debugging
-// const getContributions = unstable_cache(
-//   async () => {
-//     console.log({ trace: "octo-debug", source: "github-graph", event: "cache-miss", year: lastYear });
-//     const result = await octo.contributions(lastYear);
-//     console.log({ trace: "octo-debug", source: "github-graph", event: "result", ok: result.ok, hasData: result.ok && !!result.data });
-//     return result;
-//   },
-//   ["github-contributions"],
-//   { revalidate: 86_400 }
-// );
-const getContributions = () => octo.contributions(lastYear);
+const getContributions = unstable_cache(
+  () => octo.contributions(lastYear),
+  ["github-contributions"],
+  { revalidate: 86_400 }
+);
 
 function GithubGraph() {
   const contributions = getContributions();
