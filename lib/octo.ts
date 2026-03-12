@@ -1,8 +1,11 @@
 import type { Activity } from "@/components/kibo-ui/contribution-graph";
 import { config } from "@/lib/config";
 
-const BASE_URL = process.env.OCTO_API_URL ?? "http://localhost:8787";
 const USERNAME = config.socials.github;
+
+function getBaseUrl() {
+  return process.env.OCTO_API_URL ?? "http://localhost:8787";
+}
 
 export interface ContributionsResponse {
   contributions: Activity[];
@@ -23,7 +26,7 @@ export type OctoResponse<T> = { data: T; ok: true } | { data: null; ok: false };
 
 async function request<T>(path: string): Promise<OctoResponse<T>> {
   try {
-    const res = await fetch(`${BASE_URL}${path}`);
+    const res = await fetch(`${getBaseUrl()}${path}`);
 
     if (!res.ok) {
       console.error({
