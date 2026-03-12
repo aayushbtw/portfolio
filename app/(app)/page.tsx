@@ -6,6 +6,8 @@ import { config } from "@/lib/config";
 import { generateMetadata } from "@/lib/utils";
 import { content } from "./_content";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = generateMetadata({
   title: content.title,
   description: content.description,
