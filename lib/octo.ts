@@ -26,13 +26,18 @@ async function request<T>(path: string): Promise<OctoResponse<T>> {
     const res = await fetch(`${BASE_URL}${path}`);
 
     if (!res.ok) {
-      console.error(`octo: ${res.status} ${res.statusText} for ${path}`);
+      console.error({
+        source: "octo",
+        path,
+        status: res.status,
+        statusText: res.statusText,
+      });
       return { data: null, ok: false };
     }
 
     return { data: (await res.json()) as T, ok: true };
   } catch (error) {
-    console.error(`octo: failed to fetch ${path}`, error);
+    console.error({ source: "octo", path, error: String(error) });
     return { data: null, ok: false };
   }
 }
