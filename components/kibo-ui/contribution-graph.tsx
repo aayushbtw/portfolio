@@ -492,7 +492,12 @@ export const ContributionGraphLegend = ({
           <Fragment key={level}>{children({ level })}</Fragment>
         ) : (
           // biome-ignore lint/suspicious/noArrayIndexKey: legend level order is stable
-          <svg aria-hidden="true" height={blockSize} key={level} width={blockSize}>
+          <svg
+            aria-hidden="true"
+            height={blockSize}
+            key={level}
+            width={blockSize}
+          >
             <rect
               className={cn(
                 "stroke-[1px] stroke-border",
