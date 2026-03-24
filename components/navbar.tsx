@@ -18,7 +18,7 @@ function Navbar({ links }: { links: NavLink[] }) {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="py-6 lg:py-0">
       <NavigationMenuList>
         {links.map((item) => {
           const isActive =

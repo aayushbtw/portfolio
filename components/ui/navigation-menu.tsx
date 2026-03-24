@@ -5,12 +5,7 @@ import type { ComponentPropsWithoutRef, HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 function NavigationMenu({ className, ...props }: HTMLAttributes<HTMLElement>) {
-  return (
-    <nav
-      className={cn("sticky top-page-t z-10 min-w-20 self-start", className)}
-      {...props}
-    />
-  );
+  return <nav className={cn("sticky z-10 min-w-20", className)} {...props} />;
 }
 
 function NavigationMenuList({
@@ -20,7 +15,7 @@ function NavigationMenuList({
   return (
     <ul
       className={cn(
-        "relative flex select-none flex-row justify-end gap-x-4 gap-y-1 pb-page-t lg:flex-col lg:justify-start lg:pb-0",
+        "relative flex select-none flex-row justify-end gap-x-4 gap-y-1 lg:flex-col lg:justify-start lg:pb-0",
         className
       )}
       style={{ scrollTargetGroup: "auto" } as React.CSSProperties}

@@ -13,7 +13,12 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-2 pb-8 sm:px-6 sm:pt-page-t lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8">
+    <div
+      className={cn(
+        "mx-auto max-w-[772px] px-4 pt-0 pb-8 sm:px-6",
+        "lg:grid lg:max-w-7xl lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8 lg:pt-page-t"
+      )}
+    >
       <Navbar links={links} />
 
       <div
