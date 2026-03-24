@@ -1,10 +1,10 @@
 "use client";
 
-import { IconArrowUpRight } from "@tabler/icons-react";
+import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
 import Link from "next/link";
 import useSWR from "swr";
 import { config } from "@/lib/config";
-import { type PinnedRepo, fetcher, octo } from "@/lib/octo";
+import { fetcher, octo, type PinnedRepo } from "@/lib/octo";
 
 function ListProjects() {
   const { data, error, isLoading } = useSWR(
@@ -35,8 +35,14 @@ function ListProjects() {
             target="_blank"
           >
             <span className="w-22">{item.repo}</span>
-            <span className="flex-1 text-fg-3">{item.description}</span>
-            <IconArrowUpRight className="size-4 text-fg-3" />
+            <span className="max-w-130 flex-1 overflow-hidden text-fg-3">
+              {item.description}
+            </span>
+            <span className="ml-auto inline-flex items-center gap-1 text-fg-3/50 tabular-nums [&_svg]:size-2.5">
+              <IconStarFilled />
+              {item.stars}
+            </span>
+            <IconArrowUpRight className="size-4 text-fg-3/50" />
           </Link>
         </li>
       ))}
