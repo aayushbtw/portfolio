@@ -1,6 +1,6 @@
 # Portfolio
 
-A minimalist portfolio with [Next.js](https://nextjs.org).
+A minimalist portfolio built with [TanStack Start](https://tanstack.com/start).
 
 Inspired by 
 - [bykahlil.com](https://www.bykahlil.com)

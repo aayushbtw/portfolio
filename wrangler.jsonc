@@ -1,25 +1,12 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
-  "compatibility_date": "2025-12-19",
+  "compatibility_date": "2026-03-24",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "observability": {
-    "enabled": true
-  },
-  "vars": {
-    "NODE_ENV": "production"
-  },
+  "main": "@tanstack/react-start/server-entry",
+  "observability": { "enabled": true },
+  "vars": { "NODE_ENV": "production" },
   "workers_dev": false,
   "preview_urls": false,
-  "routes": [
-    {
-      "pattern": "aayush.page",
-      "custom_domain": true
-    }
-  ]
+  "routes": [{ "pattern": "aayush.page", "custom_domain": true }]
 }
