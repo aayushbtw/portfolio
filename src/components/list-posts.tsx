@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import type { Post } from "@/lib/blog";
+import type { Post } from "content-collections";
 
 function ListPosts({ posts }: { posts: Post[] }) {
   const grouped = posts.map((post) => {
