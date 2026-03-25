@@ -4,7 +4,7 @@ import { renderMarkdown } from "./src/lib/markdown";
 
 const posts = defineCollection({
   name: "posts",
-  directory: "./_posts",
+  directory: "./writings",
   include: "*.md",
   schema: z.object({
     title: z.string(),
