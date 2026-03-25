@@ -37,11 +37,11 @@ function WritingPage() {
   const post = Route.useLoaderData();
 
   return (
-    <div>
-      <h1>{post.title}</h1>
+    <section>
+      <h1 className="mb-[0.1em]">{post.title}</h1>
       <time className="text-fg-3 text-sm">{formatDate(post.publishedAt)}</time>
       {/* biome-ignore lint/security/noDangerouslySetInnerHtml: trusted markdown output */}
       <article dangerouslySetInnerHTML={{ __html: post.html }} />
-    </div>
+    </section>
   );
 }

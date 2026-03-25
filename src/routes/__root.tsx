@@ -6,7 +6,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { config } from "@/lib/config";
-import appCss from "../global.css?url";
+import appCss from "../styles/global.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -54,7 +54,7 @@ function RootLayout() {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-bg-1 font-normal font-sans text-base text-fg-3 antialiased selection:bg-brand/20">
+      <body>
         <Outlet />
         <Scripts />
       </body>

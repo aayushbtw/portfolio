@@ -18,19 +18,19 @@ function ListPosts({ posts }: { posts: Post[] }) {
         const showYear = i === 0 || grouped[i - 1].year !== post.year;
         return (
           <li
-            className="m-0! border-border border-t first:border-t-0"
+            className="border-border border-t first:border-t-0"
             key={post.slug}
           >
             <Link
-              className="flex items-center gap-4 py-2.5 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+              className="flex items-center gap-4 py-[0.5em] text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
               params={{ slug: post.slug }}
               to="/writings/$slug"
             >
-              <span className="w-12 text-fg-3 tabular-nums">
+              <span className="w-12 tabular-nums">
                 {showYear ? post.year : ""}
               </span>
-              <span className="flex-1">{post.title}</span>
-              <time className="text-fg-3 tabular-nums">{post.date}</time>
+              <span className="flex-1 text-fg-1">{post.title}</span>
+              <time className="tabular-nums">{post.date}</time>
             </Link>
           </li>
         );

@@ -33,26 +33,35 @@ function HomePage() {
 
   return (
     <>
-      <h1>{config.name}</h1>
-      <p>
-        {config.description} Full-stack engineer at{" "}
-        <a
-          href={`https://www.netision.com/?utm_source=${config.domain}`}
-          rel="noopener"
-          target="_blank"
-        >
-          Netision
-        </a>
-        .
-      </p>
+      <section>
+        <h1>{config.name}</h1>
+        <p>
+          {config.description} Full-stack engineer at{" "}
+          <a
+            data-underline
+            href={`https://www.netision.com/?utm_source=${config.domain}`}
+            rel="noopener"
+            target="_blank"
+          >
+            Netision
+          </a>
+          .
+        </p>
+      </section>
 
-      <GithubGraph data={contributions} />
+      <section>
+        <GithubGraph data={contributions} />
+      </section>
 
-      <h2 data-title>Projects</h2>
-      <ListProjects projects={projects} />
+      <section>
+        <h2 data-subheading>Projects</h2>
+        <ListProjects projects={projects} />
+      </section>
 
-      <h2 data-title>Writings</h2>
-      <ListPosts posts={posts} />
+      <section>
+        <h2 data-subheading>Writings</h2>
+        <ListPosts posts={posts} />
+      </section>
     </>
   );
 }

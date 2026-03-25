@@ -21,9 +21,9 @@ function WritingsPage() {
   const { posts } = Route.useLoaderData();
 
   return (
-    <>
-      <h1 data-title>{title}</h1>
+    <section>
+      <h1 data-subheading>{title}</h1>
       <ListPosts posts={posts} />
-    </>
+    </section>
   );
 }

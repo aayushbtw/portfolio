@@ -22,17 +22,7 @@ function AppLayout() {
     >
       <Navbar links={links} />
 
-      <div
-        className={cn(
-          "prose min-w-0 max-w-full",
-          "prose-headings:headings",
-          "prose-p:paragraph",
-          "prose-a:link",
-          "prose-ul:lists",
-          "prose-pre:codeblock prose-figure:my-[1em] prose-figure:bg-bg-2",
-          "prose-blockquote:my-[1em]"
-        )}
-      >
+      <div className="content min-w-0 max-w-full">
         <main>
           <Outlet />
         </main>

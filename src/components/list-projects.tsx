@@ -6,18 +6,15 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
   return (
     <ul className="group">
       {projects.map((item) => (
-        <li
-          className="m-0! border-border border-t first:border-t-0"
-          key={item.repo}
-        >
+        <li className="border-border border-t first:border-t-0" key={item.repo}>
           <a
-            className="flex items-center gap-4 py-2.5 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+            className="flex items-center gap-4 py-[0.5em] text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
             href={`${item.url}?utm_source=${config.domain}`}
             rel="noopener"
             target="_blank"
           >
-            <span className="w-22">{item.repo}</span>
-            <span className="max-w-130 flex-1 overflow-hidden text-fg-3">
+            <span className="w-22 text-fg-1">{item.repo}</span>
+            <span className="max-w-130 flex-1 overflow-hidden">
               {item.description}
             </span>
             <span className="ml-auto inline-flex items-center gap-1 text-fg-3/50 tabular-nums [&_svg]:size-2.5">
