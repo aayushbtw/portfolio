@@ -23,7 +23,8 @@ function ListPosts({ posts }: { posts: Post[] }) {
           >
             <Link
               className="flex items-center gap-4 py-2.5 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
-              to={`/writings/${post.slug}`}
+              params={{ slug: post.slug }}
+              to="/writings/$slug"
             >
               <span className="w-12 text-fg-3 tabular-nums">
                 {showYear ? post.year : ""}
