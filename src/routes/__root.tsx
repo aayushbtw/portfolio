@@ -1,4 +1,3 @@
-import { TanStackDevtools } from "@tanstack/react-devtools";
 import {
   createRootRoute,
   HeadContent,
@@ -57,11 +56,6 @@ function RootLayout() {
       </head>
       <body className="bg-bg-1 font-normal font-sans text-base text-fg-3 antialiased selection:bg-brand/20">
         <Outlet />
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-        />
         <Scripts />
       </body>
     </html>
