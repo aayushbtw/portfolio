@@ -29,7 +29,8 @@ function AppLayout() {
           "prose-p:paragraph",
           "prose-a:link",
           "prose-ul:lists",
-          "prose-pre:codeblock prose-figure:bg-bg-2"
+          "prose-pre:codeblock prose-figure:my-[1em] prose-figure:bg-bg-2",
+          "prose-blockquote:my-[1em]"
         )}
       >
         <main>
