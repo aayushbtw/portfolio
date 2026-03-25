@@ -48,10 +48,10 @@ function HomePage() {
 
       <GithubGraph data={contributions} />
 
-      <h3 data-title>Projects</h3>
+      <h2 data-title>Projects</h2>
       <ListProjects projects={projects} />
 
-      <h3 data-title>Writings</h3>
+      <h2 data-title>Writings</h2>
       <ListPosts posts={posts} />
     </>
   );
