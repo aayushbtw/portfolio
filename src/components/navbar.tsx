@@ -37,14 +37,9 @@ function SideNavbar({ className }: { className?: string }) {
 
 function FloatingNavbar({ className }: { className?: string }) {
   return (
-    <nav
-      className={cn(
-        "inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)]",
-        className
-      )}
-    >
-      <div className="flex justify-center px-4 pb-3">
-        <div className="flex items-center gap-1 rounded-full border border-border/50 bg-bg-1/50 px-2 py-1.5 shadow-sm backdrop-blur-xs">
+    <nav className={cn("inset-x-0 bottom-0 z-50 py-floating-nav-p", className)}>
+      <div className="flex justify-center px-4">
+        <div className="flex h-floating-nav-h items-center gap-1 rounded-full border border-border/50 bg-bg-1/50 px-2 py-1.5 shadow-sm backdrop-blur-xs">
           {links.map((item) => (
             <Link
               className="group relative rounded-full px-4 py-1.5 font-medium text-fg-3 text-sm transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1"

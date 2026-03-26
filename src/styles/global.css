@@ -18,6 +18,11 @@
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
   --spacing-page-t: calc(var(--spacing) * 24);
+  --spacing-floating-nav-h: calc(var(--spacing) * 14);
+  --spacing-floating-nav-p: calc(var(--spacing) * 2);
+  --spacing-floating-nav-inset: calc(
+    var(--spacing-floating-nav-h) + var(--spacing-floating-nav-p) * 2
+  );
 }
 
 @layer base {
