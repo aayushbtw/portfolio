@@ -1,7 +1,7 @@
 @layer base {
   section,
   article {
-    @apply my-[1.5em] balance-spacing;
+    @apply my-6 balance-spacing;
   }
 
   h1,
@@ -10,15 +10,15 @@
   h4,
   h5,
   h6 {
-    @apply font-medium text-fg-1 my-[1em] balance-spacing;
+    @apply font-medium text-fg-1 my-4 balance-spacing;
     @apply data-subheading:font-normal data-subheading:text-fg-3 data-subheading:text-xs data-subheading:uppercase data-subheading:tracking-widest;
     &:has(+ figure) {
-      @apply mb-[0.5em];
+      @apply mb-2;
     }
   }
 
   p {
-    @apply text-fg-3 balance-spacing my-[1em];
+    @apply text-fg-3 balance-spacing my-4;
   }
 
   a {
@@ -28,22 +28,22 @@
   blockquote {
     padding-inline-start: 1em;
     border-inline-start-width: 0.25rem;
-    @apply text-fg-3 balance-spacing my-[1em];
+    @apply text-fg-3 balance-spacing my-4;
   }
 
   figure {
-    @apply py-[0.8em] balance-spacing bg-bg-2 text-sm font-mono rounded-[1em] leading-6;
+    @apply py-2 balance-spacing bg-bg-2 text-sm font-mono rounded-2xl leading-6;
   }
   figure code {
     counter-reset: line;
   }
   figure code [data-line] {
-    @apply px-[1em]
+    @apply px-4
   }
   figure code [data-line]:before {
     content: counter(line);
     counter-increment: line;
-    @apply w-[1em] mr-[1em] text-right inline-block text-fg-3;
+    @apply w-4 mr-4 text-right inline-block text-fg-3;
   }
 }
 

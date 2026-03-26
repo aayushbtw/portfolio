@@ -8,7 +8,7 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
       {projects.map((item) => (
         <li className="border-border border-t first:border-t-0" key={item.repo}>
           <a
-            className="flex items-center gap-4 py-[0.5em] text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+            className="flex items-center gap-4 py-2 text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
             href={`${item.url}?utm_source=${config.domain}`}
             rel="noopener"
             target="_blank"

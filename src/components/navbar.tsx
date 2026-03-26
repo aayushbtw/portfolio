@@ -16,8 +16,8 @@ function Navbar({ links }: { links: NavLink[] }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <NavigationMenu className="py-[1.5em] lg:py-0">
-      <NavigationMenuList className="gap-x-[1em]">
+    <NavigationMenu className="py-6 lg:py-0">
+      <NavigationMenuList className="gap-x-4">
         {links.map((item) => {
           const isActive =
             item.url === "/" ? pathname === "/" : pathname.startsWith(item.url);
