@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
-@import "@fontsource-variable/hanken-grotesk";
 @import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/inter";
 
 @import "./content.css";
 
 @theme {
-  --font-sans: "Hanken Grotesk Variable", sans-serif;
+  --font-sans: "Inter Variable", sans-serif;
   --font-mono: "JetBrains Mono Variable", monospace;
 
   --color-bg-1: var(--color-white);
@@ -25,7 +25,7 @@
     @apply border-border outline-border;
   }
   body {
-    @apply bg-bg-1 font-sans text-base text-fg-1 antialiased selection:bg-brand/20;
+    @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 text-[15px] tracking-[-0.011em] leading-normal font-features-['cv01','ss03'];
   }
   a[target="_blank"] {
     cursor:
