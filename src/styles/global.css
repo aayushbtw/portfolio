@@ -25,7 +25,8 @@
     @apply border-border outline-border;
   }
   body {
-    @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 text-[15px] tracking-[-0.011em] leading-normal font-features-['cv01','ss03'];
+    @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
+    @apply text-[0.875rem] tracking-[-.005rem] leading-[1.45rem] font-[450];
   }
   a[target="_blank"] {
     cursor:
