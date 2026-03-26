@@ -32,7 +32,7 @@
   }
 
   figure {
-    @apply py-2 balance-spacing bg-bg-2 text-sm font-mono rounded-2xl leading-6;
+    @apply py-2 balance-spacing bg-bg-2 text-sm font-mono rounded-2xl leading-6 overflow-x-auto;
   }
   figure code {
     counter-reset: line;
