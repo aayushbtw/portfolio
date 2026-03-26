@@ -63,10 +63,10 @@ function FloatingNavbar({ className }: { className?: string }) {
 
 function Navbar() {
   return (
-    <>
+    <div>
       <SideNavbar className="hidden lg:block" />
       <FloatingNavbar className="fixed lg:hidden" />
-    </>
+    </div>
   );
 }
 
