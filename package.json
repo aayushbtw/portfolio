@@ -13,10 +13,10 @@
     "check": "ultracite check"
   },
   "dependencies": {
-    "@base-ui/react": "^1.2.0",
+    "@base-ui/react": "^1.3.0",
     "@tabler/icons-react": "^3.40.0",
-    "@tanstack/react-router": "^1.168.3",
-    "@tanstack/react-start": "^1.167.5",
+    "@tanstack/react-router": "^1.168.4",
+    "@tanstack/react-start": "^1.167.8",
     "@vercel/og": "^0.11.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -45,11 +45,11 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
-    "tailwindcss": "^4.2.1",
+    "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "ultracite": "7.3.2",
     "unified": "^11.0.5",
-    "vite": "^8.0.2",
+    "vite": "^8.0.3",
     "wrangler": "^4.77.0",
     "zod": "^4.3.6"
   }
