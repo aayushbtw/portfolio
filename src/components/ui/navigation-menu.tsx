@@ -12,7 +12,16 @@ function NavigationMenuList({
   ...props
 }: HTMLAttributes<HTMLUListElement>) {
   return (
-    <ul {...props} className="flex flex-col gap-0.5">
+    <ul className={cn("relative flex flex-col gap-0.5", className)} {...props}>
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute size-1.5 -translate-y-1/2 rounded-full",
+          "bg-linear-to-br from-brand to-brand/60 shadow-[0_0_8px_rgba(var(--brand-rgb),0.6)]",
+          "transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+          "top-[anchor(center)] [position-anchor:--active]"
+        )}
+      />
       {props.children}
     </ul>
   );
@@ -24,7 +33,8 @@ function NavigationMenuItem({
   ...props
 }: HTMLAttributes<HTMLLIElement>) {
   return (
-    <li {...props} className="flex">
+    <li {...props} className={cn("flex items-center gap-2", className)}>
+      <span className="size-1.5" />
       {children}
     </li>
   );
@@ -34,7 +44,7 @@ function NavigationMenuLink({ children, ...props }: LinkProps) {
   return (
     <Link
       {...props}
-      className="text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1"
+      className="text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active]"
     >
       {children}
     </Link>
