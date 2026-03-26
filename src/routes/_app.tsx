@@ -10,8 +10,8 @@ function AppLayout() {
   return (
     <div
       className={cn(
-        "pt-0 lg:pt-page-t",
-        "mx-auto max-w-[772px] px-4 pb-8 sm:px-6",
+        "px-4 pt-8 pb-8 sm:px-6 lg:pt-page-t",
+        "mx-auto max-w-[772px]",
         "lg:grid lg:max-w-7xl lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8"
       )}
     >

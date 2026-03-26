@@ -18,7 +18,7 @@ const links: {
 function Navbar() {
   return (
     <div>
-      <NavigationMenu>
+      <NavigationMenu className="hidden lg:block">
         <NavigationMenuList>
           {links.map((item) => {
             return (
@@ -31,6 +31,8 @@ function Navbar() {
           })}
         </NavigationMenuList>
       </NavigationMenu>
+
+      <div>A mobile navbar</div>
     </div>
   );
 }
