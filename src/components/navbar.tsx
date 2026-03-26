@@ -52,7 +52,7 @@ function FloatingNavbar({ className }: { className?: string }) {
               to={item.to}
             >
               {item.name}
-              <span className="absolute inset-x-3 -bottom-0.5 mx-auto h-0.5 scale-x-0 rounded-full bg-brand opacity-0 transition-all duration-300 group-data-[status=active]:scale-x-100 group-data-[status=active]:opacity-100" />
+              <span className="absolute inset-x-3 -bottom-0.5 mx-auto h-0.5 scale-x-0 rounded-full bg-brand opacity-0 transition-[scale,opacity] duration-300 group-data-[status=active]:scale-x-100 group-data-[status=active]:opacity-100" />
             </Link>
           ))}
         </div>

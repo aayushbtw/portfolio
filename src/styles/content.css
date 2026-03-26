@@ -10,7 +10,7 @@
   h4,
   h5,
   h6 {
-    @apply font-medium text-fg-1 my-4 balance-spacing;
+    @apply font-medium text-fg-1 my-4 balance-spacing text-balance;
     @apply data-subheading:font-normal data-subheading:text-fg-3 data-subheading:text-xs data-subheading:uppercase data-subheading:tracking-widest;
     &:has(+ figure) {
       @apply mb-2;
@@ -18,7 +18,7 @@
   }
 
   p {
-    @apply text-fg-3 balance-spacing my-4;
+    @apply text-fg-3 balance-spacing my-4 text-pretty;
   }
 
   a {
@@ -38,7 +38,7 @@
     counter-reset: line;
   }
   figure code [data-line] {
-    @apply px-4
+    @apply px-4;
   }
   figure code [data-line]:before {
     content: counter(line);

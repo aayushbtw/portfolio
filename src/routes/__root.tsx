@@ -73,7 +73,7 @@ function NotFound() {
           This page doesn't exist or has been moved.
         </p>
         <Link
-          className="mt-5 rounded-xl px-4 py-1 outline transition-all duration-300 hover:text-fg-1"
+          className="mt-5 rounded-xl px-4 py-1 outline transition-colors duration-300 hover:text-fg-1"
           to="/"
         >
           Go Home
