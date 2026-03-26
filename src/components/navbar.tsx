@@ -1,4 +1,4 @@
-import { useRouterState } from "@tanstack/react-router";
+import type { LinkProps } from "@tanstack/react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -6,36 +6,32 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-interface NavLink {
-  external?: boolean;
+const links: {
   name: string;
-  url: string;
-}
+  to: LinkProps["to"];
+}[] = [
+  { name: "Home", to: "/" },
+  { name: "Projects", to: "/projects" },
+  { name: "Writings", to: "/writings" },
+];
 
-function Navbar({ links }: { links: NavLink[] }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-
+function Navbar() {
   return (
-    <NavigationMenu className="py-6 lg:py-0">
-      <NavigationMenuList className="gap-x-4">
-        {links.map((item) => {
-          const isActive =
-            item.url === "/" ? pathname === "/" : pathname.startsWith(item.url);
-
-          return (
-            <NavigationMenuItem active={isActive} key={item.name}>
-              <NavigationMenuLink
-                active={isActive}
-                external={item.external}
-                href={item.url}
-              >
-                {item.name}
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          );
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div>
+      <NavigationMenu>
+        <NavigationMenuList>
+          {links.map((item) => {
+            return (
+              <NavigationMenuItem key={item.name}>
+                <NavigationMenuLink to={item.to}>
+                  {item.name}
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            );
+          })}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
   );
 }
 
