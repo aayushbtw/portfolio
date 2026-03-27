@@ -1,4 +1,4 @@
-import type { Activity } from "@/components/kibo-ui/contribution-graph";
+import type { Activity } from "@/components/contribution-graph";
 import { config } from "@/lib/config";
 
 const USERNAME = config.socials.github;
