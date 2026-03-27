@@ -25,6 +25,7 @@ export const Route = createFileRoute("/_app/writings/$slug")({
         article: {
           author: config.name,
           publishedAt: loaderData.publishedAt,
+          modifiedAt: loaderData.modifiedAt ?? loaderData.publishedAt,
         },
       }),
     };

@@ -14,6 +14,7 @@ interface ArticleMetaOptions extends BaseMetaOptions {
   article: {
     author: string;
     publishedAt: string;
+    modifiedAt: string;
   };
   type: "article";
 }
@@ -56,6 +57,10 @@ export function pageMeta(options: PageMetaOptions) {
       {
         property: "article:published_time",
         content: options.article.publishedAt,
+      },
+      {
+        property: "article:modified_time",
+        content: options.article.modifiedAt,
       }
     );
     scripts.push({
@@ -71,6 +76,7 @@ export function pageMeta(options: PageMetaOptions) {
           name: options.article.author,
         },
         datePublished: options.article.publishedAt,
+        dateModified: options.article.modifiedAt,
       }),
     });
   }
