@@ -21,7 +21,9 @@
   --spacing-floating-nav-h: calc(var(--spacing) * 14);
   --spacing-floating-nav-p: calc(var(--spacing) * 2);
   --spacing-floating-nav-inset: calc(
-    var(--spacing-floating-nav-h) + var(--spacing-floating-nav-p) * 2
+    var(--spacing-floating-nav-h) +
+    var(--spacing-floating-nav-p) *
+    2
   );
 }
 
@@ -31,7 +33,7 @@
   }
   body {
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
-    @apply text-[0.875rem] tracking-[-.005rem] leading-[1.45rem] font-[450];
+    @apply text-[0.9375rem] tracking-[-.005rem] leading-[1.45rem] font-[450];
   }
   a[target="_blank"] {
     cursor:
