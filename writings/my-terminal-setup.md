@@ -10,7 +10,7 @@ You can find my config files [here](https://github.com/aayushbtw/dotfiles).
 
 ## Ghostty
 
-I tried a lot of terminals before landing on Ghostty. iTerm2 felt bloated, Alacritty was fine but too minimal, Warp kept trying to be something I didn't ask for. Ghostty hits the right balance. It's native, fast, and the config is just a plain text file. No GUI settings, no JSON, just `key = value`. It's been my daily driver since the beta.
+I tried a lot of terminals before landing on Ghostty. iTerm2 felt bloated, Alacritty was fine but too minimal, Warp kept trying to be something I didn't ask for. Ghostty hits the right balance. Highly configurable, fast, and has been my daily driver since the beta.
 
 ## Homebrew
 
