@@ -1,3 +1,4 @@
+import rehypeExternalLinks from "rehype-external-links";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
@@ -14,6 +15,7 @@ export async function renderMarkdown(content: string): Promise<string> {
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeSlug)
+    .use(rehypeExternalLinks, { target: "_blank", rel: ["noopener"] })
     .use(rehypePrettyCode, { theme: "github-light", keepBackground: false })
     .use(rehypeStringify)
     .process(content);
