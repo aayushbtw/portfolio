@@ -24,6 +24,7 @@ function SideNavbar({ className }: { className?: string }) {
             <span className="size-1.5" />
             <Link
               className="text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active]"
+              data-unstyled
               to={item.to}
             >
               {item.name}
@@ -43,6 +44,7 @@ function FloatingNavbar({ className }: { className?: string }) {
           {links.map((item) => (
             <Link
               className="group relative rounded-full px-4 py-1.5 font-medium text-fg-3 text-sm transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1"
+              data-unstyled
               key={item.name}
               to={item.to}
             >

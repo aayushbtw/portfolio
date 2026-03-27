@@ -38,7 +38,6 @@ function HomePage() {
         <p>
           {config.description} Full-stack engineer at{" "}
           <a
-            data-underline
             href={`https://www.netision.com/?utm_source=${config.domain}`}
             rel="noopener"
             target="_blank"

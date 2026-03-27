@@ -9,6 +9,7 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
         <li className="border-border border-t first:border-t-0" key={item.repo}>
           <a
             className="flex items-center gap-4 py-2.5 text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+            data-unstyled
             href={`${item.url}?utm_source=${config.domain}`}
             rel="noopener"
             target="_blank"

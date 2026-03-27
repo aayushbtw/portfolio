@@ -23,6 +23,7 @@ function ListPosts({ posts }: { posts: Post[] }) {
           >
             <Link
               className="flex items-center gap-4 py-2.5 text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+              data-unstyled
               params={{ slug: post.slug }}
               to="/writings/$slug"
             >
