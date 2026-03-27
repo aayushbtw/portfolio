@@ -32,7 +32,7 @@
   }
 
   code {
-    @apply bg-bg-2 text-xs px-1.5 rounded-md outline whitespace-nowrap;
+    @apply bg-bg-2 text-xs py-0.5 px-1.5 rounded-md outline whitespace-nowrap;
   }
   figure code {
     counter-reset: line;
