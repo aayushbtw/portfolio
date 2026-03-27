@@ -44,7 +44,7 @@ function HomePage() {
           >
             Netision
           </a>
-          .
+          , building a multi-agent platform.
         </p>
       </section>
 
