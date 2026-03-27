@@ -5,6 +5,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     scrollRestoration: true,
+    defaultStaleTime: Number.POSITIVE_INFINITY,
   });
   return router;
 }
