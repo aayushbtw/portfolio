@@ -57,9 +57,8 @@ function WritingPage() {
               <IconArrowBackUp className="size-4" />
             </Link>
 
-            <h3 className="mb-2 font-medium" data-subheading>
-              TOC
-            </h3>
+            <p className="mb-2 font-medium text-fg-2 text-sm">On this page</p>
+
             <TableOfContents headings={post.headings} />
           </nav>
         </Sidebar>

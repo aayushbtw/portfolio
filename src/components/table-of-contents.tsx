@@ -1,4 +1,5 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
+import { NavList, NavListIndicator } from "@/components/nav-list";
 
 interface Heading {
   id: string;
@@ -9,22 +10,19 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
   const activeId = useActiveHeading(headings);
 
   return (
-    <ul className="relative flex flex-col gap-0.5 text-sm">
-      <span
-        aria-hidden="true"
-        className="absolute inset-y-0 left-0 w-0.5 rounded-full bg-border"
-      />
-      <span
-        aria-hidden="true"
-        className="indicator-spring indicator-brand top-[anchor(top)] h-[anchor-size(height)] w-0.5 shadow-[0_0_8px_rgba(var(--brand-rgb),0.4)] [position-anchor:--active-heading]"
-      />
+    <NavList
+      indicator={
+        <NavListIndicator className="top-[anchor(top)] h-[anchor-size(height)] w-0.5" />
+      }
+      track
+    >
       {headings.map((h) => {
         const isActive = activeId === h.id;
         return (
           <li key={h.id}>
             <a
-              className="nav-link block py-px data-active:text-fg-1 data-active:[anchor-name:--active-heading]"
-              data-active={isActive || undefined}
+              className="nav-link"
+              data-status={isActive ? "active" : undefined}
               data-unstyled
               href={`#${h.id}`}
             >
@@ -33,7 +31,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
           </li>
         );
       })}
-    </ul>
+    </NavList>
   );
 }
 
