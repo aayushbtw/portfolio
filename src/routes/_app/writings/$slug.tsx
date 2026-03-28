@@ -41,7 +41,7 @@ function WritingPage() {
     <section>
       <h1 className="mb-px">{post.title}</h1>
       <time className="text-fg-3 text-sm">{formatDate(post.publishedAt)}</time>
-      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: trusted markdown output */}
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: trusted mdx output */}
       <article dangerouslySetInnerHTML={{ __html: post.html }} />
     </section>
   );
