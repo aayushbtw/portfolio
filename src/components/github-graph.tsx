@@ -1,4 +1,4 @@
-import { ContributionGraph } from "@/components/contribution-graph";
+import { ContributionGraph } from "@/components/ui/contribution-graph";
 import type { ContributionsResponse } from "@/lib/octo";
 
 function GithubGraph({ data }: { data: ContributionsResponse }) {
