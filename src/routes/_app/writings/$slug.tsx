@@ -2,6 +2,7 @@ import { IconArrowBackUp } from "@tabler/icons-react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 import { Sidebar } from "@/components/sidebar";
+import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
 import { pageMeta } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
@@ -56,21 +57,10 @@ function WritingPage() {
               <IconArrowBackUp className="size-4" />
             </Link>
 
-            <p className="mb-2 font-medium text-fg-2 text-sm">On this page</p>
-            <ul className="flex flex-col gap-0.5 text-sm">
-              {post.headings.map((h) => (
-                <li key={h.id}>
-                  <Link
-                    className="text-fg-3 transition-colors duration-200 hover:text-fg-2"
-                    data-unstyled
-                    hash={h.id}
-                    to="."
-                  >
-                    {h.text}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <h3 className="mb-2 font-medium" data-subheading>
+              TOC
+            </h3>
+            <TableOfContents headings={post.headings} />
           </nav>
         </Sidebar>
       )}
