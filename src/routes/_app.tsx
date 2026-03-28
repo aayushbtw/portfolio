@@ -17,7 +17,6 @@ function AppLayout() {
 
 function AppGrid() {
   const sidebarContent = useSidebarContent();
-
   return (
     <div
       className={cn(
@@ -28,7 +27,12 @@ function AppGrid() {
     >
       <div>
         <div className="sticky top-page-t hidden lg:block">
-          {sidebarContent ?? <SideNavbar />}
+          <div
+            className="fade-in animate-in"
+            key={sidebarContent ? "custom" : "nav"}
+          >
+            {sidebarContent ?? <SideNavbar />}
+          </div>
         </div>
       </div>
 
