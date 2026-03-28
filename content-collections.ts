@@ -1,14 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
-import { evaluate } from "@mdx-js/mdx";
-import { Showcase } from "./src/components/ui/showcase";
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import rehypeExternalLinks from "rehype-external-links";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
 import { z } from "zod";
+import { Showcase } from "./src/components/ui/showcase";
+import { renderMdx } from "./src/lib/mdx";
 
 const posts = defineCollection({
   name: "posts",
@@ -21,25 +14,11 @@ const posts = defineCollection({
     description: z.string(),
     image: z.string().optional(),
   }),
-  transform: async (document, _context) => {
-    const { default: Content } = await evaluate(document.content, {
-      Fragment,
-      jsx,
-      jsxs,
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeExternalLinks, { target: "_blank", rel: ["noopener"] }],
-        [rehypePrettyCode, { theme: "github-light", keepBackground: false }],
-      ],
-    });
-    const html = renderToStaticMarkup(createElement(Content, { components: { Showcase } }));
-    return {
-      ...document,
-      slug: document._meta.path,
-      html,
-    };
-  },
+  transform: async (document, _context) => ({
+    ...document,
+    slug: document._meta.path,
+    html: await renderMdx(document.content, { Showcase }),
+  }),
 });
 
 export default defineConfig({ content: [posts] });
