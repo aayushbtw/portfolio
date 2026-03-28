@@ -17,11 +17,10 @@ export function SideNavbar({ className }: { className?: string }) {
       <ul className="relative flex flex-col gap-0.5">
         <span
           aria-hidden="true"
-          className="absolute top-[anchor(center)] size-1.5 -translate-y-1/2 rounded-full bg-linear-to-br from-brand to-brand/60 shadow-[0_0_8px_rgba(var(--brand-rgb),0.6)] transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [position-anchor:--active]"
+          className="absolute top-[anchor(center)] right-full mr-2 size-1.5 -translate-y-1/2 rounded-full bg-linear-to-br from-brand to-brand/60 shadow-[0_0_8px_rgba(var(--brand-rgb),0.6)] transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [position-anchor:--active]"
         />
         {links.map((item) => (
-          <li className="flex items-center gap-2" key={item.name}>
-            <span className="size-1.5" />
+          <li key={item.name}>
             <Link
               className="text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active]"
               data-unstyled
