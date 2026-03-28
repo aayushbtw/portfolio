@@ -2,31 +2,26 @@
 title: My Terminal Setup
 description: The tools I use every day in the terminal and why I switched to them.
 publishedAt: 2026-03-27
+modifiedAt: 2026-03-28
 ---
 
 The macOS defaults are fine until you've used something better. Over time I've swapped out a handful of them for tools that are faster or just less annoying to use.
 
-You can find my config files [here](https://github.com/aayushbtw/dotfiles).
+<Showcase src="/writings/my-terminal-setup/ghostty.png" alt="Ghostty terminal" height={1896} />
+
+You can find my [dotfiles here](https://github.com/aayushbtw/dotfiles) if you want the same setup.
 
 ## Ghostty
 
-I tried a lot of terminals before landing on Ghostty. iTerm2 felt bloated, Alacritty was fine but too minimal, Warp kept trying to be something I didn't ask for. Ghostty hits the right balance. Highly configurable, fast, and has been my daily driver since the beta.
-
-## Homebrew
-
-The package manager for macOS. Everything else here came through it. If you're on a Mac and not using Homebrew, you're installing things the hard way.
+As you probably noticed from the image, my terminal of choice is Ghostty. I tried a lot of others before landing on it. iTerm2 felt bloated, Alacritty was fine but too minimal, Warp kept trying to be something I didn't ask for. Ghostty hits the right balance. Highly configurable, fast, and has been my daily driver since the beta.
 
 ## Starship
 
 Prompt configuration has a way of becoming its own project. Starship avoids that. I set it up once with the things I actually need (current directory, git branch, command duration) and haven't touched it since.
 
-## fnm
-
-Replaced `nvm` with this. `nvm` was slow to init and kept breaking whenever I updated Node. fnm does the same job without the baggage.
-
 ## eza
 
-I have it aliased to `ls` so the switch is invisible. You only really notice it when you're on a machine that doesn't have it and plain `ls` output looks like it's from 1989.
+I have it aliased to `ls` so the switch is invisible. You only really notice it when you SSH into something and wonder why `ls` suddenly looks so ugly.
 
 ## zoxide
 
