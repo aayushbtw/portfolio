@@ -1,4 +1,5 @@
 import { createRouter } from "@tanstack/react-router";
+import { NotFound } from "./components/not-found";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -6,6 +7,9 @@ export function getRouter() {
     routeTree,
     scrollRestoration: true,
     defaultStaleTime: Number.POSITIVE_INFINITY,
+    trailingSlash: "preserve",
+    defaultNotFoundComponent: NotFound,
+    notFoundMode: "root",
   });
   return router;
 }
