@@ -25,7 +25,7 @@ export function ShowcaseImage({
         width={1920}
       />
       <div className="absolute inset-0 bg-bg-1/20" />
-      <div className="relative flex justify-center px-6 py-6">
+      <div className="relative flex justify-center p-4">
         <Image
           alt={alt}
           className="w-full shadow-2xl"
