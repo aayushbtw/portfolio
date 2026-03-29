@@ -1,6 +1,11 @@
 import { Image } from "@unpic/react";
+import type { ReactNode } from "react";
 
-export function Showcase({
+export function Showcase({ children }: { children: ReactNode }) {
+  return <div>{children}</div>;
+}
+
+export function ShowcaseImage({
   src,
   alt = "",
   height,
@@ -10,7 +15,7 @@ export function Showcase({
   height: number;
 }) {
   return (
-    <div className="relative my-6 overflow-hidden rounded-2xl first:mt-0 last:mb-0">
+    <div className="relative overflow-hidden rounded-2xl">
       <Image
         aria-hidden={true}
         className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
@@ -31,4 +36,8 @@ export function Showcase({
       </div>
     </div>
   );
+}
+
+export function ShowcaseCaption({ children }: { children: ReactNode }) {
+  return <p className="mt-2 text-center text-sm">{children}</p>;
 }
