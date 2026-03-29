@@ -1,4 +1,5 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { SidebarProvider } from "@/components/sidebar";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
 import appCss from "@/styles/app.css?url";
@@ -50,7 +51,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="min-h-screen">
-        {children}
+        <SidebarProvider>{children}</SidebarProvider>
         <Scripts />
       </body>
     </html>
