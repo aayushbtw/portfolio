@@ -41,7 +41,6 @@ const HEAD = seo({
 export const Route = createRootRoute({
   head: () => HEAD,
   shellComponent: RootDocument,
-  // notFoundComponent: NotFound,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
