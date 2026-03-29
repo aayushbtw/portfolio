@@ -15,7 +15,7 @@ export function ShowcaseImage({
   height: number;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl">
+    <div className="relative overflow-hidden rounded-lg">
       <Image
         alt="background-image"
         aria-hidden={true}
