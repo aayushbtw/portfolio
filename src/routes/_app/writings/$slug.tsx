@@ -4,7 +4,7 @@ import { allPosts } from "content-collections";
 import { Sidebar } from "@/components/sidebar";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
-import { pageMeta } from "@/lib/seo";
+import { seo } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_app/writings/$slug")({
       return {};
     }
     return {
-      ...pageMeta({
+      ...seo({
         title: loaderData.title,
         description: loaderData.description,
         path: `/writings/${loaderData.slug}`,

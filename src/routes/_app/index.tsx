@@ -5,7 +5,7 @@ import { ListProjects } from "@/components/list-projects";
 import { getAllPosts } from "@/lib/blog";
 import { config } from "@/lib/config";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
-import { pageMeta } from "@/lib/seo";
+import { seo } from "@/lib/seo";
 
 const lastYear = new Date().getFullYear() - 1;
 
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_app/")({
     return { posts, contributions, projects };
   },
   head: () => ({
-    ...pageMeta({
+    ...seo({
       title: config.name,
       description: config.description,
       path: "/",

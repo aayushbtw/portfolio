@@ -1,16 +1,16 @@
 import { config } from "@/lib/config";
 
-interface BaseMetaOptions {
+interface BaseOptions {
   description: string;
   path: string;
   title: string;
 }
 
-interface WebsiteMetaOptions extends BaseMetaOptions {
+interface WebsiteOptions extends BaseOptions {
   type?: "website";
 }
 
-interface ArticleMetaOptions extends BaseMetaOptions {
+interface ArticleOptions extends BaseOptions {
   article: {
     author: string;
     publishedAt: string;
@@ -19,16 +19,23 @@ interface ArticleMetaOptions extends BaseMetaOptions {
   type: "article";
 }
 
-type PageMetaOptions = ArticleMetaOptions | WebsiteMetaOptions;
+type PageOptions = (ArticleOptions | WebsiteOptions) & {
+  extra?: {
+    links?: Record<string, string>[];
+    meta?: Record<string, string>[];
+    scripts?: { type: string; children: string }[];
+  };
+};
 
-export function pageMeta(options: PageMetaOptions) {
+function pageLinks(options: Pick<BaseOptions, "path">) {
+  return [{ rel: "canonical", href: `${config.domain}${options.path}` }];
+}
+
+function pageMeta(options: PageOptions) {
   const { description, path, title } = options;
-  const url = `${config.domain}${path}`;
   const type = options.type ?? "website";
   const ogImageText = type === "article" ? title : description;
   const ogImage = `${config.domain}/api/og?title=${encodeURIComponent(ogImageText)}`;
-
-  const links = [{ rel: "canonical", href: url }];
 
   const meta = [
     { title },
@@ -36,7 +43,7 @@ export function pageMeta(options: PageMetaOptions) {
     { property: "og:type", content: type },
     { property: "og:title", content: title },
     { property: "og:description", content: description },
-    { property: "og:url", content: url },
+    { property: "og:url", content: `${config.domain}${path}` },
     { property: "og:site_name", content: config.name },
     { property: "og:image", content: ogImage },
     { property: "og:image:alt", content: ogImageText },
@@ -48,8 +55,6 @@ export function pageMeta(options: PageMetaOptions) {
     { name: "twitter:image", content: ogImage },
     { name: "twitter:image:alt", content: ogImageText },
   ];
-
-  const scripts: { type: string; children: string }[] = [];
 
   if (options.type === "article") {
     meta.push(
@@ -63,6 +68,18 @@ export function pageMeta(options: PageMetaOptions) {
         content: options.article.modifiedAt,
       }
     );
+  }
+
+  return meta;
+}
+
+function pageScripts(options: PageOptions) {
+  const scripts: { type: string; children: string }[] = [];
+
+  if (options.type === "article") {
+    const { description, title } = options;
+    const ogImage = `${config.domain}/api/og?title=${encodeURIComponent(title)}`;
+
     scripts.push({
       type: "application/ld+json",
       children: JSON.stringify({
@@ -81,5 +98,14 @@ export function pageMeta(options: PageMetaOptions) {
     });
   }
 
-  return { links, meta, scripts };
+  return scripts;
+}
+
+export function seo(options: PageOptions) {
+  const { extra } = options;
+  return {
+    links: [...pageLinks(options), ...(extra?.links ?? [])],
+    meta: [...pageMeta(options), ...(extra?.meta ?? [])],
+    scripts: [...pageScripts(options), ...(extra?.scripts ?? [])],
+  };
 }

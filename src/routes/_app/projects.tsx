@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ListProjects } from "@/components/list-projects";
 import { fetchPinnedRepos } from "@/lib/octo";
-import { pageMeta } from "@/lib/seo";
+import { seo } from "@/lib/seo";
 
 const title = "Projects";
 const description =
@@ -10,7 +10,7 @@ const description =
 export const Route = createFileRoute("/_app/projects")({
   loader: () => fetchPinnedRepos(),
   head: () => ({
-    ...pageMeta({ title, description, path: "/projects" }),
+    ...seo({ title, description, path: "/projects" }),
   }),
   component: ProjectsPage,
 });

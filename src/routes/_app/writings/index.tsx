@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ListPosts } from "@/components/list-posts";
 import { getAllPosts } from "@/lib/blog";
-import { pageMeta } from "@/lib/seo";
+import { seo } from "@/lib/seo";
 
 const title = "Writings";
 const description = "Thoughts on software, design and building for the web.";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_app/writings/")({
     return { posts };
   },
   head: () => ({
-    ...pageMeta({ title, description, path: "/writings" }),
+    ...seo({ title, description, path: "/writings" }),
   }),
   component: WritingsPage,
 });
