@@ -17,6 +17,7 @@ export function ShowcaseImage({
   return (
     <div className="relative overflow-hidden rounded-2xl">
       <Image
+        alt="background-image"
         aria-hidden={true}
         className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
         draggable={false}
