@@ -17,11 +17,9 @@ function AppLayout() {
     >
       <Navbar />
 
-      <div className="content min-w-0 max-w-full">
-        <main>
-          <Outlet />
-        </main>
-      </div>
+      <main className="min-w-0 max-w-full">
+        <Outlet />
+      </main>
 
       <div />
     </div>
