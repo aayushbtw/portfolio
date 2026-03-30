@@ -40,5 +40,5 @@ export function ShowcaseImage({
 }
 
 export function ShowcaseCaption({ children }: { children: ReactNode }) {
-  return <p className="mt-2 text-center text-sm">{children}</p>;
+  return <p className="mt-2 text-center font-normal text-sm">{children}</p>;
 }
