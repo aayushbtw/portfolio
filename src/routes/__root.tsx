@@ -1,5 +1,5 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import { SidebarProvider } from "@/components/sidebar";
+import { NotFound } from "@/components/not-found";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
 import appCss from "@/styles/app.css?url";
@@ -42,6 +42,7 @@ const HEAD = seo({
 export const Route = createRootRoute({
   head: () => HEAD,
   shellComponent: RootDocument,
+  notFoundComponent: NotFound,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -51,7 +52,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="min-h-screen">
-        <SidebarProvider>{children}</SidebarProvider>
+        {children}
         <Scripts />
       </body>
     </html>
