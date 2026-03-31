@@ -22,9 +22,7 @@
   --spacing-floating-nav-h: calc(var(--spacing) * 14);
   --spacing-floating-nav-p: calc(var(--spacing) * 2);
   --spacing-floating-nav-inset: calc(
-    var(--spacing-floating-nav-h) +
-    var(--spacing-floating-nav-p) *
-    2
+    var(--spacing-floating-nav-h) + var(--spacing-floating-nav-p) * 2
   );
 }
 
