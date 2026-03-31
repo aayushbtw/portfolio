@@ -50,6 +50,7 @@ const posts = defineCollection({
     modifiedAt: z.string().optional(),
     description: z.string(),
     image: z.string().optional(),
+    content: z.string(),
   }),
   transform: async (doc, { cache }) => {
     const { html, headings } = await cache(doc.content, (content) =>
