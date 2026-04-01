@@ -27,7 +27,9 @@ export function Sidebar({ children }: { children: ReactNode }) {
   const { setContent } = useContext(SidebarContext);
   useEffect(() => {
     setContent(children);
-    return () => setContent(null);
+    return () => {
+      setContent(null);
+    };
   }, [children, setContent]);
   return null;
 }

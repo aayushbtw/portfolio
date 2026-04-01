@@ -41,6 +41,12 @@ const HEAD = seo({
   title: config.name,
 });
 
+export const Route = createRootRoute({
+  head: () => HEAD,
+  notFoundComponent: NotFound,
+  shellComponent: RootDocument,
+});
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -54,9 +60,3 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-
-export const Route = createRootRoute({
-  head: () => HEAD,
-  notFoundComponent: NotFound,
-  shellComponent: RootDocument,
-});

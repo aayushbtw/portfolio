@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { ListProjects } from "@/components/list-projects";
 import { fetchPinnedRepos } from "@/lib/octo";
@@ -8,10 +8,18 @@ const title = "Projects";
 const description =
   "Things I've built — full-stack apps, tools, and experiments.";
 
-const routeApi = getRouteApi("/_app/projects");
+export const Route = createFileRoute("/_app/projects")({
+  component: ProjectsPage,
+
+  head: () => ({
+    ...seo({ description, path: "/projects", title }),
+  }),
+
+  loader: () => fetchPinnedRepos(),
+});
 
 function ProjectsPage() {
-  const projects = routeApi.useLoaderData();
+  const projects = Route.useLoaderData();
 
   return (
     <section>
@@ -20,11 +28,3 @@ function ProjectsPage() {
     </section>
   );
 }
-
-export const Route = createFileRoute("/_app/projects")({
-  component: ProjectsPage,
-  head: () => ({
-    ...seo({ description, path: "/projects", title }),
-  }),
-  loader: () => fetchPinnedRepos(),
-});

@@ -1,4 +1,4 @@
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { ListPosts } from "@/components/list-posts";
 import { getAllPosts } from "@/lib/blog";
@@ -7,10 +7,21 @@ import { seo } from "@/lib/seo";
 const title = "Writings";
 const description = "Thoughts on software, design and building for the web.";
 
-const routeApi = getRouteApi("/_app/writings/");
+export const Route = createFileRoute("/_app/writings/")({
+  component: WritingsPage,
+
+  loader: () => {
+    const posts = getAllPosts();
+    return { posts };
+  },
+
+  head: () => ({
+    ...seo({ description, path: "/writings", title }),
+  }),
+});
 
 function WritingsPage() {
-  const { posts } = routeApi.useLoaderData();
+  const { posts } = Route.useLoaderData();
 
   return (
     <section>
@@ -19,14 +30,3 @@ function WritingsPage() {
     </section>
   );
 }
-
-export const Route = createFileRoute("/_app/writings/")({
-  component: WritingsPage,
-  head: () => ({
-    ...seo({ description, path: "/writings", title }),
-  }),
-  loader: () => {
-    const posts = getAllPosts();
-    return { posts };
-  },
-});

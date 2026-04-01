@@ -5,6 +5,17 @@
     "./node_modules/ultracite/config/oxlint/remix/.oxlintrc.json"
   ],
   "rules": {
-    "eslint/func-style": ["error", "declaration"]
+    "eslint/func-style": ["error", "declaration"],
+    "no-use-before-define": ["error", { "functions": false }],
+    "eslint/sort-keys": [
+      "error",
+      "asc",
+      {
+        "allowLineSeparatedGroups": true,
+        "caseSensitive": true,
+        "natural": false,
+        "minKeys": 2
+      }
+    ]
   }
 }
