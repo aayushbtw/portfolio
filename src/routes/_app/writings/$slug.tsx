@@ -1,6 +1,7 @@
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
+
 import { Sidebar } from "@/components/sidebar";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
@@ -8,13 +9,7 @@ import { seo } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: ({ params }) => {
-    const post = allPosts.find((p) => p.slug === params.slug);
-    if (!post) {
-      throw notFound();
-    }
-    return post;
-  },
+  component: WritingPage,
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};
@@ -34,7 +29,13 @@ export const Route = createFileRoute("/_app/writings/$slug")({
     };
   },
 
-  component: WritingPage,
+  loader: ({ params }) => {
+    const post = allPosts.find((p) => p.slug === params.slug);
+    if (!post) {
+      throw notFound();
+    }
+    return post;
+  },
 });
 
 function WritingPage() {

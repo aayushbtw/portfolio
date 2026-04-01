@@ -1,7 +1,10 @@
-import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
+import { useHotkeySequences } from '@tanstack/react-hotkeys';
+import type { Hotkey } from '@tanstack/react-hotkeys';
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
+
 import { NavList, NavListIndicator } from "@/components/nav-list";
+
 import { useSidebarContent } from "./sidebar";
 
 const links: {
@@ -9,9 +12,9 @@ const links: {
   to: LinkProps["to"];
   key: Hotkey;
 }[] = [
-  { name: "Home", to: "/", key: "H" },
-  { name: "Projects", to: "/projects", key: "P" },
-  { name: "Writings", to: "/writings", key: "W" },
+  { key: "H", name: "Home", to: "/" },
+  { key: "P", name: "Projects", to: "/projects" },
+  { key: "W", name: "Writings", to: "/writings" },
 ];
 
 function SideNavbar() {
@@ -62,8 +65,8 @@ export function Navbar() {
 
   useHotkeySequences(
     links.map((link) => ({
-      sequence: ["G", link.key],
       callback: () => navigate({ to: link.to }),
+      sequence: ["G", link.key],
     }))
   );
 

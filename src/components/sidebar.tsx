@@ -1,15 +1,10 @@
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 
 const SidebarContext = createContext<{
   content: ReactNode;
   setContent: (node: ReactNode) => void;
-}>({ content: null, setContent: () => undefined });
+}>({ content: null, setContent: () => {} });
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<ReactNode>(null);

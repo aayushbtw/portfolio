@@ -138,7 +138,7 @@ function ContributionGraph({
 
   const onPointerEnter = useCallback(
     (e: React.PointerEvent<SVGRectElement>) => {
-      const date = e.currentTarget.dataset.date;
+      const {date} = e.currentTarget.dataset;
       if (!date) {
         return;
       }

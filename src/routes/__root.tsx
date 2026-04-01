@@ -1,20 +1,14 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+
 import { NotFound } from "@/components/not-found";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
+
 import appCss from "@/styles/app.css?url";
 
 const HEAD = seo({
-  title: config.name,
   description: config.description,
-  path: "/",
   extra: {
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "robots", content: "index, follow" },
-      { property: "og:locale", content: "en_US" },
-    ],
     links: [
       { rel: "stylesheet", href: appCss },
       {
@@ -36,13 +30,21 @@ const HEAD = seo({
       },
       { rel: "icon", href: "/favicon.ico" },
     ],
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "robots", content: "index, follow" },
+      { property: "og:locale", content: "en_US" },
+    ],
   },
+  path: "/",
+  title: config.name,
 });
 
 export const Route = createRootRoute({
   head: () => HEAD,
-  shellComponent: RootDocument,
   notFoundComponent: NotFound,
+  shellComponent: RootDocument,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {

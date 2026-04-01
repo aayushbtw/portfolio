@@ -1,4 +1,5 @@
 import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
+
 import { config } from "@/lib/config";
 import type { PinnedRepo } from "@/lib/octo";
 

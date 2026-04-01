@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+
 import { Navbar } from "@/components/navbar";
 import { SidebarProvider } from "@/components/sidebar";
 import { cn } from "@/lib/utils";

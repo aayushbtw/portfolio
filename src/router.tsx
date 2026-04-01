@@ -1,13 +1,14 @@
 import { createRouter } from "@tanstack/react-router";
+
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
   const router = createRouter({
+    defaultStaleTime: Number.POSITIVE_INFINITY,
+    notFoundMode: "root",
     routeTree,
     scrollRestoration: true,
-    defaultStaleTime: Number.POSITIVE_INFINITY,
     trailingSlash: "preserve",
-    notFoundMode: "root",
   });
   return router;
 }
