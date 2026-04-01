@@ -1,10 +1,14 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 const SidebarContext = createContext<{
   content: ReactNode;
   setContent: (node: ReactNode) => void;
-}>({ content: null, setContent: () => {} });
+}>({
+  content: null,
+  // oxlint-disable-next-line eslint/no-empty-function -- context default
+  setContent: () => {},
+});
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<ReactNode>(null);

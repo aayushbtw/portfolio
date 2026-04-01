@@ -10,41 +10,35 @@ const HEAD = seo({
   description: config.description,
   extra: {
     links: [
-      { rel: "stylesheet", href: appCss },
+      { href: appCss, rel: "stylesheet" },
       {
+        href: "/apple-touch-icon.png",
         rel: "apple-touch-icon",
         sizes: "180x180",
-        href: "/apple-touch-icon.png",
       },
       {
-        rel: "icon",
-        type: "image/png",
-        sizes: "32x32",
         href: "/favicon-32x32.png",
+        rel: "icon",
+        sizes: "32x32",
+        type: "image/png",
       },
       {
-        rel: "icon",
-        type: "image/png",
-        sizes: "16x16",
         href: "/favicon-16x16.png",
+        rel: "icon",
+        sizes: "16x16",
+        type: "image/png",
       },
-      { rel: "icon", href: "/favicon.ico" },
+      { href: "/favicon.ico", rel: "icon" },
     ],
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "robots", content: "index, follow" },
-      { property: "og:locale", content: "en_US" },
+      { charSet: "utf8" },
+      { content: "width=device-width, initial-scale=1", name: "viewport" },
+      { content: "index, follow", name: "robots" },
+      { content: "en_US", property: "og:locale" },
     ],
   },
   path: "/",
   title: config.name,
-});
-
-export const Route = createRootRoute({
-  head: () => HEAD,
-  notFoundComponent: NotFound,
-  shellComponent: RootDocument,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -60,3 +54,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
+
+export const Route = createRootRoute({
+  head: () => HEAD,
+  notFoundComponent: NotFound,
+  shellComponent: RootDocument,
+});

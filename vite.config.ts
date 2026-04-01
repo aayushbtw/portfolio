@@ -14,8 +14,8 @@ export default defineConfig({
     tailwindcss(),
     tanstackStart({
       prerender: {
+        crawlLinks: true,
         enabled: true,
-        crawlLinks: true, // Discovers all linkable pages
       },
       sitemap: {
         enabled: true,

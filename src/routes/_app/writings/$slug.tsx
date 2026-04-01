@@ -1,5 +1,10 @@
 import { IconArrowBackUp } from "@tabler/icons-react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  getRouteApi,
+  Link,
+  notFound,
+} from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 
 import { Sidebar } from "@/components/sidebar";
@@ -8,38 +13,10 @@ import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app/writings/$slug")({
-  component: WritingPage,
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return {};
-    }
-    return {
-      ...seo({
-        title: loaderData.title,
-        description: loaderData.description,
-        path: `/writings/${loaderData.slug}`,
-        type: "article",
-        article: {
-          author: config.name,
-          publishedAt: loaderData.publishedAt,
-          modifiedAt: loaderData.modifiedAt ?? loaderData.publishedAt,
-        },
-      }),
-    };
-  },
-
-  loader: ({ params }) => {
-    const post = allPosts.find((p) => p.slug === params.slug);
-    if (!post) {
-      throw notFound();
-    }
-    return post;
-  },
-});
+const routeApi = getRouteApi("/_app/writings/$slug");
 
 function WritingPage() {
-  const post = Route.useLoaderData();
+  const post = routeApi.useLoaderData();
 
   return (
     <section>
@@ -67,3 +44,33 @@ function WritingPage() {
     </section>
   );
 }
+
+export const Route = createFileRoute("/_app/writings/$slug")({
+  component: WritingPage,
+  head: ({ loaderData }) => {
+    if (!loaderData) {
+      return {};
+    }
+    return {
+      ...seo({
+        article: {
+          author: config.name,
+          modifiedAt: loaderData.modifiedAt ?? loaderData.publishedAt,
+          publishedAt: loaderData.publishedAt,
+        },
+        description: loaderData.description,
+        path: `/writings/${loaderData.slug}`,
+        title: loaderData.title,
+        type: "article",
+      }),
+    };
+  },
+
+  loader: ({ params }) => {
+    const post = allPosts.find((p) => p.slug === params.slug);
+    if (!post) {
+      throw notFound();
+    }
+    return post;
+  },
+});

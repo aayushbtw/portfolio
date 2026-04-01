@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 
 import { GithubGraph } from "@/components/github-graph";
 import { ListPosts } from "@/components/list-posts";
@@ -10,27 +10,10 @@ import { seo } from "@/lib/seo";
 
 const lastYear = new Date().getFullYear() - 1;
 
-export const Route = createFileRoute("/_app/")({
-  component: HomePage,
-  head: () => ({
-    ...seo({
-      title: config.name,
-      description: config.description,
-      path: "/",
-    }),
-  }),
-  loader: async () => {
-    const [posts, contributions, projects] = await Promise.all([
-      getAllPosts(5),
-      fetchContributions(lastYear),
-      fetchPinnedRepos(),
-    ]);
-    return { posts, contributions, projects };
-  },
-});
+const routeApi = getRouteApi("/_app/");
 
 function HomePage() {
-  const { posts, contributions, projects } = Route.useLoaderData();
+  const { posts, contributions, projects } = routeApi.useLoaderData();
 
   return (
     <>
@@ -65,3 +48,22 @@ function HomePage() {
     </>
   );
 }
+
+export const Route = createFileRoute("/_app/")({
+  component: HomePage,
+  head: () => ({
+    ...seo({
+      description: config.description,
+      path: "/",
+      title: config.name,
+    }),
+  }),
+  loader: async () => {
+    const [posts, contributions, projects] = await Promise.all([
+      getAllPosts(5),
+      fetchContributions(lastYear),
+      fetchPinnedRepos(),
+    ]);
+    return { contributions, posts, projects };
+  },
+});

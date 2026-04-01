@@ -4,10 +4,6 @@ import { Navbar } from "@/components/navbar";
 import { SidebarProvider } from "@/components/sidebar";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_app")({
-  component: AppLayout,
-});
-
 function AppLayout() {
   return (
     <SidebarProvider>
@@ -29,3 +25,7 @@ function AppLayout() {
     </SidebarProvider>
   );
 }
+
+export const Route = createFileRoute("/_app")({
+  component: AppLayout,
+});

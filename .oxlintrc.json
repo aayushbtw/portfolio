@@ -3,5 +3,8 @@
   "extends": [
     "./node_modules/ultracite/config/oxlint/core/.oxlintrc.json",
     "./node_modules/ultracite/config/oxlint/remix/.oxlintrc.json"
-  ]
+  ],
+  "rules": {
+    "eslint/func-style": ["error", "declaration"]
+  }
 }

@@ -84,15 +84,15 @@ function pageScripts(options: PageOptions) {
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Article",
-        headline: title,
-        description,
-        image: ogImage,
         author: {
           "@type": "Person",
           name: options.article.author,
         },
-        datePublished: options.article.publishedAt,
         dateModified: options.article.modifiedAt,
+        datePublished: options.article.publishedAt,
+        description,
+        headline: title,
+        image: ogImage,
       }),
       type: "application/ld+json",
     });

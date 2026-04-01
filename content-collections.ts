@@ -5,7 +5,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import rehypeExternalLinks from "rehype-external-links";
-import rehypePrettyCode from "rehype-pretty-code";
+import { rehypePrettyCode } from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { z } from "zod";
@@ -26,8 +26,8 @@ async function renderMdx(
     jsxs,
     rehypePlugins: [
       rehypeSlug,
-      [rehypeExternalLinks, { target: "_blank", rel: ["noopener"] }],
-      [rehypePrettyCode, { theme: "github-light", keepBackground: false }],
+      [rehypeExternalLinks, { rel: ["noopener"], target: "_blank" }],
+      [rehypePrettyCode, { keepBackground: false, theme: "github-light" }],
     ],
     remarkPlugins: [remarkGfm],
   });
@@ -46,23 +46,23 @@ const posts = defineCollection({
   include: "*.mdx",
   name: "posts",
   schema: z.object({
-    title: z.string(),
-    publishedAt: z.string(),
-    modifiedAt: z.string().optional(),
+    content: z.string(),
     description: z.string(),
     image: z.string().optional(),
-    content: z.string(),
+    modifiedAt: z.string().optional(),
+    publishedAt: z.string(),
+    title: z.string(),
   }),
   transform: async (doc, { cache }) => {
     const { html, headings } = await cache(doc.content, (content) =>
-      renderMdx(content, { Showcase, ShowcaseImage, ShowcaseCaption })
+      renderMdx(content, { Showcase, ShowcaseCaption, ShowcaseImage })
     );
 
     return {
       ...doc,
-      slug: doc._meta.path,
-      html,
       headings,
+      html,
+      slug: doc._meta.path,
     };
   },
 });

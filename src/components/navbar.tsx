@@ -1,5 +1,5 @@
-import { useHotkeySequences } from '@tanstack/react-hotkeys';
-import type { Hotkey } from '@tanstack/react-hotkeys';
+import { useHotkeySequences } from "@tanstack/react-hotkeys";
+import type { Hotkey } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
 

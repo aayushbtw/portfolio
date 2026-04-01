@@ -74,7 +74,7 @@ function toGrid(data: Activity[]): (Activity | undefined)[][] {
   const sorted = data.toSorted((a, b) => a.date.localeCompare(b.date));
   const firstDay = parseDate(sorted[0].date).getDay();
   const padded: (Activity | undefined)[] = [
-    ...new Array<undefined>(firstDay),
+    ...Array.from<undefined>({ length: firstDay }),
     ...sorted,
   ];
 
@@ -92,7 +92,7 @@ function getMonthLabels(
   const labels: { label: string; x: number }[] = [];
   let lastKey = "";
 
-  for (let i = 0; i < weeks.length; i++) {
+  for (let i = 0; i < weeks.length; i += 1) {
     const first = weeks[i].find(Boolean);
     if (!first) {
       continue;
@@ -138,7 +138,7 @@ function ContributionGraph({
 
   const onPointerEnter = useCallback(
     (e: React.PointerEvent<SVGRectElement>) => {
-      const {date} = e.currentTarget.dataset;
+      const { date } = e.currentTarget.dataset;
       if (!date) {
         return;
       }
