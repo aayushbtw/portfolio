@@ -9,7 +9,11 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { z } from "zod";
-import { Showcase, ShowcaseCaption, ShowcaseImage } from "./src/components/ui/showcase";
+import {
+  Showcase,
+  ShowcaseCaption,
+  ShowcaseImage,
+} from "./src/components/ui/showcase";
 
 async function renderMdx(
   content: string,
@@ -46,6 +50,7 @@ const posts = defineCollection({
     modifiedAt: z.string().optional(),
     description: z.string(),
     image: z.string().optional(),
+    content: z.string(),
   }),
   transform: async (doc, { cache }) => {
     const { html, headings } = await cache(doc.content, (content) =>

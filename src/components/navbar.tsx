@@ -69,14 +69,14 @@ export function Navbar() {
 
   return (
     <div>
-      <div className="sticky top-page-t hidden lg:block">
+      <aside className="sticky top-page-t hidden lg:block">
         <div
           className="fade-in animate-in"
           key={sidebarContent ? "custom" : "nav"}
         >
           {sidebarContent ?? <SideNavbar />}
         </div>
-      </div>
+      </aside>
 
       <div className="block lg:hidden">
         <FloatingNavbar />
