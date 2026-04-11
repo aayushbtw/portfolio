@@ -19,20 +19,18 @@ export interface PinnedRepo {
   url: string;
 }
 
-async function fetcher<T>(url: string): Promise<T> {
+const fetcher = async <T>(url: string): Promise<T> => {
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`octo: ${url} responded with ${res.status}`);
   }
   return res.json() as Promise<T>;
-}
+};
 
-export function fetchContributions(
+export const fetchContributions = (
   year: number
-): Promise<ContributionsResponse> {
-  return fetcher(`${BASE}/contributions/${USERNAME}?y=${year}`);
-}
+): Promise<ContributionsResponse> =>
+  fetcher(`${BASE}/contributions/${USERNAME}?y=${year}`);
 
-export function fetchPinnedRepos(): Promise<PinnedRepo[]> {
-  return fetcher(`${BASE}/pinned/${USERNAME}`);
-}
+export const fetchPinnedRepos = (): Promise<PinnedRepo[]> =>
+  fetcher(`${BASE}/pinned/${USERNAME}`);

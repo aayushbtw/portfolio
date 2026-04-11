@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ImageResponse } from "workers-og";
-
 import { config } from "@/lib/config";
 
-const OG_SIZE = { height: 630, width: 1200 };
+const OG_SIZE = { width: 1200, height: 630 };
 
 export const Route = createFileRoute("/api/og")({
   server: {
@@ -16,29 +15,29 @@ export const Route = createFileRoute("/api/og")({
           <div
             style={{
               background: "#ffffff",
+              width: "100%",
+              height: "100%",
               display: "flex",
               flexDirection: "column",
-              height: "100%",
               justifyContent: "space-between",
               padding: "80px",
-              width: "100%",
             }}
           >
             <div
               style={{
+                width: "48px",
+                height: "4px",
                 background: "#e06030",
                 borderRadius: "2px",
-                height: "4px",
-                width: "48px",
               }}
             />
 
             <div
               style={{
-                color: "#030712",
                 fontSize: "62px",
-                letterSpacing: "-1px",
+                color: "#030712",
                 lineHeight: 1.1,
+                letterSpacing: "-1px",
               }}
             >
               {title}
@@ -47,8 +46,8 @@ export const Route = createFileRoute("/api/og")({
           {
             ...OG_SIZE,
             headers: {
-              "Cache-Control": "public, max-age=31536000, immutable",
               "Content-Type": "image/png",
+              "Cache-Control": "public, max-age=31536000, immutable",
             },
           }
         );

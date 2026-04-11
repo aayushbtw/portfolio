@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-
 import { GithubGraph } from "@/components/github-graph";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
@@ -11,24 +10,22 @@ import { seo } from "@/lib/seo";
 const lastYear = new Date().getFullYear() - 1;
 
 export const Route = createFileRoute("/_app/")({
-  component: HomePage,
-
   loader: async () => {
     const [posts, contributions, projects] = await Promise.all([
       getAllPosts(5),
       fetchContributions(lastYear),
       fetchPinnedRepos(),
     ]);
-    return { contributions, posts, projects };
+    return { posts, contributions, projects };
   },
-
   head: () => ({
     ...seo({
+      title: config.name,
       description: config.description,
       path: "/",
-      title: config.name,
     }),
   }),
+  component: HomePage,
 });
 
 function HomePage() {

@@ -1,10 +1,7 @@
-import { useHotkeySequences } from "@tanstack/react-hotkeys";
-import type { Hotkey } from "@tanstack/react-hotkeys";
+import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
-
 import { NavList, NavListIndicator } from "@/components/nav-list";
-
 import { useSidebarContent } from "./sidebar";
 
 const links: {
@@ -12,9 +9,9 @@ const links: {
   to: LinkProps["to"];
   key: Hotkey;
 }[] = [
-  { key: "H", name: "Home", to: "/" },
-  { key: "P", name: "Projects", to: "/projects" },
-  { key: "W", name: "Writings", to: "/writings" },
+  { name: "Home", to: "/", key: "H" },
+  { name: "Projects", to: "/projects", key: "P" },
+  { name: "Writings", to: "/writings", key: "W" },
 ];
 
 function SideNavbar() {
@@ -65,21 +62,21 @@ export function Navbar() {
 
   useHotkeySequences(
     links.map((link) => ({
-      callback: () => navigate({ to: link.to }),
       sequence: ["G", link.key],
+      callback: () => navigate({ to: link.to }),
     }))
   );
 
   return (
     <div>
-      <aside className="sticky top-page-t hidden lg:block">
+      <div className="sticky top-page-t hidden lg:block">
         <div
           className="fade-in animate-in"
           key={sidebarContent ? "custom" : "nav"}
         >
           {sidebarContent ?? <SideNavbar />}
         </div>
-      </aside>
+      </div>
 
       <div className="block lg:hidden">
         <FloatingNavbar />

@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "deploy": "pnpm build && wrangler deploy",
     "cf-typegen": "wrangler types",
-    "check": "ultracite check",
-    "fix": "ultracite fix"
+    "fix": "ultracite fix",
+    "check": "ultracite check"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -30,6 +30,7 @@
     "workers-og": "^0.0.27"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.7",
     "@cloudflare/vite-plugin": "^1.30.1",
     "@content-collections/core": "^0.14.3",
     "@content-collections/vite": "^0.2.9",
@@ -43,14 +44,12 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "oxfmt": "^0.43.0",
-    "oxlint": "^1.58.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.2.2",
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.9.3",
-    "ultracite": "7.4.2",
+    "ultracite": "7.3.2",
     "vite": "^8.0.3",
     "wrangler": "^4.77.0",
     "zod": "^4.3.6"

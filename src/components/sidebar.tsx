@@ -1,14 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const SidebarContext = createContext<{
   content: ReactNode;
   setContent: (node: ReactNode) => void;
-}>({
-  content: null,
-  // oxlint-disable-next-line eslint/no-empty-function -- context default
-  setContent: () => {},
-});
+}>({ content: null, setContent: () => undefined });
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<ReactNode>(null);
@@ -27,9 +28,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
   const { setContent } = useContext(SidebarContext);
   useEffect(() => {
     setContent(children);
-    return () => {
-      setContent(null);
-    };
+    return () => setContent(null);
   }, [children, setContent]);
   return null;
 }

@@ -1,7 +1,6 @@
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
-
 import { Sidebar } from "@/components/sidebar";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
@@ -9,8 +8,6 @@ import { seo } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  component: WritingPage,
-
   loader: ({ params }) => {
     const post = allPosts.find((p) => p.slug === params.slug);
     if (!post) {
@@ -18,25 +15,26 @@ export const Route = createFileRoute("/_app/writings/$slug")({
     }
     return post;
   },
-
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};
     }
     return {
       ...seo({
-        article: {
-          author: config.name,
-          modifiedAt: loaderData.modifiedAt ?? loaderData.publishedAt,
-          publishedAt: loaderData.publishedAt,
-        },
+        title: loaderData.title,
         description: loaderData.description,
         path: `/writings/${loaderData.slug}`,
-        title: loaderData.title,
         type: "article",
+        article: {
+          author: config.name,
+          publishedAt: loaderData.publishedAt,
+          modifiedAt: loaderData.modifiedAt ?? loaderData.publishedAt,
+        },
       }),
     };
   },
+
+  component: WritingPage,
 });
 
 function WritingPage() {
@@ -46,7 +44,7 @@ function WritingPage() {
     <section>
       <h1 className="mb-px">{post.title}</h1>
       <time className="text-fg-3 text-sm">{formatDate(post.publishedAt)}</time>
-
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: trusted mdx output */}
       <article dangerouslySetInnerHTML={{ __html: post.html }} />
 
       {post.headings.length > 0 && (

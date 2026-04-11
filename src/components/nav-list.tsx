@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-
 import { cn } from "@/lib/utils";
 
 export function NavList({
@@ -27,7 +26,11 @@ export function NavList({
   );
 }
 
-export function NavListIndicator({ className }: { className?: string }) {
+export function NavListIndicator({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <span
       aria-hidden="true"

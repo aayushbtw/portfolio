@@ -4,18 +4,19 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-
 import { config } from "./src/lib/config";
 
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
+  server: { port: 3000 },
   plugins: [
     contentCollections(),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tailwindcss(),
     tanstackStart({
       prerender: {
-        crawlLinks: true,
         enabled: true,
+        crawlLinks: true, // Discovers all linkable pages
       },
       sitemap: {
         enabled: true,
@@ -24,6 +25,4 @@ export default defineConfig({
     }),
     viteReact(),
   ],
-  resolve: { tsconfigPaths: true },
-  server: { port: 3000 },
 });

@@ -5,10 +5,10 @@ function ListPosts({ posts }: { posts: Post[] }) {
   const grouped = posts.map((post) => {
     const d = new Date(`${post.publishedAt.split("T")[0]}T00:00:00`);
     return {
-      date: `${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}`,
+      year: d.getFullYear(),
       slug: post.slug,
       title: post.title,
-      year: d.getFullYear(),
+      date: `${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}`,
     };
   });
 
