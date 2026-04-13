@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 const LAYER_COUNT = 8;
-const MAX_BLUR = 10; // px
+const MAX_BLUR = 8; // px
 const STEP = 100 / LAYER_COUNT;
 
 const blurLayers = Array.from({ length: LAYER_COUNT }, (_, i) => {
@@ -38,7 +38,7 @@ export function ProgressiveBlur({
         className
       )}
     >
-      <div className="relative h-20 overflow-hidden">
+      <div className="relative h-12 overflow-hidden">
         {blurLayers.map(({ blur, stops, zIndex }) => {
           const maskImage = `linear-gradient(${direction}, ${stops.join(", ")})`;
           return (
