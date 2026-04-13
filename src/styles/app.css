@@ -12,9 +12,11 @@
 
   --color-bg-1: oklch(from var(--color-white) l c h);
   --color-bg-2: oklch(from var(--color-gray-100) l c h);
+
   --color-fg-1: oklch(from var(--color-gray-950) l c h);
-  --color-fg-2: oklch(from var(--color-gray-800) l c h);
-  --color-fg-3: oklch(from var(--color-gray-500) l c h);
+  --color-fg-2: oklch(from var(--color-gray-600) l c h);
+  --color-fg-3: oklch(0.6 0.02 261.79);
+
   --color-border: oklch(from var(--color-gray-200) l c h);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
@@ -46,11 +48,6 @@
   }
   body {
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
-    @apply text-[0.9375rem] tracking-[-.005rem] leading-[1.45rem] font-[450];
-  }
-  a[target="_blank"] {
-    cursor:
-      url("/cursor-external.svg") 17 7,
-      alias;
+    @apply text-sm -tracking-[0.15px] leading-[22.75px] font-[450];
   }
 }

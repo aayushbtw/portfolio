@@ -13,7 +13,7 @@ export function NavList({
   track?: boolean;
 }) {
   return (
-    <ul className={cn("relative flex flex-col gap-0.5 text-sm", className)}>
+    <ul className={cn("relative flex flex-col gap-0.5", className)}>
       {track && (
         <span
           aria-hidden="true"
@@ -26,11 +26,7 @@ export function NavList({
   );
 }
 
-export function NavListIndicator({
-  className,
-}: {
-  className?: string;
-}) {
+export function NavListIndicator({ className }: { className?: string }) {
   return (
     <span
       aria-hidden="true"

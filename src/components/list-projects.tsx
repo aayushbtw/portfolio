@@ -4,25 +4,31 @@ import type { PinnedRepo } from "@/lib/octo";
 
 function ListProjects({ projects }: { projects: PinnedRepo[] }) {
   return (
-    <ul className="group">
+    <ul className="leading-5!">
       {projects.map((item) => (
-        <li className="border-border border-t first:border-t-0" key={item.repo}>
+        <li
+          className="group/a -mx-3 rounded-md py-1.5 pr-4 pl-3 text-fg-3 transition-colors duration-150 hover:bg-bg-2"
+          key={item.repo}
+        >
           <a
-            className="flex items-center gap-4 py-2.5 text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+            className="flex items-center gap-4"
             data-unstyled
             href={`${item.url}?utm_source=${config.domain}`}
             rel="noopener"
             target="_blank"
           >
-            <span className="w-22 text-fg-1">{item.repo}</span>
-            <span className="max-w-130 flex-1 overflow-hidden">
-              {item.description}
-            </span>
-            <span className="ml-auto inline-flex items-center gap-1 text-fg-3/50 tabular-nums [&_svg]:size-2.5">
-              <IconStarFilled />
-              {item.stars}
-            </span>
-            <IconArrowUpRight className="size-4 text-fg-3/50" />
+            <div className="flex flex-col">
+              <h6 className="my-0 text-fg-2 capitalize">{item.repo}</h6>
+              <p className="my-0 overflow-hidden">{item.description}</p>
+            </div>
+
+            <div className="ml-auto opacity-0 transition-opacity duration-150 group-hover/a:opacity-100">
+              <div className="inline-flex items-center gap-1 text-fg-3/50 tabular-nums">
+                <IconStarFilled className="size-2.5" />
+                {item.stars}
+              </div>
+            </div>
+            <IconArrowUpRight className="size-4 text-fg-3/50 opacity-0 transition-opacity duration-150 group-hover/a:opacity-100" />
           </a>
         </li>
       ))}

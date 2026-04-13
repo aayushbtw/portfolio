@@ -13,7 +13,7 @@ function ListPosts({ posts }: { posts: Post[] }) {
   });
 
   return (
-    <ul className="group">
+    <ul className="group/ul">
       {grouped.map((post, i) => {
         const showYear = i === 0 || grouped[i - 1].year !== post.year;
         return (
@@ -22,7 +22,7 @@ function ListPosts({ posts }: { posts: Post[] }) {
             key={post.slug}
           >
             <Link
-              className="flex items-center gap-4 py-2.5 text-fg-3 text-sm transition-opacity hover:opacity-100! group-hover:opacity-40"
+              className="flex items-center gap-4 py-2.5 text-fg-3 transition-opacity hover:opacity-100 group-hover/ul:opacity-40"
               data-unstyled
               params={{ slug: post.slug }}
               to="/writings/$slug"
@@ -30,7 +30,7 @@ function ListPosts({ posts }: { posts: Post[] }) {
               <span className="w-12 tabular-nums">
                 {showYear ? post.year : ""}
               </span>
-              <span className="flex-1 text-fg-1">{post.title}</span>
+              <span className="flex-1 text-fg-2">{post.title}</span>
               <time className="tabular-nums">{post.date}</time>
             </Link>
           </li>

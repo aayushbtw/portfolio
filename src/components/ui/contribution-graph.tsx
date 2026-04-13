@@ -161,7 +161,7 @@ function ContributionGraph({
   }
 
   return (
-    <div className="flex w-max max-w-full flex-col gap-2 text-sm">
+    <div className="flex w-max max-w-full flex-col gap-2">
       <div className="no-scrollbar max-w-full overflow-x-auto overflow-y-hidden">
         <svg
           aria-hidden="true"
