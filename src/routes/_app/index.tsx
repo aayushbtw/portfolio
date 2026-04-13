@@ -34,9 +34,10 @@ function HomePage() {
   return (
     <>
       <section>
-        <h1>{config.name}</h1>
-        <p>
-          {config.description} Full-stack engineer at{" "}
+        <h1 className="mb-4">{config.name}</h1>
+        <p className="text-fg-3">{config.description}</p>
+        <p className="text-fg-3">
+          Full-stack engineer at{" "}
           <a
             href={`https://www.netision.com/?utm_source=${config.domain}`}
             rel="noopener"
@@ -48,18 +49,22 @@ function HomePage() {
         </p>
       </section>
 
-      <section>
+      <section className="mt-6">
         <GithubGraph data={contributions} />
       </section>
 
-      <section>
-        <h2 data-subheading>Projects</h2>
-        <ListProjects projects={projects} />
+      <section className="mt-6">
+        <h2 className="text-fg-3 text-xs uppercase tracking-widest">
+          Projects
+        </h2>
+        <ListProjects className="mt-2" projects={projects} />
       </section>
 
-      <section>
-        <h2 data-subheading>Writings</h2>
-        <ListPosts posts={posts} />
+      <section className="mt-6">
+        <h2 className="text-fg-3 text-xs uppercase tracking-widest">
+          Writings
+        </h2>
+        <ListPosts className="mt-2" posts={posts} />
       </section>
     </>
   );

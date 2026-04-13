@@ -44,20 +44,23 @@ function WritingPage() {
     <section>
       <h1 className="mb-px">{post.title}</h1>
       <time className="text-fg-3">{formatDate(post.publishedAt)}</time>
-      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: trusted mdx output */}
-      <article dangerouslySetInnerHTML={{ __html: post.html }} />
+
+      <article
+        className="prose"
+        dangerouslySetInnerHTML={{ __html: post.html }}
+      />
 
       {post.headings.length > 0 && (
         <Sidebar>
           <nav>
             <Link
-              className="text-fg-3/80 transition-colors duration-200 hover:text-fg-2"
+              className="text-fg-3/80 transition-colors duration-150 hover:text-fg-2"
               to="/writings"
             >
               <IconArrowBackUp className="size-4" />
             </Link>
 
-            <p className="mb-2 font-medium text-fg-2">On this page</p>
+            <p className="mt-1.5 mb-2 font-medium text-fg-2">On this page</p>
 
             <TableOfContents headings={post.headings} />
           </nav>

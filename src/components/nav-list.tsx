@@ -5,21 +5,13 @@ export function NavList({
   children,
   className,
   indicator,
-  track = false,
 }: {
   children: ReactNode;
   className?: string;
   indicator: ReactNode;
-  track?: boolean;
 }) {
   return (
     <ul className={cn("relative flex flex-col gap-0.5", className)}>
-      {track && (
-        <span
-          aria-hidden="true"
-          className="absolute inset-y-0 left-0 w-0.5 rounded-full bg-border"
-        />
-      )}
       {indicator}
       {children}
     </ul>

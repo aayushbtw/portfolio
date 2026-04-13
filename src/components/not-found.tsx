@@ -12,7 +12,6 @@ export function NotFound() {
         </p>
         <Link
           className="mt-5 rounded-xl px-4 py-1 outline transition-colors duration-300 hover:text-fg-1"
-          data-unstyled
           to="/"
         >
           Go Home

@@ -24,7 +24,7 @@ function SideNavbar() {
       >
         {links.map((item) => (
           <li key={item.name}>
-            <Link className="nav-link" data-unstyled to={item.to}>
+            <Link className="nav-link" to={item.to}>
               {item.name}
             </Link>
           </li>
@@ -42,7 +42,6 @@ function FloatingNavbar() {
           {links.map((item) => (
             <Link
               className="group relative rounded-full px-4 py-1.5 font-medium text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1"
-              data-unstyled
               key={item.name}
               to={item.to}
             >

@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import type { Post } from "content-collections";
+import { cn } from "@/lib/utils";
 
-function ListPosts({ posts }: { posts: Post[] }) {
+function ListPosts({ posts, className }: { posts: Post[]; className: string }) {
   const grouped = posts.map((post) => {
     const d = new Date(`${post.publishedAt.split("T")[0]}T00:00:00`);
     return {
@@ -13,24 +14,23 @@ function ListPosts({ posts }: { posts: Post[] }) {
   });
 
   return (
-    <ul className="group/ul">
+    <ul className={cn("group/ul text-fg-3 leading-5", className)}>
       {grouped.map((post, i) => {
         const showYear = i === 0 || grouped[i - 1].year !== post.year;
         return (
           <li
-            className="border-border border-t first:border-t-0"
+            className="border-border border-t py-1.5 transition-opacity duration-150 first:border-t-0 hover:opacity-100 group-hover/ul:opacity-40"
             key={post.slug}
           >
             <Link
-              className="flex items-center gap-4 py-2.5 text-fg-3 transition-opacity hover:opacity-100 group-hover/ul:opacity-40"
-              data-unstyled
+              className="flex items-center gap-4"
               params={{ slug: post.slug }}
               to="/writings/$slug"
             >
               <span className="w-12 tabular-nums">
                 {showYear ? post.year : ""}
               </span>
-              <span className="flex-1 text-fg-2">{post.title}</span>
+              <h6 className="flex-1 text-fg-2">{post.title}</h6>
               <time className="tabular-nums">{post.date}</time>
             </Link>
           </li>

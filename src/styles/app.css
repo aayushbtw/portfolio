@@ -39,7 +39,7 @@
 }
 
 @utility nav-link {
-  @apply block py-px pl-3 text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
+  @apply leading-5 block pl-3 text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
 @layer base {

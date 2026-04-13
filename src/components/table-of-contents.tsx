@@ -12,9 +12,8 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
   return (
     <NavList
       indicator={
-        <NavListIndicator className="top-[anchor(top)] h-[anchor-size(height)] w-0.5" />
+        <NavListIndicator className="top-[anchor(center)] h-2 w-0.5 -translate-y-1/2" />
       }
-      track
     >
       {headings.map((h) => {
         const isActive = activeId === h.id;
@@ -23,7 +22,6 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
             <a
               className="nav-link"
               data-status={isActive ? "active" : undefined}
-              data-unstyled
               href={`#${h.id}`}
             >
               {h.text}

@@ -1,50 +1,47 @@
-@layer base {
-  section,
-  article {
+@layer components {
+  .prose {
     @apply my-6 balance-spacing;
-  }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-medium text-fg-1 my-4 balance-spacing text-balance;
-    @apply data-subheading:font-normal data-subheading:text-fg-3 data-subheading:text-xs data-subheading:uppercase data-subheading:tracking-widest;
-    &:has(+ figure) {
-      @apply mb-2;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply font-medium text-fg-1 my-4 balance-spacing text-balance;
+      &:has(+ figure) {
+        @apply mb-2;
+      }
     }
-  }
 
-  p {
-    @apply text-fg-3 balance-spacing my-4 text-pretty;
-  }
+    p {
+      @apply text-fg-3 balance-spacing my-4 text-pretty;
+    }
 
-  a:not([data-unstyled]) {
-    @apply text-fg-2 transition-colors duration-200 underline-offset-3 underline decoration-brand/50 hover:decoration-brand ease-[ease];
-  }
+    blockquote {
+      padding-inline-start: 1em;
+      border-inline-start-width: 0.25rem;
+      @apply text-fg-3 balance-spacing my-4;
+    }
 
-  blockquote {
-    padding-inline-start: 1em;
-    border-inline-start-width: 0.25rem;
-    @apply text-fg-3 balance-spacing my-4;
-  }
+    code {
+      @apply bg-bg-2 text-xs py-0.5 px-1.5 rounded-md outline whitespace-nowrap;
+    }
 
-  code {
-    @apply bg-bg-2 text-xs py-0.5 px-1.5 rounded-md outline whitespace-nowrap;
-  }
-  figure code {
-    counter-reset: line;
-    @apply py-2 balance-spacing bg-bg-2 font-mono rounded-2xl leading-6 overflow-x-auto;
-  }
-  figure code [data-line] {
-    @apply px-4;
-  }
-  figure code [data-line]:before {
-    content: counter(line);
-    counter-increment: line;
-    @apply w-4 mr-4 text-right inline-block text-fg-3;
+    figure code {
+      counter-reset: line;
+      @apply py-2 balance-spacing bg-bg-2 font-mono rounded-2xl leading-6 overflow-x-auto;
+    }
+
+    figure code [data-line] {
+      @apply px-4;
+    }
+
+    figure code [data-line]:before {
+      content: counter(line);
+      counter-increment: line;
+      @apply w-4 mr-4 text-right inline-block text-fg-3;
+    }
   }
 }
 
