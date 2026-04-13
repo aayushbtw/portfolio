@@ -1,4 +1,9 @@
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  HeadContent,
+  Link,
+  Scripts,
+} from "@tanstack/react-router";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
 import appCss from "@/styles/app.css?url";

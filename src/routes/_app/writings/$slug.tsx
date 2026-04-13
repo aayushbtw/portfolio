@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: required for markdown */
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
