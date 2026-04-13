@@ -2,7 +2,13 @@ import { Link } from "@tanstack/react-router";
 import type { Post } from "content-collections";
 import { cn } from "@/lib/utils";
 
-function ListPosts({ posts, className }: { posts: Post[]; className: string }) {
+function ListPosts({
+  posts,
+  className,
+}: {
+  posts: Post[];
+  className?: string;
+}) {
   const grouped = posts.map((post) => {
     const d = new Date(`${post.publishedAt.split("T")[0]}T00:00:00`);
     return {

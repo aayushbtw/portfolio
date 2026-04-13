@@ -20,8 +20,8 @@ function ProjectsPage() {
 
   return (
     <section>
-      <h1 data-subheading>{title}</h1>
-      <ListProjects projects={projects} />
+      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{title}</h1>
+      <ListProjects className="mt-2" projects={projects} />
     </section>
   );
 }

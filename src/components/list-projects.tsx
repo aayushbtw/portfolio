@@ -8,7 +8,7 @@ function ListProjects({
   className,
 }: {
   projects: PinnedRepo[];
-  className: string;
+  className?: string;
 }) {
   return (
     <ul className={cn("text-fg-3 leading-5", className)}>

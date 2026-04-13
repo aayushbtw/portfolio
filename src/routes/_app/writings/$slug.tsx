@@ -42,7 +42,7 @@ function WritingPage() {
 
   return (
     <section>
-      <h1 className="mb-px">{post.title}</h1>
+      <h1>{post.title}</h1>
       <time className="text-fg-3">{formatDate(post.publishedAt)}</time>
 
       <article
