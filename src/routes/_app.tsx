@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Navbar } from "@/components/navbar";
+import { ProgressiveBlur } from "@/components/progressive-blur";
 import { SidebarProvider } from "@/components/sidebar";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/_app")({
 function AppLayout() {
   return (
     <SidebarProvider>
+      <ProgressiveBlur className="fixed z-30" position="top" />
       <div
         className={cn(
           "px-4 pt-8 pb-floating-nav-inset sm:px-6 lg:pt-page-t lg:pb-page-t",
@@ -25,6 +27,7 @@ function AppLayout() {
 
         <div />
       </div>
+      <ProgressiveBlur className="fixed z-30" position="bottom" />
     </SidebarProvider>
   );
 }
