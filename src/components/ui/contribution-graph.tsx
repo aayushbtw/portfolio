@@ -172,7 +172,12 @@ function ContributionGraph({
         >
           <g className="fill-current">
             {months.map(({ label, x }) => (
-              <text dominantBaseline="hanging" key={x} x={x}>
+              <text
+                className="text-fg-3 text-xs"
+                dominantBaseline="hanging"
+                key={x}
+                x={x}
+              >
                 {label}
               </text>
             ))}
@@ -217,7 +222,7 @@ function ContributionGraph({
           </TooltipPrimitive.Portal>
         </TooltipPrimitive.Root>
       </div>
-      <p className="my-0!">
+      <p className="text-fg-3 leading-5">
         {total.toLocaleString("en")} contributions in {year}
       </p>
     </div>
