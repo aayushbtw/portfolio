@@ -8,7 +8,7 @@
     h4,
     h5,
     h6 {
-      @apply font-medium text-fg-1 my-4 balance-spacing text-balance;
+      @apply font-medium text-fg-1 my-4 balance-spacing text-balance scroll-mt-6;
       &:has(+ figure) {
         @apply mb-2;
       }
