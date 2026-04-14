@@ -1,8 +1,7 @@
 /** biome-ignore-all lint/security/noDangerouslySetInnerHtml: required for markdown */
-import { IconArrowBackUp } from "@tabler/icons-react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
-import { Sidebar } from "@/components/sidebar";
+import { RightColumn } from "@/components/layout-provider";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
@@ -52,20 +51,15 @@ function WritingPage() {
       />
 
       {post.headings.length > 0 && (
-        <Sidebar>
-          <nav>
-            <Link
-              className="text-fg-3/80 transition-colors duration-150 hover:text-fg-2"
-              to="/writings"
-            >
-              <IconArrowBackUp className="size-4" />
-            </Link>
+        <RightColumn>
+          <aside className="sticky top-page-t hidden lg:block">
+            <nav>
+              <p className="mt-1.5 mb-2 font-medium text-fg-2">On this page</p>
 
-            <p className="mt-1.5 mb-2 font-medium text-fg-2">On this page</p>
-
-            <TableOfContents headings={post.headings} />
-          </nav>
-        </Sidebar>
+              <TableOfContents headings={post.headings} />
+            </nav>
+          </aside>
+        </RightColumn>
       )}
     </section>
   );

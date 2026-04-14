@@ -4,6 +4,8 @@ import {
   Link,
   Scripts,
 } from "@tanstack/react-router";
+import { LayoutProvider } from "@/components/layout-provider";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
 import appCss from "@/styles/app.css?url";
@@ -56,7 +58,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="min-h-screen">
-        {children}
+        <LayoutProvider>
+          <ProgressiveBlur className="fixed z-30" position="top" />
+          {children}
+          <ProgressiveBlur className="fixed z-30" position="bottom" />
+        </LayoutProvider>
         <Scripts />
       </body>
     </html>

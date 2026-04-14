@@ -1,5 +1,5 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
-import { NavList, NavListIndicator } from "@/components/nav-list";
+import { NavList } from "@/components/ui/nav-list";
 
 interface Heading {
   id: string;
@@ -10,11 +10,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
   const activeId = useActiveHeading(headings);
 
   return (
-    <NavList
-      indicator={
-        <NavListIndicator className="top-[anchor(center)] h-2 w-0.5 -translate-y-1/2" />
-      }
-    >
+    <NavList>
       {headings.map((h) => {
         const isActive = activeId === h.id;
         return (
