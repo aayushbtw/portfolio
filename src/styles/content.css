@@ -18,6 +18,10 @@
       @apply text-fg-3 balance-spacing my-4 text-pretty;
     }
 
+    a {
+      @apply animated-link;
+    }
+
     blockquote {
       padding-inline-start: 1em;
       border-inline-start-width: 0.25rem;
