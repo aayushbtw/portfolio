@@ -7,10 +7,7 @@ export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
       GET: () => {
-        const robots = `User-agent: *
-Allow: /
-
-Sitemap: ${config.domain}/sitemap.xml`;
+        const robots = `Sitemap: ${config.domain}/sitemap.xml`;
 
         return new Response(robots, {
           headers: {
