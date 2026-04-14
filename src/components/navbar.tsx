@@ -15,22 +15,6 @@ const links: {
   { name: "Skills", to: "/skills", key: "S" },
 ];
 
-function SideNavbar({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <nav>
-      <NavList>
-        {links.map((item) => (
-          <li key={item.name}>
-            <Link className="nav-link" onClick={onNavigate} to={item.to}>
-              {item.name}
-            </Link>
-          </li>
-        ))}
-      </NavList>
-    </nav>
-  );
-}
-
 export function Navbar() {
   const navigate = useNavigate();
   const { trigger } = useWebHaptics({ debug: true });
@@ -49,7 +33,17 @@ export function Navbar() {
 
   return (
     <aside className="sticky top-page-t hidden lg:block">
-      <SideNavbar onNavigate={triggerHaptic} />
+      <nav>
+        <NavList>
+          {links.map((item) => (
+            <li key={item.name}>
+              <Link className="nav-link" onClick={triggerHaptic} to={item.to}>
+                {item.name}
+              </Link>
+            </li>
+          ))}
+        </NavList>
+      </nav>
     </aside>
   );
 }
