@@ -19,6 +19,7 @@ const HEAD = seo({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "robots", content: "index, follow" },
+      { name: "theme-color", content: "#ffffff" },
       { property: "og:locale", content: "en_US" },
     ],
     links: [
