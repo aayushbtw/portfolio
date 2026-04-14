@@ -8,5 +8,8 @@
   "vars": { "NODE_ENV": "production" },
   "workers_dev": false,
   "preview_urls": false,
-  "routes": [{ "pattern": "aayush.page", "custom_domain": true }]
+  "routes": [
+    { "pattern": "aayush.page", "custom_domain": true },
+    { "pattern": "aayush.cv", "custom_domain": true }
+  ]
 }
