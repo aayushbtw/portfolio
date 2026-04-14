@@ -2,7 +2,7 @@ import type { Activity } from "@/components/ui/contribution-graph";
 import { config } from "@/lib/config";
 
 const USERNAME = config.socials.github;
-const BASE = "https://octo.aayush.page";
+const BASE = "https://octo.aayush.cv";
 
 export interface ContributionsResponse {
   contributions: Activity[];
