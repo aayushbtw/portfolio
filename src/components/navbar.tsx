@@ -1,6 +1,7 @@
 import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useWebHaptics } from "web-haptics/react";
 import { NavList } from "@/components/ui/nav-list";
 
 const links: {
@@ -14,13 +15,13 @@ const links: {
   { name: "Skills", to: "/skills", key: "S" },
 ];
 
-function SideNavbar() {
+function SideNavbar({ onNavigate }: { onNavigate: () => void }) {
   return (
     <nav>
       <NavList>
         {links.map((item) => (
           <li key={item.name}>
-            <Link className="nav-link" to={item.to}>
+            <Link className="nav-link" onClick={onNavigate} to={item.to}>
               {item.name}
             </Link>
           </li>
@@ -32,17 +33,23 @@ function SideNavbar() {
 
 export function Navbar() {
   const navigate = useNavigate();
+  const { trigger } = useWebHaptics({ debug: true });
+
+  const triggerHaptic = () => trigger("rigid");
 
   useHotkeySequences(
     links.map((link) => ({
       sequence: ["G", link.key],
-      callback: () => navigate({ to: link.to }),
+      callback: () => {
+        triggerHaptic();
+        navigate({ to: link.to });
+      },
     }))
   );
 
   return (
     <aside className="sticky top-page-t hidden lg:block">
-      <SideNavbar />
+      <SideNavbar onNavigate={triggerHaptic} />
     </aside>
   );
 }
