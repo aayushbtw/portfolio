@@ -207,22 +207,24 @@ function ContributionGraph({
             })
           )}
         </svg>
-        <TooltipPrimitive.Root open={open}>
-          <TooltipPrimitive.Portal>
-            <TooltipPrimitive.Positioner
-              anchor={anchorRef}
-              className="isolate z-50"
-              side="top"
-              sideOffset={4}
-            >
-              <TooltipPrimitive.Popup className="rounded-lg bg-bg-2 px-2 py-0.5 font-medium text-fg-3 text-xs outline">
-                {tooltipText}
-              </TooltipPrimitive.Popup>
-            </TooltipPrimitive.Positioner>
-          </TooltipPrimitive.Portal>
-        </TooltipPrimitive.Root>
       </div>
-      <p className="text-fg-3 leading-5">
+
+      <TooltipPrimitive.Root open={open}>
+        <TooltipPrimitive.Portal>
+          <TooltipPrimitive.Positioner
+            anchor={anchorRef}
+            className="isolate z-50"
+            side="top"
+            sideOffset={4}
+          >
+            <TooltipPrimitive.Popup className="rounded-lg border border-fg-1/10 bg-fg-1 px-2 py-0.5 font-medium text-bg-1 text-xs">
+              {tooltipText}
+            </TooltipPrimitive.Popup>
+          </TooltipPrimitive.Positioner>
+        </TooltipPrimitive.Portal>
+      </TooltipPrimitive.Root>
+
+      <p className="text-fg-3 text-sm leading-5">
         {total.toLocaleString("en")} contributions in {year}
       </p>
     </div>
