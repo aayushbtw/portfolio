@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
-import { useHaptics } from "@/lib/haptics";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
 import { ContributionGraph } from "@/components/ui/contribution-graph";
 import { getAllPosts } from "@/lib/blog";
 import { config } from "@/lib/config";
+import { useHaptics } from "@/lib/haptics";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
 import { seo } from "@/lib/seo";
 
