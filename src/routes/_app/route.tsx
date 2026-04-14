@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Navbar } from "@/components/navbar";
-import { ProgressiveBlur } from "@/components/progressive-blur";
 import { SidebarProvider } from "@/components/sidebar";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app")({
