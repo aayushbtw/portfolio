@@ -19,7 +19,7 @@ export function Navbar() {
   const navigate = useNavigate();
   const { trigger } = useWebHaptics({ debug: true });
 
-  const triggerHaptic = () => trigger("rigid");
+  const triggerHaptic = () => trigger([{ duration: 8 }], { intensity: 1 });
 
   useHotkeySequences(
     links.map((link) => ({
