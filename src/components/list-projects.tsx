@@ -14,7 +14,7 @@ function ListProjects({
     <ul className={cn("text-fg-3 leading-5", className)}>
       {projects.map((item) => (
         <li
-          className="group/a -mx-3 rounded-md py-1.5 pr-4 pl-3 transition-colors duration-150 hover:bg-bg-2"
+          className="group/a -mx-3 rounded-lg py-1.5 pr-4 pl-3 transition-colors duration-150 hover:bg-bg-2"
           key={item.repo}
         >
           <a
