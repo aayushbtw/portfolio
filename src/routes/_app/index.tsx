@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
 import { ContributionGraph } from "@/components/ui/contribution-graph";
@@ -39,10 +40,18 @@ function HomePage() {
         <p className="text-fg-3">
           Full-stack engineer at{" "}
           <a
+            className="animated-link"
             href={`https://www.netision.com/?utm_source=${config.domain}`}
             rel="noopener"
             target="_blank"
           >
+            <Image
+              alt="netision"
+              className="mr-1 mb-0.5 inline-block size-4 rounded"
+              height={32}
+              src="netision.svg"
+              width={32}
+            />
             Netision
           </a>
           , building a multi-agent platform.

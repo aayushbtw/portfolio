@@ -42,6 +42,10 @@
   @apply leading-5 block pl-3 text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
+@utility animated-link {
+  @apply font-medium text-fg-2 underline decoration-gray-300 underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
+}
+
 @layer base {
   * {
     @apply border-border outline-border;
