@@ -12,6 +12,7 @@ const links: {
   { name: "Home", to: "/", key: "H" },
   { name: "Projects", to: "/projects", key: "P" },
   { name: "Writings", to: "/writings", key: "W" },
+  { name: "Skills", to: "/skills", key: "S" },
 ];
 
 function SideNavbar() {
