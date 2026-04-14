@@ -22,7 +22,7 @@ function click(ctx: AudioContext) {
   filter.Q.value = 3;
 
   const gain = ctx.createGain();
-  gain.gain.value = 1.0;
+  gain.gain.value = 1.5;
 
   source.connect(filter);
   filter.connect(gain);
@@ -48,7 +48,7 @@ function tick(ctx: AudioContext) {
   osc.frequency.exponentialRampToValueAtTime(300, t + 0.015);
 
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.06, t);
+  gain.gain.setValueAtTime(0.35, t);
   gain.gain.exponentialRampToValueAtTime(0.001, t + 0.018);
 
   osc.connect(gain);
