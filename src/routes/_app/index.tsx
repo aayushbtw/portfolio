@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
+import { useHaptics } from "@/lib/haptics";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
 import { ContributionGraph } from "@/components/ui/contribution-graph";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/_app/")({
 
 function HomePage() {
   const { posts, contributions, projects } = Route.useLoaderData();
+  const { trigger } = useHaptics();
 
   return (
     <>
@@ -42,6 +44,7 @@ function HomePage() {
           <a
             className="animated-link"
             href={`https://www.netision.com/?utm_source=${config.domain}`}
+            onMouseEnter={() => trigger("tick")}
             rel="noopener"
             target="_blank"
           >
