@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GithubGraph } from "@/components/github-graph";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
+import { ContributionGraph } from "@/components/ui/contribution-graph";
 import { getAllPosts } from "@/lib/blog";
 import { config } from "@/lib/config";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
@@ -50,7 +50,11 @@ function HomePage() {
       </section>
 
       <section className="mt-6">
-        <GithubGraph data={contributions} />
+        <ContributionGraph
+          data={contributions.contributions}
+          total={contributions.total}
+          year={contributions.year}
+        />
       </section>
 
       <section className="mt-6">
