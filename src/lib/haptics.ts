@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 function click(ctx: AudioContext) {
   if (ctx.state === "suspended") {
@@ -64,19 +64,10 @@ type Sound = keyof typeof sounds;
 export function useHaptics() {
   const ctx = useRef<AudioContext | null>(null);
 
-  useEffect(() => {
-    ctx.current = new AudioContext();
-    return () => {
-      ctx.current?.close();
-      ctx.current = null;
-    };
+  const trigger = useCallback((sound: Sound) => {
+    ctx.current ??= new AudioContext();
+    sounds[sound](ctx.current);
   }, []);
 
-  return {
-    trigger: (sound: Sound) => {
-      if (ctx.current) {
-        sounds[sound](ctx.current);
-      }
-    },
-  };
+  return { trigger };
 }
