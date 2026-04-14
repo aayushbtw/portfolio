@@ -1,8 +1,8 @@
 import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useWebHaptics } from "web-haptics/react";
 import { NavList } from "@/components/ui/nav-list";
+import { useHaptics } from "@/lib/haptics";
 
 const links: {
   name: string;
@@ -17,15 +17,13 @@ const links: {
 
 export function Navbar() {
   const navigate = useNavigate();
-  const { trigger } = useWebHaptics({ debug: true });
-
-  const triggerHaptic = () => trigger([{ duration: 8 }], { intensity: 1 });
+  const { trigger } = useHaptics();
 
   useHotkeySequences(
     links.map((link) => ({
       sequence: ["G", link.key],
       callback: () => {
-        triggerHaptic();
+        trigger("click");
         navigate({ to: link.to });
       },
     }))
@@ -37,7 +35,11 @@ export function Navbar() {
         <NavList>
           {links.map((item) => (
             <li key={item.name}>
-              <Link className="nav-link" onClick={triggerHaptic} to={item.to}>
+              <Link
+                className="nav-link"
+                onClick={() => trigger("click")}
+                to={item.to}
+              >
                 {item.name}
               </Link>
             </li>
