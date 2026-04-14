@@ -70,7 +70,7 @@ function HomePage() {
         <h2 className="text-fg-3 text-xs uppercase tracking-widest">
           Projects
         </h2>
-        <ListProjects className="mt-2" projects={projects} />
+        <ListProjects projects={projects} />
       </section>
 
       <section className="mt-6">
