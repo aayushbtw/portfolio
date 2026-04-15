@@ -30,7 +30,9 @@ function WritingsPage() {
 
   return (
     <section>
-      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{seo.title}</h1>
+      <h1 className="text-fg-3 text-xs uppercase tracking-widest">
+        {seo.title}
+      </h1>
       <ListPosts className="mt-2" posts={posts} />
     </section>
   );

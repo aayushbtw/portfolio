@@ -5,12 +5,7 @@ interface PageOptions {
   title: string;
 }
 
-export function seo({
-  description,
-  domain,
-  meta,
-  title,
-}: PageOptions) {
+export function seo({ description, domain, meta, title }: PageOptions) {
   const ogImage = `${domain}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
   return {

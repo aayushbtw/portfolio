@@ -43,7 +43,9 @@ function SkillsPage() {
 
   return (
     <section>
-      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{seo.title}</h1>
+      <h1 className="text-fg-3 text-xs uppercase tracking-widest">
+        {seo.title}
+      </h1>
       <List className="mt-2">
         {skills.map((item) => (
           <ListItem key={item.title}>
