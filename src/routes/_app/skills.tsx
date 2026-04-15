@@ -4,15 +4,16 @@ import { List, ListItem, ListItemHover } from "@/components/ui/list";
 import { seo } from "@/lib/seo";
 import { getEnv } from "@/lib/server-fns";
 
-const title = "Skills";
-const description =
-  "A collection of skills crafted for quality of life with your AI coding agent.";
-
 export const Route = createFileRoute("/_app/skills")({
   loader: async () => {
     const env = await getEnv();
     return {
-      env,
+      seo: {
+        title: "Skills",
+        description:
+          "A collection of skills crafted for quality of life with your AI coding agent.",
+        domain: env.domain,
+      },
       skills: [
         {
           title: "Git Commit",
@@ -32,17 +33,17 @@ export const Route = createFileRoute("/_app/skills")({
     if (!loaderData) {
       return {};
     }
-    return seo({ title, description, domain: loaderData.env.domain });
+    return seo(loaderData.seo);
   },
   component: SkillsPage,
 });
 
 function SkillsPage() {
-  const { skills } = Route.useLoaderData();
+  const { seo, skills } = Route.useLoaderData();
 
   return (
     <section>
-      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{title}</h1>
+      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{seo.title}</h1>
       <List className="mt-2">
         {skills.map((item) => (
           <ListItem key={item.title}>

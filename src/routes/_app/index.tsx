@@ -20,30 +20,35 @@ export const Route = createFileRoute("/_app/")({
       fetchPinnedRepos(),
       getEnv(),
     ]);
-    return { posts, contributions, projects, env };
+    return {
+      posts,
+      contributions,
+      projects,
+      seo: {
+        title: config.name,
+        description: config.description,
+        domain: env.domain,
+      },
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};
     }
-    return seo({
-      title: config.name,
-      description: config.description,
-      domain: loaderData.env.domain,
-    });
+    return seo(loaderData.seo);
   },
   component: HomePage,
 });
 
 function HomePage() {
-  const { posts, contributions, projects } = Route.useLoaderData();
+  const { posts, contributions, projects, seo } = Route.useLoaderData();
   const { trigger } = useHaptics();
 
   return (
     <>
       <section>
-        <h1 className="mb-4">{config.name}</h1>
-        <p className="text-fg-3">{config.description}</p>
+        <h1 className="mb-4">{seo.title}</h1>
+        <p className="text-fg-3">{seo.description}</p>
         <p className="text-fg-3">
           Full-stack engineer at{" "}
           <a
