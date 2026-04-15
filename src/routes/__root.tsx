@@ -3,24 +3,27 @@ import {
   HeadContent,
   Link,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { LayoutProvider } from "@/components/layout-provider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { config } from "@/lib/config";
-import { seo } from "@/lib/seo";
+import { getEnv } from "@/lib/server-fns";
 import appCss from "@/styles/app.css?url";
 
-const HEAD = seo({
-  title: config.name,
-  description: config.description,
-  path: "/",
-  extra: {
+export const Route = createRootRoute({
+  loader: () => getEnv(),
+  head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "robots", content: "index, follow" },
       { name: "theme-color", content: "#ffffff" },
       { property: "og:locale", content: "en_US" },
+      { property: "og:site_name", content: config.name },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: config.socials.twitter },
+      { name: "twitter:creator", content: config.socials.twitter },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -43,19 +46,22 @@ const HEAD = seo({
       },
       { rel: "icon", href: "/favicon.ico" },
     ],
-  },
-});
-
-export const Route = createRootRoute({
-  head: () => HEAD,
+  }),
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const data = Route.useLoaderData();
+
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pageUrl = `${data.domain}${pathname}`;
+
   return (
     <html lang="en">
       <head>
+        <link href={pageUrl} rel="canonical" />
+        <meta content={pageUrl} property="og:url" />
         <HeadContent />
       </head>
       <body className="min-h-screen">

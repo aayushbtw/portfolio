@@ -1,34 +1,44 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { List, ListItem, ListItemHover } from "@/components/ui/list";
-import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
+import { getEnv } from "@/lib/server-fns";
 
 const title = "Skills";
 const description =
   "A collection of skills crafted for quality of life with your AI coding agent.";
 
 export const Route = createFileRoute("/_app/skills")({
-  loader: () => [
-    {
-      title: "Git Commit",
-      description: "Stage files and commit with a conventional commit message.",
-      url: "https://skills.sh/aayushbtw/skills/git-commit",
-    },
-    {
-      title: "Writing Guide",
-      description: "Write, review, and improve articles and blog posts.",
-      url: "https://skills.sh/aayushbtw/skills/writing-guide",
-    },
-  ],
-  head: () => ({
-    ...seo({ title, description, path: "/skills" }),
-  }),
+  loader: async () => {
+    const env = await getEnv();
+    return {
+      env,
+      skills: [
+        {
+          title: "Git Commit",
+          description:
+            "Stage files and commit with a conventional commit message.",
+          url: "https://skills.sh/aayushbtw/skills/git-commit",
+        },
+        {
+          title: "Writing Guide",
+          description: "Write, review, and improve articles and blog posts.",
+          url: "https://skills.sh/aayushbtw/skills/writing-guide",
+        },
+      ],
+    };
+  },
+  head: ({ loaderData }) => {
+    if (!loaderData) {
+      return {};
+    }
+    return seo({ title, description, domain: loaderData.env.domain });
+  },
   component: SkillsPage,
 });
 
 function SkillsPage() {
-  const skills = Route.useLoaderData();
+  const { skills } = Route.useLoaderData();
 
   return (
     <section>
@@ -38,7 +48,7 @@ function SkillsPage() {
           <ListItem key={item.title}>
             <a
               className="flex items-center gap-4"
-              href={`${item.url}?utm_source=${config.domain}`}
+              href={item.url}
               rel="noopener"
               target="_blank"
             >

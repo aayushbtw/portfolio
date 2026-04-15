@@ -8,25 +8,30 @@ import { config } from "@/lib/config";
 import { useHaptics } from "@/lib/haptics";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
 import { seo } from "@/lib/seo";
+import { getEnv } from "@/lib/server-fns";
 
 const lastYear = new Date().getFullYear() - 1;
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
-    const [posts, contributions, projects] = await Promise.all([
+    const [posts, contributions, projects, env] = await Promise.all([
       getAllPosts(5),
       fetchContributions(lastYear),
       fetchPinnedRepos(),
+      getEnv(),
     ]);
-    return { posts, contributions, projects };
+    return { posts, contributions, projects, env };
   },
-  head: () => ({
-    ...seo({
+  head: ({ loaderData }) => {
+    if (!loaderData) {
+      return {};
+    }
+    return seo({
       title: config.name,
       description: config.description,
-      path: "/",
-    }),
-  }),
+      domain: loaderData.env.domain,
+    });
+  },
   component: HomePage,
 });
 
@@ -43,7 +48,7 @@ function HomePage() {
           Full-stack engineer at{" "}
           <a
             className="animated-link"
-            href={`https://www.netision.com/?utm_source=${config.domain}`}
+            href="https://www.netision.com/"
             onMouseEnter={() => trigger("tick")}
             rel="noopener"
             target="_blank"

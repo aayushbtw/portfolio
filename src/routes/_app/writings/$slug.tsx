@@ -5,15 +5,17 @@ import { RightColumn } from "@/components/layout-provider";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
+import { getEnv } from "@/lib/server-fns";
 import { formatDate } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const post = allPosts.find((p) => p.slug === params.slug);
     if (!post) {
       throw notFound();
     }
-    return post;
+    const env = await getEnv();
+    return { post, env };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -21,16 +23,38 @@ export const Route = createFileRoute("/_app/writings/$slug")({
     }
     return {
       ...seo({
-        title: loaderData.title,
-        description: loaderData.description,
-        path: `/writings/${loaderData.slug}`,
-        type: "article",
-        article: {
-          author: config.name,
-          publishedAt: loaderData.publishedAt,
-          modifiedAt: loaderData.modifiedAt ?? loaderData.publishedAt,
-        },
+        title: loaderData.post.title,
+        description: loaderData.post.description,
+        domain: loaderData.env.domain,
+        meta: [
+          { property: "og:type", content: "article" },
+          { property: "article:author", content: config.name },
+          {
+            property: "article:published_time",
+            content: loaderData.post.publishedAt,
+          },
+          {
+            property: "article:modified_time",
+            content: loaderData.post.modifiedAt ?? loaderData.post.publishedAt,
+          },
+        ],
       }),
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: loaderData.post.title,
+            description: loaderData.post.description,
+            image: `${loaderData.env.domain}/api/og?title=${encodeURIComponent(loaderData.post.title)}`,
+            author: { "@type": "Person", name: config.name },
+            datePublished: loaderData.post.publishedAt,
+            dateModified:
+              loaderData.post.modifiedAt ?? loaderData.post.publishedAt,
+          }),
+        },
+      ],
     };
   },
 
@@ -38,7 +62,7 @@ export const Route = createFileRoute("/_app/writings/$slug")({
 });
 
 function WritingPage() {
-  const post = Route.useLoaderData();
+  const { post } = Route.useLoaderData();
 
   return (
     <section>

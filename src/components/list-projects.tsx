@@ -1,5 +1,4 @@
 import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
-import { config } from "@/lib/config";
 import type { PinnedRepo } from "@/lib/octo";
 import { List, ListItem, ListItemHover } from "./ui/list";
 
@@ -10,7 +9,7 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
         <ListItem key={item.repo}>
           <a
             className="flex items-center gap-4"
-            href={`${item.url}?utm_source=${config.domain}`}
+            href={item.url}
             rel="noopener"
             target="_blank"
           >

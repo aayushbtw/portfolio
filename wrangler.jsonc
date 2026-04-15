@@ -5,7 +5,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "observability": { "enabled": true },
-  "vars": { "NODE_ENV": "production" },
+  "vars": { "NODE_ENV": "production", "SITE_URL": "https://aayush.cv" },
   "workers_dev": false,
   "preview_urls": false,
   "routes": [
