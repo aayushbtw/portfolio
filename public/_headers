@@ -1,3 +1,19 @@
 # https://developers.cloudflare.com/workers/static-assets/headers
-/_next/static/*
-  Cache-Control: public,max-age=31536000,immutable
+
+# Hashed Vite assets (JS, CSS, fonts) - safe to cache forever
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Writing images - long cache (1 year), revalidate if updated
+/writings/*
+  Cache-Control: public, max-age=31536000
+
+# Other static images
+/*.png
+  Cache-Control: public, max-age=31536000
+
+/*.svg
+  Cache-Control: public, max-age=31536000
+
+/*.ico
+  Cache-Control: public, max-age=86400
