@@ -52,6 +52,6 @@
   }
   body {
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
-    @apply text-sm -tracking-[0.15px] leading-[22.75px] font-[450];
+    @apply text-sm -tracking-[0.15px] leading-[22.75px] md:font-[450];
   }
 }

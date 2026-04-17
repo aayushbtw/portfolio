@@ -14,14 +14,13 @@ function AppLayout() {
   return (
     <div
       className={cn(
-        "px-4 pt-8 pb-floating-nav-inset sm:px-6 lg:pt-page-t lg:pb-page-t",
-        "mx-auto max-w-[772px]",
-        "lg:grid lg:max-w-7xl lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8"
+        "mx-auto max-w-7xl px-4 pt-8 pb-floating-nav-inset sm:px-6 lg:pt-page-t lg:pb-page-t",
+        "lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8"
       )}
     >
       <div>{left ?? <Navbar />}</div>
 
-      <main className="min-w-0 max-w-full">
+      <main className="mx-auto w-full min-w-0 max-w-[740px]">
         <Outlet />
       </main>
 

@@ -1,5 +1,10 @@
+import {
+  IconBrandGithubFilled,
+  IconBrandTwitterFilled,
+  IconMailFilled,
+} from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
+import { NetisionIcon } from "@/components/icons";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
 import { ContributionGraph } from "@/components/ui/contribution-graph";
@@ -9,6 +14,7 @@ import { useHaptics } from "@/lib/haptics";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
 import { seo } from "@/lib/seo";
 import { getEnv } from "@/lib/server-fns";
+import { cn } from "@/lib/utils";
 
 const lastYear = new Date().getFullYear() - 1;
 
@@ -43,32 +49,59 @@ export const Route = createFileRoute("/_app/")({
 function HomePage() {
   const { posts, contributions, projects, seo } = Route.useLoaderData();
   const { trigger } = useHaptics();
+  const haptic = () => trigger("tick");
 
   return (
     <>
       <section>
         <h1 className="mb-4">{seo.title}</h1>
-        <p className="text-fg-3">{seo.description}</p>
-        <p className="text-fg-3">
-          Full-stack engineer at{" "}
-          <a
-            className="animated-link"
-            href="https://www.netision.com/"
-            onMouseEnter={() => trigger("tick")}
-            rel="noopener"
-            target="_blank"
-          >
-            <Image
-              alt="netision"
-              className="mr-1 mb-0.5 inline-block size-4 rounded"
-              height={32}
-              src="netision.svg"
-              width={32}
-            />
-            Netision
-          </a>
-          , building a multi-agent platform.
-        </p>
+
+        <div className="space-y-1.5 text-fg-3">
+          <p>{seo.description}</p>
+
+          <p>
+            Currently a full-stack engineer at{" "}
+            <HeaderLink
+              external
+              href="https://www.netision.com"
+              onMouseEnter={haptic}
+            >
+              <NetisionIcon />
+              Netision
+            </HeaderLink>
+            , building a multi-agent platform that turns complex data into
+            clear, intuitive insights.
+          </p>
+
+          <p>
+            Reach me via{" "}
+            <HeaderLink
+              href={`mailto:${config.socials.mail}`}
+              onMouseEnter={haptic}
+            >
+              <IconMailFilled />
+              Mail
+            </HeaderLink>{" "}
+            /{" "}
+            <HeaderLink
+              external
+              href={`https://www.x.com/${config.socials.twitter}`}
+              onMouseEnter={haptic}
+            >
+              <IconBrandTwitterFilled />X
+            </HeaderLink>
+            , or find my work on{" "}
+            <HeaderLink
+              external
+              href={`https://www.x.com/${config.socials.github}`}
+              onMouseEnter={haptic}
+            >
+              <IconBrandGithubFilled />
+              Github
+            </HeaderLink>
+            .
+          </p>
+        </div>
       </section>
 
       <section className="mt-6">
@@ -93,5 +126,24 @@ function HomePage() {
         <ListPosts className="mt-2" posts={posts} />
       </section>
     </>
+  );
+}
+
+function HeaderLink({
+  external,
+  href,
+  ...props
+}: React.ComponentProps<"a"> & { external?: boolean }) {
+  return (
+    <a
+      href={href}
+      {...props}
+      className={cn(
+        "animated-link",
+        "[&_svg]:mr-1 [&_svg]:mb-0.5 [&_svg]:inline-block [&_svg]:size-4 [&_svg]:text-fg-3 hover:[&_svg]:text-fg-2"
+      )}
+      rel={external ? "noopener" : undefined}
+      target={external ? "_blank" : undefined}
+    />
   );
 }
