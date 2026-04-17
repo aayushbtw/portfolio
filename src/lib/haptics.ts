@@ -1,13 +1,31 @@
 import { useCallback, useRef } from "react";
 
-function click(ctx: AudioContext): AudioScheduledSourceNode {
-  const when = ctx.currentTime + 0.01;
-  const duration = 0.008;
-  const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < data.length; i++) {
-    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 40);
+const bufferCache = new WeakMap<AudioContext, Map<string, AudioBuffer>>();
+
+function getCachedBuffer(ctx: AudioContext, key: string, create: () => AudioBuffer): AudioBuffer {
+  let cache = bufferCache.get(ctx);
+  if (!cache) {
+    cache = new Map();
+    bufferCache.set(ctx, cache);
   }
+  let buffer = cache.get(key);
+  if (!buffer) {
+    buffer = create();
+    cache.set(key, buffer);
+  }
+  return buffer;
+}
+
+function click(ctx: AudioContext): AudioScheduledSourceNode {
+  const buffer = getCachedBuffer(ctx, "click", () => {
+    const duration = 0.008;
+    const buf = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 40);
+    }
+    return buf;
+  });
 
   const source = ctx.createBufferSource();
   source.buffer = buffer;
@@ -24,7 +42,7 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   filter.connect(gain);
   gain.connect(ctx.destination);
   source.onended = () => source.disconnect();
-  source.start(when);
+  source.start(ctx.currentTime);
 
   if (navigator.vibrate) {
     navigator.vibrate(8);
@@ -63,15 +81,20 @@ export function useHaptics() {
 
   const trigger = useCallback((sound: Sound) => {
     ctx.current ??= new AudioContext();
-    if (ctx.current.state === "suspended") {
-      ctx.current.resume();
+    const audioCtx = ctx.current;
+    const play = () => {
+      try {
+        activeSource.current?.stop();
+      } catch {
+        // already stopped
+      }
+      activeSource.current = sounds[sound](audioCtx);
+    };
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume().then(play);
+    } else {
+      play();
     }
-    try {
-      activeSource.current?.stop();
-    } catch {
-      // already stopped
-    }
-    activeSource.current = sounds[sound](ctx.current);
   }, []);
 
   return { trigger };
