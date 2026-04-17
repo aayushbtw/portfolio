@@ -161,7 +161,7 @@ function ContributionGraph({
   }
 
   return (
-    <div className="flex w-max max-w-full flex-col gap-2">
+    <div className="flex w-max max-w-full flex-col gap-0.5 font-normal text-[13px] text-fg-3">
       <div className="no-scrollbar max-w-full overflow-x-auto overflow-y-hidden">
         <svg
           aria-hidden="true"
@@ -172,12 +172,7 @@ function ContributionGraph({
         >
           <g className="fill-current">
             {months.map(({ label, x }) => (
-              <text
-                className="text-fg-3 text-xs"
-                dominantBaseline="hanging"
-                key={x}
-                x={x}
-              >
+              <text dominantBaseline="hanging" key={x} x={x}>
                 {label}
               </text>
             ))}
@@ -217,14 +212,14 @@ function ContributionGraph({
             side="top"
             sideOffset={4}
           >
-            <TooltipPrimitive.Popup className="rounded-lg border border-fg-1/10 bg-fg-1 px-2 py-0.5 font-medium text-bg-1 text-xs">
+            <TooltipPrimitive.Popup className="rounded-lg border border-fg-1/10 bg-fg-1 px-2 py-0.5 text-bg-1 text-xs">
               {tooltipText}
             </TooltipPrimitive.Popup>
           </TooltipPrimitive.Positioner>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
 
-      <p className="text-fg-3 text-sm leading-5">
+      <p>
         {total.toLocaleString("en")} contributions in {year}
       </p>
     </div>
