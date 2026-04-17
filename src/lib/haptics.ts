@@ -2,7 +2,11 @@ import { useCallback, useRef } from "react";
 
 const bufferCache = new WeakMap<AudioContext, Map<string, AudioBuffer>>();
 
-function getCachedBuffer(ctx: AudioContext, key: string, create: () => AudioBuffer): AudioBuffer {
+function getCachedBuffer(
+  ctx: AudioContext,
+  key: string,
+  create: () => AudioBuffer
+): AudioBuffer {
   let cache = bufferCache.get(ctx);
   if (!cache) {
     cache = new Map();
@@ -18,10 +22,9 @@ function getCachedBuffer(ctx: AudioContext, key: string, create: () => AudioBuff
 
 function click(ctx: AudioContext): AudioScheduledSourceNode {
   const buffer = getCachedBuffer(ctx, "click", () => {
-    const duration = 0.008;
-    const buf = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.008, ctx.sampleRate);
     const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) {
+    for (const [i] of data.entries()) {
       data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 40);
     }
     return buf;
@@ -33,20 +36,16 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   const filter = ctx.createBiquadFilter();
   filter.type = "bandpass";
   filter.frequency.value = 3200;
-  filter.Q.value = 3;
+  filter.Q.value = 5;
 
   const gain = ctx.createGain();
-  gain.gain.value = 1.5;
+  gain.gain.value = 1.2;
 
   source.connect(filter);
   filter.connect(gain);
   gain.connect(ctx.destination);
   source.onended = () => source.disconnect();
   source.start(ctx.currentTime);
-
-  if (navigator.vibrate) {
-    navigator.vibrate(8);
-  }
 
   return source;
 }
