@@ -16,8 +16,8 @@
     "@base-ui/react": "^1.4.0",
     "@tabler/icons-react": "^3.41.1",
     "@tanstack/react-hotkeys": "^0.9.1",
-    "@tanstack/react-router": "^1.168.21",
-    "@tanstack/react-start": "^1.167.39",
+    "@tanstack/react-router": "^1.168.22",
+    "@tanstack/react-start": "^1.167.41",
     "@unpic/react": "^1.0.2",
     "@vercel/og": "^0.11.1",
     "clsx": "^2.1.1",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.7",
-    "@cloudflare/vite-plugin": "^1.32.2",
+    "@cloudflare/vite-plugin": "^1.32.3",
     "@content-collections/core": "^0.14.3",
     "@content-collections/vite": "^0.2.9",
     "@fontsource-variable/inter": "^5.2.8",
@@ -51,7 +51,7 @@
     "typescript": "^5.9.3",
     "ultracite": "7.3.2",
     "vite": "^8.0.8",
-    "wrangler": "^4.82.2",
+    "wrangler": "^4.83.0",
     "zod": "^4.3.6"
   }
 }
