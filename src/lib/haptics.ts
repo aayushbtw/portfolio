@@ -1,10 +1,6 @@
 import { useCallback, useRef } from "react";
 
-function click(ctx: AudioContext) {
-  if (ctx.state === "suspended") {
-    ctx.resume();
-  }
-
+function click(ctx: AudioContext): AudioScheduledSourceNode {
   const when = ctx.currentTime + 0.01;
   const duration = 0.008;
   const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
@@ -33,13 +29,11 @@ function click(ctx: AudioContext) {
   if (navigator.vibrate) {
     navigator.vibrate(8);
   }
+
+  return source;
 }
 
-function tick(ctx: AudioContext) {
-  if (ctx.state === "suspended") {
-    ctx.resume();
-  }
-
+function tick(ctx: AudioContext): AudioScheduledSourceNode {
   const t = ctx.currentTime;
 
   const osc = ctx.createOscillator();
@@ -55,6 +49,8 @@ function tick(ctx: AudioContext) {
   gain.connect(ctx.destination);
   osc.start(t);
   osc.stop(t + 0.02);
+
+  return osc;
 }
 
 const sounds = { click, tick } as const;
@@ -63,10 +59,19 @@ type Sound = keyof typeof sounds;
 
 export function useHaptics() {
   const ctx = useRef<AudioContext | null>(null);
+  const activeSource = useRef<AudioScheduledSourceNode | null>(null);
 
   const trigger = useCallback((sound: Sound) => {
     ctx.current ??= new AudioContext();
-    sounds[sound](ctx.current);
+    if (ctx.current.state === "suspended") {
+      ctx.current.resume();
+    }
+    try {
+      activeSource.current?.stop();
+    } catch {
+      // already stopped
+    }
+    activeSource.current = sounds[sound](ctx.current);
   }, []);
 
   return { trigger };
