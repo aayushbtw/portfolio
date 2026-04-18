@@ -21,10 +21,7 @@ export default defineConfig({
       },
       sitemap: {
         enabled: true,
-        host:
-          process.env.NODE_ENV === "production"
-            ? "https://aayush.cv"
-            : "http://localhost:3000",
+        host: "https://aayush.cv", // Cant create for dev anyway.
       },
     }),
     viteReact(),
