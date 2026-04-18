@@ -9,9 +9,11 @@ export default defineConfig({
   resolve: { tsconfigPaths: true },
   server: { port: 3000 },
   plugins: [
-    cloudflare({ viteEnvironment: { name: "ssr" } }),
-    contentCollections(),
     tailwindcss(),
+    cloudflare({
+      viteEnvironment: { name: "ssr" },
+    }),
+    contentCollections(),
     tanstackStart({
       prerender: {
         enabled: true,
