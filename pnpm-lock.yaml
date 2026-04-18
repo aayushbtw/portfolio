@@ -81,6 +81,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.2.2
         version: 4.2.2(vite@8.0.8(@types/node@22.19.17)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
+      '@tanstack/intent':
+        specifier: ^0.0.29
+        version: 0.0.29
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
@@ -1354,6 +1357,10 @@ packages:
     resolution: {integrity: sha512-YHVO1z6wnvUCu7bg870Kv5k2D+FIuIOSIcbN0dAmTTsJ3mLMDLwcTVx0qVaq+SZp1B514JJTqGVstvUp85yIpQ==}
     engines: {node: '>=18'}
 
+  '@tanstack/intent@0.0.29':
+    resolution: {integrity: sha512-tJcWapEkXGRLHE7mQYvQS0xIWrzKm2n7fQ/lOy4LCdR1hX0Yxb9QnwRwd0oqmmr54ObP9/5sfiD8vELxL/r30g==}
+    hasBin: true
+
   '@tanstack/react-hotkeys@0.9.1':
     resolution: {integrity: sha512-/qdQUUVkYAHAWRGdFXqFgWpW/S+a6OzkvxWNWKLLDHQODJlO6EPBPa073CglaafBfzig58RK07T09ET+NnZhpg==}
     engines: {node: '>=18'}
@@ -1622,6 +1629,10 @@ packages:
     resolution: {integrity: sha512-48xSriZYYg+8qXna9kwqjIVzuQxi+KYWp2+5nCYnYKPTr0LvD89Jqk2Or5ogxz0NUMfIjhh2lIUX/LyX9B4oIg==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
+
+  cac@6.7.14:
+    resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
+    engines: {node: '>=8'}
 
   camelcase@8.0.0:
     resolution: {integrity: sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==}
@@ -3789,6 +3800,11 @@ snapshots:
     dependencies:
       '@tanstack/store': 0.9.3
 
+  '@tanstack/intent@0.0.29':
+    dependencies:
+      cac: 6.7.14
+      yaml: 2.8.3
+
   '@tanstack/react-hotkeys@0.9.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@tanstack/hotkeys': 0.7.1
@@ -4117,6 +4133,8 @@ snapshots:
       electron-to-chromium: 1.5.340
       node-releases: 2.0.37
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
+
+  cac@6.7.14: {}
 
   camelcase@8.0.0: {}
 
