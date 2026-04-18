@@ -8,11 +8,9 @@ import {
 import { LayoutProvider } from "@/components/layout-provider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { config } from "@/lib/config";
-import { getEnv } from "@/lib/server-fns";
 import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRoute({
-  loader: () => getEnv(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -52,10 +50,8 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const data = Route.useLoaderData();
-
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const pageUrl = `${data.domain}${pathname}`;
+  const pageUrl = `${config.siteUrl}${pathname}`;
 
   return (
     <html lang="en">

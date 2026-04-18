@@ -13,51 +13,35 @@ import { config } from "@/lib/config";
 import { useHaptics } from "@/lib/haptics";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
 import { seo } from "@/lib/seo";
-import { getEnv } from "@/lib/server-fns";
 import { cn } from "@/lib/utils";
 
 const lastYear = new Date().getFullYear() - 1;
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
-    const [posts, contributions, projects, env] = await Promise.all([
+    const [posts, contributions, projects] = await Promise.all([
       getAllPosts(5),
       fetchContributions(lastYear),
       fetchPinnedRepos(),
-      getEnv(),
     ]);
-    return {
-      posts,
-      contributions,
-      projects,
-      seo: {
-        title: config.name,
-        description: config.description,
-        domain: env.domain,
-      },
-    };
+    return { posts, contributions, projects };
   },
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return {};
-    }
-    return seo(loaderData.seo);
-  },
+  head: () => seo({ title: config.name, description: config.description }),
   component: HomePage,
 });
 
 function HomePage() {
-  const { posts, contributions, projects, seo } = Route.useLoaderData();
+  const { posts, contributions, projects } = Route.useLoaderData();
   const { trigger } = useHaptics();
   const haptic = () => trigger("tick");
 
   return (
     <>
       <section>
-        <h1 className="mb-4">{seo.title}</h1>
+        <h1 className="mb-4">{config.name}</h1>
 
         <div className="space-y-1.5 text-fg-3">
-          <p>{seo.description}</p>
+          <p>{config.description}</p>
 
           <p>
             Currently a full-stack engineer at{" "}
@@ -93,7 +77,7 @@ function HomePage() {
             , or find my work on{" "}
             <HeaderLink
               external
-              href={`https://www.x.com/${config.socials.github}`}
+              href={`https://github.com/${config.socials.github}`}
               onMouseEnter={haptic}
             >
               <IconBrandGithubFilled />

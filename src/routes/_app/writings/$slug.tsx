@@ -5,37 +5,32 @@ import { RightColumn } from "@/components/layout-provider";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
 import { seo } from "@/lib/seo";
-import { getEnv } from "@/lib/server-fns";
 import { formatDate } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: async ({ params }) => {
+  loader: ({ params }) => {
     const post = allPosts.find((p) => p.slug === params.slug);
     if (!post) {
       throw notFound();
     }
-    const env = await getEnv();
-    return { post, env };
+    return { post };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};
     }
+    const { post } = loaderData;
     return {
       ...seo({
-        title: loaderData.post.title,
-        description: loaderData.post.description,
-        domain: loaderData.env.domain,
+        title: post.title,
+        description: post.description,
         meta: [
           { property: "og:type", content: "article" },
           { property: "article:author", content: config.name },
-          {
-            property: "article:published_time",
-            content: loaderData.post.publishedAt,
-          },
+          { property: "article:published_time", content: post.publishedAt },
           {
             property: "article:modified_time",
-            content: loaderData.post.modifiedAt ?? loaderData.post.publishedAt,
+            content: post.modifiedAt ?? post.publishedAt,
           },
         ],
       }),
@@ -45,13 +40,12 @@ export const Route = createFileRoute("/_app/writings/$slug")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            headline: loaderData.post.title,
-            description: loaderData.post.description,
-            image: `${loaderData.env.domain}/api/og?title=${encodeURIComponent(loaderData.post.title)}`,
+            headline: post.title,
+            description: post.description,
+            image: `${config.siteUrl}/api/og?title=${encodeURIComponent(post.title)}`,
             author: { "@type": "Person", name: config.name },
-            datePublished: loaderData.post.publishedAt,
-            dateModified:
-              loaderData.post.modifiedAt ?? loaderData.post.publishedAt,
+            datePublished: post.publishedAt,
+            dateModified: post.modifiedAt ?? post.publishedAt,
           }),
         },
       ],

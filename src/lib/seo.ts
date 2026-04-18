@@ -1,12 +1,13 @@
+import { config } from "./config";
+
 interface PageOptions {
   description: string;
-  domain: string;
   meta?: Record<string, string>[];
   title: string;
 }
 
-export function seo({ description, domain, meta, title }: PageOptions) {
-  const ogImage = `${domain}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
+export function seo({ description, meta, title }: PageOptions) {
+  const ogImage = `${config.siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
   return {
     meta: [
