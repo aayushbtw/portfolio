@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { config } from "@/lib/config";
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
@@ -21,7 +22,7 @@ export default defineConfig({
       },
       sitemap: {
         enabled: true,
-        host: "aayush.cv",
+        host: config.siteUrl,
       },
     }),
     viteReact(),
