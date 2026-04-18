@@ -4,7 +4,6 @@ import { routeTree } from "./routeTree.gen";
 export function getRouter() {
   const router = createRouter({
     routeTree,
-    defaultPreload: "intent",
     defaultStaleTime: Number.POSITIVE_INFINITY,
     trailingSlash: "preserve",
     notFoundMode: "root",
