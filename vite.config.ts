@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { config } from "./src/lib/config"; // Absolute PATH on purpose
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
@@ -22,7 +21,10 @@ export default defineConfig({
       },
       sitemap: {
         enabled: true,
-        host: config.siteUrl,
+        host:
+          process.env.NODE_ENV === "production"
+            ? "https://aayush.cv"
+            : "http://localhost:3000",
       },
     }),
     viteReact(),
