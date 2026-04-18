@@ -4,11 +4,11 @@ import { routeTree } from "./routeTree.gen";
 export function getRouter() {
   const router = createRouter({
     routeTree,
-    scrollRestoration: true,
+    defaultPreload: "intent",
     defaultStaleTime: Number.POSITIVE_INFINITY,
     trailingSlash: "preserve",
-
     notFoundMode: "root",
+    scrollRestoration: true,
   });
   return router;
 }
