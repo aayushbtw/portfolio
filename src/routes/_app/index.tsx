@@ -38,7 +38,7 @@ function HomePage() {
   return (
     <>
       <section>
-        <h1 className="mb-4">{config.name}</h1>
+        <h1 className="mb-4 text-balance">{config.name}</h1>
 
         <div className="space-y-1.5 text-fg-3">
           <p>{config.description}</p>

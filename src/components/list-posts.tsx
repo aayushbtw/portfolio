@@ -25,7 +25,7 @@ function ListPosts({
         const showYear = i === 0 || grouped[i - 1].year !== post.year;
         return (
           <li
-            className="border-border border-t py-1.5 transition-opacity duration-150 first:border-t-0 hover:opacity-100 group-hover/ul:opacity-40"
+            className="border-border border-t py-1.5 transition-[opacity,scale] duration-150 first:border-t-0 hover:opacity-100 active:scale-[0.99] group-hover/ul:opacity-40"
             key={post.slug}
           >
             <Link

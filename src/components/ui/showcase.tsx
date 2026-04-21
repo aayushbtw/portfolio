@@ -29,7 +29,7 @@ export function ShowcaseImage({
       <div className="relative flex justify-center p-4">
         <Image
           alt={alt}
-          className="w-full shadow-2xl"
+          className="w-full shadow-2xl ring-1 ring-black/10"
           height={height}
           layout="fullWidth"
           src={src}

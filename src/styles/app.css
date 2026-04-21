@@ -31,7 +31,7 @@
 }
 
 @utility indicator-spring {
-  @apply absolute left-0 rounded-full transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)];
+  @apply absolute left-0 rounded-full transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)];
 }
 
 @utility indicator-brand {
@@ -39,7 +39,7 @@
 }
 
 @utility nav-link {
-  @apply leading-5 block pl-3 text-fg-3 transition-colors duration-200 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
+  @apply leading-5 block pl-3 text-fg-3 transition-[color,scale] duration-200 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
 @utility animated-link {

@@ -219,7 +219,7 @@ function ContributionGraph({
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
 
-      <p>
+      <p className="tabular-nums">
         {total.toLocaleString("en")} contributions in {year}
       </p>
     </div>
