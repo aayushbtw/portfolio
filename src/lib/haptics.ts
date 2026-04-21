@@ -12,7 +12,11 @@ const nodeCache = new WeakMap<AudioContext, AudioNodes>();
 function getNodes(ctx: AudioContext): AudioNodes {
   let nodes = nodeCache.get(ctx);
   if (!nodes) {
-    const clickBuffer = ctx.createBuffer(1, ctx.sampleRate * 0.004, ctx.sampleRate);
+    const clickBuffer = ctx.createBuffer(
+      1,
+      ctx.sampleRate * 0.004,
+      ctx.sampleRate
+    );
 
     const clickFilter = ctx.createBiquadFilter();
     clickFilter.type = "bandpass";
