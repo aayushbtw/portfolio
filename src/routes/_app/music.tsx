@@ -49,6 +49,7 @@ const topTracksQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/_app/music")({
+  ssr: "data-only",
   loader: ({ context: { queryClient } }) => {
     return Promise.all([
       queryClient.ensureQueryData(nowPlayingQuery),
