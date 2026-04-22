@@ -3,7 +3,9 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Image } from "@unpic/react";
+import { Suspense } from "react";
 import { List, ListItem, ListItemHover } from "@/components/ui/list";
+import { Skeleton } from "@/components/ui/skeleton";
 import { seo } from "@/lib/seo";
 import {
   getNowPlaying,
@@ -13,6 +15,7 @@ import {
   type SpotifyArtist,
   type SpotifyTrack,
 } from "@/lib/spotify";
+import { cn } from "@/lib/utils";
 
 const title = "Music";
 const description = "What I'm listening to on Spotify.";
@@ -49,70 +52,149 @@ const topTracksQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/_app/music")({
-  // ssr: "data-only",
   loader: ({ context: { queryClient } }) => {
-    return Promise.all([
-      queryClient.ensureQueryData(nowPlayingQuery),
-      queryClient.ensureQueryData(recentlyPlayedQuery),
-      queryClient.ensureQueryData(topArtistsQuery),
-      queryClient.ensureQueryData(topTracksQuery),
-    ]);
+    queryClient.prefetchQuery(nowPlayingQuery);
+    queryClient.prefetchQuery(recentlyPlayedQuery);
+    queryClient.prefetchQuery(topArtistsQuery);
+    queryClient.prefetchQuery(topTracksQuery);
   },
   head: () => seo({ title, description }),
   component: MusicPage,
 });
 
 function MusicPage() {
-  const { data: nowPlaying } = useSuspenseQuery(nowPlayingQuery);
-  const { data: recentlyPlayed } = useSuspenseQuery(recentlyPlayedQuery);
-  const { data: topArtists } = useSuspenseQuery(topArtistsQuery);
-  const { data: topTracks } = useSuspenseQuery(topTracksQuery);
-
-  const currentTrack = nowPlaying.track ?? recentlyPlayed[0];
-  const isPlaying = nowPlaying.isPlaying && nowPlaying.track !== null;
-
   return (
     <>
       <div className="flex items-center gap-2">
         <h1 className="text-eyebrow">{title}</h1>
-        {currentTrack ? (
-          <TrackItemNow isPlaying={isPlaying} track={currentTrack} />
-        ) : null}
+        <Suspense fallback={null}>
+          <NowPlaying />
+        </Suspense>
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-8">
-        {topTracks.length > 0 ? (
-          <div>
-            <h2 className="text-eyebrow">Top Tracks</h2>
-            <List className="mt-2">
-              {topTracks.map((track) => (
-                <TrackItem key={track.id} track={track} />
-              ))}
-            </List>
-          </div>
-        ) : null}
-
-        {topArtists.length > 0 ? (
-          <div>
-            <h2 className="text-eyebrow">Top Artists</h2>
-            <List className="mt-2">
-              {topArtists.map((artist) => (
-                <ArtistItem artist={artist} key={artist.id} />
-              ))}
-            </List>
-          </div>
-        ) : null}
+        <Suspense
+          fallback={<ListSkeleton count={3} rounded title="Top Tracks" />}
+        >
+          <TopTracks />
+        </Suspense>
+        <Suspense
+          fallback={
+            <ListSkeleton count={3} rounded="full" title="Top Artists" />
+          }
+        >
+          <TopArtists />
+        </Suspense>
       </div>
 
       <div className="mt-6">
-        <h2 className="text-eyebrow">Recently Played</h2>
-        <List className="mt-2">
-          {recentlyPlayed.map((track) => (
-            <TrackItem key={`${track.id}-${track.playedAt}`} track={track} />
-          ))}
-        </List>
+        <Suspense
+          fallback={<ListSkeleton count={10} rounded title="Recently Played" />}
+        >
+          <RecentlyPlayed />
+        </Suspense>
       </div>
     </>
+  );
+}
+
+function SectionHeading({ title: heading }: { title: string }) {
+  return <h2 className="text-eyebrow">{heading}</h2>;
+}
+
+function ListSkeleton({
+  count,
+  rounded,
+  title: heading,
+}: {
+  count: number;
+  rounded: true | "full";
+  title: string;
+}) {
+  return (
+    <div>
+      <h2 className="text-eyebrow">{heading}</h2>
+      <List className="mt-2">
+        {Array.from({ length: count }, (_, i) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: static placeholder list
+          <ListItem key={`${heading}-${i}`}>
+            <div className="flex items-center gap-4">
+              <Skeleton
+                className={cn(
+                  "size-10 shrink-0",
+                  rounded === "full" ? "rounded-full" : "rounded"
+                )}
+              />
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                <Skeleton className="h-3.5 w-1/2" />
+                <Skeleton className="h-3 w-1/3" />
+              </div>
+            </div>
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+}
+
+function NowPlaying() {
+  const { data: nowPlaying } = useSuspenseQuery(nowPlayingQuery);
+  const { data: recentlyPlayed } = useSuspenseQuery(recentlyPlayedQuery);
+
+  const currentTrack = nowPlaying.track ?? recentlyPlayed[0];
+  if (!currentTrack) {
+    return null;
+  }
+
+  const isPlaying = nowPlaying.isPlaying && nowPlaying.track !== null;
+  return <TrackItemNow isPlaying={isPlaying} track={currentTrack} />;
+}
+
+function TopTracks() {
+  const { data } = useSuspenseQuery(topTracksQuery);
+  if (!data.length) {
+    return null;
+  }
+  return (
+    <div>
+      <h2 className="text-eyebrow">Top Tracks</h2>
+      <List className="mt-2">
+        {data.map((track) => (
+          <TrackItem key={track.id} track={track} />
+        ))}
+      </List>
+    </div>
+  );
+}
+
+function TopArtists() {
+  const { data } = useSuspenseQuery(topArtistsQuery);
+  if (!data.length) {
+    return null;
+  }
+  return (
+    <div>
+      <h2 className="text-eyebrow">Top Artists</h2>
+      <List className="mt-2">
+        {data.map((artist) => (
+          <ArtistItem artist={artist} key={artist.id} />
+        ))}
+      </List>
+    </div>
+  );
+}
+
+function RecentlyPlayed() {
+  const { data } = useSuspenseQuery(recentlyPlayedQuery);
+  return (
+    <div>
+      <h2 className="text-eyebrow">Recently Played</h2>
+      <List className="mt-2">
+        {data.map((track) => (
+          <TrackItem key={`${track.id}-${track.playedAt}`} track={track} />
+        ))}
+      </List>
+    </div>
   );
 }
 
