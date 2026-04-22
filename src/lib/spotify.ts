@@ -32,31 +32,56 @@ export interface NowPlaying {
   track: SpotifyTrack | null;
 }
 
+let cachedToken: { value: string; expiresAt: number } | null = null;
+let inflightToken: Promise<string> | null = null;
+
 async function getAccessToken(): Promise<string> {
-  const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } =
-    env;
-
-  console.log({ client_id: SPOTIFY_CLIENT_ID });
-  const basic = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
-  const res = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${basic}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: SPOTIFY_REFRESH_TOKEN,
-    }),
-  });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`spotify token: ${res.status} ${text}`.trim());
+  if (cachedToken && Date.now() < cachedToken.expiresAt) {
+    return cachedToken.value;
+  }
+  if (inflightToken) {
+    return inflightToken;
   }
 
-  const { access_token } = await json<{ access_token: string }>(res);
-  return access_token;
+  inflightToken = (async () => {
+    const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } =
+      env;
+
+    const basic = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
+    const res = await fetch(TOKEN_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${basic}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: SPOTIFY_REFRESH_TOKEN,
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`spotify token: ${res.status} ${text}`.trim());
+    }
+
+    const { access_token, expires_in } = await json<{
+      access_token: string;
+      expires_in: number;
+    }>(res);
+
+    cachedToken = {
+      value: access_token,
+      expiresAt: Date.now() + (expires_in - 60) * 1000,
+    };
+    return access_token;
+  })();
+
+  try {
+    return await inflightToken;
+  } finally {
+    inflightToken = null;
+  }
 }
 
 async function json<T>(res: Response): Promise<T> {
