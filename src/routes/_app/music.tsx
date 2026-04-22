@@ -98,10 +98,6 @@ function MusicPage() {
   );
 }
 
-function SectionHeading({ title: heading }: { title: string }) {
-  return <h2 className="text-eyebrow">{heading}</h2>;
-}
-
 function ListSkeleton({
   count,
   rounded,
