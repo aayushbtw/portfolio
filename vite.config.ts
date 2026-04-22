@@ -15,10 +15,10 @@ export default defineConfig({
     }),
     contentCollections(),
     tanstackStart({
-      prerender: {
-        enabled: true,
-        // crawlLinks: true, // Discovers all linkable pages
-      },
+      // prerender: {
+      //   enabled: true,
+      //   crawlLinks: true, // Discovers all linkable pages
+      // },
       sitemap: {
         enabled: true,
         host: "https://aayush.cv", // Cant create for dev anyway.
