@@ -17,7 +17,7 @@ export default defineConfig({
     tanstackStart({
       prerender: {
         enabled: true,
-        crawlLinks: true, // Discovers all linkable pages
+        // crawlLinks: true, // Discovers all linkable pages
       },
       sitemap: {
         enabled: true,
