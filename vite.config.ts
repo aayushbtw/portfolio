@@ -20,10 +20,10 @@ export default defineConfig({
         filter: ({ path }) => !path.startsWith("/music"),
         crawlLinks: true, // Discovers all linkable pages
       },
-      // sitemap: {
-      //   enabled: true,
-      //   host: "https://aayush.cv", // Cant create for dev anyway.
-      // },
+      sitemap: {
+        enabled: true,
+        host: "https://aayush.cv", // Cant create for dev anyway.
+      },
     }),
     viteReact(),
   ],
