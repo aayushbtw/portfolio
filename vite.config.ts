@@ -17,7 +17,7 @@ export default defineConfig({
     tanstackStart({
       prerender: {
         enabled: true,
-        // filter: ({ path }) => !path.startsWith("/music"),
+        filter: ({ path }) => !path.startsWith("/music"),
         crawlLinks: true, // Discovers all linkable pages
       },
       sitemap: {
