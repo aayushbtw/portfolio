@@ -13,6 +13,7 @@ const links: {
   { name: "Projects", to: "/projects", key: "P" },
   { name: "Writings", to: "/writings", key: "W" },
   { name: "Skills", to: "/skills", key: "S" },
+  { name: "Music", to: "/music", key: "M" },
 ];
 
 export function Navbar() {
