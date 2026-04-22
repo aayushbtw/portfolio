@@ -19,10 +19,10 @@ export default defineConfig({
       //   enabled: true,
       //   crawlLinks: true, // Discovers all linkable pages
       // },
-      sitemap: {
-        enabled: true,
-        host: "https://aayush.cv", // Cant create for dev anyway.
-      },
+      // sitemap: {
+      //   enabled: true,
+      //   host: "https://aayush.cv", // Cant create for dev anyway.
+      // },
     }),
     viteReact(),
   ],
