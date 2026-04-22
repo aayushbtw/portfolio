@@ -36,6 +36,7 @@ async function getAccessToken(): Promise<string> {
   const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } =
     env;
 
+  console.log({ client_id: SPOTIFY_CLIENT_ID });
   const basic = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
   const res = await fetch(TOKEN_URL, {
     method: "POST",
