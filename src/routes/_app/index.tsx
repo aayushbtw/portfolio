@@ -15,13 +15,13 @@ import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-const lastYear = new Date().getFullYear() - 1;
+// const lastYear = new Date().getFullYear() - 1;
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
     const [posts, contributions, projects] = await Promise.all([
       getAllPosts(5),
-      fetchContributions(lastYear),
+      fetchContributions(new Date().getFullYear() - 1),
       fetchPinnedRepos(),
     ]);
     return { posts, contributions, projects };
