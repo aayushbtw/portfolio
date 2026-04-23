@@ -134,23 +134,40 @@ function ListSkeleton({
 }
 
 function NowPlaying() {
-  const { data: nowPlaying } = useSuspenseQuery(nowPlayingQuery);
-  const { data: recentlyPlayed } = useSuspenseQuery(recentlyPlayedQuery);
+  const { data } = useSuspenseQuery(nowPlayingQuery);
 
-  const currentTrack = nowPlaying.track ?? recentlyPlayed[0];
-  if (!currentTrack) {
+  if (!(data.isPlaying && data.track)) {
     return null;
   }
 
-  const isPlaying = nowPlaying.isPlaying && nowPlaying.track !== null;
-  return <TrackItemNow isPlaying={isPlaying} track={currentTrack} />;
+  return (
+    <a
+      className="ml-auto flex items-center gap-2"
+      href={data.track.url}
+      rel="noopener"
+      target="_blank"
+    >
+      <span aria-hidden className="flex h-2.5 items-end gap-0.5">
+        <span className="eq-bar" style={{ animationDelay: "0s" }} />
+        <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
+        <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
+      </span>
+      <span className="text-xs">
+        {data.track.artists[0].name}
+        <span className="text-fg-3"> — </span>
+        <span className="text-fg-2">{data.track.name}</span>
+      </span>
+    </a>
+  );
 }
 
 function TopTracks() {
   const { data } = useSuspenseQuery(topTracksQuery);
+
   if (!data.length) {
     return null;
   }
+
   return (
     <div>
       <h2 className="text-eyebrow">Top Tracks</h2>
@@ -165,9 +182,11 @@ function TopTracks() {
 
 function TopArtists() {
   const { data } = useSuspenseQuery(topArtistsQuery);
+
   if (!data.length) {
     return null;
   }
+
   return (
     <div>
       <h2 className="text-eyebrow">Top Artists</h2>
@@ -182,6 +201,7 @@ function TopArtists() {
 
 function RecentlyPlayed() {
   const { data } = useSuspenseQuery(recentlyPlayedQuery);
+
   return (
     <div>
       <h2 className="text-eyebrow">Recently Played</h2>
@@ -191,57 +211,6 @@ function RecentlyPlayed() {
         ))}
       </List>
     </div>
-  );
-}
-
-function Equalizer() {
-  return (
-    <span aria-hidden className="flex h-2.5 items-end gap-0.5">
-      <span className="eq-bar" style={{ animationDelay: "0s" }} />
-      <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
-      <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
-    </span>
-  );
-}
-
-function TrackItemNow({
-  track,
-  isPlaying,
-}: {
-  track: SpotifyTrack;
-  isPlaying: boolean;
-}) {
-  const cover = track.album.images.at(-1)?.url ?? track.album.images[0]?.url;
-
-  let indicator: React.ReactNode = null;
-  if (isPlaying) {
-    indicator = <Equalizer />;
-  } else if (cover) {
-    indicator = (
-      <Image
-        alt=""
-        className="size-4 shrink-0 rounded-full"
-        height={16}
-        src={cover}
-        width={16}
-      />
-    );
-  }
-
-  return (
-    <a
-      className="ml-auto flex items-center gap-2"
-      href={track.url}
-      rel="noopener"
-      target="_blank"
-    >
-      {indicator}
-      <span className="text-xs">
-        {track.artists[0].name}
-        <span className="text-fg-3"> — </span>
-        <span className="text-fg-2">{track.name}</span>
-      </span>
-    </a>
   );
 }
 
@@ -265,6 +234,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
             width={40}
           />
         ) : null}
+
         <div className="flex min-w-0 flex-col">
           <h6 className="truncate text-fg-2">{track.name}</h6>
           <p className="truncate">
@@ -282,6 +252,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
 
 function ArtistItem({ artist }: { artist: SpotifyArtist }) {
   const photo = artist.images.at(-1)?.url ?? artist.images[0]?.url;
+
   return (
     <ListItem>
       <a
@@ -299,6 +270,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
             width={40}
           />
         ) : null}
+
         <div className="flex min-w-0 flex-col">
           <h6 className="truncate text-fg-2">{artist.name}</h6>
         </div>
