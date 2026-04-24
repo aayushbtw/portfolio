@@ -27,10 +27,8 @@ const fetcher = async <T>(url: string): Promise<T> => {
   return res.json() as Promise<T>;
 };
 
-export const fetchContributions = (
-  year: number
-): Promise<ContributionsResponse> =>
-  fetcher(`${BASE}/contributions/${USERNAME}?y=${year}`);
+export const fetchContributions = (): Promise<ContributionsResponse> =>
+  fetcher(`${BASE}/contributions/${USERNAME}`);
 
 export const fetchPinnedRepos = (): Promise<PinnedRepo[]> =>
   fetcher(`${BASE}/pinned/${USERNAME}`);

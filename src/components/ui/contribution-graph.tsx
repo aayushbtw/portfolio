@@ -121,11 +121,9 @@ function getMonthLabels(
 function ContributionGraph({
   data,
   total,
-  year,
 }: {
   data: Activity[];
   total: number;
-  year: number;
 }) {
   const weeks = useMemo(() => toGrid(data), [data]);
   const months = useMemo(() => getMonthLabels(weeks), [weeks]);
@@ -220,7 +218,7 @@ function ContributionGraph({
       </TooltipPrimitive.Root>
 
       <p className="tabular-nums">
-        {total.toLocaleString("en")} contributions in {year}
+        {total.toLocaleString("en")} contributions in the last year
       </p>
     </div>
   );
