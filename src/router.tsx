@@ -5,6 +5,7 @@ import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
   const queryClient = new QueryClient();
+
   const router = createRouter({
     routeTree,
     context: { queryClient },
@@ -21,8 +22,9 @@ export function getRouter() {
   return router;
 }
 
-declare module "@tanstack/react-router" {
+declare module "@tanstack/react-start" {
   interface Register {
-    router: ReturnType<typeof getRouter>;
+    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true;
   }
 }
