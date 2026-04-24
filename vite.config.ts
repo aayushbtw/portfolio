@@ -40,6 +40,7 @@ export default defineConfig({
         enabled: true,
         host: "https://aayush.cv",
       },
+      pages: [{ path: "/music", prerender: { enabled: false } }],
     }),
     rsc(),
     viteReact({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
