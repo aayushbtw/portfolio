@@ -15,18 +15,19 @@ import { getAllPosts } from "~/lib/posts";
 import { seo } from "~/lib/seo";
 import { cn } from "~/lib/utils";
 
-// const lastYear = new Date().getFullYear() - 1;
-
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
     const [posts, contributions, projects] = await Promise.all([
       getAllPosts().then((posts) => posts.slice(0, 5)),
-      fetchContributions(new Date().getFullYear() - 1),
+      fetchContributions(),
       fetchPinnedRepos(),
     ]);
     return { posts, contributions, projects };
   },
   head: () => seo({ title: config.name, description: config.description }),
+  headers: () => ({
+    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+  }),
   component: HomePage,
 });
 
@@ -92,7 +93,6 @@ function HomePage() {
         <ContributionGraph
           data={contributions.contributions}
           total={contributions.total}
-          year={contributions.year}
         />
       </section>
 

@@ -1,11 +1,9 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Image } from "@unpic/react";
-import { Suspense } from "react";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
-import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import {
   getNowPlaying,
@@ -15,135 +13,100 @@ import {
   type SpotifyArtist,
   type SpotifyTrack,
 } from "~/lib/spotify";
-import { cn } from "~/lib/utils";
 
 const title = "Music";
 const description = "What I'm listening to on Spotify.";
 
-const fetchNowPlaying = createServerFn().handler(() => getNowPlaying());
-const fetchRecentlyPlayed = createServerFn().handler(() => getRecentlyPlayed());
-const fetchTopArtists = createServerFn().handler(() => getTopArtists());
-const fetchTopTracks = createServerFn().handler(() => getTopTracks());
-
-const nowPlayingQuery = queryOptions({
-  queryKey: ["spotify", "nowPlaying"],
-  queryFn: () => fetchNowPlaying(),
-  staleTime: 10_000,
-  refetchInterval: 10_000,
+const fetchMusic = createServerFn().handler(async () => {
+  const [nowPlaying, recentlyPlayed, topArtists, topTracks] = await Promise.all(
+    [getNowPlaying(), getRecentlyPlayed(), getTopArtists(), getTopTracks()]
+  );
+  return { nowPlaying, recentlyPlayed, topArtists, topTracks };
 });
 
-const recentlyPlayedQuery = queryOptions({
-  queryKey: ["spotify", "recentlyPlayed"],
-  queryFn: () => fetchRecentlyPlayed(),
-  staleTime: 10_000,
-  refetchInterval: 10_000,
-});
-
-const topArtistsQuery = queryOptions({
-  queryKey: ["spotify", "topArtists"],
-  queryFn: () => fetchTopArtists(),
-  staleTime: Number.POSITIVE_INFINITY,
-});
-
-const topTracksQuery = queryOptions({
-  queryKey: ["spotify", "topTracks"],
-  queryFn: () => fetchTopTracks(),
-  staleTime: Number.POSITIVE_INFINITY,
+const fetchLive = createServerFn().handler(async () => {
+  const [nowPlaying, recentlyPlayed] = await Promise.all([
+    getNowPlaying(),
+    getRecentlyPlayed(),
+  ]);
+  return { nowPlaying, recentlyPlayed };
 });
 
 export const Route = createFileRoute("/_app/music")({
-  loader: ({ context: { queryClient } }) => {
-    queryClient.prefetchQuery(nowPlayingQuery);
-    queryClient.prefetchQuery(recentlyPlayedQuery);
-    queryClient.prefetchQuery(topArtistsQuery);
-    queryClient.prefetchQuery(topTracksQuery);
-  },
+  loader: () => fetchMusic(),
   head: () => seo({ title, description }),
+  headers: () => ({
+    "Cache-Control": "public, s-maxage=10, stale-while-revalidate=60",
+  }),
   component: MusicPage,
 });
 
 function MusicPage() {
+  const { nowPlaying, recentlyPlayed, topArtists, topTracks } =
+    Route.useLoaderData();
+
+  const { data: live } = useQuery({
+    queryKey: ["spotify", "live"],
+    queryFn: () => fetchLive(),
+    initialData: { nowPlaying, recentlyPlayed },
+    staleTime: 10_000,
+    refetchInterval: 10_000,
+  });
+
   return (
     <>
       <div className="flex items-center gap-2">
         <h1 className="text-eyebrow">{title}</h1>
-        <Suspense fallback={null}>
-          <NowPlaying />
-        </Suspense>
+        {live.nowPlaying.isPlaying && live.nowPlaying.track ? (
+          <NowPlaying track={live.nowPlaying.track} />
+        ) : null}
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-8">
-        <Suspense
-          fallback={<ListSkeleton count={3} rounded title="Top Tracks" />}
-        >
-          <TopTracks />
-        </Suspense>
-        <Suspense
-          fallback={
-            <ListSkeleton count={3} rounded="full" title="Top Artists" />
-          }
-        >
-          <TopArtists />
-        </Suspense>
+        {topTracks.length > 0 ? (
+          <div>
+            <h2 className="text-eyebrow">Top Tracks</h2>
+            <List className="mt-2">
+              {topTracks.map((track) => (
+                <TrackItem key={track.id} track={track} />
+              ))}
+            </List>
+          </div>
+        ) : null}
+
+        {topArtists.length > 0 ? (
+          <div>
+            <h2 className="text-eyebrow">Top Artists</h2>
+            <List className="mt-2">
+              {topArtists.map((artist) => (
+                <ArtistItem artist={artist} key={artist.id} />
+              ))}
+            </List>
+          </div>
+        ) : null}
       </div>
 
       <div className="mt-6">
-        <Suspense
-          fallback={<ListSkeleton count={10} rounded title="Recently Played" />}
-        >
-          <RecentlyPlayed />
-        </Suspense>
+        <h2 className="text-eyebrow">Recently Played</h2>
+        <List className="mt-2">
+          {live.recentlyPlayed.map((track) => (
+            <TrackItem key={`${track.id}-${track.playedAt}`} track={track} />
+          ))}
+        </List>
       </div>
     </>
   );
 }
 
-function ListSkeleton({
-  count,
-  rounded,
-  title: heading,
+function NowPlaying({
+  track,
 }: {
-  count: number;
-  rounded: true | "full";
-  title: string;
+  track: NonNullable<Awaited<ReturnType<typeof getNowPlaying>>["track"]>;
 }) {
-  return (
-    <div>
-      <h2 className="text-eyebrow">{heading}</h2>
-      <List className="mt-2">
-        {Array.from({ length: count }, (_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static placeholder list
-          <ListItem key={`${heading}-${i}`}>
-            <div className="flex items-center gap-4">
-              <Skeleton
-                className={cn(
-                  "size-10 shrink-0",
-                  rounded === "full" ? "rounded-full" : "rounded"
-                )}
-              />
-              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                <Skeleton className="h-3.5 w-1/2" />
-                <Skeleton className="h-3 w-1/3" />
-              </div>
-            </div>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-}
-
-function NowPlaying() {
-  const { data } = useSuspenseQuery(nowPlayingQuery);
-
-  if (!(data.isPlaying && data.track)) {
-    return null;
-  }
-
   return (
     <a
       className="ml-auto flex items-center gap-2"
-      href={data.track.url}
+      href={track.url}
       rel="noopener"
       target="_blank"
     >
@@ -153,64 +116,11 @@ function NowPlaying() {
         <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
       </span>
       <span className="text-xs">
-        {data.track.artists[0].name}
+        {track.artists[0].name}
         <span className="text-fg-3"> — </span>
-        <span className="text-fg-2">{data.track.name}</span>
+        <span className="text-fg-2">{track.name}</span>
       </span>
     </a>
-  );
-}
-
-function TopTracks() {
-  const { data } = useSuspenseQuery(topTracksQuery);
-
-  if (!data.length) {
-    return null;
-  }
-
-  return (
-    <div>
-      <h2 className="text-eyebrow">Top Tracks</h2>
-      <List className="mt-2">
-        {data.map((track) => (
-          <TrackItem key={track.id} track={track} />
-        ))}
-      </List>
-    </div>
-  );
-}
-
-function TopArtists() {
-  const { data } = useSuspenseQuery(topArtistsQuery);
-
-  if (!data.length) {
-    return null;
-  }
-
-  return (
-    <div>
-      <h2 className="text-eyebrow">Top Artists</h2>
-      <List className="mt-2">
-        {data.map((artist) => (
-          <ArtistItem artist={artist} key={artist.id} />
-        ))}
-      </List>
-    </div>
-  );
-}
-
-function RecentlyPlayed() {
-  const { data } = useSuspenseQuery(recentlyPlayedQuery);
-
-  return (
-    <div>
-      <h2 className="text-eyebrow">Recently Played</h2>
-      <List className="mt-2">
-        {data.map((track) => (
-          <TrackItem key={`${track.id}-${track.playedAt}`} track={track} />
-        ))}
-      </List>
-    </div>
   );
 }
 
