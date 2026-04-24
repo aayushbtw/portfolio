@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { useLeftColumn, useRightColumn } from "@/components/layout-provider";
-import { Navbar } from "@/components/navbar";
-import { cn } from "@/lib/utils";
+import { useLeftColumn, useRightColumn } from "~/components/layout-provider";
+import { Navbar } from "~/components/navbar";
+import { cn } from "~/lib/utils";
 
 export const Route = createFileRoute("/_app")({
   component: AppLayout,

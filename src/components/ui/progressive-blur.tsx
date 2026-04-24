@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 const LAYER_COUNT = 8;
 const MAX_BLUR = 8; // px

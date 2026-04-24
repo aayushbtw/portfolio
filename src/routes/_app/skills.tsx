@@ -1,7 +1,7 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { List, ListItem, ListItemHover } from "@/components/ui/list";
-import { seo } from "@/lib/seo";
+import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { seo } from "~/lib/seo";
 
 const title = "Skills";
 const description =

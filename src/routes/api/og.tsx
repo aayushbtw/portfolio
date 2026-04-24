@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ImageResponse, loadGoogleFont } from "workers-og";
-import { config } from "@/lib/config";
+import { config } from "~/lib/config";
 
 const OG_SIZE = { width: 1200, height: 630 };
 

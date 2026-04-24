@@ -6,7 +6,7 @@ import {
   Showcase,
   ShowcaseCaption,
   ShowcaseImage,
-} from "@/components/ui/showcase";
+} from "~/components/ui/showcase";
 
 const mdxComponents = { Showcase, ShowcaseImage, ShowcaseCaption };
 

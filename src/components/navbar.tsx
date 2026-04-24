@@ -1,8 +1,8 @@
 import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { NavList } from "@/components/ui/nav-list";
-import { useHaptics } from "@/lib/haptics";
+import { NavList } from "~/components/ui/nav-list";
+import { useHaptics } from "~/lib/haptics";
 
 const links: {
   name: string;

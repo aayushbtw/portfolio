@@ -1,5 +1,5 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
-import { NavList } from "@/components/ui/nav-list";
+import { NavList } from "~/components/ui/nav-list";
 
 interface Heading {
   id: string;

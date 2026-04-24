@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 interface PostSummary {
   publishedAt: string;

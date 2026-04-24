@@ -6,10 +6,10 @@ import {
   Scripts,
   useRouterState,
 } from "@tanstack/react-router";
-import { LayoutProvider } from "@/components/layout-provider";
-import { ProgressiveBlur } from "@/components/ui/progressive-blur";
-import { config } from "@/lib/config";
-import appCss from "@/styles/app.css?url";
+import { LayoutProvider } from "~/components/layout-provider";
+import { ProgressiveBlur } from "~/components/ui/progressive-blur";
+import { config } from "~/lib/config";
+import appCss from "~/styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;

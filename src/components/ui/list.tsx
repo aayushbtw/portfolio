@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (

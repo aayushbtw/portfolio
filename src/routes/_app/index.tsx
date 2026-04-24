@@ -4,16 +4,16 @@ import {
   IconMailFilled,
 } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { NetisionIcon } from "@/components/icons";
-import { ListPosts } from "@/components/list-posts";
-import { ListProjects } from "@/components/list-projects";
-import { ContributionGraph } from "@/components/ui/contribution-graph";
-import { config } from "@/lib/config";
-import { useHaptics } from "@/lib/haptics";
-import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
-import { getAllPosts } from "@/lib/posts";
-import { seo } from "@/lib/seo";
-import { cn } from "@/lib/utils";
+import { NetisionIcon } from "~/components/icons";
+import { ListPosts } from "~/components/list-posts";
+import { ListProjects } from "~/components/list-projects";
+import { ContributionGraph } from "~/components/ui/contribution-graph";
+import { config } from "~/lib/config";
+import { useHaptics } from "~/lib/haptics";
+import { fetchContributions, fetchPinnedRepos } from "~/lib/octo";
+import { getAllPosts } from "~/lib/posts";
+import { seo } from "~/lib/seo";
+import { cn } from "~/lib/utils";
 
 // const lastYear = new Date().getFullYear() - 1;
 

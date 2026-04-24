@@ -4,9 +4,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
-import { List, ListItem, ListItemHover } from "@/components/ui/list";
-import { Skeleton } from "@/components/ui/skeleton";
-import { seo } from "@/lib/seo";
+import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { Skeleton } from "~/components/ui/skeleton";
+import { seo } from "~/lib/seo";
 import {
   getNowPlaying,
   getRecentlyPlayed,
@@ -14,8 +14,8 @@ import {
   getTopTracks,
   type SpotifyArtist,
   type SpotifyTrack,
-} from "@/lib/spotify";
-import { cn } from "@/lib/utils";
+} from "~/lib/spotify";
+import { cn } from "~/lib/utils";
 
 const title = "Music";
 const description = "What I'm listening to on Spotify.";

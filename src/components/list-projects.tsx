@@ -1,5 +1,5 @@
 import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
-import type { PinnedRepo } from "@/lib/octo";
+import type { PinnedRepo } from "~/lib/octo";
 import { List, ListItem, ListItemHover } from "./ui/list";
 
 function ListProjects({ projects }: { projects: PinnedRepo[] }) {
