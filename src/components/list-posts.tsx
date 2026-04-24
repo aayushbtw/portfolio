@@ -1,12 +1,17 @@
 import { Link } from "@tanstack/react-router";
-import type { Post } from "content-collections";
 import { cn } from "@/lib/utils";
+
+interface PostSummary {
+  publishedAt: string;
+  slug: string;
+  title: string;
+}
 
 function ListPosts({
   posts,
   className,
 }: {
-  posts: Post[];
+  posts: PostSummary[];
   className?: string;
 }) {
   const grouped = posts.map((post) => {

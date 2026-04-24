@@ -8,10 +8,10 @@ import { NetisionIcon } from "@/components/icons";
 import { ListPosts } from "@/components/list-posts";
 import { ListProjects } from "@/components/list-projects";
 import { ContributionGraph } from "@/components/ui/contribution-graph";
-import { getAllPosts } from "@/lib/blog";
 import { config } from "@/lib/config";
 import { useHaptics } from "@/lib/haptics";
 import { fetchContributions, fetchPinnedRepos } from "@/lib/octo";
+import { getAllPosts } from "@/lib/posts";
 import { seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
     const [posts, contributions, projects] = await Promise.all([
-      getAllPosts(5),
+      getAllPosts().then((posts) => posts.slice(0, 5)),
       fetchContributions(new Date().getFullYear() - 1),
       fetchPinnedRepos(),
     ]);

@@ -1,25 +1,18 @@
-/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: required for markdown */
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { allPosts } from "content-collections";
+import { createFileRoute } from "@tanstack/react-router";
 import { RightColumn } from "@/components/layout-provider";
 import { TableOfContents } from "@/components/table-of-contents";
 import { config } from "@/lib/config";
+import { getPostBySlug } from "@/lib/posts";
 import { seo } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: ({ params }) => {
-    const post = allPosts.find((p) => p.slug === params.slug);
-    if (!post) {
-      throw notFound();
-    }
-    return { post };
-  },
+  loader: ({ params }) => getPostBySlug(params.slug),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};
     }
-    const { post } = loaderData;
+    const post = loaderData;
     return {
       ...seo({
         title: post.title,
@@ -51,22 +44,18 @@ export const Route = createFileRoute("/_app/writings/$slug")({
       ],
     };
   },
-
   component: WritingPage,
 });
 
 function WritingPage() {
-  const { post } = Route.useLoaderData();
+  const post = Route.useLoaderData();
 
   return (
     <section>
       <h1 className="text-balance">{post.title}</h1>
       <time className="text-fg-3">{formatDate(post.publishedAt)}</time>
 
-      <article
-        className="prose"
-        dangerouslySetInnerHTML={{ __html: post.html }}
-      />
+      <article className="prose">{post.mdx}</article>
 
       {post.headings.length > 0 && (
         <RightColumn>

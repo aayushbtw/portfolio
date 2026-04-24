@@ -1,48 +1,32 @@
-import { defineCollection, defineConfig } from "@content-collections/core";
-import { evaluate } from "@mdx-js/mdx";
-import type { MDXComponents } from "mdx/types";
-import { createElement } from "react";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { renderToStaticMarkup } from "react-dom/server";
-import rehypeExternalLinks from "rehype-external-links";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-import { z } from "zod";
 import {
-  Showcase,
-  ShowcaseCaption,
-  ShowcaseImage,
-} from "./src/components/ui/showcase";
+  createDefaultImport,
+  defineCollection,
+  defineConfig,
+  type WriterHook,
+} from "@content-collections/core";
+import type { MDXContent } from "mdx/types";
+import { z } from "zod";
 
-async function renderMdx(
-  content: string,
-  props: MDXComponents = {}
-): Promise<{ html: string; headings: { id: string; text: string }[] }> {
-  const { default: Content } = await evaluate(content, {
-    Fragment,
-    jsx,
-    jsxs,
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeExternalLinks, { target: "_blank", rel: ["noopener"] }],
-      [rehypePrettyCode, { theme: "github-light", keepBackground: false }],
-    ],
+const HEADING_REGEX = /^##\s+(.+?)\s*$/gm;
+
+function getSlugFromHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+function extractHeadings(source: string): { id: string; text: string }[] {
+  return Array.from(source.matchAll(HEADING_REGEX), (m) => {
+    const text = m[1].trim();
+    return { id: getSlugFromHeading(text), text };
   });
-  const html = renderToStaticMarkup(
-    createElement(Content, { components: props })
-  );
-  const headings: { id: string; text: string }[] = [];
-  for (const match of html.matchAll(/<h2\s+id="([^"]+)"[^>]*>(.+?)<\/h2>/g)) {
-    headings.push({ id: match[1], text: match[2].replace(/<[^>]+>/g, "") });
-  }
-  return { html, headings };
 }
 
 const posts = defineCollection({
   name: "posts",
-  directory: "./writings",
+  directory: "./src/writings",
   include: "*.mdx",
   schema: z.object({
     title: z.string(),
@@ -52,20 +36,29 @@ const posts = defineCollection({
     image: z.string().optional(),
     content: z.string(),
   }),
-  transform: async (doc, { cache }) => {
-    const { html, headings } = await cache(doc.content, (content) =>
-      renderMdx(content, { Showcase, ShowcaseImage, ShowcaseCaption })
-    );
-
+  transform: ({ _meta, content, ...post }) => {
+    const mdx = createDefaultImport<MDXContent>(`~/writings/${_meta.filePath}`);
     return {
-      ...doc,
-      slug: doc._meta.path,
-      html,
-      headings,
+      ...post,
+      slug: _meta.path,
+      mdx,
+      headings: extractHeadings(content),
     };
   },
 });
 
+const serverOnlyHook: WriterHook = ({ fileType, content }) => {
+  if (fileType === "typeDefinition") {
+    return { content };
+  }
+  return {
+    content: `import '@tanstack/react-start/server-only';\n\n${content}`,
+  };
+};
+
 export default defineConfig({
   content: [posts],
+  hooks: {
+    writer: [serverOnlyHook],
+  },
 });
