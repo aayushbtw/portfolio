@@ -15,7 +15,7 @@
     }
 
     p {
-      @apply text-fg-3 balance-spacing my-4 text-pretty;
+      @apply text-fg-3 balance-spacing my-4;
     }
 
     a {
