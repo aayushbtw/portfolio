@@ -7,16 +7,13 @@ const title = "Projects";
 const description = "Things I've built across software, design, and the web.";
 
 export const Route = createFileRoute("/_app/projects")({
-  loader: async () => ({ projects: await fetchPinnedRepos() }),
+  loader: () => fetchPinnedRepos(),
   head: () => seo({ title, description }),
-  headers: () => ({
-    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-  }),
   component: ProjectsPage,
 });
 
 function ProjectsPage() {
-  const { projects } = Route.useLoaderData();
+  const projects = Route.useLoaderData();
 
   return (
     <section>

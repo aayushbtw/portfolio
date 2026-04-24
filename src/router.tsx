@@ -9,6 +9,8 @@ export function getRouter() {
     routeTree,
     context: { queryClient },
     defaultStaleTime: Number.POSITIVE_INFINITY,
+    defaultPreload: "intent",
+    defaultPreloadStaleTime: Number.POSITIVE_INFINITY,
     trailingSlash: "preserve",
     notFoundMode: "root",
     scrollRestoration: true,

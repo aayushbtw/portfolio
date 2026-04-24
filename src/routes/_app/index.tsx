@@ -17,22 +17,22 @@ import { cn } from "~/lib/utils";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
-    const [posts, contributions, projects] = await Promise.all([
-      getAllPosts().then((posts) => posts.slice(0, 5)),
+    const [contributions, projects, posts] = await Promise.all([
       fetchContributions(),
       fetchPinnedRepos(),
+      getAllPosts(),
     ]);
-    return { posts, contributions, projects };
+    return { contributions, projects, posts: posts.slice(0, 5) };
   },
   head: () => seo({ title: config.name, description: config.description }),
   headers: () => ({
-    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
   }),
   component: HomePage,
 });
 
 function HomePage() {
-  const { posts, contributions, projects } = Route.useLoaderData();
+  const { contributions, projects, posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
   const haptic = () => trigger("tick");
 
