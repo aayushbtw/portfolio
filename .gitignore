@@ -15,3 +15,6 @@ routeTree.gen.ts
 *.log
 *.tsbuildinfo
 .dev.vars
+
+docs
+scripts
