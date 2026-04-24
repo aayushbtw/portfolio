@@ -15,18 +15,18 @@ export function ShowcaseImage({
   height: number;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-lg">
+    <div className="relative overflow-hidden md:rounded-lg">
       <Image
         alt="background-image"
         aria-hidden={true}
-        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
+        className="pointer-events-none absolute inset-0 hidden h-full w-full select-none object-cover md:block"
         draggable={false}
         height={1084}
         src="/showcase-background.png"
         width={1920}
       />
-      <div className="absolute inset-0 bg-bg-1/20" />
-      <div className="relative flex justify-center p-4">
+      <div className="absolute inset-0 hidden bg-bg-1/20 md:block" />
+      <div className="relative flex justify-center md:p-4">
         <Image
           alt={alt}
           className="w-full shadow-2xl ring-1 ring-black/10"
