@@ -66,14 +66,24 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-border;
+  ::-webkit-scrollbar {
+    width: 5px;
   }
-  html {
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-fg-3);
+    border-radius: 5px;
+  }
+
+  * {
     scrollbar-gutter: stable;
     scrollbar-color: var(--color-fg-3) transparent;
     scrollbar-width: thin;
+    @apply border-border outline-border;
   }
+
   body {
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
     @apply text-sm -tracking-[0.15px] leading-[22.75px] md:font-[450];
