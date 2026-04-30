@@ -14,7 +14,7 @@ The macOS defaults are fine until you've used something better. Over time I've s
 
 ## Ghostty
 
-As you probably noticed from the image, my terminal of choice is Ghostty. I tried a lot of others before landing on it. iTerm2 felt bloated, Alacritty was fine but too minimal, Warp kept trying to be something I didn't ask for. Ghostty hits the right balance. Highly configurable, fast, and has been my daily driver since the beta.
+As you probably noticed from the image, my terminal of choice is [Ghostty](https://ghostty.org). I tried a lot of others before landing on it. iTerm2 felt bloated, Alacritty was fine but too minimal, Warp kept trying to be something I didn't ask for. Ghostty hits the right balance. Highly configurable, fast, and has been my daily driver since the beta.
 
 ## Starship
 
@@ -22,7 +22,7 @@ As you probably noticed from the image, my terminal of choice is Ghostty. I trie
   <ShowcaseImage src="/writings/my-terminal-setup/starship.png" alt="Starship prompt" height={1328} />
 </Showcase>
 
-Prompt configuration has a way of becoming its own project. Starship avoids that. I set it up once with the things I actually need (current directory, git branch, command duration) and haven't touched it since.
+Prompt configuration has a way of becoming its own project. [Starship](https://starship.rs) avoids that. I set it up once with the things I actually need (current directory, git branch, command duration) and haven't touched it since.
 
 ## eza
 
@@ -30,7 +30,14 @@ Prompt configuration has a way of becoming its own project. Starship avoids that
   <ShowcaseImage src="/writings/my-terminal-setup/eza.png" alt="eza directory listing" height={1328} />
 </Showcase>
 
-I have it aliased to `ls` so the switch is invisible. You only really notice it when you SSH into something and wonder why `ls` suddenly looks so ugly.
+I have [eza](https://eza.rocks) aliased to `ls` so the switch is invisible. You only really notice it when you SSH into something and wonder why `ls` suddenly looks so ugly.
+
+```sh title="~/.config/.zshrc"
+alias ls='eza -l --icons'
+alias la='eza -l -a --icons'
+alias ld='eza -l -D --icons'
+alias ll='eza --icons'
+```
 
 ## zoxide
 
@@ -38,7 +45,7 @@ I have it aliased to `ls` so the switch is invisible. You only really notice it 
   <ShowcaseImage src="/writings/my-terminal-setup/zoxide.png" alt="zoxide smart directory navigation" height={1328} />
 </Showcase>
 
-Smarter `cd`. I type part of a directory name and it figures out where I mean. Took about a day to get used to it, and now typing out a full path feels like a punishment.
+Smarter `cd`. I type part of a directory name and [zoxide](https://github.com/ajeetdsouza/zoxide) figures out where I mean. Took about a day to get used to it, and now typing out a full path feels like a punishment.
 
 ## bat
 
@@ -46,10 +53,15 @@ Smarter `cd`. I type part of a directory name and it figures out where I mean. T
   <ShowcaseImage src="/writings/my-terminal-setup/bat.png" alt="bat syntax highlighted output" height={1328} />
 </Showcase>
 
-`cat` with syntax highlighting. Aliased to `cat`. It also shows git diff markers in the gutter, which comes up more often than I expected. I've had it installed for so long I forget it's not the default.
+[bat](https://github.com/sharkdp/bat) is `cat` with syntax highlighting. Aliased to `cat`. It also shows git diff markers in the gutter, which comes up more often than I expected. I've had it installed for so long I forget it's not the default.
+
+```sh title="~/.config/.zshrc"
+alias cat='bat'
+```
 
 ## fd
 
-`find` but I can actually remember how to use it. With `find` I was Googling the syntax every time. With `fd` I just type what I want. It also respects `.gitignore` by default, so searching a project doesn't mean wading through `node_modules`.
+[fd](https://github.com/sharkdp/fd) is `find` but I can actually remember how to use it. With `find` I was Googling the syntax every time. With `fd` I just type what I want. It also respects `.gitignore` by default, so searching a project doesn't mean wading through `node_modules`.
+
 
 None of these tools are revolutionary on their own. But stacked together, they turn the terminal from something I tolerate into something I actually prefer over any GUI.
