@@ -43,12 +43,12 @@
     }
     figure pre code {
       counter-reset: line;
-      @apply overflow-x-auto py-1;
+      @apply overflow-x-auto py-2 space-y-[3px];
     }
     figure pre code [data-line]:before {
       content: counter(line);
       counter-increment: line;
-      @apply w-4 px-4 text-right inline-block text-fg-3;
+      @apply w-4 pl-2 pr-5 text-right inline-block text-fg-2;
     }
   }
 }
