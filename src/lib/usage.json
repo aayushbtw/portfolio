@@ -1,15 +1,15 @@
 {
   "year": 2026,
-  "total": 289851073,
-  "input": 125227,
-  "output": 2277005,
-  "cacheRead": 277986485,
-  "cacheWrite": 9462356,
+  "total": 297758796,
+  "input": 125274,
+  "output": 2288239,
+  "cacheRead": 285563752,
+  "cacheWrite": 9781531,
   "sessions": 47,
   "models": [
     {
       "name": "Opus 4.8",
-      "tokens": 211614601
+      "tokens": 219522324
     },
     {
       "name": "Fable 5",
@@ -19,12 +19,12 @@
   "days": [
     {
       "date": "2026-07-19",
-      "tokens": 76733741,
+      "tokens": 84641464,
       "barWidth": 100,
       "models": [
         {
           "name": "Opus 4.8",
-          "tokens": 76733741,
+          "tokens": 84641464,
           "share": 100
         }
       ]
@@ -32,7 +32,7 @@
     {
       "date": "2026-07-17",
       "tokens": 44393918,
-      "barWidth": 58,
+      "barWidth": 52,
       "models": [
         {
           "name": "Opus 4.8",
@@ -44,7 +44,7 @@
     {
       "date": "2026-07-16",
       "tokens": 31177528,
-      "barWidth": 41,
+      "barWidth": 37,
       "models": [
         {
           "name": "Opus 4.8",
@@ -56,7 +56,7 @@
     {
       "date": "2026-07-15",
       "tokens": 27960699,
-      "barWidth": 36,
+      "barWidth": 33,
       "models": [
         {
           "name": "Opus 4.8",
@@ -73,7 +73,7 @@
     {
       "date": "2026-07-14",
       "tokens": 29716385,
-      "barWidth": 39,
+      "barWidth": 35,
       "models": [
         {
           "name": "Fable 5",
@@ -85,7 +85,7 @@
     {
       "date": "2026-07-13",
       "tokens": 41081990,
-      "barWidth": 54,
+      "barWidth": 49,
       "models": [
         {
           "name": "Fable 5",
@@ -102,7 +102,7 @@
     {
       "date": "2026-06-21",
       "tokens": 6087522,
-      "barWidth": 8,
+      "barWidth": 7,
       "models": [
         {
           "name": "Opus 4.8",
@@ -112,5 +112,5 @@
       ]
     }
   ],
-  "generatedAt": "2026-07-19T11:56:17.502Z"
+  "generatedAt": "2026-07-19T12:05:20.791Z"
 }
