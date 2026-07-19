@@ -9,14 +9,22 @@ function NavListIndicator() {
   );
 }
 
-export function NavList({ className, ...props }: React.ComponentProps<"ul">) {
+export function NavList({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"ul">) {
   return (
     <ul
-      className={cn("not-typeset relative flex flex-col gap-xs", className)}
+      className={cn(
+        "not-typeset relative flex flex-col gap-xs [&_a]:no-underline",
+        className
+      )}
+      data-slot="nav-list"
       {...props}
     >
       <NavListIndicator />
-      {props.children}
+      {children}
     </ul>
   );
 }
