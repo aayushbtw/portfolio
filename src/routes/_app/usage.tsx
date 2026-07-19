@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
-import { formatDate } from "~/lib/utils";
+import { cn, formatDate } from "~/lib/utils";
 
 const title = "Claude Usage";
 const description = "How many tokens I've burned coding with Claude Code.";
@@ -51,9 +51,9 @@ function UsagePage() {
                   className="flex h-full gap-px overflow-hidden rounded-full"
                   style={{ width: `${day.barWidth}%` }}
                 >
-                  {day.models.map((model, i) => (
+                  {day.models.map((model) => (
                     <div
-                      className={i === 0 ? "bg-brand" : "bg-brand/40"}
+                      className={modelShade(model.name)}
                       key={model.name}
                       style={{ width: `${model.share}%` }}
                     />
@@ -63,7 +63,14 @@ function UsagePage() {
 
               <div className="flex flex-wrap gap-x-md text-fg-3 text-xs tabular-nums">
                 {day.models.map((model) => (
-                  <span key={model.name}>
+                  <span className="flex items-center gap-xs" key={model.name}>
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "h-2 w-0.5 shrink-0 rounded-full shadow-[0_0_8px_rgba(var(--brand-rgb),0.4)]",
+                        modelShade(model.name)
+                      )}
+                    />
                     {model.name} {model.share}%
                   </span>
                 ))}
@@ -81,6 +88,27 @@ function UsagePage() {
       </div>
     </section>
   );
+}
+
+/**
+ * One ramp of the nav indicator's gradient, faded per step, so every model
+ * reads as the same material at a different strength. Ordered to match
+ * `usage.models` (sorted by yearly total), so the model you used most is the
+ * strongest. Keyed to the model rather than to its rank within a day:
+ * otherwise a model's colour changes from row to row and the legend means
+ * nothing.
+ */
+const MODEL_SHADES = [
+  "indicator-brand opacity-80",
+  "indicator-brand opacity-60",
+  "indicator-brand opacity-35",
+  "indicator-brand opacity-20",
+];
+
+function modelShade(name: string) {
+  const rank = usage.models.findIndex((model) => model.name === name);
+
+  return MODEL_SHADES[rank] ?? MODEL_SHADES.at(-1);
 }
 
 /** "Jul 19" — the year is already on the heading. */
