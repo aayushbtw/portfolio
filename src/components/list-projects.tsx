@@ -14,7 +14,7 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
             target="_blank"
           >
             <div className="flex flex-col">
-              <h6 className="capitalize">{item.repo}</h6>
+              <span className="text-fg-2 capitalize">{item.repo}</span>
               <p>{item.description}</p>
             </div>
 

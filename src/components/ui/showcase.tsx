@@ -1,8 +1,10 @@
 import { Image } from "@unpic/react";
-import type { ReactNode } from "react";
 
-export function Showcase({ children }: { children: ReactNode }) {
-  return <figure>{children}</figure>;
+export function Showcase({
+  className,
+  ...props
+}: React.ComponentProps<"figure">) {
+  return <figure className={className} data-slot="showcase" {...props} />;
 }
 
 export function ShowcaseImage({
@@ -29,7 +31,7 @@ export function ShowcaseImage({
       <div className="relative flex justify-center md:p-md">
         <Image
           alt={alt}
-          className="w-full shadow-2xl ring-1 ring-black/10"
+          className="w-full shadow-2xl ring-1 ring-fg-1/10"
           height={height}
           layout="fullWidth"
           src={src}
@@ -39,6 +41,11 @@ export function ShowcaseImage({
   );
 }
 
-export function ShowcaseCaption({ children }: { children: ReactNode }) {
-  return <figcaption>{children}</figcaption>;
+export function ShowcaseCaption({
+  className,
+  ...props
+}: React.ComponentProps<"figcaption">) {
+  return (
+    <figcaption className={className} data-slot="showcase-caption" {...props} />
+  );
 }

@@ -41,7 +41,7 @@ function ListPosts({
               <span className="w-12 tabular-nums">
                 {showYear ? post.year : ""}
               </span>
-              <h6 className="flex-1">{post.title}</h6>
+              <span className="flex-1 text-fg-2">{post.title}</span>
               <time className="tabular-nums">{post.date}</time>
             </Link>
           </li>

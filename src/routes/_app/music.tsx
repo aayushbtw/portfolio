@@ -189,7 +189,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
         ) : null}
 
         <div className="flex min-w-0 flex-col">
-          <h6 className="truncate">{track.name}</h6>
+          <span className="truncate text-fg-2">{track.name}</span>
           <p className="truncate">
             {track.artists.map((a) => a.name).join(", ")}
           </p>
@@ -220,7 +220,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
         ) : null}
 
         <div className="flex min-w-0 flex-col">
-          <h6 className="truncate">{artist.name}</h6>
+          <span className="truncate text-fg-2">{artist.name}</span>
         </div>
 
         <ListItemHover>

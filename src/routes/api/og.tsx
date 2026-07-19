@@ -4,6 +4,15 @@ import { config } from "~/lib/config";
 
 const OG_SIZE = { width: 1200, height: 630 };
 
+/* Satori rasterises this on the edge with no stylesheet, so it cannot read the
+   @theme tokens. These are those tokens resolved to sRGB; keep them in step. */
+const OG_COLORS = {
+  bg1: "#ffffff",
+  fg1: "#030712",
+  fg2: "#6b7280",
+  brand: "#e06030",
+};
+
 export const Route = createFileRoute("/api/og")({
   server: {
     handlers: {
@@ -22,7 +31,7 @@ export const Route = createFileRoute("/api/og")({
         return new ImageResponse(
           <div
             style={{
-              background: "#ffffff",
+              background: OG_COLORS.bg1,
               width: "100%",
               height: "100%",
               display: "flex",
@@ -35,7 +44,7 @@ export const Route = createFileRoute("/api/og")({
               style={{
                 width: "48px",
                 height: "4px",
-                background: "#e06030",
+                background: OG_COLORS.brand,
                 borderRadius: "2px",
               }}
             />
@@ -51,7 +60,7 @@ export const Route = createFileRoute("/api/og")({
                 style={{
                   fontFamily: "Inter",
                   fontSize: "62px",
-                  color: "#030712",
+                  color: OG_COLORS.fg1,
                   lineHeight: "1.1",
                   letterSpacing: "-0.15px",
                 }}
@@ -62,7 +71,7 @@ export const Route = createFileRoute("/api/og")({
                 style={{
                   fontFamily: "Inter",
                   fontSize: "34px",
-                  color: "#6b7280",
+                  color: OG_COLORS.fg2,
                   lineHeight: "1.35",
                   letterSpacing: "-0.15px",
                   maxWidth: "75%",

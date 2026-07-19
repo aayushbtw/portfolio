@@ -26,6 +26,7 @@ export function ProgressiveBlur({
         position === "top" ? "top-0" : "bottom-0",
         className
       )}
+      data-slot="progressive-blur"
     >
       {LAYERS.map(({ blur, transparent, black }, i) => {
         const maskImage = `linear-gradient(${direction}, transparent ${transparent}%, black ${black}%)`;
