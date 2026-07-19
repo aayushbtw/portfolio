@@ -36,12 +36,25 @@
   --spacing-xl: calc(var(--spacing) * 12); /* 48px */
   --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 
-  /* Text scale. Body is text-md on mobile, text-sm from sm up. */
+  /* Text scale. Each size carries its own leading and tracking, so `text-sm`
+     is the whole treatment and nothing needs a loose `leading-*` beside it.
+     Body is text-md on mobile, text-sm from sm up; both share one 22.75px
+     line box so the rhythm doesn't shift at the breakpoint. */
   --text-xs: 0.75rem; /* 12px  labels, captions, code, eyebrow */
+  --text-xs--line-height: 1.25rem; /* 20px */
+  --text-xs--letter-spacing: -0.15px;
   --text-sm: 0.875rem; /* 14px  body on desktop */
+  --text-sm--line-height: 1.421875rem; /* 22.75px */
+  --text-sm--letter-spacing: -0.15px;
   --text-md: 1rem; /* 16px  body on mobile */
+  --text-md--line-height: 1.421875rem; /* 22.75px */
+  --text-md--letter-spacing: -0.15px;
   --text-lg: 1.25rem; /* 20px  display */
+  --text-lg--line-height: 1.75rem; /* 28px */
+  --text-lg--letter-spacing: -0.15px;
   --text-xl: 1.875rem; /* 30px  display */
+  --text-xl--line-height: 2.25rem; /* 36px */
+  --text-xl--letter-spacing: -0.15px;
 }
 
 /* Typeset's variable contract, bridged onto the tokens above. */
@@ -95,6 +108,12 @@
     @apply animated-link;
   }
 
+  /* Typeset sizes its small text in em fractions (0.85em, 0.875em) that land
+     between steps. Pull them onto the scale so prose and UI agree. */
+  .typeset :where(:not(pre) > code, figcaption, caption, [data-footnotes]) {
+    @apply text-xs;
+  }
+
   /* Typeset only trims the first two levels; the shell nests content deeper. */
   .typeset :where(:first-child) {
     margin-block-start: 0;
@@ -106,7 +125,7 @@
    owns the frame, so the pre sits flush inside it. */
 @layer components {
   .typeset :where(figure[data-rehype-pretty-code-figure]) {
-    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono text-xs leading-6;
+    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono text-xs;
   }
 
   .typeset :where([data-rehype-pretty-code-title]) {
@@ -195,6 +214,6 @@
 
   body {
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
-    @apply text-md sm:text-sm tracking-[-0.15px] leading-[22.75px] sm:font-[450];
+    @apply text-md sm:text-sm sm:font-[450];
   }
 }
