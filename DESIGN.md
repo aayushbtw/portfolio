@@ -18,13 +18,16 @@ Defined in `@theme`, all in oklch.
 | ------------- | ------------------------------------------------ |
 | `bg-1`        | Page background                                  |
 | `bg-2`        | Raised surface: hovered list item, inline code   |
-| `fg-1`        | Primary text: headings, active nav               |
-| `fg-2`        | Secondary text: link text, list item titles      |
-| `fg-3`        | Body copy, labels, metadata. The default for prose |
+| `fg-1`        | `h1`, active nav                                 |
+| `fg-2`        | `h2`–`h6`, link text, list item titles           |
+| `fg-3`        | `p`, labels, metadata. The default everything sits at |
 | `border`      | All borders and outlines                         |
 | `brand`       | Orange. Accent only: link underline hover, meters, eq bars |
+| `graph-0`–`graph-4` | Contribution levels, empty to busiest      |
 
 Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down.
+
+The mapping is attached to the tags themselves in [src/styles/app.css](src/styles/app.css), not to a prose class, so `<p>` and `<h2>` are already the right color with no utility on them. Those rules deliberately reach into `not-typeset` subtrees as well: UI opts out of prose *layout*, never out of the color guide. Only write `text-fg-*` when a tag needs to depart from its default.
 
 Spacing tokens:
 
@@ -36,6 +39,12 @@ Spacing tokens:
 
 Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets `cv01`/`ss03`, `-0.15px` tracking, 15px mobile / 14px desktop.
 
+## Type scale
+
+There isn't one. Body size is the ceiling: nothing is larger than 14px on desktop, and nothing is heavier than 500. Headings are body size at weight 500 and separate from body copy by *color* alone, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Below body size there is `text-xs` for labels, captions, and code.
+
+Because size carries no meaning, don't reach for it to signal importance. Step the color up instead, or use `text-eyebrow` for a section label.
+
 ## Utilities
 
 Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they compose with variants (`hover:`, `sm:`) and get merged correctly.
@@ -43,7 +52,6 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | Utility            | What it is                                                     |
 | ------------------ | -------------------------------------------------------------- |
 | `text-eyebrow`     | Section label: `fg-3`, xs, uppercase, wide tracking. Every `h1`/`h2` that labels a section |
-| `text-lede`        | Intro paragraph stack: `fg-3` + `space-y-1.5`                    |
 | `animated-link`    | Inline prose link: medium, `fg-2`, underline that turns `brand` on hover |
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-4`         |
@@ -51,7 +59,6 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | `indicator-spring` | Springy sliding position indicator                               |
 | `indicator-brand`  | Brand gradient fill for that indicator                           |
 | `eq-bar`           | Animated equalizer bar (now-playing)                             |
-| `balance-spacing`  | `first:mt-0 last:mb-0`, for prose children                       |
 
 ## Page shape
 
@@ -69,7 +76,7 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 </section>
 ```
 
-The home page is the one exception: its `h1` is the display name at base heading size with a `text-lede` block under it, since it's the only page with a hero.
+The home page is the one exception: its `h1` is the display name at base heading size with a paragraph stack under it, since it's the only page with a hero.
 
 ## Interaction
 
@@ -83,4 +90,24 @@ The home page is the one exception: its `h1` is the display name at base heading
 
 `ui/` holds the primitives (`List`, `ListItem`, `ListItemHover`, `NavList`, `Skeleton`, `ContributionGraph`, `ProgressiveBlur`). They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
 
-Content pages are styled by `.prose` in [src/styles/content.css](src/styles/content.css), not by utilities in MDX.
+## Prose
+
+There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so every page is prose by default: write plain `<p>`, `<h2>`, `<ul>`, `<table>` with no classes and they're styled. A paragraph on the home page and a paragraph in a blog post are the same paragraph.
+
+```tsx
+<section>
+  <h1 className="text-balance">{post.title}</h1>
+  <article>{post.mdx}</article>
+</section>
+```
+
+[src/styles/typeset.css](src/styles/typeset.css) is vendored from [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and never edited. It's configured in two places in [src/styles/app.css](src/styles/app.css):
+
+- `:root` maps typeset's variable contract (`--typeset-*`, plus `--color-foreground`, `--color-muted-foreground`, `--color-muted`, `--radius`) onto the tokens above, so prose resolves to the site's colors and fonts.
+- An `@layer components` block holds what typeset has no variable for: the color guide per tag, headings at `1em`/500, `strong` at 500, links as `animated-link`, and the frame for rehype-pretty-code's title bar and line numbers.
+
+That block **must** stay in `@layer components`, imported after typeset.css. Same layer and later in source means it beats typeset's defaults; being below `@layer utilities` means a utility on the element still beats it. Unlayered would win over utilities and silently break every `text-eyebrow` heading.
+
+### Opting out
+
+UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `List`, `NavList`, `ListPosts`, `ContributionGraph`, and the stat block on the usage page. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.
