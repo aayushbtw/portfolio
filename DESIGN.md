@@ -65,7 +65,7 @@ Five steps, sharing the spacing scale's names and living in `@theme` alongside i
 | ----- | ---- | ------- | ----------------------------------------- |
 | `xs`  | 12px | 20px    | Labels, captions, code, `text-eyebrow`    |
 | `sm`  | 14px | 22.75px | Body, desktop                             |
-| `md`  | 16px | 22.75px | Body mobile; page title; a figure worth reading first |
+| `md`  | 16px | 22.75px | Body mobile; a figure worth reading first |
 | `lg`  | 20px | 28px    | Display                                   |
 | `xl`  | 30px | 36px    | Display                                   |
 
@@ -79,13 +79,13 @@ That's why no `leading-[…]` or `tracking-[…]` exists anywhere. The one delib
 
 | Role            | Size                | Where                                        |
 | --------------- | ------------------- | -------------------------------------------- |
-| Page title      | `text-md`           | The `h1`. One per page, naming what you're on |
+| Page title      | `text-eyebrow` (xs) | The `h1`. One per page, naming what you're on. Home is the exception |
 | Section label   | `text-eyebrow` (xs) | The `h2` above a list or block                |
 | Everything else | body                | Copy, headings inside prose, list rows        |
 
 Below the `h1`, size stops meaning anything. Headings *inside* an article are body size at weight 500 and separate from copy by *colour*, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Nothing in a paragraph flow goes above body size, and nothing is heavier than 500. To signal importance mid-text, step the colour up.
 
-`text-eyebrow` is a label, never a title. It sits *above* content to name a section; it doesn't name the page.
+`text-eyebrow` does both jobs: it's the `h1` on every page but home, and the `h2` above a list or block. So the page title and its section labels are the same treatment, and the hierarchy between them comes from document order and the `h1`/`h2` tags, not from anything visual. That's deliberate. These pages are short enough to take in at once, and a title that outweighed its sections would fight the content it's introducing. It never appears inside prose.
 
 **`lg` and `xl` are for figures and empty pages.** They go on the one element that *is* the page's subject where no prose competes with it: the usage page's token total, the 404's message. One per page. Never on a sentence, and never on something that repeats — the usage page's four stat values sit at `md` precisely because there are four of them and they're secondary to the total above.
 
@@ -122,7 +122,7 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 </section>
 ```
 
-The home page is the one exception: its `h1` is the display name at base heading size with a paragraph stack under it, since it's the only page with a hero.
+The home page is the one exception: its `h1` is the display name at base heading size with no size class, since it's the only page with a hero. Its paragraph stack also tightens `--typeset-flow` to `sm` inline, so the hero reads as one block rather than separated copy. Both are home-only. Don't carry either to another page.
 
 ## Interaction
 
