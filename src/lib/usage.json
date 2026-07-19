@@ -1,15 +1,15 @@
 {
   "year": 2026,
-  "total": 219178427,
-  "input": 124401,
-  "output": 2019771,
-  "cacheRead": 208710313,
-  "cacheWrite": 8323942,
-  "sessions": 44,
+  "total": 285478636,
+  "input": 125150,
+  "output": 2256727,
+  "cacheRead": 273879095,
+  "cacheWrite": 9217664,
+  "sessions": 47,
   "models": [
     {
       "name": "Opus 4.8",
-      "tokens": 140941955
+      "tokens": 207242164
     },
     {
       "name": "Fable 5",
@@ -20,13 +20,13 @@
     {
       "label": "Jun",
       "tokens": 38786812,
-      "percent": 22
+      "percent": 16
     },
     {
       "label": "Jul",
-      "tokens": 180391615,
+      "tokens": 246691824,
       "percent": 100
     }
   ],
-  "generatedAt": "2026-07-19T08:19:39.629Z"
+  "generatedAt": "2026-07-19T11:32:38.097Z"
 }
