@@ -79,14 +79,14 @@ function NotFound() {
   return (
     <div className="typeset mx-auto px-lg py-xl sm:py-2xl">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
-        <h1 className="mb-md text-balance font-medium text-3xl capitalize">
+        <h1 className="mb-sm text-balance font-medium text-xl capitalize">
           page not found
         </h1>
-        <p className="my-0 text-base">
+        <p className="my-0 text-md">
           This page doesn't exist or has been moved.
         </p>
         <Link
-          className="mt-lg inline-flex min-h-10 items-center rounded-xl px-md py-sm no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
+          className="mt-lg inline-flex min-h-9 items-center rounded-xl px-md no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
           to="/"
         >
           Go Home
