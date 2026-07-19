@@ -59,9 +59,24 @@ Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Vari
 
 ## Type scale
 
-There isn't one. Body size is the ceiling: nothing is larger than 14px on desktop, and nothing is heavier than 500. Headings are body size at weight 500 and separate from body copy by *color* alone, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Below body size there is `text-xs` for labels, captions, and code.
+Five steps, sharing the spacing scale's names and living in `@theme` alongside it.
 
-Because size carries no meaning, don't reach for it to signal importance. Step the color up instead, or use `text-eyebrow` for a section label.
+| Token | Size | Use                                        |
+| ----- | ---- | ------------------------------------------ |
+| `xs`  | 12px | Labels, captions, code, `text-eyebrow`     |
+| `sm`  | 14px | Body, desktop                              |
+| `md`  | 16px | Body, mobile                               |
+| `md`  | 16px | A figure worth reading before its neighbours |
+| `lg`  | 20px | Display                                    |
+| `xl`  | 30px | Display                                    |
+
+Body is `text-md sm:text-sm`, so it's the scale rather than a special case: 16px on mobile, 14px from `sm` up.
+
+**In prose, size carries no hierarchy.** Headings are body size at weight 500 and separate from body copy by *colour*, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Nothing in a paragraph flow goes above body size, and nothing is heavier than 500. To signal importance in text, step the colour up or use `text-eyebrow`.
+
+**Display sizes are for figures, not prose.** `lg` and `xl` go on the one element that *is* the page's subject: the 404's message, the usage page's token total. One per page. Never on a sentence, and never on something that repeats — the usage page's four stat values sit at `md` precisely because there are four of them and they're secondary to the total above.
+
+Tailwind's own sizes are still generated alongside these, so `text-base` and `text-3xl` resolve to something even though they're outside the scale. The table is the contract; the build doesn't enforce it yet.
 
 ## Utilities
 
@@ -70,7 +85,7 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | Utility            | What it is                                                     |
 | ------------------ | -------------------------------------------------------------- |
 | `text-eyebrow`     | Section label: `fg-3`, xs, uppercase, wide tracking. Every `h1`/`h2` that labels a section |
-| `animated-link`    | Inline prose link: medium, `fg-2`, underline that turns `brand` on hover |
+| `animated-link`    | Inline prose link: medium, `fg-2`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
