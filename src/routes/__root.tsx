@@ -86,7 +86,7 @@ function NotFound() {
           This page doesn't exist or has been moved.
         </p>
         <Link
-          className="mt-lg inline-flex min-h-10 items-center rounded-xl px-md py-sm outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
+          className="mt-lg inline-flex min-h-10 items-center rounded-xl px-md py-sm no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
           to="/"
         >
           Go Home
