@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "vite build && wrangler deploy",
-    "usage": "tsx scripts/token-usage.ts",
+    "usage": "node scripts/token-usage.ts",
     "cf-typegen": "wrangler types",
     "fix": "ultracite fix",
     "check": "ultracite check"
