@@ -67,7 +67,7 @@ function MusicPage() {
       <Suspense fallback={<TopsSkeleton />}>
         <Await promise={tops}>
           {({ topArtists, topTracks }) => (
-            <div className="mt-lg grid grid-cols-2 gap-lg">
+            <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
               {topTracks.length > 0 ? (
                 <div>
                   <h2 className="text-eyebrow">Top Tracks</h2>
