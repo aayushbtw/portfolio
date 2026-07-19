@@ -38,9 +38,13 @@ function HomePage() {
   return (
     <>
       <section>
-        <h1 className="mb-md text-balance">{config.name}</h1>
+        <h1 className="mb-md">{config.name}</h1>
 
-        <div>
+        <div
+          style={
+            { "--typeset-flow": "var(--spacing-sm)" } as React.CSSProperties
+          }
+        >
           <p>{config.description}</p>
 
           <p>
