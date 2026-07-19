@@ -4,7 +4,7 @@ function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
       className={cn(
-        "group/ul not-typeset mt-sm text-fg-3 leading-5 [&_a]:no-underline",
+        "not-typeset group/ul mt-sm text-fg-3 leading-5 [&_a]:no-underline",
         className
       )}
       data-slot="list"

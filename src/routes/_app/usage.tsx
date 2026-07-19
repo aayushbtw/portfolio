@@ -23,7 +23,7 @@ function UsagePage() {
       <h1 className="text-eyebrow">{title}</h1>
       <p className="mt-sm">{description}</p>
 
-      <div className="not-typeset mt-lg">
+      <div className="mt-lg">
         <p className="text-5xl text-fg-2 tabular-nums tracking-tight">
           {compact.format(usage.total)}
         </p>

@@ -120,7 +120,7 @@ function NowPlaying({
 }) {
   return (
     <a
-      className="ml-auto flex items-center gap-sm"
+      className="mt-0 ml-auto flex items-center gap-sm"
       href={track.url}
       rel="noopener"
       target="_blank"
