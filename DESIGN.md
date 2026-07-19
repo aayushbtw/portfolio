@@ -55,26 +55,39 @@ Two things sit outside the scale:
 
 Anything else in a `m-`, `p-`, or `gap-` slot comes from the table above.
 
-Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets `cv01`/`ss03`, `-0.15px` tracking, 15px mobile / 14px desktop.
+Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features and weight 450 from `sm` up; size, leading and tracking all come from the text scale below.
 
 ## Type scale
 
 Five steps, sharing the spacing scale's names and living in `@theme` alongside it.
 
-| Token | Size | Use                                        |
-| ----- | ---- | ------------------------------------------ |
-| `xs`  | 12px | Labels, captions, code, `text-eyebrow`     |
-| `sm`  | 14px | Body, desktop                              |
-| `md`  | 16px | Body, mobile                               |
-| `md`  | 16px | A figure worth reading before its neighbours |
-| `lg`  | 20px | Display                                    |
-| `xl`  | 30px | Display                                    |
+| Token | Size | Leading | Use                                       |
+| ----- | ---- | ------- | ----------------------------------------- |
+| `xs`  | 12px | 20px    | Labels, captions, code, `text-eyebrow`    |
+| `sm`  | 14px | 22.75px | Body, desktop                             |
+| `md`  | 16px | 22.75px | Body mobile; page title; a figure worth reading first |
+| `lg`  | 20px | 28px    | Display                                   |
+| `xl`  | 30px | 36px    | Display                                   |
 
-Body is `text-md sm:text-sm`, so it's the scale rather than a special case: 16px on mobile, 14px from `sm` up.
+**A size token is the whole treatment.** Each carries its own `line-height` and `letter-spacing` (`-0.15px` throughout), so `text-xs` is complete on its own and never needs a `leading-*` beside it. Write the size, take the leading. If you catch yourself pairing a size with a hand-picked leading, that pair belongs in `@theme`, not at the call site.
 
-**In prose, size carries no hierarchy.** Headings are body size at weight 500 and separate from body copy by *colour*, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Nothing in a paragraph flow goes above body size, and nothing is heavier than 500. To signal importance in text, step the colour up or use `text-eyebrow`.
+Body is `text-md sm:text-sm`, so it's part of the scale rather than a special case: 16px on mobile, 14px from `sm` up. Both carry the same 22.75px line box, so vertical rhythm doesn't jump at the breakpoint.
 
-**Display sizes are for figures, not prose.** `lg` and `xl` go on the one element that *is* the page's subject: the 404's message, the usage page's token total. One per page. Never on a sentence, and never on something that repeats — the usage page's four stat values sit at `md` precisely because there are four of them and they're secondary to the total above.
+That's why no `leading-[…]` or `tracking-[…]` exists anywhere. The one deliberate exception is `List`, which tightens to `leading-5`: list rows are scanned, not read.
+
+**Size marks the page, not the prose.** There are three roles for it:
+
+| Role            | Size                | Where                                        |
+| --------------- | ------------------- | -------------------------------------------- |
+| Page title      | `text-md`           | The `h1`. One per page, naming what you're on |
+| Section label   | `text-eyebrow` (xs) | The `h2` above a list or block                |
+| Everything else | body                | Copy, headings inside prose, list rows        |
+
+Below the `h1`, size stops meaning anything. Headings *inside* an article are body size at weight 500 and separate from copy by *colour*, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Nothing in a paragraph flow goes above body size, and nothing is heavier than 500. To signal importance mid-text, step the colour up.
+
+`text-eyebrow` is a label, never a title. It sits *above* content to name a section; it doesn't name the page.
+
+**`lg` and `xl` are for figures and empty pages.** They go on the one element that *is* the page's subject where no prose competes with it: the usage page's token total, the 404's message. One per page. Never on a sentence, and never on something that repeats — the usage page's four stat values sit at `md` precisely because there are four of them and they're secondary to the total above.
 
 Tailwind's own sizes are still generated alongside these, so `text-base` and `text-3xl` resolve to something even though they're outside the scale. The table is the contract; the build doesn't enforce it yet.
 
@@ -84,7 +97,7 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 
 | Utility            | What it is                                                     |
 | ------------------ | -------------------------------------------------------------- |
-| `text-eyebrow`     | Section label: `fg-3`, xs, uppercase, wide tracking. Every `h1`/`h2` that labels a section |
+| `text-eyebrow`     | Section label: `fg-3`, xs, uppercase, wide tracking. The `h2` above a list or block, never the page title |
 | `animated-link`    | Inline prose link: medium, `fg-2`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
@@ -99,7 +112,7 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 
 ```tsx
 <section>
-  <h1 className="text-eyebrow">{title}</h1>
+  <h1 className="text-md">{title}</h1>
   <List>...</List>
 </section>
 
