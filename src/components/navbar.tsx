@@ -14,6 +14,7 @@ const links: {
   { name: "Writings", to: "/writings", key: "W" },
   { name: "Skills", to: "/skills", key: "S" },
   { name: "Music", to: "/music", key: "M" },
+  { name: "Usage", to: "/usage", key: "U" },
 ];
 
 export function Navbar() {

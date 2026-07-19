@@ -1,0 +1,32 @@
+{
+  "year": 2026,
+  "total": 219178427,
+  "input": 124401,
+  "output": 2019771,
+  "cacheRead": 208710313,
+  "cacheWrite": 8323942,
+  "sessions": 44,
+  "models": [
+    {
+      "name": "Opus 4.8",
+      "tokens": 140941955
+    },
+    {
+      "name": "Fable 5",
+      "tokens": 78236472
+    }
+  ],
+  "months": [
+    {
+      "label": "Jun",
+      "tokens": 38786812,
+      "percent": 22
+    },
+    {
+      "label": "Jul",
+      "tokens": 180391615,
+      "percent": 100
+    }
+  ],
+  "generatedAt": "2026-07-19T08:19:39.629Z"
+}
