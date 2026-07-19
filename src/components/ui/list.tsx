@@ -4,7 +4,7 @@ function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
       className={cn(
-        "group/ul not-typeset mt-2 text-fg-3 leading-5 [&_a]:no-underline",
+        "group/ul not-typeset mt-sm text-fg-3 leading-5 [&_a]:no-underline",
         className
       )}
       data-slot="list"
@@ -17,7 +17,7 @@ function ListItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       className={cn(
-        "group/list-item -mx-3 rounded-lg py-1.5 pr-4 pl-3 transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98]",
+        "group/list-item -mx-md rounded-lg px-md py-sm transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98]",
         className
       )}
       data-slot="list-item"
@@ -30,7 +30,7 @@ function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "ml-auto flex items-center gap-4 text-fg-3/50 opacity-0 transition-opacity duration-150 group-hover/list-item:opacity-100 *:[svg:not([class*='size-'])]:size-4",
+        "ml-auto flex items-center gap-md text-fg-3/50 opacity-0 transition-opacity duration-150 group-hover/list-item:opacity-100 *:[svg:not([class*='size-'])]:size-4",
         className
       )}
       data-slot="list-item-hover"

@@ -26,7 +26,7 @@ export function ShowcaseImage({
         width={1920}
       />
       <div className="absolute inset-0 hidden bg-bg-1/20 md:block" />
-      <div className="relative flex justify-center md:p-4">
+      <div className="relative flex justify-center md:p-md">
         <Image
           alt={alt}
           className="w-full shadow-2xl ring-1 ring-black/10"

@@ -61,9 +61,9 @@ function WritingPage() {
 
       {post.headings.length > 0 && (
         <RightColumn>
-          <aside className="sticky top-page-t hidden lg:block">
+          <aside className="sticky top-2xl hidden lg:block">
             <nav>
-              <p className="mb-2 font-medium text-fg-2">On this page</p>
+              <p className="mb-sm font-medium text-fg-2">On this page</p>
 
               <TableOfContents headings={post.headings} />
             </nav>

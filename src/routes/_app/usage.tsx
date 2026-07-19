@@ -21,29 +21,29 @@ function UsagePage() {
   return (
     <section>
       <h1 className="text-eyebrow">{title}</h1>
-      <p className="mt-2">{description}</p>
+      <p className="mt-sm">{description}</p>
 
-      <div className="not-typeset mt-8">
+      <div className="not-typeset mt-lg">
         <p className="text-5xl text-fg-2 tabular-nums tracking-tight">
           {compact.format(usage.total)}
         </p>
-        <p className="mt-1 text-sm tabular-nums">
+        <p className="mt-xs text-sm tabular-nums">
           {exact.format(usage.total)} tokens in {usage.year}
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+      <div className="mt-xl grid grid-cols-2 gap-lg sm:grid-cols-4">
         <Stat label="Input" value={usage.input} />
         <Stat label="Output" value={usage.output} />
         <Stat label="Cache read" value={usage.cacheRead} />
         <Stat label="Cache write" value={usage.cacheWrite} />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-xl">
         <h2 className="text-eyebrow">By month</h2>
-        <div className="mt-3 flex flex-col gap-3">
+        <div className="mt-md flex flex-col gap-md">
           {usage.months.map((month) => (
-            <div className="flex items-center gap-3" key={month.label}>
+            <div className="flex items-center gap-md" key={month.label}>
               <span className="w-16 shrink-0 text-fg-3 text-sm tabular-nums">
                 {month.label}
               </span>
@@ -61,9 +61,9 @@ function UsagePage() {
         </div>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-xl">
         <h2 className="text-eyebrow">By model</h2>
-        <div className="mt-3 flex flex-col gap-2">
+        <div className="mt-md flex flex-col gap-sm">
           {usage.models.map((model) => (
             <div
               className="flex items-baseline justify-between"
@@ -78,7 +78,7 @@ function UsagePage() {
         </div>
       </div>
 
-      <p className="mt-10 text-fg-3/60 text-xs tabular-nums">
+      <p className="mt-xl text-fg-3/60 text-xs tabular-nums">
         {exact.format(usage.sessions)} sessions · updated{" "}
         {formatDate(usage.generatedAt)}
       </p>
@@ -88,7 +88,7 @@ function UsagePage() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-xs">
       <span className="text-eyebrow">{label}</span>
       <span className="text-fg-2 text-lg tabular-nums">
         {compact.format(value)}

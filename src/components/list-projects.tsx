@@ -19,7 +19,7 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
             </div>
 
             <ListItemHover>
-              <div className="inline-flex items-center gap-1 tabular-nums">
+              <div className="inline-flex items-center gap-xs tabular-nums">
                 <IconStarFilled className="size-2.5" />
                 {item.stars}
               </div>

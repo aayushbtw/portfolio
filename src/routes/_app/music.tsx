@@ -57,7 +57,7 @@ function MusicPage() {
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-sm">
         <h1 className="text-eyebrow">{title}</h1>
         {live?.nowPlaying.isPlaying && live.nowPlaying.track ? (
           <NowPlaying track={live.nowPlaying.track} />
@@ -67,7 +67,7 @@ function MusicPage() {
       <Suspense fallback={<TopsSkeleton />}>
         <Await promise={tops}>
           {({ topArtists, topTracks }) => (
-            <div className="mt-6 grid grid-cols-2 gap-8">
+            <div className="mt-lg grid grid-cols-2 gap-lg">
               {topTracks.length > 0 ? (
                 <div>
                   <h2 className="text-eyebrow">Top Tracks</h2>
@@ -94,7 +94,7 @@ function MusicPage() {
         </Await>
       </Suspense>
 
-      <div className="mt-6">
+      <div className="mt-lg">
         <h2 className="text-eyebrow">Recently Played</h2>
         <List>
           {live
@@ -120,12 +120,12 @@ function NowPlaying({
 }) {
   return (
     <a
-      className="ml-auto flex items-center gap-2"
+      className="ml-auto flex items-center gap-sm"
       href={track.url}
       rel="noopener"
       target="_blank"
     >
-      <span aria-hidden className="flex h-2.5 items-end gap-0.5">
+      <span aria-hidden className="flex h-2.5 items-end gap-xs">
         <span className="eq-bar" style={{ animationDelay: "0s" }} />
         <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
         <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
@@ -141,7 +141,7 @@ function NowPlaying({
 
 function TopsSkeleton() {
   return (
-    <div className="mt-6 grid grid-cols-2 gap-8">
+    <div className="mt-lg grid grid-cols-2 gap-lg">
       {["tracks", "artists"].map((key) => (
         <div key={key}>
           <h2 className="text-eyebrow">
@@ -163,7 +163,7 @@ function TrackSkeleton() {
     <ListItem>
       <div className="row-link">
         <Skeleton className="size-10 shrink-0 rounded" />
-        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        <div className="flex min-w-0 flex-1 flex-col gap-sm">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-4 w-24" />
         </div>

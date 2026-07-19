@@ -15,8 +15,8 @@ function AppLayout() {
     <div
       className={cn(
         "typeset",
-        "mx-auto max-w-7xl px-4 pt-8 pb-floating-nav-inset sm:px-6 lg:pt-page-t lg:pb-page-t",
-        "lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8"
+        "mx-auto max-w-7xl px-md pt-lg pb-lg sm:px-lg lg:pt-2xl lg:pb-2xl",
+        "lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-lg"
       )}
     >
       <div>{left ?? <Navbar />}</div>

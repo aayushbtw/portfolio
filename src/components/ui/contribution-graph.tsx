@@ -161,7 +161,7 @@ function ContributionGraph({
   return (
     <div
       className={cn(
-        "not-typeset flex w-max max-w-full flex-col gap-0.5 font-normal text-fg-3 text-xs",
+        "not-typeset flex w-max max-w-full flex-col gap-xs font-normal text-fg-3 text-xs",
         className
       )}
       data-slot="contribution-graph"
@@ -217,7 +217,7 @@ function ContributionGraph({
             side="top"
             sideOffset={4}
           >
-            <TooltipPrimitive.Popup className="rounded-lg bg-fg-1 px-2 py-0.5 text-bg-1">
+            <TooltipPrimitive.Popup className="rounded-lg bg-fg-1 px-sm py-xs text-bg-1">
               {tooltipText}
             </TooltipPrimitive.Popup>
           </TooltipPrimitive.Positioner>

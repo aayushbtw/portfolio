@@ -38,7 +38,7 @@ function HomePage() {
   return (
     <>
       <section>
-        <h1 className="mb-4 text-balance">{config.name}</h1>
+        <h1 className="mb-md text-balance">{config.name}</h1>
 
         <div>
           <p>{config.description}</p>
@@ -88,19 +88,19 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mt-section">
+      <section className="mt-lg">
         <ContributionGraph
           data={contributions.contributions}
           total={contributions.total}
         />
       </section>
 
-      <section className="mt-section">
+      <section className="mt-lg">
         <h2 className="text-eyebrow">Projects</h2>
         <ListProjects projects={projects} />
       </section>
 
-      <section className="mt-section">
+      <section className="mt-lg">
         <h2 className="text-eyebrow">Writings</h2>
         <ListPosts posts={posts} />
       </section>

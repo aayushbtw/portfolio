@@ -27,15 +27,14 @@
   --color-graph-3: oklch(from #30a14e l c h);
   --color-graph-4: oklch(from #216e39 l c h);
 
-  --spacing-section: calc(var(--spacing) * 6);
-  --spacing-page-t: calc(var(--spacing) * 24);
-  --spacing-floating-nav-h: calc(var(--spacing) * 14);
-  --spacing-floating-nav-p: calc(var(--spacing) * 2);
-  --spacing-floating-nav-inset: calc(
-    var(--spacing-floating-nav-h) +
-    var(--spacing-floating-nav-p) *
-    2
-  );
+  /* Spacing scale: 4, 8, 16, 24, 48, 96. Doubling to md, 1.5x to lg, then
+     doubling again. The only gaps, pads and margins there are. */
+  --spacing-xs: calc(var(--spacing) * 1); /*  4px */
+  --spacing-sm: calc(var(--spacing) * 2); /*  8px */
+  --spacing-md: calc(var(--spacing) * 4); /* 16px */
+  --spacing-lg: calc(var(--spacing) * 6); /* 24px */
+  --spacing-xl: calc(var(--spacing) * 12); /* 48px */
+  --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 }
 
 /* Typeset's variable contract, bridged onto the tokens above. */
@@ -104,12 +103,12 @@
   }
 
   .typeset :where([data-rehype-pretty-code-title]) {
-    @apply border-b px-4 py-1 text-fg-2;
+    @apply border-b px-md py-xs text-fg-2;
   }
 
   .typeset :where(figure[data-rehype-pretty-code-figure] pre) {
     margin-block-start: 0;
-    @apply rounded-none bg-transparent px-0 py-2 text-xs;
+    @apply rounded-none bg-transparent px-0 py-sm text-xs;
   }
 
   .typeset :where(figure[data-rehype-pretty-code-figure] pre code) {
@@ -120,7 +119,7 @@
   .typeset :where([data-line])::before {
     content: counter(line);
     counter-increment: line;
-    @apply inline-block w-4 pr-5 pl-2 text-right text-fg-2;
+    @apply inline-block w-4 pr-lg pl-sm text-right text-fg-2;
   }
 }
 
@@ -148,7 +147,7 @@
 }
 
 @utility nav-link {
-  @apply leading-5 block pl-3 text-fg-3 transition-[color,scale] duration-200 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
+  @apply leading-5 block pl-md text-fg-3 transition-[color,scale] duration-200 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
 @utility animated-link {
@@ -157,11 +156,11 @@
 
 @utility icon-link {
   @apply animated-link;
-  @apply [&_svg]:mr-1 [&_svg]:mb-0.5 [&_svg]:inline-block [&_svg]:size-4 [&_svg]:text-fg-3 hover:[&_svg]:text-fg-2;
+  @apply [&_svg]:mr-xs [&_svg]:mb-0.5 [&_svg]:inline-block [&_svg]:size-4 [&_svg]:text-fg-3 hover:[&_svg]:text-fg-2;
 }
 
 @utility row-link {
-  @apply flex items-center gap-4;
+  @apply flex items-center gap-md;
 }
 
 @utility text-eyebrow {

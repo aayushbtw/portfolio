@@ -32,7 +32,7 @@ export function Navbar() {
   );
 
   return (
-    <aside className="sticky top-page-t hidden lg:block">
+    <aside className="sticky top-2xl hidden lg:block">
       <nav className="[&_a]:no-underline">
         <NavList>
           {links.map((item) => (
