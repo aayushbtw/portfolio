@@ -1,16 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
-import { cn, formatDate } from "~/lib/utils";
+import { cn, formatCompact, formatDate, formatNumber } from "~/lib/utils";
 
 const title = "Claude Usage";
 const description = "How many tokens I've burned coding with Claude Code.";
-
-const compact = new Intl.NumberFormat("en", {
-  notation: "compact",
-  maximumFractionDigits: 2,
-});
-const exact = new Intl.NumberFormat("en");
 
 export const Route = createFileRoute("/_app/usage")({
   head: () => seo({ title, description }),
@@ -23,7 +17,7 @@ function UsagePage() {
       <div className="flex items-center gap-sm">
         <h1 className="text-eyebrow">{title}</h1>
         <div className="mt-0 ml-auto flex items-center gap-sm text-xs">
-          ~ {exact.format(usage.total)} tokens in {usage.year}
+          ~ {formatNumber(usage.total)} tokens in {usage.year}
         </div>
       </div>
 
@@ -42,7 +36,7 @@ function UsagePage() {
               <div className="flex items-baseline gap-md">
                 <span className="text-fg-2">{dayLabel(day.date)}</span>
                 <span className="ml-auto text-fg-3 text-xs tabular-nums">
-                  {compact.format(day.tokens)}
+                  {formatCompact(day.tokens)}
                 </span>
               </div>
 
@@ -82,7 +76,7 @@ function UsagePage() {
 
       <div className="mt-lg flex justify-end">
         <p className="text-fg-3/60 text-xs tabular-nums">
-          {exact.format(usage.sessions)} sessions · updated{" "}
+          {formatNumber(usage.sessions)} sessions · updated{" "}
           {formatDate(usage.generatedAt)}
         </p>
       </div>
@@ -117,7 +111,7 @@ function Stat({ label, value }: { label: string; value: number }) {
     <div className="flex flex-col gap-xs">
       <span className="text-eyebrow">{label}</span>
       <span className="text-fg-2 text-md tabular-nums">
-        {compact.format(value)}
+        {formatCompact(value)}
       </span>
       <span className="text-fg-3 text-xs tabular-nums">
         {share < 1 ? "<1" : Math.round(share)}%
