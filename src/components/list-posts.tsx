@@ -25,7 +25,7 @@ function ListPosts({
   });
 
   return (
-    <ul className={cn("group/ul text-fg-3 leading-5", className)}>
+    <ul className={cn("group/ul mt-2 text-fg-3 leading-5", className)}>
       {grouped.map((post, i) => {
         const showYear = i === 0 || grouped[i - 1].year !== post.year;
         return (
@@ -34,7 +34,7 @@ function ListPosts({
             key={post.slug}
           >
             <Link
-              className="flex items-center gap-4"
+              className="row-link"
               params={{ slug: post.slug }}
               to="/writings/$slug"
             >

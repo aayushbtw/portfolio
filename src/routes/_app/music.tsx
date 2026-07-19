@@ -71,7 +71,7 @@ function MusicPage() {
               {topTracks.length > 0 ? (
                 <div>
                   <h2 className="text-eyebrow">Top Tracks</h2>
-                  <List className="mt-2">
+                  <List>
                     {topTracks.map((track) => (
                       <TrackItem key={track.id} track={track} />
                     ))}
@@ -82,7 +82,7 @@ function MusicPage() {
               {topArtists.length > 0 ? (
                 <div>
                   <h2 className="text-eyebrow">Top Artists</h2>
-                  <List className="mt-2">
+                  <List>
                     {topArtists.map((artist) => (
                       <ArtistItem artist={artist} key={artist.id} />
                     ))}
@@ -96,7 +96,7 @@ function MusicPage() {
 
       <div className="mt-6">
         <h2 className="text-eyebrow">Recently Played</h2>
-        <List className="mt-2">
+        <List>
           {live
             ? live.recentlyPlayed.map((track) => (
                 <TrackItem
@@ -147,7 +147,7 @@ function TopsSkeleton() {
           <h2 className="text-eyebrow">
             {key === "tracks" ? "Top Tracks" : "Top Artists"}
           </h2>
-          <List className="mt-2">
+          <List>
             {Array.from({ length: 5 }, (_, i) => `${key}-${i}`).map((k) => (
               <TrackSkeleton key={k} />
             ))}
@@ -161,7 +161,7 @@ function TopsSkeleton() {
 function TrackSkeleton() {
   return (
     <ListItem>
-      <div className="flex items-center gap-4">
+      <div className="row-link">
         <Skeleton className="size-10 shrink-0 rounded" />
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
           <Skeleton className="h-4 w-32" />
@@ -177,12 +177,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
 
   return (
     <ListItem>
-      <a
-        className="flex items-center gap-4"
-        href={track.url}
-        rel="noopener"
-        target="_blank"
-      >
+      <a className="row-link" href={track.url} rel="noopener" target="_blank">
         {cover ? (
           <Image
             alt={track.name}
@@ -213,12 +208,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
 
   return (
     <ListItem>
-      <a
-        className="flex items-center gap-4"
-        href={artist.url}
-        rel="noopener"
-        target="_blank"
-      >
+      <a className="row-link" href={artist.url} rel="noopener" target="_blank">
         {photo ? (
           <Image
             alt=""

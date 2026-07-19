@@ -3,7 +3,7 @@ import { cn } from "~/lib/utils";
 function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
-      className={cn("text-fg-3 leading-5", className)}
+      className={cn("mt-2 text-fg-3 leading-5", className)}
       data-slot="list"
       {...props}
     />

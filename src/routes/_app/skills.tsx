@@ -28,12 +28,12 @@ export const Route = createFileRoute("/_app/skills")({
 function SkillsPage() {
   return (
     <section>
-      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{title}</h1>
-      <List className="mt-2">
+      <h1 className="text-eyebrow">{title}</h1>
+      <List>
         {skills.map((item) => (
           <ListItem key={item.title}>
             <a
-              className="flex items-center gap-4"
+              className="row-link"
               href={item.url}
               rel="noopener"
               target="_blank"

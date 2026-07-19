@@ -17,8 +17,8 @@ function WritingsPage() {
 
   return (
     <section>
-      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{title}</h1>
-      <ListPosts className="mt-2" posts={posts} />
+      <h1 className="text-eyebrow">{title}</h1>
+      <ListPosts posts={posts} />
     </section>
   );
 }

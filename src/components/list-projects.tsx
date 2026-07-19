@@ -4,11 +4,11 @@ import { List, ListItem, ListItemHover } from "./ui/list";
 
 function ListProjects({ projects }: { projects: PinnedRepo[] }) {
   return (
-    <List className="mt-2">
+    <List>
       {projects.map((item) => (
         <ListItem key={item.repo}>
           <a
-            className="flex items-center gap-4"
+            className="row-link"
             href={item.url}
             rel="noopener"
             target="_blank"

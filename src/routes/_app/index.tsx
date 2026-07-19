@@ -13,7 +13,6 @@ import { useHaptics } from "~/lib/haptics";
 import { fetchContributions, fetchPinnedRepos } from "~/lib/octo";
 import { getAllPosts } from "~/lib/posts";
 import { seo } from "~/lib/seo";
-import { cn } from "~/lib/utils";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
@@ -41,7 +40,7 @@ function HomePage() {
       <section>
         <h1 className="mb-4 text-balance">{config.name}</h1>
 
-        <div className="space-y-1.5 text-fg-3">
+        <div className="text-lede">
           <p>{config.description}</p>
 
           <p>
@@ -89,25 +88,21 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mt-6">
+      <section className="mt-section">
         <ContributionGraph
           data={contributions.contributions}
           total={contributions.total}
         />
       </section>
 
-      <section className="mt-6">
-        <h2 className="text-fg-3 text-xs uppercase tracking-widest">
-          Projects
-        </h2>
+      <section className="mt-section">
+        <h2 className="text-eyebrow">Projects</h2>
         <ListProjects projects={projects} />
       </section>
 
-      <section className="mt-6">
-        <h2 className="text-fg-3 text-xs uppercase tracking-widest">
-          Writings
-        </h2>
-        <ListPosts className="mt-2" posts={posts} />
+      <section className="mt-section">
+        <h2 className="text-eyebrow">Writings</h2>
+        <ListPosts posts={posts} />
       </section>
     </>
   );
@@ -120,12 +115,9 @@ function HeaderLink({
 }: React.ComponentProps<"a"> & { external?: boolean }) {
   return (
     <a
+      className="icon-link"
       href={href}
       {...props}
-      className={cn(
-        "animated-link",
-        "[&_svg]:mr-1 [&_svg]:mb-0.5 [&_svg]:inline-block [&_svg]:size-4 [&_svg]:text-fg-3 hover:[&_svg]:text-fg-2"
-      )}
       rel={external ? "noopener" : undefined}
       target={external ? "_blank" : undefined}
     />

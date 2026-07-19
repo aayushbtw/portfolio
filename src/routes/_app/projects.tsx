@@ -17,7 +17,7 @@ function ProjectsPage() {
 
   return (
     <section>
-      <h1 className="text-fg-3 text-xs uppercase tracking-widest">{title}</h1>
+      <h1 className="text-eyebrow">{title}</h1>
       <ListProjects projects={projects} />
     </section>
   );
