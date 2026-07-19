@@ -20,40 +20,33 @@ export const Route = createFileRoute("/_app/usage")({
 function UsagePage() {
   return (
     <section>
-      <h1 className="text-eyebrow">{title}</h1>
-      <p className="mt-sm">{description}</p>
-
-      <div className="mt-lg">
-        <p className="text-fg-2 text-xl tabular-nums">
-          {compact.format(usage.total)}
-        </p>
-        <p className="mt-xs text-xs tabular-nums">
-          {exact.format(usage.total)} tokens in {usage.year}
-        </p>
+      <div className="flex items-center gap-sm">
+        <h1 className="text-eyebrow">{title}</h1>
+        <div className="mt-0 ml-auto flex items-center gap-sm text-xs">
+          ~ {exact.format(usage.total)} tokens in {usage.year}
+        </div>
       </div>
 
-      <div className="mt-xl grid grid-cols-2 gap-lg sm:grid-cols-4">
+      <div className="mt-lg grid grid-cols-2 gap-lg sm:grid-cols-4">
         <Stat label="Input" value={usage.input} />
         <Stat label="Output" value={usage.output} />
         <Stat label="Cache read" value={usage.cacheRead} />
         <Stat label="Cache write" value={usage.cacheWrite} />
       </div>
 
-      <div className="mt-xl">
+      <div className="mt-lg">
         <h2 className="text-eyebrow">By month</h2>
-        <div className="mt-md flex flex-col gap-md">
+        <div className="mt-sm flex flex-col gap-xs">
           {usage.months.map((month) => (
             <div className="flex items-center gap-md" key={month.label}>
-              <span className="w-16 shrink-0 text-fg-3 text-xs tabular-nums">
-                {month.label}
-              </span>
+              <span className="w-16 shrink-0 text-fg-2">{month.label}</span>
               <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-fg-3/10">
                 <div
                   className="h-full rounded-full bg-brand"
                   style={{ width: `${month.percent}%` }}
                 />
               </div>
-              <span className="w-14 shrink-0 text-right text-fg-2 text-xs tabular-nums">
+              <span className="w-14 shrink-0 text-right text-fg-3 text-xs tabular-nums">
                 {compact.format(month.tokens)}
               </span>
             </div>
@@ -61,16 +54,16 @@ function UsagePage() {
         </div>
       </div>
 
-      <div className="mt-xl">
+      <div className="mt-lg">
         <h2 className="text-eyebrow">By model</h2>
-        <div className="mt-md flex flex-col gap-sm">
+        <div className="mt-sm flex flex-col gap-xs">
           {usage.models.map((model) => (
             <div
               className="flex items-baseline justify-between"
               key={model.name}
             >
               <span className="text-fg-2">{model.name}</span>
-              <span className="text-fg-3 tabular-nums">
+              <span className="text-fg-3 text-xs tabular-nums">
                 {compact.format(model.tokens)}
               </span>
             </div>
@@ -78,10 +71,12 @@ function UsagePage() {
         </div>
       </div>
 
-      <p className="mt-xl text-fg-3/60 text-xs tabular-nums">
-        {exact.format(usage.sessions)} sessions · updated{" "}
-        {formatDate(usage.generatedAt)}
-      </p>
+      <div className="mt-lg flex justify-end">
+        <p className="text-fg-3/60 text-xs tabular-nums">
+          {exact.format(usage.sessions)} sessions · updated{" "}
+          {formatDate(usage.generatedAt)}
+        </p>
+      </div>
     </section>
   );
 }
