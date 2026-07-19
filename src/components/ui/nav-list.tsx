@@ -4,7 +4,7 @@ function NavListIndicator() {
   return (
     <span
       aria-hidden="true"
-      className="indicator-spring indicator-brand top-[anchor(center)] h-2 w-0.5 -translate-y-1/2 shadow-[0_0_8px_rgba(var(--brand-rgb),0.4)] [position-anchor:--active]"
+      className="indicator-spring indicator-brand top-[anchor(center)] h-2 w-0.5 -translate-y-1/2 [position-anchor:--active]"
     />
   );
 }

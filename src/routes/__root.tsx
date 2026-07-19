@@ -79,7 +79,7 @@ function NotFound() {
   return (
     <div className="typeset mx-auto px-lg py-xl sm:py-2xl">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
-        <h1 className="mb-sm text-balance font-medium text-xl capitalize">
+        <h1 className="mb-sm text-balance text-xl capitalize">
           page not found
         </h1>
         <p className="my-0 text-md">

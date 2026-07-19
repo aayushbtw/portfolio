@@ -21,7 +21,7 @@ function UsagePage() {
         </div>
       </div>
 
-      <div className="mt-lg grid grid-cols-2 gap-lg sm:grid-cols-4">
+      <div className="not-typeset mt-lg grid grid-cols-2 gap-lg sm:grid-cols-4">
         <Stat label="Input" value={usage.input} />
         <Stat label="Output" value={usage.output} />
         <Stat label="Cache write" value={usage.cacheWrite} />
@@ -61,7 +61,7 @@ function UsagePage() {
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "h-2 w-0.5 shrink-0 rounded-full shadow-[0_0_8px_rgba(var(--brand-rgb),0.4)]",
+                        "h-2 w-0.5 shrink-0 rounded-full",
                         modelShade(model.name)
                       )}
                     />
