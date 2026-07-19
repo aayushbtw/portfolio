@@ -1,32 +1,116 @@
 {
   "year": 2026,
-  "total": 285478636,
-  "input": 125150,
-  "output": 2256727,
-  "cacheRead": 273879095,
-  "cacheWrite": 9217664,
+  "total": 287449521,
+  "input": 125199,
+  "output": 2268896,
+  "cacheRead": 275819823,
+  "cacheWrite": 9235603,
   "sessions": 47,
   "models": [
     {
       "name": "Opus 4.8",
-      "tokens": 207242164
+      "tokens": 209213049
     },
     {
       "name": "Fable 5",
       "tokens": 78236472
     }
   ],
-  "months": [
+  "days": [
     {
-      "label": "Jun",
-      "tokens": 38786812,
-      "percent": 16
+      "date": "2026-07-19",
+      "tokens": 74332189,
+      "barWidth": 100,
+      "models": [
+        {
+          "name": "Opus 4.8",
+          "tokens": 74332189,
+          "share": 100
+        }
+      ]
     },
     {
-      "label": "Jul",
-      "tokens": 246691824,
-      "percent": 100
+      "date": "2026-07-17",
+      "tokens": 44393918,
+      "barWidth": 60,
+      "models": [
+        {
+          "name": "Opus 4.8",
+          "tokens": 44393918,
+          "share": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-16",
+      "tokens": 31177528,
+      "barWidth": 42,
+      "models": [
+        {
+          "name": "Opus 4.8",
+          "tokens": 31177528,
+          "share": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-15",
+      "tokens": 27960699,
+      "barWidth": 38,
+      "models": [
+        {
+          "name": "Opus 4.8",
+          "tokens": 19466111,
+          "share": 70
+        },
+        {
+          "name": "Fable 5",
+          "tokens": 8494588,
+          "share": 30
+        }
+      ]
+    },
+    {
+      "date": "2026-07-14",
+      "tokens": 29716385,
+      "barWidth": 40,
+      "models": [
+        {
+          "name": "Fable 5",
+          "tokens": 29716385,
+          "share": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-13",
+      "tokens": 41081990,
+      "barWidth": 55,
+      "models": [
+        {
+          "name": "Fable 5",
+          "tokens": 40025499,
+          "share": 97
+        },
+        {
+          "name": "Opus 4.8",
+          "tokens": 1056491,
+          "share": 3
+        }
+      ]
+    },
+    {
+      "date": "2026-06-21",
+      "tokens": 6087522,
+      "barWidth": 8,
+      "models": [
+        {
+          "name": "Opus 4.8",
+          "tokens": 6087522,
+          "share": 100
+        }
+      ]
     }
   ],
-  "generatedAt": "2026-07-19T11:32:38.097Z"
+  "generatedAt": "2026-07-19T11:46:36.114Z"
 }

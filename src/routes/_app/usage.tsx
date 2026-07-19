@@ -3,7 +3,7 @@ import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import { formatDate } from "~/lib/utils";
 
-const title = "Usage";
+const title = "Claude Usage";
 const description = "How many tokens I've burned coding with Claude Code.";
 
 const compact = new Intl.NumberFormat("en", {
@@ -30,42 +30,44 @@ function UsagePage() {
       <div className="mt-lg grid grid-cols-2 gap-lg sm:grid-cols-4">
         <Stat label="Input" value={usage.input} />
         <Stat label="Output" value={usage.output} />
-        <Stat label="Cache read" value={usage.cacheRead} />
         <Stat label="Cache write" value={usage.cacheWrite} />
+        <Stat label="Cache read" value={usage.cacheRead} />
       </div>
 
       <div className="mt-lg">
-        <h2 className="text-eyebrow">By month</h2>
-        <div className="mt-sm flex flex-col gap-xs">
-          {usage.months.map((month) => (
-            <div className="flex items-center gap-md" key={month.label}>
-              <span className="w-16 shrink-0 text-fg-2">{month.label}</span>
-              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-fg-3/10">
-                <div
-                  className="h-full rounded-full bg-brand"
-                  style={{ width: `${month.percent}%` }}
-                />
+        <h2 className="text-eyebrow">Last {usage.days.length} active days</h2>
+        <div className="mt-sm flex flex-col gap-sm">
+          {usage.days.map((day) => (
+            <div className="flex flex-col gap-xs" key={day.date}>
+              <div className="flex items-baseline gap-md">
+                <span className="text-fg-2">{dayLabel(day.date)}</span>
+                <span className="ml-auto text-fg-3 text-xs tabular-nums">
+                  {compact.format(day.tokens)}
+                </span>
               </div>
-              <span className="w-14 shrink-0 text-right text-fg-3 text-xs tabular-nums">
-                {compact.format(month.tokens)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="mt-lg">
-        <h2 className="text-eyebrow">By model</h2>
-        <div className="mt-sm flex flex-col gap-xs">
-          {usage.models.map((model) => (
-            <div
-              className="flex items-baseline justify-between"
-              key={model.name}
-            >
-              <span className="text-fg-2">{model.name}</span>
-              <span className="text-fg-3 text-xs tabular-nums">
-                {compact.format(model.tokens)}
-              </span>
+              <div className="h-1.5 overflow-hidden rounded-full bg-fg-3/10">
+                <div
+                  className="flex h-full gap-px overflow-hidden rounded-full"
+                  style={{ width: `${day.barWidth}%` }}
+                >
+                  {day.models.map((model, i) => (
+                    <div
+                      className={i === 0 ? "bg-brand" : "bg-brand/40"}
+                      key={model.name}
+                      style={{ width: `${model.share}%` }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-x-md text-fg-3 text-xs tabular-nums">
+                {day.models.map((model) => (
+                  <span key={model.name}>
+                    {model.name} {model.share}%
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -81,12 +83,29 @@ function UsagePage() {
   );
 }
 
+/** "Jul 19" — the year is already on the heading. */
+function dayLabel(date: string) {
+  return new Date(`${date}T00:00:00`).toLocaleString("en", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
+/**
+ * Cache reads are ~96% of every total, so raw counts alone read as four
+ * unrelated numbers. The share is what makes them a single breakdown.
+ */
 function Stat({ label, value }: { label: string; value: number }) {
+  const share = (value / usage.total) * 100;
+
   return (
     <div className="flex flex-col gap-xs">
       <span className="text-eyebrow">{label}</span>
       <span className="text-fg-2 text-md tabular-nums">
         {compact.format(value)}
+      </span>
+      <span className="text-fg-3 text-xs tabular-nums">
+        {share < 1 ? "<1" : Math.round(share)}%
       </span>
     </div>
   );
