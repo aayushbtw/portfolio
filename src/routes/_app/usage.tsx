@@ -90,14 +90,6 @@ function UsagePage() {
   );
 }
 
-/**
- * One ramp of the nav indicator's gradient, faded per step, so every model
- * reads as the same material at a different strength. Ordered to match
- * `usage.models` (sorted by yearly total), so the model you used most is the
- * strongest. Keyed to the model rather than to its rank within a day:
- * otherwise a model's colour changes from row to row and the legend means
- * nothing.
- */
 const MODEL_SHADES = [
   "indicator-brand opacity-80",
   "indicator-brand opacity-60",
@@ -111,7 +103,6 @@ function modelShade(name: string) {
   return MODEL_SHADES[rank] ?? MODEL_SHADES.at(-1);
 }
 
-/** "Jul 19" — the year is already on the heading. */
 function dayLabel(date: string) {
   return new Date(`${date}T00:00:00`).toLocaleString("en", {
     month: "short",
@@ -119,10 +110,6 @@ function dayLabel(date: string) {
   });
 }
 
-/**
- * Cache reads are ~96% of every total, so raw counts alone read as four
- * unrelated numbers. The share is what makes them a single breakdown.
- */
 function Stat({ label, value }: { label: string; value: number }) {
   const share = (value / usage.total) * 100;
 
