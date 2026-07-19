@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { cn } from "~/lib/utils";
+import { List } from "./ui/list";
 
 interface PostSummary {
   publishedAt: string;
@@ -25,7 +25,7 @@ function ListPosts({
   });
 
   return (
-    <ul className={cn("group/ul mt-2 text-fg-3 leading-5", className)}>
+    <List className={className}>
       {grouped.map((post, i) => {
         const showYear = i === 0 || grouped[i - 1].year !== post.year;
         return (
@@ -41,13 +41,13 @@ function ListPosts({
               <span className="w-12 tabular-nums">
                 {showYear ? post.year : ""}
               </span>
-              <h6 className="flex-1 text-fg-2">{post.title}</h6>
+              <h6 className="flex-1">{post.title}</h6>
               <time className="tabular-nums">{post.date}</time>
             </Link>
           </li>
         );
       })}
-    </ul>
+    </List>
   );
 }
 

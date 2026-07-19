@@ -3,7 +3,10 @@ import { cn } from "~/lib/utils";
 function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
-      className={cn("mt-2 text-fg-3 leading-5", className)}
+      className={cn(
+        "group/ul not-typeset mt-2 text-fg-3 leading-5 [&_a]:no-underline",
+        className
+      )}
       data-slot="list"
       {...props}
     />

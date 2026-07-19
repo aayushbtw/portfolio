@@ -40,7 +40,7 @@ function HomePage() {
       <section>
         <h1 className="mb-4 text-balance">{config.name}</h1>
 
-        <div className="text-lede">
+        <div>
           <p>{config.description}</p>
 
           <p>

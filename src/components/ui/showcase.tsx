@@ -2,7 +2,7 @@ import { Image } from "@unpic/react";
 import type { ReactNode } from "react";
 
 export function Showcase({ children }: { children: ReactNode }) {
-  return <div>{children}</div>;
+  return <figure>{children}</figure>;
 }
 
 export function ShowcaseImage({
@@ -40,5 +40,5 @@ export function ShowcaseImage({
 }
 
 export function ShowcaseCaption({ children }: { children: ReactNode }) {
-  return <p className="mt-2 text-center font-normal">{children}</p>;
+  return <figcaption>{children}</figcaption>;
 }

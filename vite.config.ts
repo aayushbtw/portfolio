@@ -24,7 +24,18 @@ export default defineConfig({
         rehypePlugins: [
           rehypeSlug,
           [rehypeExternalLinks, { target: "_blank", rel: ["noopener"] }],
-          [rehypePrettyCode, { theme: "github-light", keepBackground: false }],
+          [
+            rehypePrettyCode,
+            {
+              theme: "github-light",
+              keepBackground: false,
+              // A div inherits nothing from typeset; a figcaption would arrive
+              // centered and muted as a photo caption, needing to be undone.
+              onVisitTitle(element: { tagName: string }) {
+                element.tagName = "div";
+              },
+            },
+          ],
         ],
       }),
     },

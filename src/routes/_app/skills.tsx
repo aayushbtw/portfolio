@@ -39,7 +39,7 @@ function SkillsPage() {
               target="_blank"
             >
               <div className="flex flex-col">
-                <h6 className="text-fg-2 capitalize">{item.title}</h6>
+                <h6 className="capitalize">{item.title}</h6>
                 <p>{item.description}</p>
               </div>
 

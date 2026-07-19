@@ -11,7 +11,10 @@ function NavListIndicator() {
 
 export function NavList({ className, ...props }: React.ComponentProps<"ul">) {
   return (
-    <ul className={cn("relative flex flex-col gap-0.5", className)} {...props}>
+    <ul
+      className={cn("not-typeset relative flex flex-col gap-0.5", className)}
+      {...props}
+    >
       <NavListIndicator />
       {props.children}
     </ul>

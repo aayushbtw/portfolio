@@ -21,13 +21,13 @@ function UsagePage() {
   return (
     <section>
       <h1 className="text-eyebrow">{title}</h1>
-      <p className="mt-2 text-fg-3">{description}</p>
+      <p className="mt-2">{description}</p>
 
-      <div className="mt-8">
+      <div className="not-typeset mt-8">
         <p className="text-5xl text-fg-2 tabular-nums tracking-tight">
           {compact.format(usage.total)}
         </p>
-        <p className="mt-1 text-fg-3 text-sm tabular-nums">
+        <p className="mt-1 text-sm tabular-nums">
           {exact.format(usage.total)} tokens in {usage.year}
         </p>
       </div>

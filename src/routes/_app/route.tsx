@@ -14,6 +14,7 @@ function AppLayout() {
   return (
     <div
       className={cn(
+        "typeset",
         "mx-auto max-w-7xl px-4 pt-8 pb-floating-nav-inset sm:px-6 lg:pt-page-t lg:pb-page-t",
         "lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-8"
       )}

@@ -1,5 +1,6 @@
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { cn } from "~/lib/utils";
 
 export interface Activity {
   count: number;
@@ -44,11 +45,11 @@ const FULL_MONTHS = [
 ];
 
 const LEVELS = [
-  "fill-[#ebedf0]",
-  "fill-[#9be9a8]",
-  "fill-[#40c463]",
-  "fill-[#30a14e]",
-  "fill-[#216e39]",
+  "fill-graph-0",
+  "fill-graph-1",
+  "fill-graph-2",
+  "fill-graph-3",
+  "fill-graph-4",
 ];
 
 function parseDate(date: string): Date {
@@ -121,10 +122,9 @@ function getMonthLabels(
 function ContributionGraph({
   data,
   total,
-}: {
-  data: Activity[];
-  total: number;
-}) {
+  className,
+  ...props
+}: React.ComponentProps<"div"> & { data: Activity[]; total: number }) {
   const weeks = useMemo(() => toGrid(data), [data]);
   const months = useMemo(() => getMonthLabels(weeks), [weeks]);
   const width = weeks.length * CELL - GAP;
@@ -159,7 +159,14 @@ function ContributionGraph({
   }
 
   return (
-    <div className="flex w-max max-w-full flex-col gap-0.5 font-normal text-[13px] text-fg-3">
+    <div
+      className={cn(
+        "not-typeset flex w-max max-w-full flex-col gap-0.5 font-normal text-fg-3 text-xs",
+        className
+      )}
+      data-slot="contribution-graph"
+      {...props}
+    >
       <div className="no-scrollbar max-w-full overflow-x-auto overflow-y-hidden">
         <svg
           aria-hidden="true"
@@ -210,16 +217,14 @@ function ContributionGraph({
             side="top"
             sideOffset={4}
           >
-            <TooltipPrimitive.Popup className="rounded-lg border border-fg-1/10 bg-fg-1 px-2 py-0.5 text-bg-1 text-xs">
+            <TooltipPrimitive.Popup className="rounded-lg bg-fg-1 px-2 py-0.5 text-bg-1">
               {tooltipText}
             </TooltipPrimitive.Popup>
           </TooltipPrimitive.Positioner>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
 
-      <p className="text-xs">
-        {total.toLocaleString("en")} contributions in the last year
-      </p>
+      <p>{total.toLocaleString("en")} contributions in the last year</p>
     </div>
   );
 }
