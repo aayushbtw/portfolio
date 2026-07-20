@@ -120,6 +120,15 @@
   }
 }
 
+/* A skill is rendered straight from its SKILL.md, which opens with its own h1.
+   The route prints the title and install command above it, so the file's copy
+   would land twice. */
+@layer components {
+  .typeset :where([data-slot="skill-body"]) > h1:first-child {
+    display: none;
+  }
+}
+
 /* rehype-pretty-code emits a title bar and per-line spans that typeset has no
    concept of: it reads the title as a photo caption and centers it. The figure
    owns the frame, so the pre sits flush inside it. */

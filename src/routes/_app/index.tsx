@@ -1,13 +1,13 @@
-import {
-  IconBrandGithubFilled,
-  IconBrandTwitterFilled,
-  IconMailFilled,
-} from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
-import { NetisionIcon } from "~/components/icons";
+import {
+  GithubIcon,
+  MailIcon,
+  NetisionIcon,
+  TwitterIcon,
+} from "~/components/icons";
 import { getContributions } from "~/components/rsc/contributions";
+import { getPostList } from "~/components/rsc/posts";
 import { getProjectList } from "~/components/rsc/projects";
-import { getPostList } from "~/components/rsc/writings";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { seo } from "~/lib/seo";
@@ -65,7 +65,7 @@ function HomePage() {
               href={`mailto:${config.socials.mail}`}
               onMouseEnter={haptic}
             >
-              <IconMailFilled />
+              <MailIcon />
               Mail
             </HeaderLink>{" "}
             /{" "}
@@ -74,7 +74,7 @@ function HomePage() {
               href={`https://www.x.com/${config.socials.twitter}`}
               onMouseEnter={haptic}
             >
-              <IconBrandTwitterFilled />X
+              <TwitterIcon />X
             </HeaderLink>
             , or find my work on{" "}
             <HeaderLink
@@ -82,7 +82,7 @@ function HomePage() {
               href={`https://github.com/${config.socials.github}`}
               onMouseEnter={haptic}
             >
-              <IconBrandGithubFilled />
+              <GithubIcon />
               Github
             </HeaderLink>
             .
