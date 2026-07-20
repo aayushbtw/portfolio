@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && wrangler deploy",
+    "deploy": "wrangler deploy",
     "usage": "node scripts/token-usage.ts",
     "cf-typegen": "wrangler types",
     "fix": "ultracite fix",
