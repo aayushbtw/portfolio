@@ -1,6 +1,13 @@
-import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
+
+// Base UI's tooltip is the heaviest thing on the page and only matters once a
+// cell is hovered, so it loads on the first pointer entering the graph.
+const ContributionTooltip = lazy(() =>
+  import("./contribution-tooltip").then((m) => ({
+    default: m.ContributionTooltip,
+  }))
+);
 
 export interface Activity {
   count: number;
@@ -131,8 +138,11 @@ function ContributionGraph({
   const height = LABEL_H + 7 * CELL - GAP;
 
   const anchorRef = useRef<SVGRectElement | null>(null);
+  const [armed, setArmed] = useState(false);
   const [open, setOpen] = useState(false);
   const [tooltipText, setTooltipText] = useState("");
+
+  const arm = useCallback(() => setArmed(true), []);
 
   const onPointerEnter = useCallback(
     (e: React.PointerEvent<SVGRectElement>) => {
@@ -165,6 +175,7 @@ function ContributionGraph({
         className
       )}
       data-slot="contribution-graph"
+      onPointerEnter={arm}
       {...props}
     >
       <div className="no-scrollbar max-w-full overflow-x-auto overflow-y-hidden">
@@ -209,20 +220,15 @@ function ContributionGraph({
         </svg>
       </div>
 
-      <TooltipPrimitive.Root open={open}>
-        <TooltipPrimitive.Portal>
-          <TooltipPrimitive.Positioner
+      {armed && (
+        <Suspense fallback={null}>
+          <ContributionTooltip
             anchor={anchorRef}
-            className="isolate z-50"
-            side="top"
-            sideOffset={4}
-          >
-            <TooltipPrimitive.Popup className="rounded-lg bg-fg-1 px-sm py-xs text-bg-1">
-              {tooltipText}
-            </TooltipPrimitive.Popup>
-          </TooltipPrimitive.Positioner>
-        </TooltipPrimitive.Portal>
-      </TooltipPrimitive.Root>
+            open={open}
+            text={tooltipText}
+          />
+        </Suspense>
+      )}
 
       <p>{total.toLocaleString("en")} contributions in the last year</p>
     </div>
