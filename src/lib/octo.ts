@@ -1,3 +1,4 @@
+import { createServerOnlyFn } from "@tanstack/react-start";
 import type { Activity } from "~/components/ui/contribution-graph";
 import { config } from "~/lib/config";
 
@@ -27,8 +28,13 @@ const fetcher = async <T>(url: string): Promise<T> => {
   return res.json() as Promise<T>;
 };
 
-export const fetchContributions = (): Promise<ContributionsResponse> =>
-  fetcher(`${BASE}/contributions/${USERNAME}`);
+// Server-only so the octo endpoint and its shape are stripped from the client
+// bundle rather than surviving on tree-shaking luck.
+export const fetchContributions = createServerOnlyFn(
+  (): Promise<ContributionsResponse> =>
+    fetcher(`${BASE}/contributions/${USERNAME}`)
+);
 
-export const fetchPinnedRepos = (): Promise<PinnedRepo[]> =>
-  fetcher(`${BASE}/pinned/${USERNAME}`);
+export const fetchPinnedRepos = createServerOnlyFn(
+  (): Promise<PinnedRepo[]> => fetcher(`${BASE}/pinned/${USERNAME}`)
+);
