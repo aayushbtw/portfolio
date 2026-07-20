@@ -28,7 +28,7 @@ function extractHeadings(source: string): { id: string; text: string }[] {
 
 const posts = defineCollection({
   name: "posts",
-  directory: "./src/writings",
+  directory: "./content/posts",
   include: "*.mdx",
   schema: z.object({
     title: z.string(),
@@ -39,7 +39,9 @@ const posts = defineCollection({
     content: z.string(),
   }),
   transform: ({ _meta, content, ...post }) => {
-    const mdx = createDefaultImport<MDXContent>(`~/writings/${_meta.filePath}`);
+    const mdx = createDefaultImport<MDXContent>(
+      `@content/posts/${_meta.filePath}`
+    );
     return {
       ...post,
       slug: _meta.path,

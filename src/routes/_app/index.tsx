@@ -6,8 +6,8 @@ import {
   TwitterIcon,
 } from "~/components/icons";
 import { getContributions } from "~/components/rsc/contributions";
+import { getPostList } from "~/components/rsc/posts";
 import { getProjectList } from "~/components/rsc/projects";
-import { getPostList } from "~/components/rsc/writings";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { seo } from "~/lib/seo";

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RightColumn } from "~/components/layout-provider";
-import { getPostBySlug } from "~/components/rsc/writings";
+import { getPostBySlug } from "~/components/rsc/posts";
 import { TableOfContents } from "~/components/table-of-contents";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";

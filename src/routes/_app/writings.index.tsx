@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getPostList } from "~/components/rsc/writings";
+import { getPostList } from "~/components/rsc/posts";
 import { seo } from "~/lib/seo";
 
 const title = "Writings";
