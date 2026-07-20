@@ -6,6 +6,7 @@ export const config = {
     process.env.NODE_ENV === "production"
       ? "https://aayush.cv"
       : "http://localhost:3000",
+  skillsRepo: "aayushbtw/skills",
   socials: {
     github: "aayushbtw",
     twitter: "aayushbtw",

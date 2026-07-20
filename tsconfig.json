@@ -17,6 +17,7 @@
     "noUnusedParameters": true,
     "paths": {
       "~/*": ["./src/*"],
+      "@content/*": ["./content/*"],
       "content-collections": ["./.content-collections/generated"]
     },
     "resolveJsonModule": true,
