@@ -2,16 +2,15 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { Await, createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { setResponseHeader } from "@tanstack/react-start/server";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import {
-  getNowPlaying,
-  getRecentlyPlayed,
-  getTopArtists,
-  getTopTracks,
+  getLive,
+  getTops,
   type SpotifyArtist,
   type SpotifyTrack,
 } from "~/lib/spotify";
@@ -19,21 +18,17 @@ import {
 const title = "Music";
 const description = "What I'm listening to on Spotify.";
 
-const fetchTops = createServerFn().handler(async () => {
-  const [topArtists, topTracks] = await Promise.all([
-    getTopArtists(),
-    getTopTracks(),
-  ]);
-  return { topArtists, topTracks };
+// GET + its own cache headers: the route's `headers()` only covers the document,
+// so on client navigation this call is a separate uncacheable request otherwise.
+const fetchTops = createServerFn({ method: "GET" }).handler(() => {
+  setResponseHeader(
+    "Cache-Control",
+    "public, s-maxage=86400, stale-while-revalidate=604800"
+  );
+  return getTops();
 });
 
-const fetchLive = createServerFn().handler(async () => {
-  const [nowPlaying, recentlyPlayed] = await Promise.all([
-    getNowPlaying(),
-    getRecentlyPlayed(),
-  ]);
-  return { nowPlaying, recentlyPlayed };
-});
+const fetchLive = createServerFn().handler(() => getLive());
 
 export const Route = createFileRoute("/_app/music")({
   loader: () => ({ tops: fetchTops() }),
@@ -113,11 +108,7 @@ function MusicPage() {
   );
 }
 
-function NowPlaying({
-  track,
-}: {
-  track: NonNullable<Awaited<ReturnType<typeof getNowPlaying>>["track"]>;
-}) {
+function NowPlaying({ track }: { track: SpotifyTrack }) {
   return (
     <a
       className="mt-0 ml-auto flex items-center gap-sm"
