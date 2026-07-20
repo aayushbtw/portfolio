@@ -1,8 +1,18 @@
 import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
-import type { PinnedRepo } from "~/lib/octo";
-import { List, ListItem, ListItemHover } from "./ui/list";
+import { createServerFn } from "@tanstack/react-start";
+import { renderServerComponent } from "@tanstack/react-start/rsc";
+import { Suspense } from "react";
+import {
+  List,
+  ListItem,
+  ListItemHover,
+  ListSkeleton,
+} from "~/components/ui/list";
+import { fetchPinnedRepos } from "~/lib/octo";
 
-function ListProjects({ projects }: { projects: PinnedRepo[] }) {
+async function ProjectList() {
+  const projects = await fetchPinnedRepos();
+
   return (
     <List>
       {projects.map((item) => (
@@ -32,4 +42,16 @@ function ListProjects({ projects }: { projects: PinnedRepo[] }) {
   );
 }
 
-export { ListProjects };
+const projectListFn = createServerFn({ method: "GET" }).handler(() =>
+  renderServerComponent(
+    <Suspense fallback={<ListSkeleton rowClassName="h-10" rows={4} />}>
+      <ProjectList />
+    </Suspense>
+  )
+);
+
+function getProjectList() {
+  return projectListFn();
+}
+
+export { getProjectList };

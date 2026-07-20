@@ -1,4 +1,5 @@
 import { cn } from "~/lib/utils";
+import { Skeleton } from "./skeleton";
 
 function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
@@ -39,4 +40,22 @@ function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-export { List, ListItem, ListItemHover };
+function ListSkeleton({
+  rows,
+  rowClassName,
+}: {
+  rows: number;
+  rowClassName?: string;
+}) {
+  return (
+    <List>
+      {Array.from({ length: rows }, (_, i) => `row-${i}`).map((key) => (
+        <li className="border-border border-t py-sm first:border-t-0" key={key}>
+          <Skeleton className={cn("w-full", rowClassName ?? "h-5")} />
+        </li>
+      ))}
+    </List>
+  );
+}
+
+export { List, ListItem, ListItemHover, ListSkeleton };

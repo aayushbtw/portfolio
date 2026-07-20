@@ -1,24 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ListPosts } from "~/components/list-posts";
-import { getAllPosts } from "~/lib/posts";
+import { getPostList } from "~/components/rsc/writings";
 import { seo } from "~/lib/seo";
 
 const title = "Writings";
 const description = "Thoughts on software, design and building for the web.";
 
 export const Route = createFileRoute("/_app/writings/")({
-  loader: async () => ({ posts: await getAllPosts() }),
+  loader: () => getPostList(),
   head: () => seo({ title, description }),
   component: WritingsPage,
 });
 
 function WritingsPage() {
-  const { posts } = Route.useLoaderData();
+  const posts = Route.useLoaderData();
 
   return (
     <section>
       <h1 className="text-eyebrow">{title}</h1>
-      <ListPosts posts={posts} />
+      {posts}
     </section>
   );
 }

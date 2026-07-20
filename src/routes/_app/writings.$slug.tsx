@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RightColumn } from "~/components/layout-provider";
+import { getPostBySlug } from "~/components/rsc/writings";
 import { TableOfContents } from "~/components/table-of-contents";
 import { config } from "~/lib/config";
-import { getPostBySlug } from "~/lib/posts";
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: ({ params }) => getPostBySlug(params.slug),
+  loader: ({ params: { slug } }) => getPostBySlug(slug),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

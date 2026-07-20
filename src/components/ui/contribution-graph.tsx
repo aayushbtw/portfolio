@@ -1,5 +1,8 @@
+"use client";
+
 import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
+import { Skeleton } from "./skeleton";
 
 // Base UI's tooltip is the heaviest thing on the page and only matters once a
 // cell is hovered, so it loads on the first pointer entering the graph.
@@ -235,4 +238,18 @@ function ContributionGraph({
   );
 }
 
-export { ContributionGraph };
+// Reserves the graph's exact height so the shell does not shift when the
+// contributions land.
+function ContributionGraphSkeleton() {
+  return (
+    <div className="flex max-w-full flex-col gap-xs">
+      <Skeleton
+        className="w-full"
+        style={{ height: LABEL_H + 7 * CELL - GAP }}
+      />
+      <Skeleton className="h-4 w-64" />
+    </div>
+  );
+}
+
+export { ContributionGraph, ContributionGraphSkeleton };

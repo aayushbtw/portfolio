@@ -5,23 +5,21 @@ import {
 } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { NetisionIcon } from "~/components/icons";
-import { ListPosts } from "~/components/list-posts";
-import { ListProjects } from "~/components/list-projects";
-import { ContributionGraph } from "~/components/ui/contribution-graph";
+import { getContributions } from "~/components/rsc/contributions";
+import { getProjectList } from "~/components/rsc/projects";
+import { getPostList } from "~/components/rsc/writings";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
-import { fetchContributions, fetchPinnedRepos } from "~/lib/octo";
-import { getAllPosts } from "~/lib/posts";
 import { seo } from "~/lib/seo";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
     const [contributions, projects, posts] = await Promise.all([
-      fetchContributions(),
-      fetchPinnedRepos(),
-      getAllPosts(),
+      getContributions(),
+      getProjectList(),
+      getPostList(5),
     ]);
-    return { contributions, projects, posts: posts.slice(0, 5) };
+    return { contributions, projects, posts };
   },
   head: () => seo({ title: config.name, description: config.description }),
   headers: () => ({
@@ -92,21 +90,16 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mt-lg">
-        <ContributionGraph
-          data={contributions.contributions}
-          total={contributions.total}
-        />
-      </section>
+      <section className="mt-lg">{contributions}</section>
 
       <section className="mt-lg">
         <h2 className="text-eyebrow">Projects</h2>
-        <ListProjects projects={projects} />
+        {projects}
       </section>
 
       <section className="mt-lg">
         <h2 className="text-eyebrow">Writings</h2>
-        <ListPosts posts={posts} />
+        {posts}
       </section>
     </>
   );
