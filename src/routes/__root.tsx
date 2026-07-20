@@ -50,6 +50,7 @@ export const Route = createRootRouteWithContext<{
   }),
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
+  errorComponent: ErrorPage,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -77,14 +78,32 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 function NotFound() {
   return (
+    <Fallback title="page not found">
+      This page doesn't exist or has been moved.
+    </Fallback>
+  );
+}
+
+function ErrorPage() {
+  return (
+    <Fallback title="something went wrong">
+      This page failed to load. Try again in a moment.
+    </Fallback>
+  );
+}
+
+function Fallback({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
     <div className="typeset mx-auto px-lg py-xl sm:py-2xl">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
-        <h1 className="mb-sm text-balance text-xl capitalize">
-          page not found
-        </h1>
-        <p className="my-0 text-md">
-          This page doesn't exist or has been moved.
-        </p>
+        <h1 className="mb-sm text-balance text-xl capitalize">{title}</h1>
+        <p className="my-0 text-md">{children}</p>
         <Link
           className="mt-lg inline-flex min-h-9 items-center rounded-xl px-md no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
           to="/"

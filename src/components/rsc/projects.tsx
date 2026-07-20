@@ -11,7 +11,12 @@ import {
 import { fetchPinnedRepos } from "~/lib/octo";
 
 async function ProjectList() {
-  const projects = await fetchPinnedRepos();
+  let projects: Awaited<ReturnType<typeof fetchPinnedRepos>>;
+  try {
+    projects = await fetchPinnedRepos();
+  } catch {
+    return <p className="text-fg-3">Projects are unavailable right now.</p>;
+  }
 
   return (
     <List>
