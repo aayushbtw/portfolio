@@ -1,26 +1,92 @@
 {
   "year": 2026,
-  "total": 616579276,
-  "input": 129055,
-  "output": 3356341,
-  "cacheRead": 591889286,
-  "cacheWrite": 21204594,
-  "sessions": 68,
+  "total": 1144904171,
+  "input": 136365,
+  "output": 4974287,
+  "cacheRead": 1109795958,
+  "cacheWrite": 29997561,
+  "sessions": 95,
   "models": [
     {
       "name": "Opus 4.8",
-      "tokens": 538342804
+      "tokens": 587882138
+    },
+    {
+      "name": "claude-opus-5",
+      "tokens": 397761996
     },
     {
       "name": "Fable 5",
-      "tokens": 78236472
+      "tokens": 79645923
+    },
+    {
+      "name": "Sonnet 5",
+      "tokens": 79614114
     }
   ],
   "days": [
     {
+      "date": "2026-07-28",
+      "tokens": 149266834,
+      "barWidth": 59,
+      "models": [
+        {
+          "name": "claude-opus-5",
+          "tokens": 147857383,
+          "share": 99
+        },
+        {
+          "name": "Fable 5",
+          "tokens": 1409451,
+          "share": 1
+        }
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "tokens": 250987306,
+      "barWidth": 100,
+      "models": [
+        {
+          "name": "claude-opus-5",
+          "tokens": 249904613,
+          "share": 100
+        },
+        {
+          "name": "Sonnet 5",
+          "tokens": 1082693,
+          "share": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "tokens": 78531421,
+      "barWidth": 31,
+      "models": [
+        {
+          "name": "Sonnet 5",
+          "tokens": 78531421,
+          "share": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-24",
+      "tokens": 49539334,
+      "barWidth": 20,
+      "models": [
+        {
+          "name": "Opus 4.8",
+          "tokens": 49539334,
+          "share": 100
+        }
+      ]
+    },
+    {
       "date": "2026-07-23",
       "tokens": 126441431,
-      "barWidth": 100,
+      "barWidth": 50,
       "models": [
         {
           "name": "Opus 4.8",
@@ -32,7 +98,7 @@
     {
       "date": "2026-07-22",
       "tokens": 4415337,
-      "barWidth": 3,
+      "barWidth": 2,
       "models": [
         {
           "name": "Opus 4.8",
@@ -44,7 +110,7 @@
     {
       "date": "2026-07-21",
       "tokens": 106537260,
-      "barWidth": 84,
+      "barWidth": 42,
       "models": [
         {
           "name": "Opus 4.8",
@@ -52,55 +118,7 @@
           "share": 100
         }
       ]
-    },
-    {
-      "date": "2026-07-20",
-      "tokens": 74098352,
-      "barWidth": 59,
-      "models": [
-        {
-          "name": "Opus 4.8",
-          "tokens": 74098352,
-          "share": 100
-        }
-      ]
-    },
-    {
-      "date": "2026-07-19",
-      "tokens": 91969564,
-      "barWidth": 73,
-      "models": [
-        {
-          "name": "Opus 4.8",
-          "tokens": 91969564,
-          "share": 100
-        }
-      ]
-    },
-    {
-      "date": "2026-07-17",
-      "tokens": 44393918,
-      "barWidth": 35,
-      "models": [
-        {
-          "name": "Opus 4.8",
-          "tokens": 44393918,
-          "share": 100
-        }
-      ]
-    },
-    {
-      "date": "2026-07-16",
-      "tokens": 31177528,
-      "barWidth": 25,
-      "models": [
-        {
-          "name": "Opus 4.8",
-          "tokens": 31177528,
-          "share": 100
-        }
-      ]
     }
   ],
-  "generatedAt": "2026-07-23T17:03:38.430Z"
+  "generatedAt": "2026-07-28T10:48:23.463Z"
 }
