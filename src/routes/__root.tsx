@@ -65,6 +65,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="min-h-screen">
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
         <LayoutProvider>
           <ProgressiveBlur className="fixed z-30" position="top" />
           {children}

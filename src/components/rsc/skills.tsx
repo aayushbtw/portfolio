@@ -19,13 +19,13 @@ function SkillList() {
             params={{ slug: skill.slug }}
             to="/skills/$slug"
           >
-            <div className="flex flex-col">
+            <div className="flex min-w-0 flex-col">
               <span className="text-fg-2">{skill.title}</span>
               <p>{skill.summary}</p>
             </div>
 
             <ListItemHover>
-              <IconArrowRight />
+              <IconArrowRight aria-hidden="true" />
             </ListItemHover>
           </Link>
         </ListItem>

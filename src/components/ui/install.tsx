@@ -47,7 +47,10 @@ function InstallCommand({ command }: { command: string }) {
       className="flex items-center gap-md rounded-sm border bg-bg-1 py-sm pr-sm pl-md font-mono text-xs"
       data-slot="install-command"
     >
-      <code className="flex-1 overflow-x-auto whitespace-nowrap text-fg-2">
+      <code
+        className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-fg-2"
+        translate="no"
+      >
         <span className="select-none text-fg-3">$ </span>
         {command}
       </code>
@@ -59,9 +62,9 @@ function InstallCommand({ command }: { command: string }) {
         type="button"
       >
         {copied ? (
-          <IconCheck className="size-4 text-brand" />
+          <IconCheck aria-hidden="true" className="size-4 text-brand" />
         ) : (
-          <IconCopy className="size-4" />
+          <IconCopy aria-hidden="true" className="size-4" />
         )}
       </button>
     </div>

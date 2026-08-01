@@ -187,7 +187,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
         </div>
 
         <ListItemHover>
-          <IconArrowUpRight />
+          <IconArrowUpRight aria-hidden="true" />
         </ListItemHover>
       </a>
     </ListItem>
@@ -215,7 +215,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
         </div>
 
         <ListItemHover>
-          <IconArrowUpRight />
+          <IconArrowUpRight aria-hidden="true" />
         </ListItemHover>
       </a>
     </ListItem>

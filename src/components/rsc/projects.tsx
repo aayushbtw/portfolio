@@ -28,17 +28,17 @@ async function ProjectList() {
             rel="noopener"
             target="_blank"
           >
-            <div className="flex flex-col">
+            <div className="flex min-w-0 flex-col">
               <span className="text-fg-2 capitalize">{item.repo}</span>
               <p>{item.description}</p>
             </div>
 
             <ListItemHover>
               <div className="inline-flex items-center gap-xs tabular-nums">
-                <IconStarFilled className="size-2.5" />
+                <IconStarFilled aria-hidden="true" className="size-2.5" />
                 {item.stars}
               </div>
-              <IconArrowUpRight />
+              <IconArrowUpRight aria-hidden="true" />
             </ListItemHover>
           </a>
         </ListItem>

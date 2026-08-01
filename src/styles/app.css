@@ -205,6 +205,13 @@
   @apply flex items-center gap-md;
 }
 
+/* Off-screen until tabbed to, then a real target in the top-left corner. The
+   nav is a sticky sidebar with six links, so keyboard users otherwise walk the
+   whole thing on every page. */
+@utility skip-link {
+  @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:left-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
+}
+
 /* The `h2` above a list or block. Body size, so it never outgrows or shrinks
    below the content it introduces; it separates by weight and colour instead.
    Not uppercase and not tracked out: a label that shouts competes with the
