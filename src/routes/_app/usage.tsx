@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Meter, MeterLegend, type MeterSegment } from "~/components/ui/meter";
 import { PageHeader } from "~/components/ui/page-header";
 import { Stat, StatStrip } from "~/components/ui/stat";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
-import { cn, formatCompact, formatDate, formatNumber } from "~/lib/utils";
+import { formatCompact, formatDate, formatNumber } from "~/lib/utils";
 
 const title = "Claude Usage";
 const description = "How many tokens I've burned coding with Claude Code.";
@@ -32,46 +33,23 @@ function UsagePage() {
       <div className="mt-lg">
         <h2 className="text-eyebrow">Last {usage.days.length} active days</h2>
         <div className="mt-sm flex flex-col gap-sm">
-          {usage.days.map((day) => (
-            <div className="flex flex-col gap-xs" key={day.date}>
-              <div className="flex items-baseline gap-md">
-                <span className="text-fg-2">{dayLabel(day.date)}</span>
-                <span className="ml-auto text-fg-3 text-xs tabular-nums">
-                  {formatCompact(day.tokens)}
-                </span>
-              </div>
+          {usage.days.map((day) => {
+            const segments = daySegments(day.models);
 
-              <div className="h-1.5 overflow-hidden rounded-full bg-fg-3/10">
-                <div
-                  className="flex h-full gap-px overflow-hidden rounded-full"
-                  style={{ width: `${day.barWidth}%` }}
-                >
-                  {day.models.map((model) => (
-                    <div
-                      className={modelShade(model.name)}
-                      key={model.name}
-                      style={{ width: `${model.share}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-x-md text-fg-3 text-xs tabular-nums">
-                {day.models.map((model) => (
-                  <span className="flex items-center gap-xs" key={model.name}>
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        "h-2 w-0.5 shrink-0 rounded-full",
-                        modelShade(model.name)
-                      )}
-                    />
-                    {model.name} {model.share}%
+            return (
+              <div className="flex flex-col gap-xs" key={day.date}>
+                <div className="flex items-baseline gap-md">
+                  <span className="text-fg-2">{dayLabel(day.date)}</span>
+                  <span className="ml-auto text-fg-3 text-xs tabular-nums">
+                    {formatCompact(day.tokens)}
                   </span>
-                ))}
+                </div>
+
+                <Meter segments={segments} value={day.barWidth} />
+                <MeterLegend segments={segments} />
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -92,10 +70,20 @@ const MODEL_SHADES = [
   "indicator-brand opacity-20",
 ];
 
-function modelShade(name: string) {
-  const rank = usage.models.findIndex((model) => model.name === name);
+// Shade by how much each model is used across the year, so a model keeps the
+// same shade on every day's bar and the legends stay readable together.
+function daySegments(
+  models: { name: string; share: number }[]
+): MeterSegment[] {
+  return models.map((model) => {
+    const rank = usage.models.findIndex((m) => m.name === model.name);
 
-  return MODEL_SHADES[rank] ?? MODEL_SHADES.at(-1);
+    return {
+      className: MODEL_SHADES[rank] ?? MODEL_SHADES.at(-1),
+      label: model.name,
+      share: model.share,
+    };
+  });
 }
 
 function dayLabel(date: string) {
