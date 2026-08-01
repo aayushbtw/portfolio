@@ -89,7 +89,7 @@ function MusicPage() {
         </Await>
       </Suspense>
 
-      <div className="mt-lg">
+      <div className="mt-xl">
         <h2 className="text-section-label">Recently Played</h2>
         <List>
           {live

@@ -48,6 +48,8 @@ Six steps: **4, 8, 16, 24, 48, 96**. Doubling from `xs` up to `md`, 1.5× to `lg
 
 Used as `mt-lg`, `gap-md`, `px-md`, `py-sm`. Nothing exists between the steps, so a gap that feels wrong is the wrong step, not a missing value. Reaching for `mt-7` means one of these is what you meant.
 
+**Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with a `text-section-label` is a new section and takes `mt-xl`; a block that continues the one above it takes `mt-lg`. So on the home page the contribution graph sits `lg` under the hero it belongs to, while Projects and Writings each open `xl` below. The rule is checkable: if it has its own label, it gets the bigger step.
+
 Note these read next to Tailwind's responsive prefixes, so `sm:mt-sm` is "8px top margin from the `sm` breakpoint up". The prefix is before the colon, the scale after it.
 
 The scale is deliberately *narrower* than the spacing it replaced, which came from having no system. The old values were folded in by nearest step, ties rounding up: 12px and 20px went up to `md` and `lg`, 32px came down to `lg`, 40px went up to `xl`.

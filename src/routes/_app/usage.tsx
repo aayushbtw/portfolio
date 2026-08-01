@@ -35,7 +35,7 @@ function UsagePage() {
         <TokenStat label="Cache read" value={usage.cacheRead} />
       </StatStrip>
 
-      <div className="mt-lg">
+      <div className="mt-xl">
         <h2 className="text-section-label">
           Last {usage.days.length} active days
         </h2>
