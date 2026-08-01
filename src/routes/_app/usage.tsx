@@ -12,7 +12,7 @@ import {
 } from "~/lib/utils";
 
 const title = "Claude Usage";
-const description = "How many tokens I've burned coding with Claude Code.";
+const description = "How many tokens I’ve burned coding with Claude Code.";
 
 export const Route = createFileRoute("/_app/usage")({
   head: () => seo({ title, description }),

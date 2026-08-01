@@ -17,7 +17,7 @@ import {
 } from "~/lib/spotify";
 
 const title = "Music";
-const description = "What I'm listening to on Spotify.";
+const description = "What I’m listening to on Spotify.";
 
 // GET + its own cache headers: the route's `headers()` only covers the document,
 // so on client navigation this call is a separate uncacheable request otherwise.

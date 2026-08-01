@@ -28,7 +28,7 @@ function Meter({
   return (
     <div
       aria-hidden="true"
-      className={cn("h-1.5 overflow-hidden rounded-full bg-fg-3/10", className)}
+      className={cn("h-1.5 overflow-hidden rounded-full bg-bg-2", className)}
       data-slot="meter"
     >
       {/* `gap-px` is off the spacing scale on purpose: it is a hairline that

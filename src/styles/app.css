@@ -66,6 +66,14 @@
      is "tighten by a percentage of the size", not "by a fixed number of px".
      Values follow Inter's dynamic metrics, -0.0223 + 0.185e^(-0.1745·size),
      which lands near zero at label sizes and tightens as the type grows.
+
+     That formula is from Inter v3. Inter v4 replaced it with an `opsz` axis
+     that does the same job inside the font, but `@fontsource-variable/inter`
+     resolves to the wght-only build, so the loaded font has no `opsz` and
+     `font-optical-sizing` is inert. The tracking below is doing real work.
+     If the import ever moves to `@fontsource-variable/inter/opsz.css`, these
+     values must go back to 0 or the correction applies twice.
+
      All of this assumes lowercase. Uppercase needs positive tracking at any
      size, which is one more reason nothing here is uppercase. */
   --text-xs: 0.75rem; /* 12px  labels, captions, code */
@@ -105,10 +113,15 @@
     color: var(--color-fg-3);
   }
 
-  /* Nothing outgrows the body: headings separate by color and weight, not size. */
+  /* Nothing outgrows the body: headings separate by color and weight, not size.
+     Typeset styles `h6` as uppercase with 0.08em tracking, which is the one
+     eyebrow the site removed everywhere else; a prose `h6` would still shout
+     without this. */
   .typeset :where(h1, h2, h3, h4, h5, h6) {
     font-size: 1em;
     line-height: inherit;
+    text-transform: none;
+    letter-spacing: inherit;
     @apply font-medium;
   }
 

@@ -104,6 +104,8 @@ Body is `text-md sm:text-sm`, so it's part of the scale rather than a special ca
 
 Small text crowds and wants opening up; large text looks loose and wants tightening. One flat px value across every step is wrong at both ends at once. All of this assumes lowercase: uppercase needs *positive* tracking at any size, which is one more reason nothing here is uppercase. The OG image in [src/routes/api/og.tsx](src/routes/api/og.tsx) restates the same curve in px, because Satori renders outside the token scale.
 
+The formula is Inter v3's. Inter v4 replaced it with an `opsz` axis that does the same job inside the font, but `@fontsource-variable/inter` resolves to the wght-only build, so the loaded font carries no `opsz` and `font-optical-sizing` does nothing. If that import ever moves to `@fontsource-variable/inter/opsz.css`, every tracking value has to go back to `0` or the correction lands twice.
+
 That's why no `leading-[…]` or `tracking-[…]` exists anywhere. The one deliberate exception is `List`, which tightens to `leading-5`: list rows are scanned, not read.
 
 **Size marks the page, not the prose.** There are three roles for it:

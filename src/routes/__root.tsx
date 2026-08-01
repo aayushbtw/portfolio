@@ -1,3 +1,4 @@
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import type { QueryClient } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
@@ -27,6 +28,16 @@ export const Route = createRootRouteWithContext<{
       { name: "twitter:creator", content: config.socials.twitter },
     ],
     links: [
+      // The stylesheet @imports the font, so the browser can't discover the
+      // woff2 until the CSS has parsed. Preloading the latin subset overlaps
+      // those two round trips instead of running them back to back.
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: interLatin,
+        crossOrigin: "anonymous",
+      },
       { rel: "stylesheet", href: appCss },
       {
         rel: "apple-touch-icon",
@@ -82,7 +93,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 function NotFound() {
   return (
     <Fallback title="page not found">
-      This page doesn't exist or has been moved.
+      This page doesn’t exist or has been moved.
     </Fallback>
   );
 }
