@@ -5,7 +5,7 @@ function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
       className={cn(
-        "not-typeset group/ul mt-sm text-fg-3 leading-5 [&_a]:no-underline",
+        "not-typeset mt-sm text-fg-3 leading-5 [&_a]:no-underline",
         className
       )}
       data-slot="list"
@@ -49,8 +49,11 @@ function ListSkeleton({
 }) {
   return (
     <List>
+      {/* Same box as `ListItem` minus the hover, so nothing shifts when the
+          real rows land. A placeholder that isn't the shape of the thing it
+          stands in for is worse than no placeholder. */}
       {Array.from({ length: rows }, (_, i) => `row-${i}`).map((key) => (
-        <li className="border-border border-t py-sm first:border-t-0" key={key}>
+        <li className="-mx-md px-md py-sm" key={key}>
           <Skeleton className={cn("w-full", rowClassName ?? "h-5")} />
         </li>
       ))}

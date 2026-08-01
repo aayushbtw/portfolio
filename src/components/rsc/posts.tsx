@@ -2,7 +2,7 @@ import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { allPosts } from "content-collections";
-import { List } from "~/components/ui/list";
+import { List, ListItem } from "~/components/ui/list";
 import {
   Showcase,
   ShowcaseCaption,
@@ -32,10 +32,7 @@ function PostList({ limit }: { limit?: number }) {
       {posts.map((post, i) => {
         const showYear = i === 0 || posts[i - 1].year !== post.year;
         return (
-          <li
-            className="border-border border-t py-sm transition-[opacity,scale] duration-150 first:border-t-0 hover:opacity-100 active:scale-[0.99] group-hover/ul:opacity-40"
-            key={post.slug}
-          >
+          <ListItem key={post.slug}>
             <Link
               className="row-link"
               params={{ slug: post.slug }}
@@ -47,7 +44,7 @@ function PostList({ limit }: { limit?: number }) {
               <span className="flex-1 text-fg-2">{post.title}</span>
               <time className="tabular-nums">{post.date}</time>
             </Link>
-          </li>
+          </ListItem>
         );
       })}
     </List>
