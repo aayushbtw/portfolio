@@ -13,7 +13,10 @@ function PageHeader({
 }) {
   return (
     <div className="flex items-center gap-sm" data-slot="page-header">
-      <h1 className="text-eyebrow">{title}</h1>
+      {/* No size class: typeset already sets `h1` to body size, weight 500,
+          `fg-1`. That is the page title treatment, and it is the same one the
+          home page's `h1` gets, so every page now agrees. */}
+      <h1>{title}</h1>
 
       {children ? (
         <div className="ml-auto flex items-center gap-sm">{children}</div>

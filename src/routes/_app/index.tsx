@@ -93,12 +93,12 @@ function HomePage() {
       <section className="mt-lg">{contributions}</section>
 
       <section className="mt-lg">
-        <h2 className="text-eyebrow">Projects</h2>
+        <h2 className="text-section-label">Projects</h2>
         {projects}
       </section>
 
       <section className="mt-lg">
-        <h2 className="text-eyebrow">Writings</h2>
+        <h2 className="text-section-label">Writings</h2>
         {posts}
       </section>
     </>

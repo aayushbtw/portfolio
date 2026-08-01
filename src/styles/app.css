@@ -205,8 +205,19 @@
   @apply flex items-center gap-md;
 }
 
-@utility text-eyebrow {
-  @apply text-fg-3 text-xs uppercase tracking-widest;
+/* The `h2` above a list or block. Body size, so it never outgrows or shrinks
+   below the content it introduces; it separates by weight and colour instead.
+   Not uppercase and not tracked out: a label that shouts competes with the
+   thing it is labelling, and the `h2` tag already carries the structure. */
+@utility text-section-label {
+  @apply text-fg-3 font-normal;
+}
+
+/* A compact name inside a component, like the label over a figure. Smaller
+   than `text-section-label` because it names one field rather than a section,
+   and it is always read together with the value directly under it. */
+@utility text-label {
+  @apply text-fg-3 text-xs font-normal;
 }
 
 @layer base {

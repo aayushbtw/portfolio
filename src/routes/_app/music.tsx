@@ -65,7 +65,7 @@ function MusicPage() {
             <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
               {topTracks.length > 0 ? (
                 <div>
-                  <h2 className="text-eyebrow">Top Tracks</h2>
+                  <h2 className="text-section-label">Top Tracks</h2>
                   <List>
                     {topTracks.map((track) => (
                       <TrackItem key={track.id} track={track} />
@@ -76,7 +76,7 @@ function MusicPage() {
 
               {topArtists.length > 0 ? (
                 <div>
-                  <h2 className="text-eyebrow">Top Artists</h2>
+                  <h2 className="text-section-label">Top Artists</h2>
                   <List>
                     {topArtists.map((artist) => (
                       <ArtistItem artist={artist} key={artist.id} />
@@ -90,7 +90,7 @@ function MusicPage() {
       </Suspense>
 
       <div className="mt-lg">
-        <h2 className="text-eyebrow">Recently Played</h2>
+        <h2 className="text-section-label">Recently Played</h2>
         <List>
           {live
             ? live.recentlyPlayed.map((track) => (
@@ -135,7 +135,7 @@ function TopsSkeleton() {
     <div className="mt-lg grid grid-cols-2 gap-lg">
       {["tracks", "artists"].map((key) => (
         <div key={key}>
-          <h2 className="text-eyebrow">
+          <h2 className="text-section-label">
             {key === "tracks" ? "Top Tracks" : "Top Artists"}
           </h2>
           <List>

@@ -31,7 +31,9 @@ function UsagePage() {
       </StatStrip>
 
       <div className="mt-lg">
-        <h2 className="text-eyebrow">Last {usage.days.length} active days</h2>
+        <h2 className="text-section-label">
+          Last {usage.days.length} active days
+        </h2>
         <div className="mt-sm flex flex-col gap-sm">
           {usage.days.map((day) => {
             const segments = daySegments(day.models);

@@ -37,7 +37,7 @@ function Stat({
 }) {
   return (
     <div className="flex flex-col gap-xs" data-slot="stat">
-      <span className="text-eyebrow">{label}</span>
+      <span className="text-label">{label}</span>
       <span className="text-fg-2 text-md tabular-nums">{value}</span>
       {detail ? (
         <span className="text-fg-3 text-xs tabular-nums">{detail}</span>
