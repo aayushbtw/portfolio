@@ -1,7 +1,7 @@
 "use client";
 
 import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react";
-import { cn } from "~/lib/utils";
+import { cn, formatNumber } from "~/lib/utils";
 import { Skeleton } from "./skeleton";
 
 // Base UI's tooltip is the heaviest thing on the page and only matters once a
@@ -24,35 +24,28 @@ const CELL = BLOCK + GAP;
 const RADIUS = 3;
 const LABEL_H = 22;
 
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+const shortMonth = new Intl.DateTimeFormat("en", {
+  month: "short",
+  timeZone: "UTC",
+});
 
-const FULL_MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+const longMonth = new Intl.DateTimeFormat("en", {
+  month: "long",
+  timeZone: "UTC",
+});
+
+// "1st", "2nd", "3rd", "4th". `Intl.PluralRules` knows which suffix a number
+// takes; hand-rolling it means rediscovering that 11 through 13 are exceptions.
+const ordinalRules = new Intl.PluralRules("en", { type: "ordinal" });
+
+const ORDINAL_SUFFIX: Record<Intl.LDMLPluralRule, string> = {
+  few: "rd",
+  many: "th",
+  one: "st",
+  other: "th",
+  two: "nd",
+  zero: "th",
+};
 
 const LEVELS = [
   "fill-graph-0",
@@ -62,19 +55,18 @@ const LEVELS = [
   "fill-graph-4",
 ];
 
+// The grid is built from calendar days, so every field is read in UTC. Reading
+// them locally would shift the whole grid by a day west of Greenwich, and the
+// graph is rendered on the server and hydrated on the client.
 function parseDate(date: string): Date {
-  return new Date(`${date}T00:00:00`);
-}
-
-function ordinal(n: number): string {
-  const s = ["th", "st", "nd", "rd"];
-  const v = n % 100;
-  return `${n}${s[(v - 20) % 10] ?? s[v] ?? s[0]}`;
+  return new Date(`${date}T00:00:00Z`);
 }
 
 function formatDate(date: string): string {
   const d = parseDate(date);
-  return `${ordinal(d.getDate())} ${FULL_MONTHS[d.getMonth()]}`;
+  const day = d.getUTCDate();
+
+  return `${day}${ORDINAL_SUFFIX[ordinalRules.select(day)]} ${longMonth.format(d)}`;
 }
 
 function toGrid(data: Activity[]): (Activity | undefined)[][] {
@@ -83,7 +75,7 @@ function toGrid(data: Activity[]): (Activity | undefined)[][] {
   }
 
   const sorted = data.toSorted((a, b) => a.date.localeCompare(b.date));
-  const firstDay = parseDate(sorted[0].date).getDay();
+  const firstDay = parseDate(sorted[0].date).getUTCDay();
   const padded: (Activity | undefined)[] = [
     ...new Array<undefined>(firstDay),
     ...sorted,
@@ -110,10 +102,10 @@ function getMonthLabels(
     }
 
     const d = parseDate(first.date);
-    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    const key = `${d.getUTCFullYear()}-${d.getUTCMonth()}`;
 
     if (key !== lastKey) {
-      labels.push({ label: MONTHS[d.getMonth()], x: CELL * i });
+      labels.push({ label: shortMonth.format(d), x: CELL * i });
       lastKey = key;
     }
   }
@@ -233,7 +225,7 @@ function ContributionGraph({
         </Suspense>
       )}
 
-      <p>{total.toLocaleString("en")} contributions in the last year</p>
+      <p>{formatNumber(total)} contributions in the last year</p>
     </div>
   );
 }

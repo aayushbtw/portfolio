@@ -4,7 +4,12 @@ import { PageHeader } from "~/components/ui/page-header";
 import { Stat, StatStrip } from "~/components/ui/stat";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
-import { formatCompact, formatDate, formatNumber } from "~/lib/utils";
+import {
+  formatCompact,
+  formatDate,
+  formatNumber,
+  formatShortDate,
+} from "~/lib/utils";
 
 const title = "Claude Usage";
 const description = "How many tokens I've burned coding with Claude Code.";
@@ -41,7 +46,7 @@ function UsagePage() {
             return (
               <div className="flex flex-col gap-xs" key={day.date}>
                 <div className="flex items-baseline gap-md">
-                  <span className="text-fg-2">{dayLabel(day.date)}</span>
+                  <span className="text-fg-2">{formatShortDate(day.date)}</span>
                   <span className="ml-auto text-fg-3 text-xs tabular-nums">
                     {formatCompact(day.tokens)}
                   </span>
@@ -85,13 +90,6 @@ function daySegments(
       label: model.name,
       share: model.share,
     };
-  });
-}
-
-function dayLabel(date: string) {
-  return new Date(`${date}T00:00:00`).toLocaleString("en", {
-    month: "short",
-    day: "numeric",
   });
 }
 

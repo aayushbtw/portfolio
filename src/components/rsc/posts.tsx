@@ -8,6 +8,7 @@ import {
   ShowcaseCaption,
   ShowcaseImage,
 } from "~/components/ui/showcase";
+import { formatNumericDate, toUtcDate } from "~/lib/utils";
 
 function sortedPosts() {
   return allPosts.toSorted(
@@ -19,15 +20,12 @@ function sortedPosts() {
 function PostList({ limit }: { limit?: number }) {
   const posts = sortedPosts()
     .slice(0, limit)
-    .map((post) => {
-      const d = new Date(`${post.publishedAt.split("T")[0]}T00:00:00`);
-      return {
-        year: d.getFullYear(),
-        slug: post.slug,
-        title: post.title,
-        date: `${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}`,
-      };
-    });
+    .map((post) => ({
+      year: toUtcDate(post.publishedAt).getUTCFullYear(),
+      slug: post.slug,
+      title: post.title,
+      date: formatNumericDate(post.publishedAt),
+    }));
 
   return (
     <List>

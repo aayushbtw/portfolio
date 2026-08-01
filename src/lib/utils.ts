@@ -19,12 +19,47 @@ export function formatNumber(value: number) {
   return exact.format(value);
 }
 
-export function formatDate(date: string) {
-  const targetDate = new Date(date.includes("T") ? date : `${date}T00:00:00`);
+/**
+ * Every date on the site is either a calendar day ("2026-03-27") or a UTC
+ * instant. Both are parsed *and* formatted in UTC, so the server and the
+ * browser produce the same string no matter which timezone either sits in.
+ * Parsing a bare "2026-03-27" as local time is what makes a post drift a day
+ * either way, and formatting in local time is what makes it drift back.
+ */
+export function toUtcDate(date: string) {
+  return new Date(date.includes("T") ? date : `${date}T00:00:00Z`);
+}
 
-  return targetDate.toLocaleString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+const longDate = new Intl.DateTimeFormat("en-US", {
+  day: "numeric",
+  month: "long",
+  timeZone: "UTC",
+  year: "numeric",
+});
+
+const numericDate = new Intl.DateTimeFormat("en-US", {
+  day: "2-digit",
+  month: "2-digit",
+  timeZone: "UTC",
+});
+
+const shortDate = new Intl.DateTimeFormat("en-US", {
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+});
+
+/** "March 27, 2026" */
+export function formatDate(date: string) {
+  return longDate.format(toUtcDate(date));
+}
+
+/** "03/27" */
+export function formatNumericDate(date: string) {
+  return numericDate.format(toUtcDate(date));
+}
+
+/** "Mar 27" */
+export function formatShortDate(date: string) {
+  return shortDate.format(toUtcDate(date));
 }
