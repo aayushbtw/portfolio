@@ -74,15 +74,14 @@ Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit out
 
 ## Type scale
 
-Five steps, sharing the spacing scale's names and living in `@theme` alongside it.
+Four steps, sharing the spacing scale's names and living in `@theme` alongside it.
 
 | Token | Size | Leading | Use                                       |
 | ----- | ---- | ------- | ----------------------------------------- |
 | `xs`  | 12px | 20px    | Labels, captions, code, `text-label`      |
 | `sm`  | 14px | 22.75px | Body, desktop                             |
 | `md`  | 16px | 22.75px | Body mobile; a figure worth reading first |
-| `lg`  | 20px | 28px    | Display                                   |
-| `xl`  | 30px | 36px    | Display                                   |
+| `xl`  | 30px | 36px    | Display. The 404 title, and nothing else   |
 
 **A size token is the whole treatment.** Each carries its own `line-height` and `letter-spacing` (`-0.15px` throughout), so `text-xs` is complete on its own and never needs a `leading-*` beside it. Write the size, take the leading. If you catch yourself pairing a size with a hand-picked leading, that pair belongs in `@theme`, not at the call site.
 
@@ -107,7 +106,9 @@ A section label sits one step quieter than the title it follows: same size, norm
 
 Neither is uppercase and neither is tracked out. A label that shouts competes with the thing it is labelling, and the tag already carries the structure.
 
-**`lg` and `xl` are for figures and empty pages.** They go on the one element that *is* the page's subject where no prose competes with it: the usage page's token total, the 404's message. One per page. Never on a sentence, and never on something that repeats — the usage page's four stat values sit at `md` precisely because there are four of them and they're secondary to the total above.
+**`xl` is the one display step, and it is for empty pages.** It goes on the single element that *is* the page's subject where no prose competes with it, which today means the 404 title and nothing else. One per page at most. Never on a sentence, and never on something that repeats: the usage page's four stat values sit at `md` precisely because there are four of them.
+
+There is deliberately no step between `md` and `xl`. A scale earns a step by being used, and a display size that gets reached for on an ordinary page is how size creeps back into prose.
 
 Tailwind's own sizes are still generated alongside these, so `text-base` and `text-3xl` resolve to something even though they're outside the scale. The table is the contract; the build doesn't enforce it yet.
 

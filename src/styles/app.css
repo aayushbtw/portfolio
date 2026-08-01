@@ -58,10 +58,7 @@
   --text-md: 1rem; /* 16px  body on mobile */
   --text-md--line-height: 1.421875rem; /* 22.75px */
   --text-md--letter-spacing: -0.15px;
-  --text-lg: 1.25rem; /* 20px  display */
-  --text-lg--line-height: 1.75rem; /* 28px */
-  --text-lg--letter-spacing: -0.15px;
-  --text-xl: 1.875rem; /* 30px  display */
+  --text-xl: 1.875rem; /* 30px  display, and the only display step there is */
   --text-xl--line-height: 2.25rem; /* 36px */
   --text-xl--letter-spacing: -0.15px;
 }
