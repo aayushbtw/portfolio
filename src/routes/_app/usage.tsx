@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "~/components/ui/page-header";
+import { Stat, StatStrip } from "~/components/ui/stat";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import { cn, formatCompact, formatDate, formatNumber } from "~/lib/utils";
@@ -21,12 +22,12 @@ function UsagePage() {
         </span>
       </PageHeader>
 
-      <div className="not-typeset mt-lg grid grid-cols-2 gap-lg sm:grid-cols-4">
-        <Stat label="Input" value={usage.input} />
-        <Stat label="Output" value={usage.output} />
-        <Stat label="Cache write" value={usage.cacheWrite} />
-        <Stat label="Cache read" value={usage.cacheRead} />
-      </div>
+      <StatStrip className="mt-lg">
+        <TokenStat label="Input" value={usage.input} />
+        <TokenStat label="Output" value={usage.output} />
+        <TokenStat label="Cache write" value={usage.cacheWrite} />
+        <TokenStat label="Cache read" value={usage.cacheRead} />
+      </StatStrip>
 
       <div className="mt-lg">
         <h2 className="text-eyebrow">Last {usage.days.length} active days</h2>
@@ -104,18 +105,16 @@ function dayLabel(date: string) {
   });
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+// Share of the year's total is meaningful only to this page, so the arithmetic
+// stays here and `Stat` stays a presentational primitive.
+function TokenStat({ label, value }: { label: string; value: number }) {
   const share = (value / usage.total) * 100;
 
   return (
-    <div className="flex flex-col gap-xs">
-      <span className="text-eyebrow">{label}</span>
-      <span className="text-fg-2 text-md tabular-nums">
-        {formatCompact(value)}
-      </span>
-      <span className="text-fg-3 text-xs tabular-nums">
-        {share < 1 ? "<1" : Math.round(share)}%
-      </span>
-    </div>
+    <Stat
+      detail={`${share < 1 ? "<1" : Math.round(share)}%`}
+      label={label}
+      value={formatCompact(value)}
+    />
   );
 }
