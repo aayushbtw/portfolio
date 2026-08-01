@@ -18,6 +18,9 @@
   --color-fg-3: oklch(from var(--color-gray-500) l c h);
 
   --color-border: oklch(from var(--color-gray-200) l c h);
+  /* One step up, for a boundary that has to read as a line rather than as a
+     hairline: the underline under a prose link. */
+  --color-border-strong: oklch(from var(--color-gray-300) l c h);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
   /* Contribution levels, empty to busiest. */
@@ -46,7 +49,7 @@
      is the whole treatment and nothing needs a loose `leading-*` beside it.
      Body is text-md on mobile, text-sm from sm up; both share one 22.75px
      line box so the rhythm doesn't shift at the breakpoint. */
-  --text-xs: 0.75rem; /* 12px  labels, captions, code, eyebrow */
+  --text-xs: 0.75rem; /* 12px  labels, captions, code */
   --text-xs--line-height: 1.25rem; /* 20px */
   --text-xs--letter-spacing: -0.15px;
   --text-sm: 0.875rem; /* 14px  body on desktop */
@@ -200,7 +203,7 @@
 }
 
 @utility animated-link {
-  @apply font-medium text-fg-2 underline decoration-gray-300 underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
+  @apply font-medium text-fg-2 underline decoration-border-strong underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
 }
 
 @utility icon-link {

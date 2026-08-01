@@ -56,7 +56,7 @@ function UsagePage() {
       </div>
 
       <div className="mt-lg flex justify-end">
-        <p className="text-fg-3/60 text-xs tabular-nums">
+        <p className="text-fg-3 text-xs tabular-nums">
           {formatNumber(usage.sessions)} sessions · updated{" "}
           {formatDate(usage.generatedAt)}
         </p>

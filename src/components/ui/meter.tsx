@@ -31,6 +31,9 @@ function Meter({
       className={cn("h-1.5 overflow-hidden rounded-full bg-fg-3/10", className)}
       data-slot="meter"
     >
+      {/* `gap-px` is off the spacing scale on purpose: it is a hairline that
+          keeps two adjacent shades from reading as one segment, tuned to the
+          bar rather than to a step. Same exemption as an optical nudge. */}
       <div
         className="flex h-full gap-px overflow-hidden rounded-full"
         style={{ width: `${value}%` }}
