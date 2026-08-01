@@ -21,6 +21,8 @@ Defined in `@theme`, all in oklch.
 | `fg-1`        | `h1`, active nav                                 |
 | `fg-2`        | `h2`–`h6`, link text, list item titles           |
 | `fg-3`        | `p`, labels, metadata. The default everything sits at |
+| `bg-contrast` | Inverted surface: the graph tooltip               |
+| `fg-contrast` | Text on `bg-contrast`. The only light-on-dark text |
 | `border`      | All borders and outlines                         |
 | `border-strong` | One step darker, for a boundary that must read as a line: the prose link underline |
 | `ring`        | Focus ring. Points at `brand`, and is also typeset's variable name |

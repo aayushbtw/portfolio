@@ -17,6 +17,12 @@
   --color-fg-2: oklch(from var(--color-gray-600) l c h);
   --color-fg-3: oklch(from var(--color-gray-500) l c h);
 
+  /* The inverted surface, and the only text colour that runs light on dark.
+     One user today (the graph tooltip), named so the second one doesn't
+     reinvent it out of `bg-fg-1 text-bg-1`. */
+  --color-bg-contrast: oklch(from var(--color-gray-950) l c h);
+  --color-fg-contrast: oklch(from var(--color-white) l c h);
+
   --color-border: oklch(from var(--color-gray-200) l c h);
   /* One step up, for a boundary that has to read as a line rather than as a
      hairline: the underline under a prose link. */
