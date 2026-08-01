@@ -60,19 +60,26 @@
   /* Text scale. Each size carries its own leading and tracking, so `text-sm`
      is the whole treatment and nothing needs a loose `leading-*` beside it.
      Body is text-md on mobile, text-sm from sm up; both share one 22.75px
-     line box so the rhythm doesn't shift at the breakpoint. */
+     line box so the rhythm doesn't shift at the breakpoint.
+
+     Tracking runs inversely to size and is written in `em`, because the intent
+     is "tighten by a percentage of the size", not "by a fixed number of px".
+     Values follow Inter's dynamic metrics, -0.0223 + 0.185e^(-0.1745·size),
+     which lands near zero at label sizes and tightens as the type grows.
+     All of this assumes lowercase. Uppercase needs positive tracking at any
+     size, which is one more reason nothing here is uppercase. */
   --text-xs: 0.75rem; /* 12px  labels, captions, code */
   --text-xs--line-height: 1.25rem; /* 20px */
-  --text-xs--letter-spacing: -0.15px;
+  --text-xs--letter-spacing: 0;
   --text-sm: 0.875rem; /* 14px  body on desktop */
   --text-sm--line-height: 1.421875rem; /* 22.75px */
-  --text-sm--letter-spacing: -0.15px;
+  --text-sm--letter-spacing: -0.006em;
   --text-md: 1rem; /* 16px  body on mobile */
   --text-md--line-height: 1.421875rem; /* 22.75px */
-  --text-md--letter-spacing: -0.15px;
+  --text-md--letter-spacing: -0.011em;
   --text-xl: 1.875rem; /* 30px  display, and the only display step there is */
   --text-xl--line-height: 2.25rem; /* 36px */
-  --text-xl--letter-spacing: -0.15px;
+  --text-xl--letter-spacing: -0.021em;
 }
 
 /* Typeset's variable contract, bridged onto the tokens above. */

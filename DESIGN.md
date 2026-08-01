@@ -89,9 +89,20 @@ Four steps, sharing the spacing scale's names and living in `@theme` alongside i
 | `md`  | 16px | 22.75px | Body mobile; a figure worth reading first |
 | `xl`  | 30px | 36px    | Display. The 404 title, and nothing else   |
 
-**A size token is the whole treatment.** Each carries its own `line-height` and `letter-spacing` (`-0.15px` throughout), so `text-xs` is complete on its own and never needs a `leading-*` beside it. Write the size, take the leading. If you catch yourself pairing a size with a hand-picked leading, that pair belongs in `@theme`, not at the call site.
+**A size token is the whole treatment.** Each carries its own `line-height` and `letter-spacing`, so `text-xs` is complete on its own and never needs a `leading-*` beside it. Write the size, take the leading. If you catch yourself pairing a size with a hand-picked leading, that pair belongs in `@theme`, not at the call site.
 
 Body is `text-md sm:text-sm`, so it's part of the scale rather than a special case: 16px on mobile, 14px from `sm` up. Both carry the same 22.75px line box, so vertical rhythm doesn't jump at the breakpoint.
+
+**Tracking runs inversely to size**, and is written in `em` because the intent is "tighten by a percentage of the size", not "by a fixed number of px". The values follow Inter's dynamic metrics, `-0.0223 + 0.185e^(-0.1745·size)`:
+
+| Token | Size | Tracking   |
+| ----- | ---- | ---------- |
+| `xs`  | 12px | `0`        |
+| `sm`  | 14px | `-0.006em` |
+| `md`  | 16px | `-0.011em` |
+| `xl`  | 30px | `-0.021em` |
+
+Small text crowds and wants opening up; large text looks loose and wants tightening. One flat px value across every step is wrong at both ends at once. All of this assumes lowercase: uppercase needs *positive* tracking at any size, which is one more reason nothing here is uppercase. The OG image in [src/routes/api/og.tsx](src/routes/api/og.tsx) restates the same curve in px, because Satori renders outside the token scale.
 
 That's why no `leading-[…]` or `tracking-[…]` exists anywhere. The one deliberate exception is `List`, which tightens to `leading-5`: list rows are scanned, not read.
 
