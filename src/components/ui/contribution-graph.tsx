@@ -173,7 +173,7 @@ function ContributionGraph({
       onPointerEnter={arm}
       {...props}
     >
-      <div className="no-scrollbar max-w-full overflow-x-auto overflow-y-hidden">
+      <div className="max-w-full overflow-x-auto overflow-y-hidden">
         <svg
           aria-hidden="true"
           className="block overflow-visible"

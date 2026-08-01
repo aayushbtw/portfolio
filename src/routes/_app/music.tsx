@@ -132,7 +132,7 @@ function NowPlaying({ track }: { track: SpotifyTrack }) {
 
 function TopsSkeleton() {
   return (
-    <div className="mt-lg grid grid-cols-2 gap-lg">
+    <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
       {["tracks", "artists"].map((key) => (
         <div key={key}>
           <h2 className="text-section-label">
