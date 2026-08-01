@@ -68,6 +68,7 @@
   --color-foreground: var(--color-fg-1);
   --color-muted-foreground: var(--color-fg-3);
   --color-muted: var(--color-bg-2);
+  --color-ring: var(--color-brand);
   --radius: 0.375rem;
 }
 
@@ -219,6 +220,16 @@
     scrollbar-color: var(--color-fg-3) transparent;
     scrollbar-width: thin;
     @apply border-border outline-border;
+  }
+
+  /* The rule above paints every outline at `border`, which is 1.24:1 and
+     invisible as a focus ring. Keyboard focus overrides it with `ring`, and
+     hangs off the pseudo-class rather than a utility so nothing has to opt in.
+     The offset keeps it clear of the element's own border and of a hovered
+     row's `bg-2`. */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
   }
 
   body {
