@@ -260,4 +260,21 @@
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
     @apply text-md sm:text-sm sm:font-[450];
   }
+
+  /* Every animation here is decoration: hover fades, the press scale, the
+     springy nav indicator, the now-playing bars. None of it carries meaning
+     the static state doesn't, so reduced motion switches it off outright
+     rather than shortening it. Nothing uses `animation-fill-mode`, so each
+     element settles on its own base style: the eq bars stand at full height,
+     skeletons sit at full opacity. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
