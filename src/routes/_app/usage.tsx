@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import { cn, formatCompact, formatDate, formatNumber } from "~/lib/utils";
@@ -14,12 +15,11 @@ export const Route = createFileRoute("/_app/usage")({
 function UsagePage() {
   return (
     <section>
-      <div className="flex items-center gap-sm">
-        <h1 className="text-eyebrow">{title}</h1>
-        <div className="mt-0 ml-auto flex items-center gap-sm text-xs">
+      <PageHeader title={title}>
+        <span className="text-xs">
           ~ {formatNumber(usage.total)} tokens in {usage.year}
-        </div>
-      </div>
+        </span>
+      </PageHeader>
 
       <div className="not-typeset mt-lg grid grid-cols-2 gap-lg sm:grid-cols-4">
         <Stat label="Input" value={usage.input} />

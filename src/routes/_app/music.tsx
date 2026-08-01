@@ -6,6 +6,7 @@ import { setResponseHeader } from "@tanstack/react-start/server";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { PageHeader } from "~/components/ui/page-header";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import {
@@ -52,12 +53,11 @@ function MusicPage() {
 
   return (
     <>
-      <div className="flex items-center gap-sm">
-        <h1 className="text-eyebrow">{title}</h1>
+      <PageHeader title={title}>
         {live?.nowPlaying.isPlaying && live.nowPlaying.track ? (
           <NowPlaying track={live.nowPlaying.track} />
         ) : null}
-      </div>
+      </PageHeader>
 
       <Suspense fallback={<TopsSkeleton />}>
         <Await promise={tops}>
@@ -111,7 +111,7 @@ function MusicPage() {
 function NowPlaying({ track }: { track: SpotifyTrack }) {
   return (
     <a
-      className="mt-0 ml-auto flex items-center gap-sm"
+      className="flex items-center gap-sm"
       href={track.url}
       rel="noopener"
       target="_blank"

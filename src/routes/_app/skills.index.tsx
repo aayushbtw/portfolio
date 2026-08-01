@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getSkillList } from "~/components/rsc/skills";
+import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
 
 const title = "Skills";
@@ -17,7 +18,7 @@ function SkillsPage() {
 
   return (
     <section>
-      <h1 className="text-eyebrow">{title}</h1>
+      <PageHeader title={title} />
       {skills}
     </section>
   );

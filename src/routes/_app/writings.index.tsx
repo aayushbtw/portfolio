@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getPostList } from "~/components/rsc/posts";
+import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
 
 const title = "Writings";
@@ -16,7 +17,7 @@ function WritingsPage() {
 
   return (
     <section>
-      <h1 className="text-eyebrow">{title}</h1>
+      <PageHeader title={title} />
       {posts}
     </section>
   );
