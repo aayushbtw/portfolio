@@ -105,7 +105,7 @@ function Fallback({
         <h1 className="mb-sm text-balance text-xl capitalize">{title}</h1>
         <p className="my-0 text-md">{children}</p>
         <Link
-          className="mt-lg inline-flex min-h-9 items-center rounded-xl px-md no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
+          className="mt-lg inline-flex min-h-9 items-center rounded-md px-md no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
           to="/"
         >
           Go Home

@@ -18,7 +18,7 @@ function ListItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       className={cn(
-        "group/list-item -mx-md rounded-lg px-md py-sm transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98]",
+        "group/list-item -mx-md rounded-md px-md py-sm transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98]",
         className
       )}
       data-slot="list-item"

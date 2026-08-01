@@ -36,6 +36,12 @@
   --spacing-xl: calc(var(--spacing) * 12); /* 48px */
   --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 
+  /* Radius. Two steps, and which one you want follows from what the thing is:
+     `sm` for a control you press or type into, `md` for a box that holds
+     other things. Nested boxes step down, so an `md` panel holds `sm` fields. */
+  --radius-sm: 0.375rem; /* 6px  buttons, fields, covers, skeletons */
+  --radius-md: 0.5rem; /*   8px  rows, panels, media, tooltips */
+
   /* Text scale. Each size carries its own leading and tracking, so `text-sm`
      is the whole treatment and nothing needs a loose `leading-*` beside it.
      Body is text-md on mobile, text-sm from sm up; both share one 22.75px
@@ -69,7 +75,7 @@
   --color-muted-foreground: var(--color-fg-3);
   --color-muted: var(--color-bg-2);
   --color-ring: var(--color-brand);
-  --radius: 0.375rem;
+  --radius: var(--radius-md);
 }
 
 /* Same layer as typeset.css and imported after it, so these win the tie against

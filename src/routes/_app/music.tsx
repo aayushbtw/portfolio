@@ -153,7 +153,7 @@ function TrackSkeleton() {
   return (
     <ListItem>
       <div className="row-link">
-        <Skeleton className="size-10 shrink-0 rounded" />
+        <Skeleton className="size-10 shrink-0 rounded-sm" />
         <div className="flex min-w-0 flex-1 flex-col gap-sm">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-4 w-24" />
@@ -172,7 +172,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
         {cover ? (
           <Image
             alt={track.name}
-            className="size-10 shrink-0 rounded"
+            className="size-10 shrink-0 rounded-sm"
             height={40}
             src={cover}
             width={40}

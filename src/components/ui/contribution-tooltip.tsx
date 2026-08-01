@@ -18,7 +18,7 @@ function ContributionTooltip({
           side="top"
           sideOffset={4}
         >
-          <TooltipPrimitive.Popup className="rounded-lg bg-fg-1 px-sm py-xs text-bg-1">
+          <TooltipPrimitive.Popup className="rounded-md bg-fg-1 px-sm py-xs text-bg-1">
             {text}
           </TooltipPrimitive.Popup>
         </TooltipPrimitive.Positioner>

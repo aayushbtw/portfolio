@@ -14,7 +14,7 @@ function Install({
   return (
     <div
       className={cn(
-        "not-typeset flex flex-col gap-xs rounded-lg border bg-bg-2/50 p-xs",
+        "not-typeset flex flex-col gap-xs rounded-md border bg-bg-2/50 p-xs",
         className
       )}
       data-slot="install"
@@ -44,7 +44,7 @@ function InstallCommand({ command }: { command: string }) {
 
   return (
     <div
-      className="flex items-center gap-md rounded-md border bg-bg-1 py-sm pr-sm pl-md font-mono text-xs"
+      className="flex items-center gap-md rounded-sm border bg-bg-1 py-sm pr-sm pl-md font-mono text-xs"
       data-slot="install-command"
     >
       <code className="flex-1 overflow-x-auto whitespace-nowrap text-fg-2">
@@ -72,7 +72,7 @@ function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       className={cn(
-        "flex flex-1 items-center justify-center gap-xs rounded-md border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98] *:[svg:not([class*='size-'])]:size-4",
+        "flex flex-1 items-center justify-center gap-xs rounded-sm border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98] *:[svg:not([class*='size-'])]:size-4",
         className
       )}
       data-slot="install-link"
