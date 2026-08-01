@@ -39,6 +39,12 @@
   --spacing-xl: calc(var(--spacing) * 12); /* 48px */
   --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 
+  /* Weight. Two steps and no arbitrary values. `regular` is Inter's optical
+     body weight at 14px: 400 looks thin once the size drops at `sm`, so body
+     steps up to 450 there and stays at 400 on mobile where the size is 16px.
+     `medium` (500) is Tailwind's own token and the heaviest thing on the site. */
+  --font-weight-regular: 450;
+
   /* Radius. Two steps, and which one you want follows from what the thing is:
      `sm` for a control you press or type into, `md` for a box that holds
      other things. Nested boxes step down, so an `md` panel holds `sm` fields. */
@@ -224,14 +230,16 @@
    Not uppercase and not tracked out: a label that shouts competes with the
    thing it is labelling, and the `h2` tag already carries the structure. */
 @utility text-section-label {
-  @apply text-fg-3 font-normal;
+  font-weight: inherit;
+  @apply text-fg-3;
 }
 
 /* A compact name inside a component, like the label over a figure. Smaller
    than `text-section-label` because it names one field rather than a section,
    and it is always read together with the value directly under it. */
 @utility text-label {
-  @apply text-fg-3 text-xs font-normal;
+  font-weight: inherit;
+  @apply text-fg-3 text-xs;
 }
 
 @layer base {
@@ -280,7 +288,7 @@
 
   body {
     @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
-    @apply text-md sm:text-sm sm:font-[450];
+    @apply text-md sm:text-sm sm:font-regular;
   }
 
   /* Every animation here is decoration: hover fades, the press scale, the

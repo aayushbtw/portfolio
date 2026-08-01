@@ -57,7 +57,9 @@ Two things sit outside the scale:
 
 Anything else in a `m-`, `p-`, or `gap-` slot comes from the table above.
 
-Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features and weight 450 from `sm` up; size, leading and tracking all come from the text scale below.
+Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features; size, leading and tracking all come from the text scale below.
+
+Weight has two steps and no arbitrary values. `font-regular` (450) is body: Inter looks thin at 400 once the size drops to 14px at `sm`, so body steps up there and stays at 400 on mobile where the size is 16px. `font-medium` (500) is the heaviest thing on the site. Anything that needs body weight writes `font-weight: inherit` rather than restating a number, which is how `text-section-label` cancels typeset's 500 without pinning itself to a breakpoint.
 
 ## Radius
 
