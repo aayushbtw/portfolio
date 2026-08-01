@@ -195,4 +195,6 @@ That block **must** stay in `@layer components`, imported after typeset.css. Sam
 
 ### Opting out
 
-UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `List`, `NavList`, `ContributionGraph`, `Install`, and `StatStrip`. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.
+UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `PageHeader`, `List`, `NavList`, `ContributionGraph`, `Install`, and `StatStrip`.
+
+The rule that catches people out is [typeset.css:105](src/styles/typeset.css#L105), `h1 + *, h2 + *, …`: **anything following a heading gets a 1em top margin**, whatever tag it is. A `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a primitive puts a heading beside something else, it needs `not-typeset`, not an `mt-0` patch on the sibling. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.

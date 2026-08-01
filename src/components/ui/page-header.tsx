@@ -12,12 +12,17 @@ function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-sm" data-slot="page-header">
-      {/* No size class: typeset already sets `h1` to body size, weight 500,
-          `fg-1`. That is the page title treatment, and it is the same one the
-          home page's `h1` gets, so every page now agrees. */}
+    <div
+      className="not-typeset flex items-center gap-sm"
+      data-slot="page-header"
+    >
+      {/* No size class. The colour guide in app.css sets every `h1` to body
+          size, weight 500, `fg-1`, and it reaches into `not-typeset` subtrees
+          on purpose, so this is the same title the home page's `h1` gets. */}
       <h1>{title}</h1>
 
+      {/* No `mt-0` needed: typeset gives anything following a heading a 1em
+          top margin, and `not-typeset` above is what excludes this from it. */}
       {children ? (
         <div className="ml-auto flex items-center gap-sm">{children}</div>
       ) : null}
