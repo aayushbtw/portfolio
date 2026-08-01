@@ -125,6 +125,13 @@
   .typeset :where(:first-child) {
     margin-block-start: 0;
   }
+
+  /* Typeset clears only `--typeset-flow` (about 17px) above an anchor target,
+     but the fixed top blur is 48px tall, so a heading jumped to from the table
+     of contents landed underneath it. One `md` step of air on top of that. */
+  .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
+  }
 }
 
 /* A skill is rendered straight from its SKILL.md, which opens with its own h1.
@@ -239,11 +246,26 @@
     border-radius: 5px;
   }
 
-  * {
+  html {
+    /* The page is light-only for now. Saying so keeps native controls and the
+       scrollbar from being themed dark by the OS against a white page. */
     scrollbar-gutter: stable;
+    /* The page is light-only for now. Saying so keeps native controls and the
+       scrollbar from being themed dark by the OS against a white page. */
+    color-scheme: light;
+  }
+
+  * {
     scrollbar-color: var(--color-fg-3) transparent;
     scrollbar-width: thin;
     @apply border-border outline-border;
+  }
+
+  /* Kills the 300ms double-tap delay on things you tap, without disabling
+     double-tap zoom on the content itself. */
+  :where(a, button, summary, input, select, textarea, label) {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* The rule above paints every outline at `border`, which is 1.24:1 and
