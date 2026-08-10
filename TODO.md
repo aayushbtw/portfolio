@@ -82,7 +82,7 @@ picking a dark contribution scale.
 ## Small and cheap
 
 - **XML escaping** in [sitemap[.]xml.ts](src/routes/sitemap[.]xml.ts). Slugs come
-  from filenames, so `&` is unlikely, but one file named `foo&bar.mdx` emits
+  from filenames, so `&` is unlikely, but one file named `foo&bar.md` emits
   malformed XML and breaks the sitemap for every crawler, not just that URL.
   3 lines.
 - **Spotify preconnect.** WIG wants one; the host needs confirming from a network

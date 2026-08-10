@@ -56,7 +56,7 @@ function WritingPage() {
         <h1 className="text-balance">{post.title}</h1>
         <time className="text-fg-3">{formatDate(post.publishedAt)}</time>
 
-        {post.mdx}
+        {post.body}
       </article>
 
       {post.headings.length > 0 && (

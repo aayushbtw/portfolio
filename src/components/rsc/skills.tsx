@@ -4,6 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { allSkills } from "content-collections";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { renderMarkdown } from "~/lib/markdown";
 
 function sortedSkills() {
   return allSkills.toSorted((a, b) => a.title.localeCompare(b.title));
@@ -46,11 +47,11 @@ const skillBySlugFn = createServerFn({ method: "GET" })
       throw notFound();
     }
 
-    const MDXContent = skill.mdx;
+    const { content, ...meta } = skill;
 
     return {
-      ...skill,
-      mdx: await renderServerComponent(<MDXContent />),
+      ...meta,
+      body: await renderServerComponent(renderMarkdown(content).element),
     };
   });
 

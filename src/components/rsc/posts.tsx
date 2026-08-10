@@ -3,11 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { allPosts } from "content-collections";
 import { List, ListItem } from "~/components/ui/list";
-import {
-  Showcase,
-  ShowcaseCaption,
-  ShowcaseImage,
-} from "~/components/ui/showcase";
+import { renderMarkdown } from "~/lib/markdown";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
 
 function sortedPosts() {
@@ -65,13 +61,13 @@ const postBySlugFn = createServerFn({ method: "GET" })
       throw notFound();
     }
 
-    const MDXContent = post.mdx;
+    const { content, ...meta } = post;
+    const { element, headings } = renderMarkdown(content);
 
     return {
-      ...post,
-      mdx: await renderServerComponent(
-        <MDXContent components={{ Showcase, ShowcaseImage, ShowcaseCaption }} />
-      ),
+      ...meta,
+      headings: headings.filter((h) => h.level === 2),
+      body: await renderServerComponent(element),
     };
   });
 

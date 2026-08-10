@@ -195,14 +195,14 @@ There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so eve
 ```tsx
 <section>
   <h1 className="text-balance">{post.title}</h1>
-  <article>{post.mdx}</article>
+  <article>{post.body}</article>
 </section>
 ```
 
 [src/styles/typeset.css](src/styles/typeset.css) is vendored from [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and never edited. It's configured in two places in [src/styles/app.css](src/styles/app.css):
 
 - `:root` maps typeset's variable contract (`--typeset-*`, plus `--color-foreground`, `--color-muted-foreground`, `--color-muted`, `--radius`) onto the tokens above, so prose resolves to the site's colors and fonts.
-- An `@layer components` block holds what typeset has no variable for: the color guide per tag, headings at `1em`/500, `strong` at 500, links as `animated-link`, and the frame for rehype-pretty-code's title bar and line numbers.
+- An `@layer components` block holds what typeset has no variable for: the color guide per tag, headings at `1em`/500, `strong` at 500, links as `animated-link`, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
 
 That block **must** stay in `@layer components`, imported after typeset.css. Same layer and later in source means it beats typeset's defaults; being below `@layer utilities` means a utility on the element still beats it. Unlayered would win over utilities and silently break every `text-section-label` heading.
 

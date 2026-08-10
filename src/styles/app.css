@@ -164,6 +164,18 @@
   .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
     scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
   }
+
+  /* Class selector, not `:where`, so it outranks the `animated-link` every
+     prose anchor gets. The anchor is `aria-hidden` and unfocusable by default:
+     it is a mouse shortcut, and the table of contents already gives keyboard
+     and screen reader users a link to every section. */
+  .typeset .heading-anchor {
+    @apply ml-xs font-normal text-fg-3 no-underline opacity-0 transition-opacity duration-200;
+  }
+
+  .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
+    @apply opacity-100;
+  }
 }
 
 /* A skill is rendered straight from its SKILL.md, which opens with its own h1.
@@ -175,32 +187,49 @@
   }
 }
 
-/* rehype-pretty-code emits a title bar and per-line spans that typeset has no
-   concept of: it reads the title as a photo caption and centers it. The figure
-   owns the frame, so the pre sits flush inside it. */
+/* TanStack Markdown emits a title bar and per-line spans that typeset has no
+   concept of: it reads the title as a photo caption and centers it. A titled
+   fence gets a figure that owns the frame, so the pre sits flush inside it; an
+   untitled one is a bare pre and has to carry the frame itself. */
 @layer components {
-  .typeset :where(figure[data-rehype-pretty-code-figure]) {
+  .typeset :where(figure.tm-code-frame) {
     @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono text-xs;
   }
 
-  .typeset :where([data-rehype-pretty-code-title]) {
-    @apply border-b px-md py-xs text-fg-2;
+  .typeset :where(figure.tm-code-frame > figcaption) {
+    @apply border-b px-md py-xs text-left text-fg-2;
   }
 
-  .typeset :where(figure[data-rehype-pretty-code-figure] pre) {
+  .typeset :where(pre.tm-code) {
+    @apply overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono text-xs;
+  }
+
+  .typeset :where(figure.tm-code-frame > pre.tm-code) {
     margin-block-start: 0;
-    @apply rounded-none bg-transparent px-0 py-sm text-xs;
+    @apply rounded-none border-0 bg-transparent;
   }
 
-  .typeset :where(figure[data-rehype-pretty-code-figure] pre code) {
-    counter-reset: line;
-    @apply overflow-x-auto;
+  .typeset :where(pre.tm-code .th-line) {
+    @apply inline-block w-max min-w-full;
   }
 
-  .typeset :where([data-line])::before {
-    content: counter(line);
-    counter-increment: line;
+  .typeset :where(pre.tm-code .th-line)::before {
+    content: attr(data-line);
     @apply inline-block w-4 pr-lg pl-sm text-right text-fg-2;
+  }
+
+  /* The palette is the site's, not the theme package's: code is prose here, so
+     it reads on the same three greys plus one accent. */
+  .typeset :where(.th-comment, .th-meta) {
+    @apply text-fg-3;
+  }
+
+  .typeset :where(.th-command, .th-function, .th-keyword) {
+    @apply text-fg-1;
+  }
+
+  .typeset :where(.th-string, .th-number, .th-literal) {
+    @apply text-brand;
   }
 }
 

@@ -7,10 +7,15 @@ modifiedAt: 2026-03-29
 
 The macOS defaults are fine until you've used something better. Over time I've swapped out a handful of them for tools that are faster or just less annoying to use.
 
-<Showcase>
-  <ShowcaseImage src="/writings/my-terminal-setup/ghostty.png" alt="Ghostty terminal" height={1896} />
-  <ShowcaseCaption>You can find my [dotfiles here](https://github.com/aayushbtw/dotfiles) if you want the same setup.</ShowcaseCaption>
-</Showcase>
+<!-- ::start:showcase -->
+
+<!-- ::showcase-image src="/writings/my-terminal-setup/ghostty.png" alt="Ghostty terminal" height="1896" -->
+<!-- ::start:showcase-caption -->
+
+You can find my [dotfiles here](https://github.com/aayushbtw/dotfiles) if you want the same setup.
+
+<!-- ::end:showcase-caption -->
+<!-- ::end:showcase -->
 
 ## Ghostty
 
@@ -18,17 +23,19 @@ As you probably noticed from the image, my terminal of choice is [Ghostty](https
 
 ## Starship
 
-<Showcase>
-  <ShowcaseImage src="/writings/my-terminal-setup/starship.png" alt="Starship prompt" height={1328} />
-</Showcase>
+<!-- ::start:showcase -->
+
+<!-- ::showcase-image src="/writings/my-terminal-setup/starship.png" alt="Starship prompt" height="1328" -->
+<!-- ::end:showcase -->
 
 Prompt configuration has a way of becoming its own project. [Starship](https://starship.rs) avoids that. I set it up once with the things I actually need (current directory, git branch, command duration) and haven't touched it since.
 
 ## eza
 
-<Showcase>
-  <ShowcaseImage src="/writings/my-terminal-setup/eza.png" alt="eza directory listing" height={1328} />
-</Showcase>
+<!-- ::start:showcase -->
+
+<!-- ::showcase-image src="/writings/my-terminal-setup/eza.png" alt="eza directory listing" height="1328" -->
+<!-- ::end:showcase -->
 
 I have [eza](https://eza.rocks) aliased to `ls` so the switch is invisible. You only really notice it when you SSH into something and wonder why `ls` suddenly looks so ugly.
 
@@ -41,17 +48,19 @@ alias ll='eza --icons'
 
 ## zoxide
 
-<Showcase>
-  <ShowcaseImage src="/writings/my-terminal-setup/zoxide.png" alt="zoxide smart directory navigation" height={1328} />
-</Showcase>
+<!-- ::start:showcase -->
+
+<!-- ::showcase-image src="/writings/my-terminal-setup/zoxide.png" alt="zoxide smart directory navigation" height="1328" -->
+<!-- ::end:showcase -->
 
 Smarter `cd`. I type part of a directory name and [zoxide](https://github.com/ajeetdsouza/zoxide) figures out where I mean. Took about a day to get used to it, and now typing out a full path feels like a punishment.
 
 ## bat
 
-<Showcase>
-  <ShowcaseImage src="/writings/my-terminal-setup/bat.png" alt="bat syntax highlighted output" height={1328} />
-</Showcase>
+<!-- ::start:showcase -->
+
+<!-- ::showcase-image src="/writings/my-terminal-setup/bat.png" alt="bat syntax highlighted output" height="1328" -->
+<!-- ::end:showcase -->
 
 [bat](https://github.com/sharkdp/bat) is `cat` with syntax highlighting. Aliased to `cat`. It also shows git diff markers in the gutter, which comes up more often than I expected. I've had it installed for so long I forget it's not the default.
 

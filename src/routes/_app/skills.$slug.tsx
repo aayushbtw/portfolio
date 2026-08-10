@@ -50,7 +50,7 @@ function SkillPage() {
           className="mt-lg rounded-md border bg-bg-2/50 px-md pb-sm"
           data-slot="skill-body"
         >
-          {skill.mdx}
+          {skill.body}
         </div>
       </article>
     </section>
