@@ -162,15 +162,22 @@
      but the fixed top blur is 48px tall, so a heading jumped to from the table
      of contents landed underneath it. One `md` step of air on top of that. */
   .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
+    position: relative;
     scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
   }
 
   /* Class selector, not `:where`, so it outranks the `animated-link` every
      prose anchor gets. The anchor is `aria-hidden` and unfocusable by default:
      it is a mouse shortcut, and the table of contents already gives keyboard
-     and screen reader users a link to every section. */
+     and screen reader users a link to every section.
+
+     The renderer emits it as the heading's last child, so it is pulled out of
+     flow and hung in the margin rather than reordered. In flow it would either
+     indent every heading away from the body copy or shift the text sideways on
+     hover. `top-0` pins it to the first line; its static position would put it
+     beside the last line of a heading that wraps. */
   .typeset .heading-anchor {
-    @apply ml-xs font-normal text-fg-3 no-underline opacity-0 transition-opacity duration-200;
+    @apply absolute top-0 right-full pr-xs font-normal text-fg-3 no-underline opacity-0 transition-opacity duration-200;
   }
 
   .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
