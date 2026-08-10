@@ -349,8 +349,7 @@
   }
 
   body {
-    @apply bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
-    @apply text-md sm:text-sm sm:font-regular;
+    @apply text-sm sm:font-regular bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
   }
 
   /* Every animation here is decoration: hover fades, the press scale, the
