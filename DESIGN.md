@@ -63,7 +63,7 @@ Anything else in a `m-`, `p-`, or `gap-` slot comes from the table above.
 
 Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features; size, leading and tracking all come from the text scale below.
 
-Weight has two steps and no arbitrary values. `font-regular` (450) is body: Inter looks thin at 400 once the size drops to 14px at `sm`, so body steps up there and stays at 400 on mobile where the size is 16px. `font-medium` (500) is the heaviest thing on the site. Anything that needs body weight writes `font-weight: inherit` rather than restating a number, which is how `text-section-label` cancels typeset's 500 without pinning itself to a breakpoint.
+Weight has two steps and no arbitrary values. `font-regular` (450) is the site default and sits on `body`: Inter looks thin at a flat 400 at body's 14px. `font-medium` (500) is the heaviest thing on the site. Anything that needs body weight writes `font-weight: inherit` rather than restating a number, which is how `text-section-label` cancels typeset's 500 without pinning itself to a breakpoint.
 
 ## Radius
 
@@ -80,27 +80,36 @@ Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit out
 
 ## Type scale
 
-Four steps, sharing the spacing scale's names and living in `@theme` alongside it.
+Four sizes are used, declared in `@theme` on Tailwind's own step names.
 
-| Token | Size | Leading | Use                                       |
-| ----- | ---- | ------- | ----------------------------------------- |
-| `xs`  | 12px | 20px    | Labels, captions, code, `text-label`      |
-| `sm`  | 14px | 22.75px | Body, desktop                             |
-| `md`  | 16px | 22.75px | Body mobile; a figure worth reading first |
-| `xl`  | 30px | 36px    | Display. The 404 title, and nothing else   |
+| Token  | Size | Leading | Use                                     |
+| ------ | ---- | ------- | --------------------------------------- |
+| `xs`   | 12px | 20px    | Labels, captions, code, `text-label`    |
+| `base` | 14px | 22.75px | Body                                    |
+| `lg`   | 16px | 22.75px | A figure worth reading first            |
+| `3xl`  | 30px | 36px    | Display. The 404 title, and nothing else |
+
+`text-base` is 14px here rather than Tailwind's 16px: the base of the scale is the size the site actually reads at.
+
+The type scale no longer shares the spacing scale's names, so `lg` means 16px of type and 24px of space. Read the prefix, not the step: `text-lg` and `gap-lg` are unrelated.
 
 **A size token is the whole treatment.** Each carries its own `line-height` and `letter-spacing`, so `text-xs` is complete on its own and never needs a `leading-*` beside it. Write the size, take the leading. If you catch yourself pairing a size with a hand-picked leading, that pair belongs in `@theme`, not at the call site.
 
-Body is `text-md sm:text-sm`, so it's part of the scale rather than a special case: 16px on mobile, 14px from `sm` up. Both carry the same 22.75px line box, so vertical rhythm doesn't jump at the breakpoint.
+Body is `text-base` at every width, so it's part of the scale rather than a special case. `lg` carries the same 22.75px line box, so a stat or a standalone paragraph sits in the same vertical rhythm as the copy around it.
+
+**Three steps are declared but unused: `sm` (13px), `xl` (20px), `2xl` (24px).** They exist to keep the ladder ordered. With `base` moved down to 14px, a step left at its Tailwind default would either land level with body (`sm` is 14px there) or sit *below* the step after it (`2xl` is 24px, under `3xl`'s 30px but over `lg`'s 16px with nothing declared between). Every step through `3xl` is declared rather than inherited, so the value is readable here instead of in Tailwind's theme.
 
 **Tracking runs inversely to size**, and is written in `em` because the intent is "tighten by a percentage of the size", not "by a fixed number of px". The values follow Inter's dynamic metrics, `-0.0223 + 0.185e^(-0.1745·size)`:
 
-| Token | Size | Tracking   |
-| ----- | ---- | ---------- |
-| `xs`  | 12px | `0`        |
-| `sm`  | 14px | `-0.006em` |
-| `md`  | 16px | `-0.011em` |
-| `xl`  | 30px | `-0.021em` |
+| Token  | Size | Tracking   |
+| ------ | ---- | ---------- |
+| `xs`   | 12px | `0`        |
+| `sm`   | 13px | `-0.003em` |
+| `base` | 14px | `-0.006em` |
+| `lg`   | 16px | `-0.011em` |
+| `xl`   | 20px | `-0.017em` |
+| `2xl`  | 24px | `-0.019em` |
+| `3xl`  | 30px | `-0.021em` |
 
 Small text crowds and wants opening up; large text looks loose and wants tightening. One flat px value across every step is wrong at both ends at once. All of this assumes lowercase: uppercase needs *positive* tracking at any size, which is one more reason nothing here is uppercase. The OG image in [src/routes/api/og.tsx](src/routes/api/og.tsx) restates the same curve in px, because Satori renders outside the token scale.
 
@@ -125,11 +134,11 @@ A section label sits one step quieter than the title it follows: same size, norm
 
 Neither is uppercase and neither is tracked out. A label that shouts competes with the thing it is labelling, and the tag already carries the structure.
 
-**`xl` is the one display step, and it is for empty pages.** It goes on the single element that *is* the page's subject where no prose competes with it, which today means the 404 title and nothing else. One per page at most. Never on a sentence, and never on something that repeats: the usage page's four stat values sit at `md` precisely because there are four of them.
+**`3xl` is the one display step, and it is for empty pages.** It goes on the single element that *is* the page's subject where no prose competes with it, which today means the 404 title and nothing else. One per page at most. Never on a sentence, and never on something that repeats: the usage page's four stat values sit at `lg` precisely because there are four of them.
 
-There is deliberately no step between `md` and `xl`. A scale earns a step by being used, and a display size that gets reached for on an ordinary page is how size creeps back into prose.
+Nothing is used between `lg` and `3xl`. `xl` and `2xl` are declared for ordering, not for reaching: a scale earns a step by being used, and a display size that gets picked up on an ordinary page is how size creeps back into prose.
 
-Tailwind's own sizes are still generated alongside these, so `text-base` and `text-3xl` resolve to something even though they're outside the scale. The table is the contract; the build doesn't enforce it yet.
+Sizes above `3xl` still come from Tailwind and are outside the scale. The table is the contract; the build doesn't enforce it yet.
 
 ## Utilities
 

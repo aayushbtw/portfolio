@@ -116,8 +116,8 @@ function Fallback({
   return (
     <div className="typeset mx-auto px-lg py-xl sm:py-2xl">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
-        <h1 className="mb-sm text-balance text-xl">{title}</h1>
-        <p className="my-0 text-md">{children}</p>
+        <h1 className="mb-sm text-balance text-3xl">{title}</h1>
+        <p className="my-0 text-lg">{children}</p>
         <Link
           className="mt-lg inline-flex min-h-9 items-center rounded-md px-md no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
           to="/"
