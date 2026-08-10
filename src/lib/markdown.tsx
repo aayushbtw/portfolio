@@ -1,7 +1,8 @@
+import "@tanstack/react-start/server-only";
 import { createHighlighter } from "@tanstack/highlight/core";
 import { shell } from "@tanstack/highlight/languages/shell";
 import { createTanStackMarkdownHighlighter } from "@tanstack/highlight/markdown";
-import type { ComponentNode, MarkdownHeading } from "@tanstack/markdown";
+import type { ComponentNode, MarkdownDocument } from "@tanstack/markdown";
 import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
 import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
@@ -66,27 +67,28 @@ const components = {
   "md-showcase-caption": ShowcaseCaption,
 } satisfies MarkdownComponents;
 
-interface RenderedMarkdown {
-  element: ReactElement;
-  headings: MarkdownHeading[];
+// Parsed once per file at module scope in `~/lib/content`, never per render.
+// The document carries its own frontmatter and headings, so nothing downstream
+// has to read the source text again.
+function parseContent(source: string): MarkdownDocument {
+  return parseMarkdown(source, {
+    extensions,
+    frontmatter: true,
+    headingIds: true,
+  });
 }
 
-function renderMarkdown(source: string): RenderedMarkdown {
-  const document = parseMarkdown(source, { extensions, headingIds: true });
-
-  return {
-    element: (
-      <Markdown
-        codeLineNumbers
-        components={components}
-        headingAnchors={{ className: "heading-anchor" }}
-        highlighter={highlightCode}
-      >
-        {document}
-      </Markdown>
-    ),
-    headings: document.headings ?? [],
-  };
+function renderMarkdown(document: MarkdownDocument): ReactElement {
+  return (
+    <Markdown
+      codeLineNumbers
+      components={components}
+      headingAnchors={{ className: "heading-anchor" }}
+      highlighter={highlightCode}
+    >
+      {document}
+    </Markdown>
+  );
 }
 
-export { renderMarkdown };
+export { parseContent, renderMarkdown };

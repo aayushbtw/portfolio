@@ -2,8 +2,8 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { allSkills } from "content-collections";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { allSkills } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 
 function sortedSkills() {
@@ -47,11 +47,11 @@ const skillBySlugFn = createServerFn({ method: "GET" })
       throw notFound();
     }
 
-    const { content, ...meta } = skill;
+    const { document, ...meta } = skill;
 
     return {
       ...meta,
-      body: await renderServerComponent(renderMarkdown(content).element),
+      body: await renderServerComponent(renderMarkdown(document)),
     };
   });
 

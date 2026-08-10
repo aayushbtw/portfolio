@@ -1,8 +1,8 @@
 // src/routes/sitemap[.]xml.ts
 
 import { createFileRoute } from "@tanstack/react-router";
-import { allPosts, allSkills } from "content-collections";
 import { config } from "~/lib/config";
+import { allPosts, allSkills } from "~/lib/content";
 
 interface Entry {
   lastmod?: string;

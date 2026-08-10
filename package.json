@@ -25,7 +25,6 @@
     "@tanstack/react-start": "^1.167.42",
     "@unpic/react": "^1.0.2",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "tailwind-merge": "^3.5.0",
@@ -34,8 +33,6 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
     "@cloudflare/vite-plugin": "^1.33.1",
-    "@content-collections/core": "^0.15.0",
-    "@content-collections/vite": "^0.3.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@tailwindcss/typography": "^0.5.19",

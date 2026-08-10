@@ -1,8 +1,8 @@
 import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { allPosts } from "content-collections";
 import { List, ListItem } from "~/components/ui/list";
+import { allPosts } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
 
@@ -61,13 +61,12 @@ const postBySlugFn = createServerFn({ method: "GET" })
       throw notFound();
     }
 
-    const { content, ...meta } = post;
-    const { element, headings } = renderMarkdown(content);
+    const { document, ...meta } = post;
 
     return {
       ...meta,
-      headings: headings.filter((h) => h.level === 2),
-      body: await renderServerComponent(element),
+      headings: (document.headings ?? []).filter((h) => h.level === 2),
+      body: await renderServerComponent(renderMarkdown(document)),
     };
   });
 
