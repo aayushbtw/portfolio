@@ -5,5 +5,6 @@ import * as stylex from "@stylexjs/stylex";
    single column, above it the layout may split. */
 
 export const breakpoint = stylex.defineConsts({
+  sm: "@media (min-width: 40rem)",
   md: "@media (min-width: 48rem)",
 });

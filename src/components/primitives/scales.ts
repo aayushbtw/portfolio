@@ -74,3 +74,12 @@ export const marginBottom = stylex.create({
   xl: { marginBlockEnd: spacing.xl },
   "2xl": { marginBlockEnd: spacing["2xl"] },
 });
+
+export const padBottom = stylex.create({
+  none: { paddingBlockEnd: spacing.none },
+  xs: { paddingBlockEnd: spacing.xs },
+  sm: { paddingBlockEnd: spacing.sm },
+  md: { paddingBlockEnd: spacing.md },
+  lg: { paddingBlockEnd: spacing.lg },
+  xl: { paddingBlockEnd: spacing.xl },
+});

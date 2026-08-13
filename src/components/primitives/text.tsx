@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { foreground } from "~/styles/tokens/color.stylex";
 import {
+  fontFamily,
   fontSize,
   fontWeight,
   letterSpacing,
@@ -23,6 +24,8 @@ const base = stylex.create({
 
 const variants = stylex.create({
   display: {
+    // Headings wrap into even lines rather than a long line and a runt.
+    textWrap: "balance",
     fontSize: fontSize["3xl"],
     lineHeight: lineHeight["3xl"],
     letterSpacing: letterSpacing["3xl"],
@@ -30,6 +33,8 @@ const variants = stylex.create({
     color: foreground["fg-1"],
   },
   heading: {
+    // Headings wrap into even lines rather than a long line and a runt.
+    textWrap: "balance",
     fontSize: fontSize.base,
     lineHeight: lineHeight.base,
     letterSpacing: letterSpacing.base,
@@ -80,6 +85,16 @@ const variants = stylex.create({
     fontWeight: fontWeight.regular,
     color: foreground["fg-3"],
   },
+  /* Anything the reader is meant to copy or type: a command, an identifier.
+     Monospace is the signal that the characters matter literally. */
+  mono: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.xs,
+    lineHeight: lineHeight.xs,
+    letterSpacing: letterSpacing.xs,
+    fontWeight: fontWeight.regular,
+    color: foreground["fg-2"],
+  },
   label: {
     fontSize: fontSize.xs,
     lineHeight: lineHeight.xs,
@@ -128,6 +143,7 @@ const ELEMENTS = [
   "em",
   "label",
   "figcaption",
+  "code",
 ] as const;
 
 type TextElement = (typeof ELEMENTS)[number];

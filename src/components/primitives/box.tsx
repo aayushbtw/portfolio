@@ -9,6 +9,7 @@ import {
   marginTop,
   pad,
   padBlock,
+  padBottom,
   padInline,
 } from "./scales";
 import type { Marker, StyleProp } from "./style-prop";
@@ -97,6 +98,8 @@ const startMargin = stylex.create({
 const surface = stylex.create({
   "bg-1": { backgroundColor: background["bg-1"] },
   "bg-2": { backgroundColor: background["bg-2"] },
+  "bg-2-soft": { backgroundColor: background["bg-2-soft"] },
+  "bg-1-veil": { backgroundColor: background["bg-1-veil"] },
   contrast: { backgroundColor: background.contrast },
   brand: { backgroundColor: background.brand },
   transparent: { backgroundColor: background.transparent },
@@ -146,6 +149,12 @@ const ELEMENTS = [
   "ol",
   "li",
   "span",
+  "figure",
+  // A button is a box you can press and an anchor is a box you can follow.
+  // Both are in the set so a pressable surface never needs a raw element to
+  // get its layout props.
+  "button",
+  "a",
 ] as const;
 
 type BoxElement = (typeof ELEMENTS)[number];
@@ -172,6 +181,7 @@ interface BoxOwnProps<T extends BoxElement> {
   overflowY?: keyof typeof scrollY;
   padding?: keyof typeof pad;
   paddingBlock?: keyof typeof padBlock;
+  paddingBottom?: keyof typeof padBottom;
   paddingInline?: keyof typeof padInline;
   position?: keyof typeof placement;
   shrink?: boolean;
@@ -193,6 +203,7 @@ export function Box<T extends BoxElement = "div">({
   padding,
   paddingInline,
   paddingBlock,
+  paddingBottom,
   bleed,
   marginTop: mt,
   marginBottom: mb,
@@ -229,6 +240,7 @@ export function Box<T extends BoxElement = "div">({
         padding && pad[padding],
         paddingInline && padInline[paddingInline],
         paddingBlock && padBlock[paddingBlock],
+        paddingBottom && padBottom[paddingBottom],
         bleed && bleedInline[bleed],
         mt && marginTop[mt],
         mb && marginBottom[mb],

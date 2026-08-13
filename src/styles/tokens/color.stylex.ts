@@ -6,6 +6,11 @@ import * as stylex from "@stylexjs/stylex";
 export const background = stylex.defineVars({
   "bg-1": "var(--color-bg-1)",
   "bg-2": "var(--color-bg-2)",
+  /* Half-strength `bg-2`, for a panel that has to read as a tint over the page
+     rather than as its own surface: the border does the separating. */
+  "bg-2-soft": "color-mix(in oklch, var(--color-bg-2) 50%, transparent)",
+  /* A wash laid over artwork to sink it behind the thing in front of it. */
+  "bg-1-veil": "color-mix(in oklch, var(--color-bg-1) 20%, transparent)",
   contrast: "var(--color-bg-contrast)",
   brand: "var(--color-brand)",
   transparent: "transparent",

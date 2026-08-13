@@ -21,6 +21,13 @@ export const iconSize = stylex.defineVars({
   md: "1rem",
 });
 
+/* One shadow, for the one thing that lifts off the page: a screenshot sitting
+   on its backdrop. A second step would need a reason to exist. */
+export const shadow = stylex.defineVars({
+  lifted:
+    "0 25px 50px -12px color-mix(in oklch, var(--color-fg-1) 25%, transparent)",
+});
+
 export const radius = stylex.defineVars({
   sm: "var(--radius-sm)",
   md: "var(--radius-md)",
