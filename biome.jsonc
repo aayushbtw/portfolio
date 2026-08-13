@@ -10,7 +10,9 @@
       // StyleX's compiler only recognises styles reached through a namespace
       // import; `import { create }` is not transformed. The tree-shaking the
       // rule protects does not apply, since the calls compile away entirely.
-      "includes": ["src/components/primitives/**", "src/styles/tokens/**"],
+      // Components and tokens, not routes: if a route needs raw StyleX, that is
+      // a missing primitive rather than a reason to widen this.
+      "includes": ["src/components/**", "src/styles/**"],
       "linter": {
         "rules": {
           "performance": { "noNamespaceImport": "off" },

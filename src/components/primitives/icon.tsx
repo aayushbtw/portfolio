@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { foreground } from "~/styles/tokens/color.stylex";
 import { iconSize } from "~/styles/tokens/layout.stylex";
+import type { StyleProp } from "./style-prop";
 
 const sizes = stylex.create({
   sm: { width: iconSize.sm, height: iconSize.sm },
@@ -27,7 +28,7 @@ interface IconProps {
   // Passing a label makes the icon the accessible name instead.
   label?: string;
   size?: keyof typeof sizes;
-  style?: stylex.StyleXStyles;
+  style?: StyleProp;
 }
 
 export function Icon({ as: Svg, size = "md", color, style, label }: IconProps) {

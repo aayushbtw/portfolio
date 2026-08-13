@@ -7,6 +7,7 @@ import {
   lineHeight,
 } from "~/styles/tokens/typography.stylex";
 import { marginBottom, marginTop } from "./scales";
+import type { StyleProp } from "./style-prop";
 
 /* A variant is the whole treatment: size, leading, tracking, weight and colour
    were chosen together, so none of them is separately settable. Two elements on
@@ -117,7 +118,7 @@ interface TextOwnProps<T extends TextElement> {
   marginBottom?: keyof typeof marginBottom;
   marginTop?: keyof typeof marginTop;
   numeric?: keyof typeof numerals;
-  style?: stylex.StyleXStyles;
+  style?: StyleProp;
   variant?: keyof typeof variants;
 }
 

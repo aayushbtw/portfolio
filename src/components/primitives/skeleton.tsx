@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { background } from "~/styles/tokens/color.stylex";
 import { radius } from "~/styles/tokens/layout.stylex";
+import type { StyleProp } from "./style-prop";
 
 const pulse = stylex.keyframes({
   "0%, 100%": { opacity: 1 },
@@ -21,7 +22,7 @@ const styles = stylex.create({
 interface SkeletonProps {
   // Size is the caller's, because a placeholder only works when it is the shape
   // of the thing it stands in for. Pass a local `stylex.create` style.
-  style?: stylex.StyleXStyles;
+  style?: StyleProp;
 }
 
 export function Skeleton({ style }: SkeletonProps) {

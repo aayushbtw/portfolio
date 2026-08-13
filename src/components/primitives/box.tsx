@@ -10,6 +10,7 @@ import {
   padBlock,
   padInline,
 } from "./scales";
+import type { Marker, StyleProp } from "./style-prop";
 
 /* Every prop below is a hand-written lookup map. `stylex.create` only accepts
    static object literals, so a scale cannot be mapped over. Adding a prop, or a
@@ -149,6 +150,7 @@ interface BoxOwnProps<T extends BoxElement> {
   marginBottom?: keyof typeof marginBottom;
   marginInlineStart?: keyof typeof startMargin;
   marginTop?: keyof typeof marginTop;
+  marker?: Marker;
   maxWidth?: keyof typeof capWidth;
   overflowX?: keyof typeof scrollX;
   overflowY?: keyof typeof scrollY;
@@ -157,7 +159,7 @@ interface BoxOwnProps<T extends BoxElement> {
   paddingInline?: keyof typeof padInline;
   position?: keyof typeof placement;
   shrink?: boolean;
-  style?: stylex.StyleXStyles;
+  style?: StyleProp;
   width?: keyof typeof sizing;
 }
 
@@ -188,6 +190,7 @@ export function Box<T extends BoxElement = "div">({
   backgroundColor,
   borderRadius,
   borderColor,
+  marker,
   style,
   ...rest
 }: BoxProps<T>) {
@@ -222,6 +225,7 @@ export function Box<T extends BoxElement = "div">({
         backgroundColor && surface[backgroundColor],
         borderRadius && corners[borderRadius],
         borderColor && edge[borderColor],
+        marker,
         style
       )}
     />
