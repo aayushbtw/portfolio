@@ -1,8 +1,17 @@
+import * as stylex from "@stylexjs/stylex";
 import { IconArrowRight } from "@tabler/icons-react";
 import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { Box } from "~/components/primitives/box";
+import { Icon } from "~/components/primitives/icon";
+import { Text } from "~/components/primitives/text";
+import {
+  List,
+  ListItem,
+  ListItemHover,
+  listStyles,
+} from "~/components/ui/orbit/list";
 import { allSkills } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 
@@ -16,17 +25,19 @@ function SkillList() {
       {sortedSkills().map((skill) => (
         <ListItem key={skill.slug}>
           <Link
-            className="row-link"
+            {...stylex.props(listStyles.link)}
             params={{ slug: skill.slug }}
             to="/skills/$slug"
           >
-            <div className="flex min-w-0 flex-col">
-              <span className="text-fg-2">{skill.title}</span>
-              <p>{skill.summary}</p>
-            </div>
+            <Box display="flex" flexDirection="column" shrink>
+              <Text as="span" variant="row-title">
+                {skill.title}
+              </Text>
+              <Text variant="row">{skill.summary}</Text>
+            </Box>
 
             <ListItemHover>
-              <IconArrowRight aria-hidden="true" />
+              <Icon as={IconArrowRight} color="fg-3" size="md" />
             </ListItemHover>
           </Link>
         </ListItem>
