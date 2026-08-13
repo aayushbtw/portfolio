@@ -1,5 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Meter, MeterLegend, type MeterSegment } from "~/components/ui/meter";
+import { Box } from "~/components/primitives/box";
+import { Text } from "~/components/primitives/text";
+import {
+  Meter,
+  MeterLegend,
+  type MeterSegment,
+  type MeterShade,
+  SHADE_COUNT,
+} from "~/components/ui/meter";
 import { PageHeader } from "~/components/ui/page-header";
 import { Stat, StatStrip } from "~/components/ui/stat";
 import { seo } from "~/lib/seo";
@@ -21,61 +29,67 @@ export const Route = createFileRoute("/_app/usage")({
 
 function UsagePage() {
   return (
-    <section>
+    <Box as="section">
       <PageHeader title={title}>
-        <span className="text-xs">
+        <Text as="span" variant="label">
           ~ {formatNumber(usage.total)} tokens in {usage.year}
-        </span>
+        </Text>
       </PageHeader>
 
-      <StatStrip className="mt-lg">
+      <StatStrip marginTop="lg">
         <TokenStat label="Input" value={usage.input} />
         <TokenStat label="Output" value={usage.output} />
         <TokenStat label="Cache write" value={usage.cacheWrite} />
         <TokenStat label="Cache read" value={usage.cacheRead} />
       </StatStrip>
 
-      <div className="mt-xl">
-        <h2 className="text-section-label">
+      <Box marginTop="xl">
+        <Text as="h2" variant="section-label">
           Last {usage.days.length} active days
-        </h2>
-        <div className="mt-sm flex flex-col gap-sm">
+        </Text>
+
+        <Box display="flex" flexDirection="column" gap="sm" marginTop="sm">
           {usage.days.map((day) => {
             const segments = daySegments(day.models);
 
             return (
-              <div className="flex flex-col gap-xs" key={day.date}>
-                <div className="flex items-baseline gap-md">
-                  <span className="text-fg-2">{formatShortDate(day.date)}</span>
-                  <span className="ml-auto text-fg-3 text-xs tabular-nums">
+              <Box
+                display="flex"
+                flexDirection="column"
+                gap="xs"
+                key={day.date}
+              >
+                <Box
+                  alignItems="baseline"
+                  display="flex"
+                  gap="md"
+                  justifyContent="between"
+                >
+                  <Text as="span" color="fg-2">
+                    {formatShortDate(day.date)}
+                  </Text>
+                  <Text as="span" numeric="tabular" variant="label">
                     {formatCompact(day.tokens)}
-                  </span>
-                </div>
+                  </Text>
+                </Box>
 
                 <Meter segments={segments} value={day.barWidth} />
                 <MeterLegend segments={segments} />
-              </div>
+              </Box>
             );
           })}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
-      <div className="mt-lg flex justify-end">
-        <p className="text-fg-3 text-xs tabular-nums">
+      <Box display="flex" justifyContent="end" marginTop="lg">
+        <Text numeric="tabular" variant="label">
           {formatNumber(usage.sessions)} sessions · updated{" "}
           {formatDate(usage.generatedAt)}
-        </p>
-      </div>
-    </section>
+        </Text>
+      </Box>
+    </Box>
   );
 }
-
-const MODEL_SHADES = [
-  "indicator-brand opacity-80",
-  "indicator-brand opacity-60",
-  "indicator-brand opacity-35",
-  "indicator-brand opacity-20",
-];
 
 // Shade by how much each model is used across the year, so a model keeps the
 // same shade on every day's bar and the legends stay readable together.
@@ -84,12 +98,12 @@ function daySegments(
 ): MeterSegment[] {
   return models.map((model) => {
     const rank = usage.models.findIndex((m) => m.name === model.name);
+    const shade = Math.min(
+      rank === -1 ? SHADE_COUNT - 1 : rank,
+      SHADE_COUNT - 1
+    ) as MeterShade;
 
-    return {
-      className: MODEL_SHADES[rank] ?? MODEL_SHADES.at(-1),
-      label: model.name,
-      share: model.share,
-    };
+    return { label: model.name, shade, share: model.share };
   });
 }
 
