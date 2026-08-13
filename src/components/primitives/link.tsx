@@ -2,6 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import { border, foreground } from "~/styles/tokens/color.stylex";
 import { spacing } from "~/styles/tokens/layout.stylex";
 import { fontWeight } from "~/styles/tokens/typography.stylex";
+import { Icon } from "./icon";
 
 const styles = stylex.create({
   link: {
@@ -21,9 +22,6 @@ const styles = stylex.create({
      has no descendant selector, so the link is marked and the icon reads the
      marked ancestor's state. This replaces `hover:[&_svg]:text-fg-2`. */
   icon: {
-    display: "inline-block",
-    width: "1rem",
-    height: "1rem",
     marginInlineEnd: spacing.xs,
     marginBlockEnd: "2px",
     verticalAlign: "baseline",
@@ -55,6 +53,6 @@ interface InlineIconProps {
   as: React.ComponentType<React.ComponentProps<"svg">>;
 }
 
-export function InlineIcon({ as: Icon }: InlineIconProps) {
-  return <Icon {...stylex.props(styles.icon)} />;
+export function InlineIcon({ as }: InlineIconProps) {
+  return <Icon as={as} style={styles.icon} />;
 }

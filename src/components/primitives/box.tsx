@@ -1,7 +1,15 @@
 import * as stylex from "@stylexjs/stylex";
 import { background, border } from "~/styles/tokens/color.stylex";
 import { radius } from "~/styles/tokens/layout.stylex";
-import { gaps, marginBottom, marginTop, pad } from "./scales";
+import {
+  bleedInline,
+  gaps,
+  marginBottom,
+  marginTop,
+  pad,
+  padBlock,
+  padInline,
+} from "./scales";
 
 /* Every prop below is a hand-written lookup map. `stylex.create` only accepts
    static object literals, so a scale cannot be mapped over. Adding a prop, or a
@@ -34,6 +42,54 @@ const justify = stylex.create({
   center: { justifyContent: "center" },
   end: { justifyContent: "flex-end" },
   between: { justifyContent: "space-between" },
+});
+
+const sizing = stylex.create({
+  full: { width: "100%" },
+  max: { width: "max-content" },
+  auto: { width: "auto" },
+});
+
+const capWidth = stylex.create({
+  full: { maxWidth: "100%" },
+  none: { maxWidth: "none" },
+});
+
+/* `min-width: 0` is the fix for a flex child that refuses to shrink below its
+   content. It is a layout escape, not a size, so it is a boolean. */
+const shrinkable = stylex.create({
+  on: { minWidth: 0 },
+});
+
+const flexing = stylex.create({
+  "1": { flexGrow: 1, flexShrink: 1, flexBasis: "0%" },
+  auto: { flexGrow: 1, flexShrink: 1, flexBasis: "auto" },
+  none: { flexGrow: 0, flexShrink: 0, flexBasis: "auto" },
+});
+
+const scrollX = stylex.create({
+  auto: { overflowX: "auto" },
+  hidden: { overflowX: "hidden" },
+  visible: { overflowX: "visible" },
+});
+
+const scrollY = stylex.create({
+  auto: { overflowY: "auto" },
+  hidden: { overflowY: "hidden" },
+  visible: { overflowY: "visible" },
+});
+
+const placement = stylex.create({
+  relative: { position: "relative" },
+  absolute: { position: "absolute" },
+  fixed: { position: "fixed" },
+  static: { position: "static" },
+});
+
+/* `auto` only. A start margin with a length is spacing and belongs on the
+   parent's `gap`; `auto` is the one case that means "push me to the end". */
+const startMargin = stylex.create({
+  auto: { marginInlineStart: "auto" },
 });
 
 const surface = stylex.create({
@@ -82,16 +138,27 @@ interface BoxOwnProps<T extends BoxElement> {
   alignItems?: keyof typeof align;
   as?: T;
   backgroundColor?: keyof typeof surface;
+  bleed?: keyof typeof bleedInline;
   borderColor?: keyof typeof edge;
   borderRadius?: keyof typeof corners;
   display?: keyof typeof layout;
+  flex?: keyof typeof flexing;
   flexDirection?: keyof typeof direction;
   gap?: keyof typeof gaps;
   justifyContent?: keyof typeof justify;
   marginBottom?: keyof typeof marginBottom;
+  marginInlineStart?: keyof typeof startMargin;
   marginTop?: keyof typeof marginTop;
+  maxWidth?: keyof typeof capWidth;
+  overflowX?: keyof typeof scrollX;
+  overflowY?: keyof typeof scrollY;
   padding?: keyof typeof pad;
+  paddingBlock?: keyof typeof padBlock;
+  paddingInline?: keyof typeof padInline;
+  position?: keyof typeof placement;
+  shrink?: boolean;
   style?: stylex.StyleXStyles;
+  width?: keyof typeof sizing;
 }
 
 type BoxProps<T extends BoxElement> = BoxOwnProps<T> &
@@ -105,8 +172,19 @@ export function Box<T extends BoxElement = "div">({
   justifyContent,
   gap,
   padding,
+  paddingInline,
+  paddingBlock,
+  bleed,
   marginTop: mt,
   marginBottom: mb,
+  marginInlineStart: ms,
+  width,
+  maxWidth,
+  shrink,
+  flex,
+  overflowX,
+  overflowY,
+  position,
   backgroundColor,
   borderRadius,
   borderColor,
@@ -128,8 +206,19 @@ export function Box<T extends BoxElement = "div">({
         justifyContent && justify[justifyContent],
         gap && gaps[gap],
         padding && pad[padding],
+        paddingInline && padInline[paddingInline],
+        paddingBlock && padBlock[paddingBlock],
+        bleed && bleedInline[bleed],
         mt && marginTop[mt],
         mb && marginBottom[mb],
+        ms && startMargin[ms],
+        width && sizing[width],
+        maxWidth && capWidth[maxWidth],
+        shrink && shrinkable.on,
+        flex && flexing[flex],
+        overflowX && scrollX[overflowX],
+        overflowY && scrollY[overflowY],
+        position && placement[position],
         backgroundColor && surface[backgroundColor],
         borderRadius && corners[borderRadius],
         borderColor && edge[borderColor],

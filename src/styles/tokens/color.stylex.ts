@@ -20,6 +20,16 @@ export const foreground = stylex.defineVars({
   inherit: "inherit",
 });
 
+/* Contribution levels, empty to busiest. Applied as `fill`, never as text or
+   surface colour: they are a scale, not part of the emphasis ladder above. */
+export const graph = stylex.defineVars({
+  0: "var(--color-graph-0)",
+  1: "var(--color-graph-1)",
+  2: "var(--color-graph-2)",
+  3: "var(--color-graph-3)",
+  4: "var(--color-graph-4)",
+});
+
 export const border = stylex.defineVars({
   default: "var(--color-border)",
   strong: "var(--color-border-strong)",

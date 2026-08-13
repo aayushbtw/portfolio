@@ -51,6 +51,17 @@ const variants = stylex.create({
     fontWeight: fontWeight.regular,
     color: foreground["fg-3"],
   },
+  /* Body size on a tighter line box, for text stacked inside a list row. Rows
+     are scanned rather than read, so they sit closer together than prose does.
+     The site already made this call as `leading-5` on the list; naming it here
+     is what stops the next row from picking a different number. */
+  row: {
+    fontSize: fontSize.base,
+    lineHeight: lineHeight.xs,
+    letterSpacing: letterSpacing.base,
+    fontWeight: fontWeight.regular,
+    color: foreground["fg-3"],
+  },
   lead: {
     fontSize: fontSize.lg,
     lineHeight: lineHeight.lg,
@@ -76,9 +87,16 @@ const tone = stylex.create({
   inherit: { color: foreground.inherit },
 });
 
+/* Digits that have to line up in a column: dates, counts, years. Never the
+   default, since tabular figures read worse in running text. */
+const numerals = stylex.create({
+  tabular: { fontVariantNumeric: "tabular-nums" },
+});
+
 const ELEMENTS = [
   "p",
   "span",
+  "time",
   "h1",
   "h2",
   "h3",
@@ -98,6 +116,7 @@ interface TextOwnProps<T extends TextElement> {
   color?: keyof typeof tone;
   marginBottom?: keyof typeof marginBottom;
   marginTop?: keyof typeof marginTop;
+  numeric?: keyof typeof numerals;
   style?: stylex.StyleXStyles;
   variant?: keyof typeof variants;
 }
@@ -109,6 +128,7 @@ export function Text<T extends TextElement = "p">({
   as,
   variant = "body",
   color,
+  numeric,
   marginTop: mt,
   marginBottom: mb,
   style,
@@ -124,6 +144,7 @@ export function Text<T extends TextElement = "p">({
         base.reset,
         variants[variant],
         color && tone[color],
+        numeric && numerals[numeric],
         mt && marginTop[mt],
         mb && marginBottom[mb],
         style

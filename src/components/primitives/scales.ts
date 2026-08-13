@@ -24,6 +24,37 @@ export const pad = stylex.create({
   "2xl": { padding: spacing["2xl"] },
 });
 
+export const padInline = stylex.create({
+  none: { paddingInline: spacing.none },
+  xs: { paddingInline: spacing.xs },
+  sm: { paddingInline: spacing.sm },
+  md: { paddingInline: spacing.md },
+  lg: { paddingInline: spacing.lg },
+  xl: { paddingInline: spacing.xl },
+  "2xl": { paddingInline: spacing["2xl"] },
+});
+
+export const padBlock = stylex.create({
+  none: { paddingBlock: spacing.none },
+  xs: { paddingBlock: spacing.xs },
+  sm: { paddingBlock: spacing.sm },
+  md: { paddingBlock: spacing.md },
+  lg: { paddingBlock: spacing.lg },
+  xl: { paddingBlock: spacing.xl },
+  "2xl": { paddingBlock: spacing["2xl"] },
+});
+
+/* Pads the element and pulls the same amount back off its margin, so a
+   background or hover fill runs past the text edge while the text stays on the
+   column. One prop rather than two opposing ones, because it is one decision
+   and two halves that can drift apart is what we are removing. */
+export const bleedInline = stylex.create({
+  xs: { paddingInline: spacing.xs, marginInline: `calc(-1 * ${spacing.xs})` },
+  sm: { paddingInline: spacing.sm, marginInline: `calc(-1 * ${spacing.sm})` },
+  md: { paddingInline: spacing.md, marginInline: `calc(-1 * ${spacing.md})` },
+  lg: { paddingInline: spacing.lg, marginInline: `calc(-1 * ${spacing.lg})` },
+});
+
 export const marginTop = stylex.create({
   none: { marginBlockStart: spacing.none },
   xs: { marginBlockStart: spacing.xs },

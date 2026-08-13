@@ -14,6 +14,13 @@ export const spacing = stylex.defineVars({
   "2xl": "var(--spacing-2xl)",
 });
 
+/* Icon sizes. `md` is the icon that sits beside body text; `sm` is the one that
+   sits beside a number and must not outweigh it. */
+export const iconSize = stylex.defineVars({
+  sm: "0.625rem",
+  md: "1rem",
+});
+
 export const radius = stylex.defineVars({
   sm: "var(--radius-sm)",
   md: "var(--radius-md)",

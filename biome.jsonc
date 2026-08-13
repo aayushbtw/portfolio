@@ -13,7 +13,12 @@
       "includes": ["src/components/primitives/**", "src/styles/tokens/**"],
       "linter": {
         "rules": {
-          "performance": { "noNamespaceImport": "off" }
+          "performance": { "noNamespaceImport": "off" },
+          // `Box` and `Text` are prop-to-style dispatch tables: one `&&` per
+          // supported prop, and the count only goes up as the system grows.
+          // The branches are uniform and independent, so the score measures
+          // how many props exist rather than how hard the function is to read.
+          "complexity": { "noExcessiveCognitiveComplexity": "off" }
         }
       }
     }
