@@ -3,7 +3,6 @@ import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { Text } from "~/components/primitives/text";
-import { List as TwList, ListItem as TwListItem } from "~/components/ui/list";
 import { List, ListItem, listStyles } from "~/components/ui/orbit/list";
 import { allPosts } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
@@ -34,7 +33,7 @@ function postRows(limit?: number) {
     }));
 }
 
-function PostListOrbit({ limit }: { limit?: number }) {
+function PostList({ limit }: { limit?: number }) {
   const posts = postRows(limit);
 
   return (
@@ -56,7 +55,7 @@ function PostListOrbit({ limit }: { limit?: number }) {
               >
                 {showYear ? post.year : ""}
               </Text>
-              <Text as="span" color="fg-2" style={styles.title} variant="row">
+              <Text as="span" style={styles.title} variant="row-title">
                 {post.title}
               </Text>
               <Text as="time" numeric="tabular" variant="row">
@@ -70,45 +69,10 @@ function PostListOrbit({ limit }: { limit?: number }) {
   );
 }
 
-/* The Tailwind original, still serving `/writings`. Delete with its export once
-   that route migrates. */
-function PostList({ limit }: { limit?: number }) {
-  const posts = postRows(limit);
-
-  return (
-    <TwList>
-      {posts.map((post, i) => {
-        const showYear = i === 0 || posts[i - 1].year !== post.year;
-        return (
-          <TwListItem key={post.slug}>
-            <Link
-              className="row-link"
-              params={{ slug: post.slug }}
-              to="/writings/$slug"
-            >
-              <span className="w-12 tabular-nums">
-                {showYear ? post.year : ""}
-              </span>
-              <span className="flex-1 text-fg-2">{post.title}</span>
-              <time className="tabular-nums">{post.date}</time>
-            </Link>
-          </TwListItem>
-        );
-      })}
-    </TwList>
-  );
-}
-
 const postListFn = createServerFn({ method: "GET" })
   .inputValidator((limit?: number) => limit)
   .handler(({ data: limit }) =>
     renderServerComponent(<PostList limit={limit} />)
-  );
-
-const postListOrbitFn = createServerFn({ method: "GET" })
-  .inputValidator((limit?: number) => limit)
-  .handler(({ data: limit }) =>
-    renderServerComponent(<PostListOrbit limit={limit} />)
   );
 
 const postBySlugFn = createServerFn({ method: "GET" })
@@ -136,8 +100,4 @@ function getPostBySlug(slug: string) {
   return postBySlugFn({ data: slug });
 }
 
-function getPostListOrbit(limit?: number) {
-  return postListOrbitFn({ data: limit });
-}
-
-export { getPostBySlug, getPostList, getPostListOrbit };
+export { getPostBySlug, getPostList };

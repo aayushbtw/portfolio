@@ -7,12 +7,6 @@ import { Box } from "~/components/primitives/box";
 import { Icon } from "~/components/primitives/icon";
 import { Text } from "~/components/primitives/text";
 import {
-  List as TwList,
-  ListItem as TwListItem,
-  ListItemHover as TwListItemHover,
-  ListSkeleton as TwListSkeleton,
-} from "~/components/ui/list";
-import {
   List,
   ListItem,
   ListItemHover,
@@ -27,7 +21,7 @@ const styles = stylex.create({
   skeletonRow: { height: "2.5rem" },
 });
 
-async function ProjectListOrbit() {
+async function ProjectList() {
   let projects: Awaited<ReturnType<typeof fetchPinnedRepos>>;
   try {
     projects = await fetchPinnedRepos();
@@ -46,7 +40,7 @@ async function ProjectListOrbit() {
             target="_blank"
           >
             <Box display="flex" flexDirection="column" shrink>
-              <Text as="span" color="fg-2" style={styles.name} variant="row">
+              <Text as="span" style={styles.name} variant="row-title">
                 {item.repo}
               </Text>
               <Text variant="row">{item.description}</Text>
@@ -68,59 +62,12 @@ async function ProjectListOrbit() {
   );
 }
 
-/* The Tailwind original, still serving `/projects`. Delete with its exports
-   once that route migrates. */
-async function ProjectList() {
-  let projects: Awaited<ReturnType<typeof fetchPinnedRepos>>;
-  try {
-    projects = await fetchPinnedRepos();
-  } catch {
-    return <p className="text-fg-3">Projects are unavailable right now.</p>;
-  }
-
-  return (
-    <TwList>
-      {projects.map((item) => (
-        <TwListItem key={item.repo}>
-          <a
-            className="row-link"
-            href={item.url}
-            rel="noopener"
-            target="_blank"
-          >
-            <div className="flex min-w-0 flex-col">
-              <span className="text-fg-2 capitalize">{item.repo}</span>
-              <p>{item.description}</p>
-            </div>
-
-            <TwListItemHover>
-              <div className="inline-flex items-center gap-xs tabular-nums">
-                <IconStarFilled aria-hidden="true" className="size-2.5" />
-                {item.stars}
-              </div>
-              <IconArrowUpRight aria-hidden="true" />
-            </TwListItemHover>
-          </a>
-        </TwListItem>
-      ))}
-    </TwList>
-  );
-}
-
 const projectListFn = createServerFn({ method: "GET" }).handler(() =>
-  renderServerComponent(
-    <Suspense fallback={<TwListSkeleton rowClassName="h-10" rows={4} />}>
-      <ProjectList />
-    </Suspense>
-  )
-);
-
-const projectListOrbitFn = createServerFn({ method: "GET" }).handler(() =>
   renderServerComponent(
     <Suspense
       fallback={<ListSkeleton rowStyle={styles.skeletonRow} rows={4} />}
     >
-      <ProjectListOrbit />
+      <ProjectList />
     </Suspense>
   )
 );
@@ -129,8 +76,4 @@ function getProjectList() {
   return projectListFn();
 }
 
-function getProjectListOrbit() {
-  return projectListOrbitFn();
-}
-
-export { getProjectList, getProjectListOrbit };
+export { getProjectList };
