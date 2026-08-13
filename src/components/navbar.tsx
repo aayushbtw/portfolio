@@ -1,7 +1,10 @@
+import * as stylex from "@stylexjs/stylex";
 import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { NavList } from "~/components/ui/nav-list";
+import { Box } from "~/components/primitives/box";
+import { NavList, navStyles } from "~/components/ui/nav-list";
+import { Sidebar } from "~/components/ui/sidebar";
 import { useHaptics } from "~/lib/haptics";
 
 const links: {
@@ -32,22 +35,22 @@ export function Navbar() {
   );
 
   return (
-    <aside className="sticky top-2xl hidden lg:block">
-      <nav>
+    <Sidebar>
+      <Box as="nav">
         <NavList>
           {links.map((item) => (
-            <li key={item.name}>
+            <Box as="li" key={item.name}>
               <Link
-                className="nav-link"
+                {...stylex.props(navStyles.link)}
                 onClick={() => trigger("click")}
                 to={item.to}
               >
                 {item.name}
               </Link>
-            </li>
+            </Box>
           ))}
         </NavList>
-      </nav>
-    </aside>
+      </Box>
+    </Sidebar>
   );
 }

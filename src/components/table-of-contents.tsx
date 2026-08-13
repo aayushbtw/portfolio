@@ -1,5 +1,6 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
-import { NavList } from "~/components/ui/nav-list";
+import { Box } from "~/components/primitives/box";
+import { NavLink, NavList } from "~/components/ui/nav-list";
 
 interface Heading {
   id: string;
@@ -14,15 +15,11 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
       {headings.map((h) => {
         const isActive = activeId === h.id;
         return (
-          <li key={h.id}>
-            <a
-              className="nav-link"
-              data-status={isActive ? "active" : undefined}
-              href={`#${h.id}`}
-            >
+          <Box as="li" key={h.id}>
+            <NavLink active={isActive} href={`#${h.id}`}>
               {h.text}
-            </a>
-          </li>
+            </NavLink>
+          </Box>
         );
       })}
     </NavList>
