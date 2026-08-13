@@ -5,6 +5,9 @@ import {
   NetisionIcon,
   TwitterIcon,
 } from "~/components/icons";
+import { Box } from "~/components/primitives/box";
+import { InlineIcon, TextLink } from "~/components/primitives/link";
+import { Text } from "~/components/primitives/text";
 import { getContributions } from "~/components/rsc/contributions";
 import { getPostList } from "~/components/rsc/posts";
 import { getProjectList } from "~/components/rsc/projects";
@@ -35,88 +38,76 @@ function HomePage() {
 
   return (
     <>
-      <section>
-        <h1 className="mb-md">{config.name}</h1>
+      <Box as="section">
+        <Text as="h1" marginBottom="md" variant="heading">
+          {config.name}
+        </Text>
 
-        <div
-          style={
-            { "--typeset-flow": "var(--spacing-sm)" } as React.CSSProperties
-          }
-        >
-          <p>{config.description}</p>
+        <Box display="flex" flexDirection="column" gap="sm">
+          <Text>{config.description}</Text>
 
-          <p>
+          <Text>
             Currently a full-stack engineer at{" "}
-            <HeaderLink
+            <TextLink
               external
               href="https://www.netision.com"
               onMouseEnter={haptic}
             >
-              <NetisionIcon />
+              <InlineIcon as={NetisionIcon} />
               Netision
-            </HeaderLink>
+            </TextLink>
             , building a multi-agent platform that turns complex data into
             clear, intuitive insights.
-          </p>
+          </Text>
 
-          <p>
+          <Text>
             Reach me via{" "}
-            <HeaderLink
+            <TextLink
               href={`mailto:${config.socials.mail}`}
               onMouseEnter={haptic}
             >
-              <MailIcon />
+              <InlineIcon as={MailIcon} />
               Mail
-            </HeaderLink>{" "}
+            </TextLink>{" "}
             /{" "}
-            <HeaderLink
+            <TextLink
               external
               href={`https://www.x.com/${config.socials.twitter}`}
               onMouseEnter={haptic}
             >
-              <TwitterIcon />X
-            </HeaderLink>
+              <InlineIcon as={TwitterIcon} />X
+            </TextLink>
             , or find my work on{" "}
-            <HeaderLink
+            <TextLink
               external
               href={`https://github.com/${config.socials.github}`}
               onMouseEnter={haptic}
             >
-              <GithubIcon />
+              <InlineIcon as={GithubIcon} />
               Github
-            </HeaderLink>
+            </TextLink>
             .
-          </p>
-        </div>
-      </section>
+          </Text>
+        </Box>
+      </Box>
 
-      <section className="mt-lg">{contributions}</section>
+      <Box as="section" marginTop="lg">
+        {contributions}
+      </Box>
 
-      <section className="mt-xl">
-        <h2 className="text-section-label">Projects</h2>
+      <Box as="section" marginTop="xl">
+        <Text as="h2" variant="section-label">
+          Projects
+        </Text>
         {projects}
-      </section>
+      </Box>
 
-      <section className="mt-xl">
-        <h2 className="text-section-label">Writings</h2>
+      <Box as="section" marginTop="xl">
+        <Text as="h2" variant="section-label">
+          Writings
+        </Text>
         {posts}
-      </section>
+      </Box>
     </>
-  );
-}
-
-function HeaderLink({
-  external,
-  href,
-  ...props
-}: React.ComponentProps<"a"> & { external?: boolean }) {
-  return (
-    <a
-      className="icon-link"
-      href={href}
-      {...props}
-      rel={external ? "noopener" : undefined}
-      target={external ? "_blank" : undefined}
-    />
   );
 }
