@@ -1,29 +1,80 @@
+import * as stylex from "@stylexjs/stylex";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
+import { Box } from "~/components/primitives/box";
+import { Icon } from "~/components/primitives/icon";
+import type { StyleProp } from "~/components/primitives/style-prop";
+import { Text } from "~/components/primitives/text";
 import { useHaptics } from "~/lib/haptics";
-import { cn } from "~/lib/utils";
+import { background, foreground } from "~/styles/tokens/color.stylex";
 
 const RESET_DELAY = 1500;
 
+const styles = stylex.create({
+  command: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: "0%",
+    minWidth: 0,
+    overflowX: "auto",
+    whiteSpace: "nowrap",
+  },
+  // The prompt is decoration, not part of what you copy.
+  prompt: { userSelect: "none" },
+  copyButton: {
+    color: {
+      default: foreground["fg-3"],
+      ":hover": foreground["fg-2"],
+    },
+    scale: { default: "1", ":active": "0.96" },
+    transitionProperty: "color, scale",
+    transitionDuration: "150ms",
+    borderStyle: "none",
+    background: "none",
+    cursor: "pointer",
+  },
+  link: {
+    textDecorationLine: "none",
+    color: foreground["fg-2"],
+    backgroundColor: {
+      default: background["bg-1"],
+      ":hover": background["bg-2"],
+    },
+    scale: { default: "1", ":active": "0.98" },
+    transitionProperty: "background-color, scale",
+    transitionDuration: "150ms",
+  },
+});
+
 function Install({
-  className,
   command,
   children,
-  ...props
-}: React.ComponentProps<"div"> & { command: string }) {
+  marginTop,
+}: {
+  command: string;
+  children?: React.ReactNode;
+  marginTop?: "sm" | "md" | "lg" | "xl";
+}) {
   return (
-    <div
-      className={cn(
-        "not-typeset flex flex-col gap-xs rounded-md border bg-bg-2/50 p-xs",
-        className
-      )}
-      data-slot="install"
-      {...props}
+    <Box
+      backgroundColor="bg-2-soft"
+      borderColor="default"
+      borderRadius="md"
+      data-not-typeset
+      display="flex"
+      flexDirection="column"
+      gap="xs"
+      marginTop={marginTop}
+      padding="xs"
     >
       <InstallCommand command={command} />
 
-      {children && <div className="flex gap-xs">{children}</div>}
-    </div>
+      {children ? (
+        <Box display="flex" gap="xs">
+          {children}
+        </Box>
+      ) : null}
+    </Box>
   );
 }
 
@@ -43,46 +94,67 @@ function InstallCommand({ command }: { command: string }) {
   }
 
   return (
-    <div
-      className="flex items-center gap-md rounded-sm border bg-bg-1 py-sm pr-sm pl-md font-mono text-xs"
-      data-slot="install-command"
+    <Box
+      alignItems="center"
+      backgroundColor="bg-1"
+      borderColor="default"
+      borderRadius="sm"
+      display="flex"
+      gap="md"
     >
-      <code
-        className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-fg-2"
-        translate="no"
-      >
-        <span className="select-none text-fg-3">$ </span>
+      <Text as="code" style={styles.command} translate="no" variant="mono">
+        <Text as="span" color="fg-3" style={styles.prompt} variant="mono">
+          {"$ "}
+        </Text>
         {command}
-      </code>
+      </Text>
 
-      <button
+      <Box
         aria-label={copied ? "Copied" : "Copy command"}
-        className="rounded-sm p-xs text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96]"
+        as="button"
+        borderRadius="sm"
         onClick={copy}
+        padding="xs"
+        style={styles.copyButton}
         type="button"
       >
-        {copied ? (
-          <IconCheck aria-hidden="true" className="size-4 text-brand" />
-        ) : (
-          <IconCopy aria-hidden="true" className="size-4" />
-        )}
-      </button>
-    </div>
+        <Icon
+          as={copied ? IconCheck : IconCopy}
+          color={copied ? "brand" : undefined}
+          size="md"
+        />
+      </Box>
+    </Box>
   );
 }
 
-function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
+function InstallLink({
+  children,
+  href,
+  style,
+}: {
+  children: React.ReactNode;
+  href: string;
+  style?: StyleProp;
+}) {
   return (
-    <a
-      className={cn(
-        "flex flex-1 items-center justify-center gap-xs rounded-sm border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98] *:[svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      data-slot="install-link"
+    <Box
+      alignItems="center"
+      as="a"
+      borderColor="default"
+      borderRadius="sm"
+      display="flex"
+      flex="1"
+      gap="xs"
+      href={href}
+      justifyContent="center"
+      paddingBlock="sm"
       rel="noopener"
+      style={[styles.link, style]}
       target="_blank"
-      {...props}
-    />
+    >
+      {children}
+    </Box>
   );
 }
 
