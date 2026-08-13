@@ -2,17 +2,13 @@ import * as stylex from "@stylexjs/stylex";
 import { Box } from "~/components/primitives/box";
 import { Skeleton } from "~/components/primitives/skeleton";
 import type { StyleProp } from "~/components/primitives/style-prop";
+import { rowMarker } from "~/styles/markers.stylex";
 import { background, foreground } from "~/styles/tokens/color.stylex";
 import { spacing } from "~/styles/tokens/layout.stylex";
 
 /* The StyleX fork of `~/components/ui/list`. That file stays on Tailwind until
    `/skills`, `/music` and `/writings` migrate; this one serves `/` only.
    Delete one of the two once they meet. */
-
-/* A named marker, not `stylex.defaultMarker()`. Rows contain links, and
-   `TextLink` already claims the default marker for its icon hover, so a shared
-   one would make a hovered link fade the row's arrow in. */
-const rowMarker = stylex.defineMarker();
 
 const styles = stylex.create({
   row: {
