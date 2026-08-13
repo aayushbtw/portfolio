@@ -1,51 +1,93 @@
-import { cn } from "~/lib/utils";
-import { Skeleton } from "./skeleton";
+import * as stylex from "@stylexjs/stylex";
+import { Box } from "~/components/primitives/box";
+import { Skeleton } from "~/components/primitives/skeleton";
+import type { StyleProp } from "~/components/primitives/style-prop";
+import { rowMarker } from "~/styles/markers.stylex";
+import { background, foreground } from "~/styles/tokens/color.stylex";
+import { spacing } from "~/styles/tokens/layout.stylex";
 
-function List({ className, ...props }: React.ComponentProps<"ul">) {
+const styles = stylex.create({
+  row: {
+    transitionProperty: "background-color, scale",
+    transitionDuration: "150ms",
+    backgroundColor: {
+      default: background.transparent,
+      ":hover": background["bg-2"],
+    },
+    scale: {
+      default: "1",
+      ":active": "0.98",
+    },
+  },
+  /* The list sits inside `.typeset`, where every anchor is given an underline
+     and `font-medium`. A row is a target, not a link in a sentence, so it takes
+     neither. This replaces the `[&_a]:no-underline` descendant selector. */
+  link: {
+    display: "flex",
+    alignItems: "center",
+    gap: spacing.md,
+    textDecorationLine: "none",
+    color: foreground["fg-3"],
+  },
+  /* Hidden until the row it belongs to is hovered. */
+  revealed: {
+    opacity: {
+      default: 0,
+      [stylex.when.ancestor(":hover", rowMarker)]: 1,
+    },
+    transitionProperty: "opacity",
+    transitionDuration: "150ms",
+  },
+});
+
+/* Rows are their own typographic context, so `data-not-typeset` keeps
+   typeset.css from putting discs and indents on the `ul`. It is a scoping
+   declaration rather than a style, and it goes when typeset is narrowed to
+   rendered markdown. */
+function List({ children }: { children: React.ReactNode }) {
   return (
-    <ul
-      className={cn(
-        "not-typeset mt-sm text-fg-3 leading-5 [&_a]:no-underline",
-        className
-      )}
-      data-slot="list"
-      {...props}
-    />
+    <Box as="ul" data-not-typeset marginTop="sm">
+      {children}
+    </Box>
   );
 }
 
-function ListItem({ className, ...props }: React.ComponentProps<"li">) {
+function ListItem({ children }: { children: React.ReactNode }) {
   return (
-    <li
-      className={cn(
-        "group/list-item -mx-md rounded-md px-md py-sm transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98]",
-        className
-      )}
-      data-slot="list-item"
-      {...props}
-    />
+    <Box
+      as="li"
+      bleed="md"
+      borderRadius="md"
+      marker={rowMarker}
+      paddingBlock="sm"
+      style={styles.row}
+    >
+      {children}
+    </Box>
   );
 }
 
-function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
+/* The trailing cluster on a row: counts, dates, the arrow. */
+function ListItemHover({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className={cn(
-        "ml-auto flex items-center gap-md text-fg-3 opacity-0 transition-opacity duration-150 group-hover/list-item:opacity-100 *:[svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      data-slot="list-item-hover"
-      {...props}
-    />
+    <Box
+      alignItems="center"
+      display="flex"
+      gap="md"
+      marginInlineStart="auto"
+      style={styles.revealed}
+    >
+      {children}
+    </Box>
   );
 }
 
 function ListSkeleton({
   rows,
-  rowClassName,
+  rowStyle,
 }: {
   rows: number;
-  rowClassName?: string;
+  rowStyle?: StyleProp;
 }) {
   return (
     <List>
@@ -53,12 +95,16 @@ function ListSkeleton({
           real rows land. A placeholder that isn't the shape of the thing it
           stands in for is worse than no placeholder. */}
       {Array.from({ length: rows }, (_, i) => `row-${i}`).map((key) => (
-        <li className="-mx-md px-md py-sm" key={key}>
-          <Skeleton className={cn("w-full", rowClassName ?? "h-5")} />
-        </li>
+        <Box as="li" bleed="md" key={key} paddingBlock="sm">
+          <Skeleton style={[skeletonSizes.fullWidth, rowStyle]} />
+        </Box>
       ))}
     </List>
   );
 }
 
-export { List, ListItem, ListItemHover, ListSkeleton };
+const skeletonSizes = stylex.create({
+  fullWidth: { width: "100%", height: "1.25rem" },
+});
+
+export { List, ListItem, ListItemHover, ListSkeleton, styles as listStyles };

@@ -11,7 +11,7 @@ import {
   ListItem,
   ListItemHover,
   listStyles,
-} from "~/components/ui/orbit/list";
+} from "~/components/ui/list";
 import { allSkills } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 

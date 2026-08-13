@@ -1,20 +1,19 @@
-import { IconArrowUpRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { Await, createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { setResponseHeader } from "@tanstack/react-start/server";
-import { Image } from "@unpic/react";
 import { Suspense } from "react";
-import { List, ListItem, ListItemHover } from "~/components/ui/list";
-import { PageHeader } from "~/components/ui/page-header";
-import { Skeleton } from "~/components/ui/skeleton";
-import { seo } from "~/lib/seo";
+import { Box } from "~/components/primitives/box";
+import { Text } from "~/components/primitives/text";
 import {
-  getLive,
-  getTops,
-  type SpotifyArtist,
-  type SpotifyTrack,
-} from "~/lib/spotify";
+  ArtistList,
+  NowPlaying,
+  TrackList,
+  TrackListSkeleton,
+} from "~/components/ui/music";
+import { PageHeader } from "~/components/ui/page-header";
+import { seo } from "~/lib/seo";
+import { getLive, getTops } from "~/lib/spotify";
 
 const title = "Music";
 const description = "What I’m listening to on Spotify.";
@@ -62,162 +61,54 @@ function MusicPage() {
       <Suspense fallback={<TopsSkeleton />}>
         <Await promise={tops}>
           {({ topArtists, topTracks }) => (
-            <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
+            <Box columns={2} display="grid" gap="lg" marginTop="lg">
               {topTracks.length > 0 ? (
-                <div>
-                  <h2 className="text-section-label">Top Tracks</h2>
-                  <List>
-                    {topTracks.map((track) => (
-                      <TrackItem key={track.id} track={track} />
-                    ))}
-                  </List>
-                </div>
+                <Box>
+                  <Text as="h2" variant="section-label">
+                    Top Tracks
+                  </Text>
+                  <TrackList tracks={topTracks} />
+                </Box>
               ) : null}
 
               {topArtists.length > 0 ? (
-                <div>
-                  <h2 className="text-section-label">Top Artists</h2>
-                  <List>
-                    {topArtists.map((artist) => (
-                      <ArtistItem artist={artist} key={artist.id} />
-                    ))}
-                  </List>
-                </div>
+                <Box>
+                  <Text as="h2" variant="section-label">
+                    Top Artists
+                  </Text>
+                  <ArtistList artists={topArtists} />
+                </Box>
               ) : null}
-            </div>
+            </Box>
           )}
         </Await>
       </Suspense>
 
-      <div className="mt-xl">
-        <h2 className="text-section-label">Recently Played</h2>
-        <List>
-          {live
-            ? live.recentlyPlayed.map((track) => (
-                <TrackItem
-                  key={`${track.id}-${track.playedAt}`}
-                  track={track}
-                />
-              ))
-            : Array.from({ length: 5 }, (_, i) => `skeleton-${i}`).map(
-                (key) => <TrackSkeleton key={key} />
-              )}
-        </List>
-      </div>
+      <Box marginTop="xl">
+        <Text as="h2" variant="section-label">
+          Recently Played
+        </Text>
+        {live ? (
+          <TrackList tracks={live.recentlyPlayed} />
+        ) : (
+          <TrackListSkeleton rows={5} />
+        )}
+      </Box>
     </>
-  );
-}
-
-function NowPlaying({ track }: { track: SpotifyTrack }) {
-  return (
-    <a
-      className="flex items-center gap-sm"
-      href={track.url}
-      rel="noopener"
-      target="_blank"
-    >
-      <span aria-hidden className="flex h-2.5 items-end gap-xs">
-        <span className="eq-bar" style={{ animationDelay: "0s" }} />
-        <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
-        <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
-      </span>
-      <span className="text-xs">
-        {track.artists[0].name}
-        <span className="text-fg-3"> — </span>
-        <span className="text-fg-2">{track.name}</span>
-      </span>
-    </a>
   );
 }
 
 function TopsSkeleton() {
   return (
-    <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
-      {["tracks", "artists"].map((key) => (
-        <div key={key}>
-          <h2 className="text-section-label">
-            {key === "tracks" ? "Top Tracks" : "Top Artists"}
-          </h2>
-          <List>
-            {Array.from({ length: 5 }, (_, i) => `${key}-${i}`).map((k) => (
-              <TrackSkeleton key={k} />
-            ))}
-          </List>
-        </div>
+    <Box columns={2} display="grid" gap="lg" marginTop="lg">
+      {["Top Tracks", "Top Artists"].map((heading) => (
+        <Box key={heading}>
+          <Text as="h2" variant="section-label">
+            {heading}
+          </Text>
+          <TrackListSkeleton rows={5} />
+        </Box>
       ))}
-    </div>
-  );
-}
-
-function TrackSkeleton() {
-  return (
-    <ListItem>
-      <div className="row-link">
-        <Skeleton className="size-10 shrink-0 rounded-sm" />
-        <div className="flex min-w-0 flex-1 flex-col gap-sm">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-24" />
-        </div>
-      </div>
-    </ListItem>
-  );
-}
-
-function TrackItem({ track }: { track: SpotifyTrack }) {
-  const cover = track.album.images.at(-1)?.url ?? track.album.images[0]?.url;
-
-  return (
-    <ListItem>
-      <a className="row-link" href={track.url} rel="noopener" target="_blank">
-        {cover ? (
-          <Image
-            alt={track.name}
-            className="size-10 shrink-0 rounded-sm"
-            height={40}
-            src={cover}
-            width={40}
-          />
-        ) : null}
-
-        <div className="flex min-w-0 flex-col">
-          <span className="truncate text-fg-2">{track.name}</span>
-          <p className="truncate">
-            {track.artists.map((a) => a.name).join(", ")}
-          </p>
-        </div>
-
-        <ListItemHover>
-          <IconArrowUpRight aria-hidden="true" />
-        </ListItemHover>
-      </a>
-    </ListItem>
-  );
-}
-
-function ArtistItem({ artist }: { artist: SpotifyArtist }) {
-  const photo = artist.images.at(-1)?.url ?? artist.images[0]?.url;
-
-  return (
-    <ListItem>
-      <a className="row-link" href={artist.url} rel="noopener" target="_blank">
-        {photo ? (
-          <Image
-            alt=""
-            className="size-10 shrink-0 rounded-full"
-            height={40}
-            src={photo}
-            width={40}
-          />
-        ) : null}
-
-        <div className="flex min-w-0 flex-col">
-          <span className="truncate text-fg-2">{artist.name}</span>
-        </div>
-
-        <ListItemHover>
-          <IconArrowUpRight aria-hidden="true" />
-        </ListItemHover>
-      </a>
-    </ListItem>
+    </Box>
   );
 }

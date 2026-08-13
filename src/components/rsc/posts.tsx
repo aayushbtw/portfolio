@@ -3,7 +3,7 @@ import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { Text } from "~/components/primitives/text";
-import { List, ListItem, listStyles } from "~/components/ui/orbit/list";
+import { List, ListItem, listStyles } from "~/components/ui/list";
 import { allPosts } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";

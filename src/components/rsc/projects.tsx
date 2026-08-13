@@ -12,7 +12,7 @@ import {
   ListItemHover,
   ListSkeleton,
   listStyles,
-} from "~/components/ui/orbit/list";
+} from "~/components/ui/list";
 import { fetchPinnedRepos } from "~/lib/octo";
 
 const styles = stylex.create({
