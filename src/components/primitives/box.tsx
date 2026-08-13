@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import { breakpoint } from "~/styles/breakpoints.stylex";
 import { background, border } from "~/styles/tokens/color.stylex";
 import { radius } from "~/styles/tokens/layout.stylex";
 import {
@@ -104,6 +105,20 @@ const surface = stylex.create({
 const corners = stylex.create({
   sm: { borderRadius: radius.sm },
   md: { borderRadius: radius.md },
+  full: { borderRadius: "9999px" },
+});
+
+/* Column counts, not templates. `2` means "two columns once there is room for
+   them, one below", because every split on this site collapses at the same
+   width and the collapse is part of the decision, not a separate one. */
+const columnCount = stylex.create({
+  1: { gridTemplateColumns: "repeat(1, minmax(0, 1fr))" },
+  2: {
+    gridTemplateColumns: {
+      default: "repeat(1, minmax(0, 1fr))",
+      [breakpoint.md]: "repeat(2, minmax(0, 1fr))",
+    },
+  },
 });
 
 const edge = stylex.create({
@@ -142,6 +157,7 @@ interface BoxOwnProps<T extends BoxElement> {
   bleed?: keyof typeof bleedInline;
   borderColor?: keyof typeof edge;
   borderRadius?: keyof typeof corners;
+  columns?: keyof typeof columnCount;
   display?: keyof typeof layout;
   flex?: keyof typeof flexing;
   flexDirection?: keyof typeof direction;
@@ -169,6 +185,7 @@ type BoxProps<T extends BoxElement> = BoxOwnProps<T> &
 export function Box<T extends BoxElement = "div">({
   as,
   display,
+  columns,
   flexDirection,
   alignItems,
   justifyContent,
@@ -204,6 +221,7 @@ export function Box<T extends BoxElement = "div">({
       {...rest}
       {...stylex.props(
         display && layout[display],
+        columns && columnCount[columns],
         flexDirection && direction[flexDirection],
         alignItems && align[alignItems],
         justifyContent && justify[justifyContent],

@@ -104,6 +104,16 @@ const numerals = stylex.create({
   tabular: { fontVariantNumeric: "tabular-nums" },
 });
 
+/* One line, clipped with an ellipsis. Only works if an ancestor can shrink, so
+   the flex parent usually needs `shrink` too. */
+const clipping = stylex.create({
+  on: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+});
+
 const ELEMENTS = [
   "p",
   "span",
@@ -129,6 +139,7 @@ interface TextOwnProps<T extends TextElement> {
   marginTop?: keyof typeof marginTop;
   numeric?: keyof typeof numerals;
   style?: StyleProp;
+  truncate?: boolean;
   variant?: keyof typeof variants;
 }
 
@@ -140,6 +151,7 @@ export function Text<T extends TextElement = "p">({
   variant = "body",
   color,
   numeric,
+  truncate,
   marginTop: mt,
   marginBottom: mb,
   style,
@@ -156,6 +168,7 @@ export function Text<T extends TextElement = "p">({
         variants[variant],
         color && tone[color],
         numeric && numerals[numeric],
+        truncate && clipping.on,
         mt && marginTop[mt],
         mb && marginBottom[mb],
         style
