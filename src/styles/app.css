@@ -386,3 +386,8 @@
     }
   }
 }
+
+/* The build appends StyleX's atomic rules here. Last in the file so they beat
+   the Tailwind utilities they are replacing, layers being off for now. */
+/* biome-ignore lint/suspicious/noUnknownAtRules: StyleX's build-time directive */
+@stylex;

@@ -39,6 +39,11 @@ export const Route = createRootRouteWithContext<{
         crossOrigin: "anonymous",
       },
       { rel: "stylesheet", href: appCss },
+      // In build, the StyleX plugin appends its rules onto appCss. In dev it
+      // serves them from a virtual endpoint instead, so nothing links them.
+      ...(import.meta.env.DEV
+        ? [{ rel: "stylesheet", href: "/virtual:stylex.css" }]
+        : []),
       {
         rel: "apple-touch-icon",
         sizes: "180x180",

@@ -4,5 +4,18 @@
   "files": {
     // typeset.css is vendored from shadcn/typeset, kept byte-for-byte.
     "includes": ["**", "!worker-configuration.d.ts", "!src/styles/typeset.css"]
-  }
+  },
+  "overrides": [
+    {
+      // StyleX's compiler only recognises styles reached through a namespace
+      // import; `import { create }` is not transformed. The tree-shaking the
+      // rule protects does not apply, since the calls compile away entirely.
+      "includes": ["src/components/primitives/**", "src/styles/tokens/**"],
+      "linter": {
+        "rules": {
+          "performance": { "noNamespaceImport": "off" }
+        }
+      }
+    }
+  ]
 }
