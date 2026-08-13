@@ -63,6 +63,16 @@ const variants = stylex.create({
     fontWeight: fontWeight.regular,
     color: foreground["fg-3"],
   },
+  /* The name of the thing a row points at, stacked above its description.
+     One step up the emphasis ladder from `row`, and nothing else: it is the
+     label on a target, not a heading. */
+  "row-title": {
+    fontSize: fontSize.base,
+    lineHeight: lineHeight.xs,
+    letterSpacing: letterSpacing.base,
+    fontWeight: fontWeight.regular,
+    color: foreground["fg-2"],
+  },
   lead: {
     fontSize: fontSize.lg,
     lineHeight: lineHeight.lg,
