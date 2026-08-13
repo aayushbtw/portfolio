@@ -1,10 +1,20 @@
+import * as stylex from "@stylexjs/stylex";
 import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { List, ListItem } from "~/components/ui/list";
+import { Text } from "~/components/primitives/text";
+import { List as TwList, ListItem as TwListItem } from "~/components/ui/list";
+import { List, ListItem, listStyles } from "~/components/ui/orbit/list";
 import { allPosts } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
+
+const styles = stylex.create({
+  // Fixed column so the titles start on the same x whether or not the row
+  // prints a year.
+  year: { width: "3rem" },
+  title: { flexGrow: 1, flexShrink: 1, flexBasis: "0%" },
+});
 
 function sortedPosts() {
   return allPosts.toSorted(
@@ -13,8 +23,8 @@ function sortedPosts() {
   );
 }
 
-function PostList({ limit }: { limit?: number }) {
-  const posts = sortedPosts()
+function postRows(limit?: number) {
+  return sortedPosts()
     .slice(0, limit)
     .map((post) => ({
       year: toUtcDate(post.publishedAt).getUTCFullYear(),
@@ -22,6 +32,10 @@ function PostList({ limit }: { limit?: number }) {
       title: post.title,
       date: formatNumericDate(post.publishedAt),
     }));
+}
+
+function PostListOrbit({ limit }: { limit?: number }) {
+  const posts = postRows(limit);
 
   return (
     <List>
@@ -29,6 +43,44 @@ function PostList({ limit }: { limit?: number }) {
         const showYear = i === 0 || posts[i - 1].year !== post.year;
         return (
           <ListItem key={post.slug}>
+            <Link
+              {...stylex.props(listStyles.link)}
+              params={{ slug: post.slug }}
+              to="/writings/$slug"
+            >
+              <Text
+                as="span"
+                numeric="tabular"
+                style={styles.year}
+                variant="row"
+              >
+                {showYear ? post.year : ""}
+              </Text>
+              <Text as="span" color="fg-2" style={styles.title} variant="row">
+                {post.title}
+              </Text>
+              <Text as="time" numeric="tabular" variant="row">
+                {post.date}
+              </Text>
+            </Link>
+          </ListItem>
+        );
+      })}
+    </List>
+  );
+}
+
+/* The Tailwind original, still serving `/writings`. Delete with its export once
+   that route migrates. */
+function PostList({ limit }: { limit?: number }) {
+  const posts = postRows(limit);
+
+  return (
+    <TwList>
+      {posts.map((post, i) => {
+        const showYear = i === 0 || posts[i - 1].year !== post.year;
+        return (
+          <TwListItem key={post.slug}>
             <Link
               className="row-link"
               params={{ slug: post.slug }}
@@ -40,10 +92,10 @@ function PostList({ limit }: { limit?: number }) {
               <span className="flex-1 text-fg-2">{post.title}</span>
               <time className="tabular-nums">{post.date}</time>
             </Link>
-          </ListItem>
+          </TwListItem>
         );
       })}
-    </List>
+    </TwList>
   );
 }
 
@@ -51,6 +103,12 @@ const postListFn = createServerFn({ method: "GET" })
   .inputValidator((limit?: number) => limit)
   .handler(({ data: limit }) =>
     renderServerComponent(<PostList limit={limit} />)
+  );
+
+const postListOrbitFn = createServerFn({ method: "GET" })
+  .inputValidator((limit?: number) => limit)
+  .handler(({ data: limit }) =>
+    renderServerComponent(<PostListOrbit limit={limit} />)
   );
 
 const postBySlugFn = createServerFn({ method: "GET" })
@@ -78,4 +136,8 @@ function getPostBySlug(slug: string) {
   return postBySlugFn({ data: slug });
 }
 
-export { getPostBySlug, getPostList };
+function getPostListOrbit(limit?: number) {
+  return postListOrbitFn({ data: limit });
+}
+
+export { getPostBySlug, getPostList, getPostListOrbit };
