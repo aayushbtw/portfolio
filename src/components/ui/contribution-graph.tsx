@@ -1,8 +1,17 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react";
-import { cn, formatNumber } from "~/lib/utils";
-import { Skeleton } from "./skeleton";
+import { Box } from "~/components/primitives/box";
+import { Skeleton } from "~/components/primitives/skeleton";
+import { Text } from "~/components/primitives/text";
+import { formatNumber } from "~/lib/utils";
+import { foreground, graph } from "~/styles/tokens/color.stylex";
+import {
+  fontSize,
+  letterSpacing,
+  lineHeight,
+} from "~/styles/tokens/typography.stylex";
 
 // Base UI's tooltip is the heaviest thing on the page and only matters once a
 // cell is hovered, so it loads on the first pointer entering the graph.
@@ -47,13 +56,28 @@ const ORDINAL_SUFFIX: Record<Intl.LDMLPluralRule, string> = {
   zero: "th",
 };
 
-const LEVELS = [
-  "fill-graph-0",
-  "fill-graph-1",
-  "fill-graph-2",
-  "fill-graph-3",
-  "fill-graph-4",
-];
+const levels = stylex.create({
+  0: { fill: graph[0] },
+  1: { fill: graph[1] },
+  2: { fill: graph[2] },
+  3: { fill: graph[3] },
+  4: { fill: graph[4] },
+});
+
+const styles = stylex.create({
+  /* The month labels are `<text>` inside the SVG and inherit both of these, so
+     the frame carries the label treatment rather than each label repeating it. */
+  frame: {
+    fontSize: fontSize.xs,
+    lineHeight: lineHeight.xs,
+    letterSpacing: letterSpacing.xs,
+    color: foreground["fg-3"],
+  },
+  svg: { display: "block", overflow: "visible" },
+  labels: { fill: "currentColor" },
+  graphPlaceholder: (height: number) => ({ width: "100%", height }),
+  captionPlaceholder: { width: "16rem", height: "1rem" },
+});
 
 // The grid is built from calendar days, so every field is read in UTC. Reading
 // them locally would shift the whole grid by a day west of Greenwich, and the
@@ -124,9 +148,10 @@ function getMonthLabels(
 function ContributionGraph({
   data,
   total,
-  className,
-  ...props
-}: React.ComponentProps<"div"> & { data: Activity[]; total: number }) {
+}: {
+  data: Activity[];
+  total: number;
+}) {
   const weeks = useMemo(() => toGrid(data), [data]);
   const months = useMemo(() => getMonthLabels(weeks), [weeks]);
   const width = weeks.length * CELL - GAP;
@@ -164,24 +189,26 @@ function ContributionGraph({
   }
 
   return (
-    <div
-      className={cn(
-        "not-typeset flex w-max max-w-full flex-col gap-xs text-fg-3 text-xs",
-        className
-      )}
+    <Box
+      data-not-typeset
       data-slot="contribution-graph"
+      display="flex"
+      flexDirection="column"
+      gap="xs"
+      maxWidth="full"
       onPointerEnter={arm}
-      {...props}
+      style={styles.frame}
+      width="max"
     >
-      <div className="max-w-full overflow-x-auto overflow-y-hidden">
+      <Box maxWidth="full" overflowX="auto" overflowY="hidden">
         <svg
           aria-hidden="true"
-          className="block overflow-visible"
           height={height}
           viewBox={`0 0 ${width} ${height}`}
           width={width}
+          {...stylex.props(styles.svg)}
         >
-          <g className="fill-current">
+          <g {...stylex.props(styles.labels)}>
             {months.map(({ label, x }) => (
               <text dominantBaseline="hanging" key={x} x={x}>
                 {label}
@@ -196,7 +223,9 @@ function ContributionGraph({
 
               return (
                 <rect
-                  className={LEVELS[activity.level]}
+                  {...stylex.props(
+                    levels[activity.level as keyof typeof levels]
+                  )}
                   data-count={activity.count}
                   data-date={activity.date}
                   height={BLOCK}
@@ -213,7 +242,7 @@ function ContributionGraph({
             })
           )}
         </svg>
-      </div>
+      </Box>
 
       {armed && (
         <Suspense fallback={null}>
@@ -225,8 +254,10 @@ function ContributionGraph({
         </Suspense>
       )}
 
-      <p>{formatNumber(total)} contributions in the last year</p>
-    </div>
+      <Text variant="label">
+        {formatNumber(total)} contributions in the last year
+      </Text>
+    </Box>
   );
 }
 
@@ -234,13 +265,10 @@ function ContributionGraph({
 // contributions land.
 function ContributionGraphSkeleton() {
   return (
-    <div className="flex max-w-full flex-col gap-xs">
-      <Skeleton
-        className="w-full"
-        style={{ height: LABEL_H + 7 * CELL - GAP }}
-      />
-      <Skeleton className="h-4 w-64" />
-    </div>
+    <Box display="flex" flexDirection="column" gap="xs" maxWidth="full">
+      <Skeleton style={styles.graphPlaceholder(LABEL_H + 7 * CELL - GAP)} />
+      <Skeleton style={styles.captionPlaceholder} />
+    </Box>
   );
 }
 

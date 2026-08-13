@@ -9,8 +9,8 @@ import { Box } from "~/components/primitives/box";
 import { InlineIcon, TextLink } from "~/components/primitives/link";
 import { Text } from "~/components/primitives/text";
 import { getContributions } from "~/components/rsc/contributions";
-import { getPostList } from "~/components/rsc/posts";
-import { getProjectList } from "~/components/rsc/projects";
+import { getPostListOrbit } from "~/components/rsc/posts";
+import { getProjectListOrbit } from "~/components/rsc/projects";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { seo } from "~/lib/seo";
@@ -19,8 +19,8 @@ export const Route = createFileRoute("/_app/")({
   loader: async () => {
     const [contributions, projects, posts] = await Promise.all([
       getContributions(),
-      getProjectList(),
-      getPostList(5),
+      getProjectListOrbit(),
+      getPostListOrbit(5),
     ]);
     return { contributions, projects, posts };
   },

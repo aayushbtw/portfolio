@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { Suspense } from "react";
+import { Text } from "~/components/primitives/text";
 import {
   ContributionGraph,
   ContributionGraphSkeleton,
@@ -15,9 +16,7 @@ async function Contributions() {
 
     return <ContributionGraph data={contributions} total={total} />;
   } catch {
-    return (
-      <p className="text-fg-3">Contributions are unavailable right now.</p>
-    );
+    return <Text>Contributions are unavailable right now.</Text>;
   }
 }
 
