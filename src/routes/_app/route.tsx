@@ -1,6 +1,8 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useLeftColumn, useRightColumn } from "~/components/layout-provider";
 import { Navbar } from "~/components/navbar";
+import { Box } from "~/components/primitives/box";
+import { Shell, ShellContent } from "~/components/ui/shell";
 
 export const Route = createFileRoute("/_app")({
   component: AppLayout,
@@ -11,14 +13,14 @@ function AppLayout() {
   const right = useRightColumn();
 
   return (
-    <div className="typeset mx-auto max-w-7xl px-md py-xl sm:px-lg lg:grid lg:grid-cols-[1fr_minmax(0,740px)_1fr] lg:gap-lg lg:pt-2xl">
-      <div>{left ?? <Navbar />}</div>
+    <Shell>
+      <Box>{left ?? <Navbar />}</Box>
 
-      <main className="mx-auto w-full min-w-0 max-w-[740px]" id="main">
+      <ShellContent>
         <Outlet />
-      </main>
+      </ShellContent>
 
-      <div>{right}</div>
-    </div>
+      <Box>{right}</Box>
+    </Shell>
   );
 }

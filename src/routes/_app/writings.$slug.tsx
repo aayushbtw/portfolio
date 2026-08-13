@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RightColumn } from "~/components/layout-provider";
+import { Box } from "~/components/primitives/box";
+import { Text } from "~/components/primitives/text";
 import { getPostBySlug } from "~/components/rsc/posts";
 import { TableOfContents } from "~/components/table-of-contents";
+import { Sidebar } from "~/components/ui/sidebar";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
@@ -51,25 +54,29 @@ function WritingPage() {
   const post = Route.useLoaderData();
 
   return (
-    <section>
-      <article>
-        <h1 className="text-balance">{post.title}</h1>
-        <time className="text-fg-3">{formatDate(post.publishedAt)}</time>
+    <Box as="section">
+      <Box as="article">
+        <Text as="h1" variant="heading">
+          {post.title}
+        </Text>
+        <Text as="time">{formatDate(post.publishedAt)}</Text>
 
         {post.body}
-      </article>
+      </Box>
 
       {post.headings.length > 0 && (
         <RightColumn>
-          <aside className="sticky top-2xl hidden lg:block">
-            <nav>
-              <p className="mb-sm font-medium text-fg-2">On this page</p>
+          <Sidebar>
+            <Box as="nav">
+              <Text as="p" color="fg-2" marginBottom="sm" variant="heading">
+                On this page
+              </Text>
 
               <TableOfContents headings={post.headings} />
-            </nav>
-          </aside>
+            </Box>
+          </Sidebar>
         </RightColumn>
       )}
-    </section>
+    </Box>
   );
 }
