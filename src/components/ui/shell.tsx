@@ -3,12 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { breakpoint } from "~/styles/breakpoints.stylex";
 import { background, foreground } from "~/styles/tokens/color.stylex";
 import { radius, spacing } from "~/styles/tokens/layout.stylex";
-
-/* `typeset` is a plain class, not a StyleX style, and it always will be:
-   typeset.css styles rendered markdown through descendant selectors that
-   StyleX cannot express. The shell is where that class gets applied, so it is
-   the one place the two systems meet. */
-const TYPESET = "typeset";
+import { fontWeight } from "~/styles/tokens/typography.stylex";
 
 const styles = stylex.create({
   page: {
@@ -49,6 +44,7 @@ const styles = stylex.create({
   },
   homeLink: {
     display: "inline-flex",
+    fontWeight: fontWeight.regular,
     marginBlockStart: spacing.lg,
     minHeight: "2.25rem",
     alignItems: "center",
@@ -79,6 +75,7 @@ const styles = stylex.create({
     top: { default: null, ":focus-visible": spacing.md },
     left: { default: null, ":focus-visible": spacing.md },
     zIndex: 50,
+    fontWeight: fontWeight.regular,
     borderRadius: radius.sm,
     borderWidth: { default: 0, ":focus-visible": "1px" },
     borderStyle: "solid",
@@ -90,13 +87,7 @@ const styles = stylex.create({
 });
 
 export function Shell({ children }: { children: React.ReactNode }) {
-  const { className, ...rest } = stylex.props(styles.page);
-
-  return (
-    <div className={`${TYPESET} ${className ?? ""}`} {...rest}>
-      {children}
-    </div>
-  );
+  return <div {...stylex.props(styles.page)}>{children}</div>;
 }
 
 export function ShellContent({ children }: { children: React.ReactNode }) {
@@ -110,10 +101,8 @@ export function ShellContent({ children }: { children: React.ReactNode }) {
 /* The error and not-found pages: one centred column, no navigation. Sized off
    the viewport minus the fixed blurs so the message sits optically centred. */
 export function FallbackShell({ children }: { children: React.ReactNode }) {
-  const { className, ...rest } = stylex.props(styles.fallbackPage);
-
   return (
-    <div className={`${TYPESET} ${className ?? ""}`} {...rest}>
+    <div {...stylex.props(styles.fallbackPage)}>
       <div {...stylex.props(styles.fallbackBody)}>{children}</div>
     </div>
   );
@@ -139,5 +128,3 @@ export function SkipLink() {
     </a>
   );
 }
-
-export { TYPESET };

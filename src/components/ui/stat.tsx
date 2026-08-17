@@ -34,7 +34,7 @@ function StatStrip({
   style?: StyleProp;
 }) {
   return (
-    <Box data-not-typeset marginTop={marginTop} style={[styles.strip, style]}>
+    <Box marginTop={marginTop} style={[styles.strip, style]}>
       {children}
     </Box>
   );

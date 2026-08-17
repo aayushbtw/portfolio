@@ -190,7 +190,6 @@ function ContributionGraph({
 
   return (
     <Box
-      data-not-typeset
       data-slot="contribution-graph"
       display="flex"
       flexDirection="column"

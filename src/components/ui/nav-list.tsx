@@ -2,7 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import { Box } from "~/components/primitives/box";
 import { background, foreground } from "~/styles/tokens/color.stylex";
 import { spacing } from "~/styles/tokens/layout.stylex";
-import { lineHeight } from "~/styles/tokens/typography.stylex";
+import { fontWeight, lineHeight } from "~/styles/tokens/typography.stylex";
 
 const styles = stylex.create({
   list: { position: "relative" },
@@ -25,11 +25,17 @@ const styles = stylex.create({
     backgroundImage: `linear-gradient(to bottom, ${background.brand}, color-mix(in oklch, ${background.brand} 60%, transparent))`,
   },
   /* A destination, not a link in a sentence: no underline, and it climbs the
-     emphasis ladder as it goes from resting to hovered to current. */
+     emphasis ladder as it goes from resting to hovered to current.
+
+     Colour is the whole ladder, so the weight is the body weight. Stated rather
+     than inherited: these links used to pick up `medium` from typeset's prose
+     anchor rule, which put them a step above every other resting label on the
+     page for no reason anyone chose. */
   link: {
     display: "block",
     paddingInlineStart: spacing.md,
     lineHeight: lineHeight.xs,
+    fontWeight: fontWeight.regular,
     textDecorationLine: "none",
     color: {
       default: foreground["fg-3"],
@@ -48,7 +54,6 @@ export function NavList({ children }: { children: React.ReactNode }) {
   return (
     <Box
       as="ul"
-      data-not-typeset
       display="flex"
       flexDirection="column"
       gap="xs"

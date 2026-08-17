@@ -19,9 +19,8 @@ const styles = stylex.create({
       ":active": "0.98",
     },
   },
-  /* The list sits inside `.typeset`, where every anchor is given an underline
-     and `font-medium`. A row is a target, not a link in a sentence, so it takes
-     neither. This replaces the `[&_a]:no-underline` descendant selector. */
+  /* A row is a target, not a link in a sentence, so it takes no underline and
+     climbs the emphasis ladder by colour instead. */
   link: {
     display: "flex",
     alignItems: "center",
@@ -40,13 +39,9 @@ const styles = stylex.create({
   },
 });
 
-/* Rows are their own typographic context, so `data-not-typeset` keeps
-   typeset.css from putting discs and indents on the `ul`. It is a scoping
-   declaration rather than a style, and it goes when typeset is narrowed to
-   rendered markdown. */
 function List({ children }: { children: React.ReactNode }) {
   return (
-    <Box as="ul" data-not-typeset marginTop="sm">
+    <Box as="ul" marginTop="sm">
       {children}
     </Box>
   );

@@ -4,6 +4,7 @@ import { Box } from "~/components/primitives/box";
 import { Text } from "~/components/primitives/text";
 import { getPostBySlug } from "~/components/rsc/posts";
 import { TableOfContents } from "~/components/table-of-contents";
+import { Prose } from "~/components/ui/prose";
 import { Sidebar } from "~/components/ui/sidebar";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
@@ -61,7 +62,7 @@ function WritingPage() {
         </Text>
         <Text as="time">{formatDate(post.publishedAt)}</Text>
 
-        {post.body}
+        <Prose>{post.body}</Prose>
       </Box>
 
       {post.headings.length > 0 && (

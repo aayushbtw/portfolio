@@ -15,7 +15,7 @@ function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <Box alignItems="center" data-not-typeset display="flex" gap="sm">
+    <Box alignItems="center" display="flex" gap="sm">
       {/* `heading` is the same treatment the home page's `h1` gets, which is
           what keeps every page title on one decision. */}
       <Text as="h1" variant="heading">

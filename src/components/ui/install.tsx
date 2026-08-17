@@ -7,6 +7,7 @@ import type { StyleProp } from "~/components/primitives/style-prop";
 import { Text } from "~/components/primitives/text";
 import { useHaptics } from "~/lib/haptics";
 import { background, foreground } from "~/styles/tokens/color.stylex";
+import { fontWeight } from "~/styles/tokens/typography.stylex";
 
 const RESET_DELAY = 1500;
 
@@ -35,6 +36,7 @@ const styles = stylex.create({
   },
   link: {
     textDecorationLine: "none",
+    fontWeight: fontWeight.regular,
     color: foreground["fg-2"],
     backgroundColor: {
       default: background["bg-1"],
@@ -60,7 +62,6 @@ function Install({
       backgroundColor="bg-2-soft"
       borderColor="default"
       borderRadius="md"
-      data-not-typeset
       display="flex"
       flexDirection="column"
       gap="xs"

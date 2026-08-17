@@ -79,9 +79,13 @@
       }
     },
     {
-      // `shell.tsx` owns the `typeset` class bridge and the `body` element, both
-      // of which need a raw tag to carry a class string alongside StyleX's.
-      "includes": ["src/components/ui/shell.tsx"],
+      // `shell.tsx` owns the `body` element; `prose.tsx` owns the `typeset`
+      // class. Both need a raw tag: one because `body` has no primitive, the
+      // other because the class must not land on a StyleX-styled element.
+      "includes": [
+        "src/components/ui/shell.tsx",
+        "src/components/ui/prose.tsx"
+      ],
       "linter": {
         "rules": { "correctness": { "noRestrictedElements": "off" } }
       }

@@ -155,8 +155,8 @@
     letter-spacing: inherit;
   }
 
-  /* The color guide, applied to tags rather than to prose. These reach into
-     not-typeset subtrees too, so UI follows it without opting in. */
+  /* The colour guide for prose, by tag. UI states its own colour through the
+     type primitives and no longer sits inside this subtree. */
   .typeset :where(p) {
     color: var(--color-fg-3);
   }
@@ -242,9 +242,10 @@
 
 /* A skill is rendered straight from its SKILL.md, which opens with its own h1.
    The route prints the title and install command above it, so the file's copy
-   would land twice. */
+   would land twice. The `typeset` class is on the prose wrapper inside the
+   slot, not outside it, so the slot is the ancestor here. */
 @layer components {
-  .typeset :where([data-slot="skill-body"]) > h1:first-child {
+  [data-slot="skill-body"] .typeset > h1:first-child {
     display: none;
   }
 }

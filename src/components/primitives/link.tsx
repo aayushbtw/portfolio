@@ -4,6 +4,11 @@ import { spacing } from "~/styles/tokens/layout.stylex";
 import { fontWeight } from "~/styles/tokens/typography.stylex";
 import { Icon } from "./icon";
 
+/* `medium` here is the site's one exception, and the rule it implies: a link
+   inside running text carries weight, because it has to be findable in a
+   paragraph. Every other link is a target sitting on its own, and those state
+   `regular` and separate by colour. Nothing inherits its weight from an anchor
+   rule, which is how nav links and the install buttons ended up a step heavy. */
 const styles = stylex.create({
   link: {
     color: foreground["fg-2"],

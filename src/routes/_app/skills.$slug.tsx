@@ -5,6 +5,7 @@ import { Icon } from "~/components/primitives/icon";
 import { Text } from "~/components/primitives/text";
 import { getSkillBySlug } from "~/components/rsc/skills";
 import { Install, InstallLink } from "~/components/ui/install";
+import { Prose } from "~/components/ui/prose";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 
@@ -60,7 +61,7 @@ function SkillPage() {
           paddingBottom="sm"
           paddingInline="md"
         >
-          {skill.body}
+          <Prose>{skill.body}</Prose>
         </Box>
       </Box>
     </Box>
