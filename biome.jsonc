@@ -5,6 +5,52 @@
     // typeset.css is vendored from shadcn/typeset, kept byte-for-byte.
     "includes": ["**", "!worker-configuration.d.ts", "!src/styles/typeset.css"]
   },
+  "linter": {
+    "rules": {
+      "correctness": {
+        // The rule the design system rests on. Tokens only constrain you if
+        // there is no way around them, and a raw element with a `className` is
+        // the way around them: it accepts any value, so an off-system one is
+        // never a syntax error. Banning the elements `Box` and `Text` cover
+        // makes the bypass fail the build instead.
+        //
+        // `a` and `button` are deliberately absent: several call sites spread
+        // `stylex.props(...)` onto a raw anchor, which is typed and on-system,
+        // so banning them would only produce false positives.
+        "noRestrictedElements": {
+          "level": "error",
+          "options": {
+            "elements": {
+              "div": "Use <Box> from ~/components/primitives/box.",
+              "span": "Use <Box> for layout or <Text as=\"span\"> for text.",
+              "section": "Use <Box as=\"section\">.",
+              "nav": "Use <Box as=\"nav\">.",
+              "header": "Use <Box as=\"header\">.",
+              "footer": "Use <Box as=\"footer\">.",
+              "article": "Use <Box as=\"article\">.",
+              "aside": "Use <Box as=\"aside\">.",
+              "ul": "Use <Box as=\"ul\">.",
+              "ol": "Use <Box as=\"ol\">.",
+              "li": "Use <Box as=\"li\">.",
+              "figure": "Use <Box as=\"figure\">.",
+              "p": "Use <Text> from ~/components/primitives/text.",
+              "h1": "Use <Text as=\"h1\" variant=\"heading\">.",
+              "h2": "Use <Text as=\"h2\" variant=\"section-label\">.",
+              "h3": "Use <Text as=\"h3\">.",
+              "h4": "Use <Text as=\"h4\">.",
+              "h5": "Use <Text as=\"h5\">.",
+              "h6": "Use <Text as=\"h6\">.",
+              "strong": "Use <Text as=\"strong\">.",
+              "em": "Use <Text as=\"em\">.",
+              "figcaption": "Use <Text as=\"figcaption\">.",
+              "time": "Use <Text as=\"time\">.",
+              "code": "Use <Text as=\"code\" variant=\"mono\">."
+            }
+          }
+        }
+      }
+    }
+  },
   "overrides": [
     {
       // StyleX's compiler only recognises styles reached through a namespace
@@ -22,6 +68,30 @@
           // how many props exist rather than how hard the function is to read.
           "complexity": { "noExcessiveCognitiveComplexity": "off" }
         }
+      }
+    },
+    {
+      // The primitives are what everything else uses instead of raw elements,
+      // so they are the one place raw elements have to exist.
+      "includes": ["src/components/primitives/**"],
+      "linter": {
+        "rules": { "correctness": { "noRestrictedElements": "off" } }
+      }
+    },
+    {
+      // `shell.tsx` owns the `typeset` class bridge and the `body` element, both
+      // of which need a raw tag to carry a class string alongside StyleX's.
+      "includes": ["src/components/ui/shell.tsx"],
+      "linter": {
+        "rules": { "correctness": { "noRestrictedElements": "off" } }
+      }
+    },
+    {
+      // The OG route renders through satori, not the DOM: it reads inline
+      // `style` objects and never sees a stylesheet, so StyleX cannot reach it.
+      "includes": ["src/routes/api/og.tsx"],
+      "linter": {
+        "rules": { "correctness": { "noRestrictedElements": "off" } }
       }
     }
   ]

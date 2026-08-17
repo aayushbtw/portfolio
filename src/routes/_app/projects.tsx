@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Box } from "~/components/primitives/box";
 import { getProjectList } from "~/components/rsc/projects";
 import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
@@ -16,9 +17,9 @@ function ProjectsPage() {
   const projects = Route.useLoaderData();
 
   return (
-    <section>
+    <Box as="section">
       <PageHeader title={title} />
       {projects}
-    </section>
+    </Box>
   );
 }
