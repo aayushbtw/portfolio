@@ -31,7 +31,7 @@
     tab-size: 4;
   }
 
-  /* Headings carry no size or weight of their own: typeset.css sets prose
+  /* Headings carry no size or weight of their own: prose.css sets prose
      headings and `Text` sets UI ones. This is what stops a bare `h1` from
      being 2em before either of them gets a say. */
   h1,
@@ -102,7 +102,7 @@
     text-decoration: underline dotted;
   }
 
-  /* Lists start bare; typeset.css puts markers back on prose lists only. */
+  /* Lists start bare; prose.css puts markers back on prose lists only. */
   menu,
   ol,
   ul {

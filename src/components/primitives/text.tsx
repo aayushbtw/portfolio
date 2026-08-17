@@ -16,8 +16,8 @@ import type { StyleProp } from "./style-prop";
 
 const base = stylex.create({
   reset: {
-    // typeset.css puts margin on bare `p` and headings via `--typeset-flow`.
-    // Spacing here is the parent Box's job, so the inherited margin is dropped.
+    // prose.css puts flow margin on `p` and headings inside rendered markdown.
+    // Spacing here is the parent Box's job, so any inherited margin is dropped.
     marginBlock: 0,
   },
 });

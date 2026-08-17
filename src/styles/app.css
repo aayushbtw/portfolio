@@ -1,6 +1,7 @@
 /* Declared, not inferred. Without this the layers order by first appearance,
-   which puts `base` after `components` and inverts the cascade. StyleX stays
-   unlayered on purpose, so its rules outrank both. */
+   which puts `base` after `components` and inverts the cascade. The StyleX
+   plugin appends its own `priority*` layers after these, so its rules outrank
+   both. */
 @layer base, components;
 
 @import "./reset.css";
@@ -8,12 +9,12 @@
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource-variable/inter";
 
-@import "./typeset.css";
+@import "./prose.css";
 
 /* The design decisions, as named custom properties. StyleX tokens in
-   `src/styles/tokens/*.stylex.ts` dereference these by name, and typeset.css
-   reads them through the bridge below, so they cannot become StyleX vars:
-   StyleX generates hashed names that CSS cannot refer to. */
+   `src/styles/tokens/*.stylex.ts` dereference these by name, and reset.css and
+   prose.css read them directly, so they cannot become StyleX vars: StyleX
+   generates hashed names that CSS cannot refer to. */
 :root {
   --font-sans: "Inter Variable", sans-serif;
   --font-mono: "JetBrains Mono Variable", monospace;
@@ -120,213 +121,6 @@
   --text-3xl--letter-spacing: -0.021em;
 }
 
-/* Typeset's variable contract, bridged onto the tokens above. */
-:root {
-  --typeset-font-body: var(--font-sans);
-  --typeset-font-heading: var(--font-sans);
-  --typeset-font-mono: var(--font-mono);
-  --typeset-leading: inherit;
-  --typeset-flow: 1.25em;
-
-  --color-foreground: var(--color-fg-1);
-  --color-muted-foreground: var(--color-fg-3);
-  --color-muted: var(--color-bg-2);
-  --color-ring: var(--color-brand);
-  --radius: var(--radius-md);
-}
-
-/* Same layer as typeset.css and imported after it, so these win the tie against
-   its defaults while any utility on the element still wins against these. */
-@layer components {
-  .typeset {
-    font-size: inherit;
-    color: var(--color-fg-3);
-  }
-
-  /* Nothing outgrows the body: headings separate by color and weight, not size.
-     Typeset styles `h6` as uppercase with 0.08em tracking, which is the one
-     eyebrow the site removed everywhere else; a prose `h6` would still shout
-     without this. */
-  .typeset :where(h1, h2, h3, h4, h5, h6) {
-    font-size: 1em;
-    font-weight: var(--font-weight-medium);
-    line-height: inherit;
-    text-transform: none;
-    letter-spacing: inherit;
-  }
-
-  /* The colour guide for prose, by tag. UI states its own colour through the
-     type primitives and no longer sits inside this subtree. */
-  .typeset :where(p) {
-    color: var(--color-fg-3);
-  }
-
-  .typeset :where(h1) {
-    color: var(--color-fg-1);
-  }
-
-  .typeset :where(h2, h3, h4, h5, h6) {
-    color: var(--color-fg-2);
-  }
-
-  .typeset :where(strong, b) {
-    font-weight: var(--font-weight-medium);
-  }
-
-  /* Was the `animated-link` utility. Inlined at its only call site: a prose
-     link is the one thing that wanted it. */
-  .typeset :where(a) {
-    font-weight: var(--font-weight-medium);
-    color: var(--color-fg-2);
-    text-decoration-line: underline;
-    text-decoration-color: var(--color-border-strong);
-    text-underline-offset: 3px;
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    transition-duration: 200ms;
-    transition-property: color, text-decoration-color;
-  }
-
-  .typeset :where(a):hover {
-    text-decoration-color: var(--color-brand);
-  }
-
-  /* Typeset sizes its small text in em fractions (0.85em, 0.875em) that land
-     between steps. Pull them onto the scale so prose and UI agree. */
-  .typeset :where(:not(pre) > code, figcaption, caption, [data-footnotes]) {
-    font-size: var(--text-xs);
-    line-height: var(--text-xs--line-height);
-    letter-spacing: var(--text-xs--letter-spacing);
-  }
-
-  /* Typeset only trims the first two levels; the shell nests content deeper. */
-  .typeset :where(:first-child) {
-    margin-block-start: 0;
-  }
-
-  /* Typeset clears only `--typeset-flow` (about 17px) above an anchor target,
-     but the fixed top blur is 48px tall, so a heading jumped to from the table
-     of contents landed underneath it. One `md` step of air on top of that. */
-  .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
-    position: relative;
-    scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
-  }
-
-  /* Class selector, not `:where`, so it outranks the `animated-link` every
-     prose anchor gets. The anchor is `aria-hidden` and unfocusable by default:
-     it is a mouse shortcut, and the table of contents already gives keyboard
-     and screen reader users a link to every section.
-
-     The renderer emits it as the heading's last child, so it is pulled out of
-     flow and hung in the margin rather than reordered. In flow it would either
-     indent every heading away from the body copy or shift the text sideways on
-     hover. `top-0` pins it to the first line; its static position would put it
-     beside the last line of a heading that wraps. */
-  .typeset .heading-anchor {
-    position: absolute;
-    top: 0;
-    right: 100%;
-    padding-right: var(--spacing-xs);
-    font-weight: 400;
-    color: var(--color-fg-3);
-    text-decoration-line: none;
-    opacity: 0;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
-    transition-property: opacity;
-  }
-
-  .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
-    opacity: 1;
-  }
-}
-
-/* A skill is rendered straight from its SKILL.md, which opens with its own h1.
-   The route prints the title and install command above it, so the file's copy
-   would land twice. The `typeset` class is on the prose wrapper inside the
-   slot, not outside it, so the slot is the ancestor here. */
-@layer components {
-  [data-slot="skill-body"] .typeset > h1:first-child {
-    display: none;
-  }
-}
-
-/* TanStack Markdown emits a title bar and per-line spans that typeset has no
-   concept of: it reads the title as a photo caption and centers it. A titled
-   fence gets a figure that owns the frame, so the pre sits flush inside it; an
-   untitled one is a bare pre and has to carry the frame itself. */
-@layer components {
-  .typeset :where(figure.tm-code-frame) {
-    overflow: hidden;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    line-height: var(--text-xs--line-height);
-    letter-spacing: var(--text-xs--letter-spacing);
-    white-space: nowrap;
-    background-color: var(--color-bg-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-  }
-
-  .typeset :where(figure.tm-code-frame > figcaption) {
-    padding-block: var(--spacing-xs);
-    padding-inline: var(--spacing-md);
-    color: var(--color-fg-2);
-    text-align: left;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .typeset :where(pre.tm-code) {
-    padding-block: var(--spacing-sm);
-    padding-inline: 0;
-    overflow-x: auto;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    line-height: var(--text-xs--line-height);
-    letter-spacing: var(--text-xs--letter-spacing);
-    white-space: nowrap;
-    background-color: var(--color-bg-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-  }
-
-  .typeset :where(figure.tm-code-frame > pre.tm-code) {
-    margin-block-start: 0;
-    background-color: transparent;
-    border-width: 0;
-    border-radius: 0;
-  }
-
-  .typeset :where(pre.tm-code .th-line) {
-    display: inline-block;
-    width: max-content;
-    min-width: 100%;
-  }
-
-  .typeset :where(pre.tm-code .th-line)::before {
-    display: inline-block;
-    width: 1rem;
-    padding-right: var(--spacing-lg);
-    padding-left: var(--spacing-sm);
-    color: var(--color-fg-2);
-    text-align: right;
-    content: attr(data-line);
-  }
-
-  /* The palette is the site's, not the theme package's: code is prose here, so
-     it reads on the same three greys plus one accent. */
-  .typeset :where(.th-comment, .th-meta) {
-    color: var(--color-fg-3);
-  }
-
-  .typeset :where(.th-command, .th-function, .th-keyword) {
-    color: var(--color-fg-1);
-  }
-
-  .typeset :where(.th-string, .th-number, .th-literal) {
-    color: var(--color-brand);
-  }
-}
-
 @layer base {
   ::-webkit-scrollbar {
     width: 5px;
@@ -368,7 +162,7 @@
      The offset keeps it clear of the element's own border and of a hovered
      row's `bg-2`. */
   :focus-visible {
-    outline: 2px solid var(--color-ring);
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
 
@@ -412,7 +206,7 @@
 
 /* The build appends StyleX's atomic rules here, unlayered. That is what keeps a
    component's own decision winning over the prose defaults in `components`:
-   `<Text color="fg-2">` has to beat `.typeset :where(p)`, and unlayered rules
+   `<Text color="fg-2">` has to beat `.prose :where(p)`, and later layers
    outrank layered ones whatever their specificity. */
 /* biome-ignore lint/suspicious/noUnknownAtRules: StyleX's build-time directive */
 @stylex;

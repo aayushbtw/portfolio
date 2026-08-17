@@ -2,8 +2,7 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["ultracite/biome/core", "ultracite/biome/remix"],
   "files": {
-    // typeset.css is vendored from shadcn/typeset, kept byte-for-byte.
-    "includes": ["**", "!worker-configuration.d.ts", "!src/styles/typeset.css"]
+    "includes": ["**", "!worker-configuration.d.ts"]
   },
   "linter": {
     "rules": {
@@ -79,7 +78,7 @@
       }
     },
     {
-      // `shell.tsx` owns the `body` element; `prose.tsx` owns the `typeset`
+      // `shell.tsx` owns the `body` element; `prose.tsx` owns the `prose`
       // class. Both need a raw tag: one because `body` has no primitive, the
       // other because the class must not land on a StyleX-styled element.
       "includes": [

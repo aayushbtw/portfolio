@@ -1,0 +1,331 @@
+/* Rendered markdown, and nothing else.
+ *
+ * This replaces shadcn/typeset, which was vendored whole and then half
+ * overridden: it shipped rules for tables, blockquotes, footnotes, math, kbd,
+ * definition lists, task lists and print, none of which any content file
+ * renders, and its type decisions were all re-stated in app.css on this site's
+ * own scale. What is left here is the intersection that actually runs, written
+ * once.
+ *
+ * Scope is the point. These are descendant selectors on a class, which is the
+ * one thing StyleX cannot express, so they stay plain CSS. They only reach
+ * inside `Prose`. UI states its own type from tokens and never sees this file.
+ *
+ * StyleX components do render in here (a showcase figure, its caption). They sit
+ * in later cascade layers, so anything they state wins; anything they leave
+ * alone falls through to the rules below, which is deliberate. The markdown
+ * images get their radius and rhythm from here.
+ *
+ * Nothing sets font-size, line-height or letter-spacing on a heading: reset.css
+ * already makes headings inherit both, and on this site nothing outgrows the
+ * body. Headings separate by weight and colour.
+ */
+
+@layer components {
+  .prose {
+    /* One rhythm unit. Everything that opens a block uses it, so the vertical
+       spacing of a document has a single knob. In `em` so a smaller block
+       (a code fence) gets proportionally less air. */
+    --prose-flow: 1.25em;
+
+    color: var(--color-fg-3);
+    overflow-wrap: break-word;
+    /* Drops the leading block margin instead of needing a :first-child rule. */
+    margin-trim: block-start;
+  }
+
+  /* --- Flow ------------------------------------------------------------- */
+
+  .prose :where(p, ul, ol, figure, img) {
+    margin-block-start: var(--prose-flow);
+    margin-block-end: 0;
+  }
+
+  /* A heading belongs to what follows it, so the gap below is tighter than the
+     gap above and does not scale with the rhythm knob. */
+  .prose :where(h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + *) {
+    margin-block-start: 1em;
+  }
+
+  /* Blocks opening a container start flush against it. `margin-trim` covers the
+     top of the prose itself; this covers list items and figures. */
+  .prose :where(li, figure) > :where(:first-child) {
+    margin-block-start: 0;
+  }
+
+  /* --- Headings --------------------------------------------------------- */
+
+  .prose :where(h1, h2, h3, h4, h5, h6) {
+    margin-block-start: var(--prose-flow);
+    margin-block-end: 0;
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* The one heading with more air above it: an h2 is the document's section
+     break, so it reads as a division rather than another paragraph. */
+  .prose :where(h2) {
+    margin-block-start: calc(var(--prose-flow) * 1.4);
+  }
+
+  .prose :where(h1) {
+    color: var(--color-fg-1);
+  }
+
+  .prose :where(h2, h3, h4, h5, h6) {
+    color: var(--color-fg-2);
+  }
+
+  /* A heading is one emphasis level, whatever markdown nested inside it. */
+  .prose :where(:is(h1, h2, h3, h4, h5, h6) :is(a, strong, b)) {
+    font-weight: inherit;
+  }
+
+  /* The fixed top blur is 48px tall, so a heading jumped to from the table of
+     contents would land underneath it. One step of air on top of that. */
+  .prose :where(h1, h2, h3, h4, h5, h6):where([id]) {
+    position: relative;
+    scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
+  }
+
+  /* --- Inline ----------------------------------------------------------- */
+
+  /* A link inside a sentence: it carries weight so it is findable in a
+     paragraph, and the underline goes brand on hover. This is the one place on
+     the site where a link is heavier than its surroundings. */
+  .prose :where(a) {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-fg-2);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 3px;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transition-property: color, text-decoration-color;
+  }
+
+  .prose :where(a):hover {
+    text-decoration-color: var(--color-brand);
+  }
+
+  .prose :where(strong, b) {
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* --- Lists ------------------------------------------------------------ */
+
+  .prose :where(ul, ol) {
+    padding-inline-start: 1.5em;
+  }
+
+  .prose :where(ul) {
+    list-style-type: disc;
+  }
+
+  .prose :where(ul ul) {
+    list-style-type: circle;
+  }
+
+  .prose :where(ul ul ul) {
+    list-style-type: square;
+  }
+
+  .prose :where(ol) {
+    list-style-type: decimal;
+  }
+
+  /* Rows of a list sit closer together than paragraphs do. */
+  .prose :where(li) {
+    padding-inline-start: 0.4em;
+    margin-block-start: 0.5em;
+  }
+
+  .prose :where(li > p, li > ul, li > ol) {
+    margin-block-start: 0.5em;
+  }
+
+  .prose :where(li)::marker {
+    color: var(--color-fg-3);
+  }
+
+  /* --- Media ------------------------------------------------------------ */
+
+  .prose :where(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  /* An image on its own line in a paragraph is the paragraph's content, so the
+     paragraph already opened the block. */
+  .prose :where(p img) {
+    margin-block-start: 0;
+  }
+
+  .prose :where(figure) {
+    margin-inline: 0;
+  }
+
+  .prose :where(figcaption) {
+    margin-block-start: calc(0.75em / 0.875);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    color: var(--color-fg-3);
+    text-align: center;
+    letter-spacing: var(--text-xs--letter-spacing);
+  }
+
+  /* --- Code ------------------------------------------------------------- */
+
+  .prose :where(:not(pre) > code) {
+    padding: 0.125em 0.3em;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    letter-spacing: var(--text-xs--letter-spacing);
+    background-color: var(--color-bg-2);
+    border-radius: min(calc(var(--radius-md) * 0.6), 0.35em);
+  }
+
+  /* TanStack Markdown emits a title bar and per-line spans. A titled fence gets
+     a figure that owns the frame, so the pre sits flush inside it; an untitled
+     one is a bare pre and carries the frame itself. */
+  .prose :where(figure.tm-code-frame) {
+    overflow: hidden;
+    background-color: var(--color-bg-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .prose :where(figure.tm-code-frame > figcaption) {
+    padding-block: var(--spacing-xs);
+    padding-inline: var(--spacing-md);
+    margin-block-start: 0;
+    font-family: var(--font-mono);
+    color: var(--color-fg-2);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .prose :where(pre.tm-code) {
+    padding-block: var(--spacing-sm);
+    padding-inline: 0;
+    /* Divided by the code's own scale so the gap above a fence matches the gap
+       above a paragraph, despite the smaller type. */
+    margin-block-start: calc(var(--prose-flow) / 0.875);
+    margin-block-end: 0;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    letter-spacing: var(--text-xs--letter-spacing);
+    tab-size: 2;
+    white-space: nowrap;
+    background-color: var(--color-bg-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  /* The figure already drew the frame. */
+  .prose :where(figure.tm-code-frame > pre.tm-code) {
+    margin-block-start: 0;
+    background-color: transparent;
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  .prose :where(pre code) {
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
+  /* Line numbers, printed from the line's own data attribute so nothing has to
+     be counted at render time. */
+  .prose :where(pre.tm-code .th-line) {
+    display: inline-block;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .prose :where(pre.tm-code .th-line)::before {
+    display: inline-block;
+    width: 1rem;
+    padding-right: var(--spacing-lg);
+    padding-left: var(--spacing-sm);
+    color: var(--color-fg-2);
+    text-align: right;
+    content: attr(data-line);
+  }
+
+  /* The palette is the site's, not the theme package's: code is prose here, so
+     it reads on the same three greys plus one accent. */
+  .prose :where(.th-comment, .th-meta) {
+    color: var(--color-fg-3);
+  }
+
+  .prose :where(.th-command, .th-function, .th-keyword) {
+    color: var(--color-fg-1);
+  }
+
+  .prose :where(.th-string, .th-number, .th-literal) {
+    color: var(--color-brand);
+  }
+
+  /* Forced colors strips the background, so the code needs an outline to still
+     read as code. */
+  @media (forced-colors: active) {
+    .prose :where(:not(pre) > code) {
+      border: 1px solid;
+    }
+  }
+
+  /* --- Print ------------------------------------------------------------ */
+
+  @media print {
+    .prose :where(pre, figure) {
+      break-inside: avoid;
+    }
+
+    .prose :where(h1, h2, h3, h4) {
+      break-after: avoid;
+    }
+  }
+
+  /* --- Route-specific -------------------------------------------------- */
+
+  /* A skill renders straight from its SKILL.md, which opens with its own h1.
+     The route prints the title and install command above it, so the file's copy
+     would land twice. */
+  [data-slot="skill-body"] .prose > h1:first-child {
+    display: none;
+  }
+
+  /* The mouse shortcut to a heading's own URL. `aria-hidden` and unfocusable:
+     the table of contents already gives keyboard and screen reader users a link
+     to every section. The renderer emits it as the heading's last child, so it
+     is pulled out of flow and hung in the margin rather than reordered. In flow
+     it would either indent every heading away from the body copy or shift the
+     text sideways on hover. `top: 0` pins it to the first line; its static
+     position would put it beside the last line of a heading that wraps.
+
+     A class selector, not `:where`, so it outranks the prose anchor rule. */
+  .prose .heading-anchor {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    padding-right: var(--spacing-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-fg-3);
+    text-decoration-line: none;
+    opacity: 0;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transition-property: opacity;
+  }
+
+  .prose :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
+    opacity: 1;
+  }
+}
