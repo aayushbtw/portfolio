@@ -1,3 +1,5 @@
+@layer theme, base, components, utilities;
+
 @import "tailwindcss";
 
 @import "@fontsource-variable/jetbrains-mono";
@@ -5,28 +7,36 @@
 
 @import "./typeset.css";
 
-@theme {
+/* The design decisions, as named custom properties. StyleX tokens in
+   `src/styles/tokens/*.stylex.ts` dereference these by name, and typeset.css
+   reads them through the bridge below, so they cannot become StyleX vars:
+   StyleX generates hashed names that CSS cannot refer to. */
+:root {
   --font-sans: "Inter Variable", sans-serif;
   --font-mono: "JetBrains Mono Variable", monospace;
 
-  --color-bg-1: oklch(from var(--color-white) l c h);
-  --color-bg-2: oklch(from var(--color-gray-100) l c h);
+  --color-bg-1: oklch(100% 0 0);
+  --color-bg-2: oklch(96.7% 0.003 264.542);
 
-  --color-fg-1: oklch(from var(--color-gray-950) l c h);
-  --color-fg-2: oklch(from var(--color-gray-600) l c h);
-  --color-fg-3: oklch(from var(--color-gray-500) l c h);
+  --color-fg-1: oklch(13% 0.028 261.692);
+  --color-fg-2: oklch(44.6% 0.03 256.802);
+  --color-fg-3: oklch(55.1% 0.027 264.364);
 
   /* The inverted surface, and the only text colour that runs light on dark.
      One user today (the graph tooltip), named so the second one doesn't
      reinvent it out of `bg-fg-1 text-bg-1`. */
-  --color-bg-contrast: oklch(from var(--color-gray-950) l c h);
-  --color-fg-contrast: oklch(from var(--color-white) l c h);
+  --color-bg-contrast: oklch(13% 0.028 261.692);
+  --color-fg-contrast: oklch(100% 0 0);
 
-  --color-border: oklch(from var(--color-gray-200) l c h);
+  --color-border: oklch(92.8% 0.006 264.531);
   /* One step up, for a boundary that has to read as a line rather than as a
      hairline: the underline under a prose link. */
-  --color-border-strong: oklch(from var(--color-gray-300) l c h);
+  --color-border-strong: oklch(87.2% 0.01 258.338);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
+  /* The brand at selection strength. Written out rather than `color-mix`d:
+     a mix in a plain declaration gets a fallback synthesised for it, and a
+     var-based mix cannot be computed, so the fallback lands fully opaque. */
+  --color-brand-selection: oklch(0.6658 0.2247 36.3 / 0.2);
 
   /* Contribution levels, empty to busiest. */
   --color-graph-0: oklch(from #ebedf0 l c h);
@@ -37,18 +47,19 @@
 
   /* Spacing scale: 4, 8, 16, 24, 48, 96. Doubling to md, 1.5x to lg, then
      doubling again. The only gaps, pads and margins there are. */
-  --spacing-xs: calc(var(--spacing) * 1); /*  4px */
-  --spacing-sm: calc(var(--spacing) * 2); /*  8px */
-  --spacing-md: calc(var(--spacing) * 4); /* 16px */
-  --spacing-lg: calc(var(--spacing) * 6); /* 24px */
-  --spacing-xl: calc(var(--spacing) * 12); /* 48px */
-  --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
+  --spacing-xs: 0.25rem; /*  4px */
+  --spacing-sm: 0.5rem; /*  8px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 3rem; /* 48px */
+  --spacing-2xl: 6rem; /* 96px */
 
   /* Weight. Two steps and no arbitrary values. `regular` (450) is Inter's
      optical body weight at 14px, where a flat 400 reads thin; it is the site
      default and sits on `body` at every width.
      `medium` (500) is Tailwind's own token and the heaviest thing on the site. */
   --font-weight-regular: 450;
+  --font-weight-medium: 500;
 
   /* Radius. Two steps, and which one you want follows from what the thing is:
      `sm` for a control you press or type into, `md` for a box that holds
@@ -135,38 +146,53 @@
      without this. */
   .typeset :where(h1, h2, h3, h4, h5, h6) {
     font-size: 1em;
+    font-weight: var(--font-weight-medium);
     line-height: inherit;
     text-transform: none;
     letter-spacing: inherit;
-    @apply font-medium;
   }
 
   /* The color guide, applied to tags rather than to prose. These reach into
      not-typeset subtrees too, so UI follows it without opting in. */
   .typeset :where(p) {
-    @apply text-fg-3;
+    color: var(--color-fg-3);
   }
 
   .typeset :where(h1) {
-    @apply text-fg-1;
+    color: var(--color-fg-1);
   }
 
   .typeset :where(h2, h3, h4, h5, h6) {
-    @apply text-fg-2;
+    color: var(--color-fg-2);
   }
 
   .typeset :where(strong, b) {
-    @apply font-medium;
+    font-weight: var(--font-weight-medium);
   }
 
+  /* Was the `animated-link` utility. Inlined at its only call site: a prose
+     link is the one thing that wanted it. */
   .typeset :where(a) {
-    @apply animated-link;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-fg-2);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 3px;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transition-property: color, text-decoration-color;
+  }
+
+  .typeset :where(a):hover {
+    text-decoration-color: var(--color-brand);
   }
 
   /* Typeset sizes its small text in em fractions (0.85em, 0.875em) that land
      between steps. Pull them onto the scale so prose and UI agree. */
   .typeset :where(:not(pre) > code, figcaption, caption, [data-footnotes]) {
-    @apply text-xs;
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    letter-spacing: var(--text-xs--letter-spacing);
   }
 
   /* Typeset only trims the first two levels; the shell nests content deeper. */
@@ -193,11 +219,21 @@
      hover. `top-0` pins it to the first line; its static position would put it
      beside the last line of a heading that wraps. */
   .typeset .heading-anchor {
-    @apply absolute top-0 right-full pr-xs font-normal text-fg-3 no-underline opacity-0 transition-opacity duration-200;
+    position: absolute;
+    top: 0;
+    right: 100%;
+    padding-right: var(--spacing-xs);
+    font-weight: 400;
+    color: var(--color-fg-3);
+    text-decoration-line: none;
+    opacity: 0;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transition-property: opacity;
   }
 
   .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
-    @apply opacity-100;
+    opacity: 1;
   }
 }
 
@@ -216,48 +252,75 @@
    untitled one is a bare pre and has to carry the frame itself. */
 @layer components {
   .typeset :where(figure.tm-code-frame) {
-    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono text-xs;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    letter-spacing: var(--text-xs--letter-spacing);
+    white-space: nowrap;
+    background-color: var(--color-bg-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
   }
 
   .typeset :where(figure.tm-code-frame > figcaption) {
-    @apply border-b px-md py-xs text-left text-fg-2;
+    padding-block: var(--spacing-xs);
+    padding-inline: var(--spacing-md);
+    color: var(--color-fg-2);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .typeset :where(pre.tm-code) {
-    @apply overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono text-xs;
+    padding-block: var(--spacing-sm);
+    padding-inline: 0;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+    letter-spacing: var(--text-xs--letter-spacing);
+    white-space: nowrap;
+    background-color: var(--color-bg-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
   }
 
   .typeset :where(figure.tm-code-frame > pre.tm-code) {
     margin-block-start: 0;
-    @apply rounded-none border-0 bg-transparent;
+    background-color: transparent;
+    border-width: 0;
+    border-radius: 0;
   }
 
   .typeset :where(pre.tm-code .th-line) {
-    @apply inline-block w-max min-w-full;
+    display: inline-block;
+    width: max-content;
+    min-width: 100%;
   }
 
   .typeset :where(pre.tm-code .th-line)::before {
+    display: inline-block;
+    width: 1rem;
+    padding-right: var(--spacing-lg);
+    padding-left: var(--spacing-sm);
+    color: var(--color-fg-2);
+    text-align: right;
     content: attr(data-line);
-    @apply inline-block w-4 pr-lg pl-sm text-right text-fg-2;
   }
 
   /* The palette is the site's, not the theme package's: code is prose here, so
      it reads on the same three greys plus one accent. */
   .typeset :where(.th-comment, .th-meta) {
-    @apply text-fg-3;
+    color: var(--color-fg-3);
   }
 
   .typeset :where(.th-command, .th-function, .th-keyword) {
-    @apply text-fg-1;
+    color: var(--color-fg-1);
   }
 
   .typeset :where(.th-string, .th-number, .th-literal) {
-    @apply text-brand;
+    color: var(--color-brand);
   }
-}
-
-@utility animated-link {
-  @apply font-medium text-fg-2 underline decoration-border-strong underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
 }
 
 @layer base {
@@ -282,9 +345,10 @@
   }
 
   * {
+    outline-color: var(--color-border);
     scrollbar-color: var(--color-fg-3) transparent;
     scrollbar-width: thin;
-    @apply border-border outline-border;
+    border-color: var(--color-border);
   }
 
   /* Kills the 300ms double-tap delay on things you tap, without disabling
@@ -305,7 +369,23 @@
   }
 
   body {
-    @apply text-base font-regular bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-regular);
+    /* `cv01` is the single-storey `a`; `ss03` the curved `l`. */
+    font-feature-settings: "cv01", "ss03";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: var(--text-base--line-height);
+    color: var(--color-fg-1);
+    letter-spacing: var(--text-base--letter-spacing);
+    background-color: var(--color-bg-1);
+  }
+
+  /* Unscoped, so it covers a selection that starts on `body` itself as well
+     as one inside a descendant. Tailwind emitted both selectors. */
+  ::selection {
+    background-color: var(--color-brand-selection);
   }
 
   /* Every animation here is decoration: hover fades, the press scale, the
