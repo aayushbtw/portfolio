@@ -7,28 +7,43 @@ import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 
 /**
- * StyleX's `generateBundle` swaps the bundle's CSS asset for a hashed copy that
- * carries the collected rules, and it does this in every environment. In the
- * rsc environment that breaks `@vitejs/plugin-rsc`, which later walks the rsc
- * bundle looking up each chunk's `importedCss` by name and asserts it is still
- * there. Styles are collected in a store shared across environments and client
- * builds last, so emitting once from the client loses nothing.
+ * Two problems with letting `@stylexjs/unplugin` manage the CSS asset here, and
+ * one fix for both.
+ *
+ * Its `generateBundle` appends the collected rules by emitting a *new* hashed
+ * asset, deleting the old one and rewriting references to it. That rewrite only
+ * reaches the bundle it was handed, so:
+ *
+ *   - In the rsc environment it trips `@vitejs/plugin-rsc`, which later walks
+ *     the rsc bundle looking up each chunk's `importedCss` by name and asserts
+ *     the asset is still there.
+ *   - In the client environment it renames the asset after TanStack's manifest
+ *     has already recorded the old name, so the prerendered HTML keeps linking
+ *     the pre-append file and ships without any StyleX at all. Nothing catches
+ *     that: the markup is identical either way, only the stylesheet is wrong.
+ *
+ * So `generateBundle` is suppressed everywhere and `writeBundle` is allowed in
+ * the client only. That path appends to the existing file on disk under its
+ * existing name, which keeps every recorded reference valid.
+ *
+ * The trade-off is that the content hash is computed before the append, so a
+ * change confined to StyleX output produces the same filename with different
+ * content. `assertStyleXIsServed` in `scripts/` guards the failure this was;
+ * cache-busting is handled by the deploy, which uploads fresh assets per build.
  */
-function stylexClientOnly(options?: Parameters<typeof stylex.vite>[0]) {
+function stylexAppendInPlace(options?: Parameters<typeof stylex.vite>[0]) {
   const plugin = stylex.vite(options);
-  const isClient = (env: { name: string }) => env.name === "client";
 
-  for (const hook of ["generateBundle", "writeBundle"] as const) {
-    const original = plugin[hook];
-    if (typeof original !== "function") {
-      continue;
-    }
-    plugin[hook] = function stylexBundleHook(
+  plugin.generateBundle = undefined;
+
+  const write = plugin.writeBundle;
+  if (typeof write === "function") {
+    plugin.writeBundle = function stylexWriteBundle(
       this: { environment: { name: string } },
       ...args: unknown[]
     ) {
-      return isClient(this.environment)
-        ? original.apply(this, args)
+      return this.environment.name === "client"
+        ? write.apply(this, args)
         : undefined;
     };
   }
@@ -55,7 +70,7 @@ export default defineConfig({
         { path: "/music", prerender: { enabled: false } },
       ],
     }),
-    stylexClientOnly({
+    stylexAppendInPlace({
       // Layers off, so StyleX's rules sit outside the cascade layers and win
       // against them. typeset.css and its overrides in app.css are permanent
       // and layered, and a component that says `color="fg-2"` has to beat the
