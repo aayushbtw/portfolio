@@ -1,5 +1,4 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
-import { Box } from "~/components/primitives/box";
 import { NavLink, NavList } from "~/components/ui/nav-list";
 
 interface Heading {
@@ -15,11 +14,11 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
       {headings.map((h) => {
         const isActive = activeId === h.id;
         return (
-          <Box as="li" key={h.id}>
+          <li key={h.id}>
             <NavLink active={isActive} href={`#${h.id}`}>
               {h.text}
             </NavLink>
-          </Box>
+          </li>
         );
       })}
     </NavList>

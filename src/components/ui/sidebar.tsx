@@ -1,5 +1,4 @@
 import * as stylex from "@stylexjs/stylex";
-import { Box } from "~/components/primitives/box";
 import { breakpoint } from "~/styles/breakpoints.stylex";
 import { spacing } from "~/styles/tokens/layout.stylex";
 
@@ -18,9 +17,5 @@ const styles = stylex.create({
 });
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
-  return (
-    <Box as="aside" style={styles.rail}>
-      {children}
-    </Box>
-  );
+  return <aside {...stylex.props(styles.rail)}>{children}</aside>;
 }

@@ -2,7 +2,6 @@ import * as stylex from "@stylexjs/stylex";
 import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Box } from "~/components/primitives/box";
 import { NavList, navStyles } from "~/components/ui/nav-list";
 import { Sidebar } from "~/components/ui/sidebar";
 import { useHaptics } from "~/lib/haptics";
@@ -36,10 +35,10 @@ export function Navbar() {
 
   return (
     <Sidebar>
-      <Box as="nav">
+      <nav>
         <NavList>
           {links.map((item) => (
-            <Box as="li" key={item.name}>
+            <li key={item.name}>
               <Link
                 {...stylex.props(navStyles.link)}
                 onClick={() => trigger("click")}
@@ -47,10 +46,10 @@ export function Navbar() {
               >
                 {item.name}
               </Link>
-            </Box>
+            </li>
           ))}
         </NavList>
-      </Box>
+      </nav>
     </Sidebar>
   );
 }

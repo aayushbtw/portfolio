@@ -1,5 +1,4 @@
 import * as stylex from "@stylexjs/stylex";
-import { Box } from "~/components/primitives/box";
 
 /* Five stacked panes, each blurrier than the last and masked to start further
    in, so the blur ramps up instead of stepping. The numbers are a curve, not a
@@ -39,16 +38,19 @@ export function ProgressiveBlur({
   position?: "top" | "bottom";
 }) {
   return (
-    <Box data-slot="progressive-blur" style={[styles.frame, styles[position]]}>
+    <div
+      data-slot="progressive-blur"
+      {...stylex.props(styles.frame, styles[position])}
+    >
       {LAYERS.map(({ blur, transparent }, i) => {
         const mask = `linear-gradient(to ${position}, transparent ${transparent}%, black 100%)`;
         return (
-          <Box
+          <div
             key={blur}
-            style={[styles.pane, styles.layer(i + 1, blur, mask)]}
+            {...stylex.props(styles.pane, styles.layer(i + 1, blur, mask))}
           />
         );
       })}
-    </Box>
+    </div>
   );
 }

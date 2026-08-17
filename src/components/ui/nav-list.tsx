@@ -1,11 +1,15 @@
 import * as stylex from "@stylexjs/stylex";
-import { Box } from "~/components/primitives/box";
 import { background, foreground } from "~/styles/tokens/color.stylex";
 import { spacing } from "~/styles/tokens/layout.stylex";
 import { fontWeight, lineHeight } from "~/styles/tokens/typography.stylex";
 
 const styles = stylex.create({
-  list: { position: "relative" },
+  list: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing.xs,
+  },
   /* The travelling dot. It is positioned against whichever link is active
      through CSS anchor positioning: the active link publishes `--active` as an
      anchor name, and this reads it. That is why the two rules below have to
@@ -52,23 +56,15 @@ const styles = stylex.create({
 
 export function NavList({ children }: { children: React.ReactNode }) {
   return (
-    <Box
-      as="ul"
-      display="flex"
-      flexDirection="column"
-      gap="xs"
-      style={styles.list}
-    >
-      <Box aria-hidden="true" as="span" style={styles.indicator} />
+    <ul {...stylex.props(styles.list)}>
+      <span aria-hidden="true" {...stylex.props(styles.indicator)} />
       {children}
-    </Box>
+    </ul>
   );
 }
 
-/* Owns the anchor rather than handing its styles out, because `anchorName`
-   under an attribute condition types as `unknown` in StyleX today and will not
-   pass through `Box`'s typed `style` prop. Routed links keep using
-   `navStyles.link` directly, where a plain spread sidesteps that. */
+/* Owns the anchor so a plain `href` link and a routed `Link` both get the same
+   treatment; the routed one spreads `navStyles.link` itself. */
 export function NavLink({
   active,
   children,
