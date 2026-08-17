@@ -189,8 +189,12 @@ interface BoxOwnProps<T extends BoxElement> {
   width?: keyof typeof sizing;
 }
 
+/* `className` is omitted, not merged. A class string is the open surface this
+   whole system exists to close: it would let any value in and, because
+   `stylex.props` writes the element's class last, it would be silently dropped
+   anyway. Failing to compile is the honest answer. */
 type BoxProps<T extends BoxElement> = BoxOwnProps<T> &
-  Omit<React.ComponentProps<T>, keyof BoxOwnProps<T>>;
+  Omit<React.ComponentProps<T>, keyof BoxOwnProps<T> | "className">;
 
 export function Box<T extends BoxElement = "div">({
   as,

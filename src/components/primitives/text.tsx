@@ -159,8 +159,9 @@ interface TextOwnProps<T extends TextElement> {
   variant?: keyof typeof variants;
 }
 
+// See the note in `Box`: a class string is the surface this system closes.
 type TextProps<T extends TextElement> = TextOwnProps<T> &
-  Omit<React.ComponentProps<T>, keyof TextOwnProps<T>>;
+  Omit<React.ComponentProps<T>, keyof TextOwnProps<T> | "className">;
 
 export function Text<T extends TextElement = "p">({
   as,
