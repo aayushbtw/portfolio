@@ -1,0 +1,164 @@
+/* The reset, replacing Tailwind's preflight.
+ *
+ * Preflight normalises a lot of form controls this site has no instance of:
+ * inputs, selects, textareas, file pickers, date pickers, progress bars,
+ * spin buttons, placeholders. Those rules are dropped rather than carried, so
+ * what is left is the part the site actually depends on. Values are preflight's
+ * own, so nothing shifts; where preflight named a Tailwind default font stack
+ * this points at the site's token instead.
+ *
+ * In `base` so every site rule and every StyleX rule outranks it.
+ */
+
+@layer base {
+  /* Border-box everywhere, no inherited margin or padding, and a zeroed border
+     that only shows up when something sets a width. */
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0 solid;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    tab-size: 4;
+  }
+
+  /* Headings carry no size or weight of their own: typeset.css sets prose
+     headings and `Text` sets UI ones. This is what stops a bare `h1` from
+     being 2em before either of them gets a say. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  /* Links take their colour and underline from whatever styles them. */
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-size: 1em;
+  }
+
+  small {
+    font-size: 80%;
+  }
+
+  /* Footnote markers in rendered markdown. Keeps them from opening up the line
+     box they sit in. */
+  sub,
+  sup {
+    position: relative;
+    font-size: 75%;
+    line-height: 0;
+    vertical-align: baseline;
+  }
+
+  sub {
+    bottom: -0.25em;
+  }
+
+  sup {
+    top: -0.5em;
+  }
+
+  /* Markdown tables. */
+  table {
+    text-indent: 0;
+    border-collapse: collapse;
+    border-color: inherit;
+  }
+
+  hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+
+  abbr:where([title]) {
+    text-decoration: underline dotted;
+  }
+
+  /* Lists start bare; typeset.css puts markers back on prose lists only. */
+  menu,
+  ol,
+  ul {
+    list-style: none;
+  }
+
+  /* `display: block` is the fix for the descender gap under an inline image. */
+  audio,
+  canvas,
+  embed,
+  iframe,
+  img,
+  object,
+  svg,
+  video {
+    display: block;
+    vertical-align: middle;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  summary {
+    display: list-item;
+  }
+
+  /* One button on the site today, but a control that inherits its type is the
+     difference between styling it and fighting it. */
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font: inherit;
+    font-variation-settings: inherit;
+    font-feature-settings: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    background-color: transparent;
+    border-radius: 0;
+    opacity: 1;
+  }
+
+  button,
+  input:where([type="button"], [type="reset"], [type="submit"]) {
+    appearance: button;
+  }
+
+  :-moz-focusring {
+    outline: auto;
+  }
+
+  [hidden]:where(:not([hidden="until-found"])) {
+    display: none !important;
+  }
+}

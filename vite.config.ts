@@ -1,7 +1,6 @@
 import path from "node:path";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import stylex from "@stylexjs/unplugin";
-import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import rsc from "@vitejs/plugin-rsc";
@@ -41,7 +40,6 @@ export default defineConfig({
   resolve: { tsconfigPaths: true },
   server: { port: 3000 },
   plugins: [
-    tailwindcss(),
     tanstackStart({
       rsc: { enabled: true },
       prerender: {
@@ -58,9 +56,10 @@ export default defineConfig({
       ],
     }),
     stylexClientOnly({
-      // Layers off, not on: while Tailwind is still here, StyleX has to win the
-      // cascade against the utilities it is replacing. Flip to `true` once the
-      // last Tailwind class is gone.
+      // Layers off, so StyleX's rules sit outside the cascade layers and win
+      // against them. typeset.css and its overrides in app.css are permanent
+      // and layered, and a component that says `color="fg-2"` has to beat the
+      // prose default for the tag it renders.
       useCSSLayers: false,
       // StyleX resolves token imports itself, in Babel, and knows nothing about
       // Vite's resolver. Without this it cannot follow `~/` to a `.stylex.ts`.

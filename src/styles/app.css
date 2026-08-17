@@ -1,6 +1,9 @@
-@layer theme, base, components, utilities;
+/* Declared, not inferred. Without this the layers order by first appearance,
+   which puts `base` after `components` and inverts the cascade. StyleX stays
+   unlayered on purpose, so its rules outrank both. */
+@layer base, components;
 
-@import "tailwindcss";
+@import "./reset.css";
 
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource-variable/inter";
@@ -406,7 +409,9 @@
   }
 }
 
-/* The build appends StyleX's atomic rules here. Last in the file so they beat
-   the Tailwind utilities they are replacing, layers being off for now. */
+/* The build appends StyleX's atomic rules here, unlayered. That is what keeps a
+   component's own decision winning over the prose defaults in `components`:
+   `<Text color="fg-2">` has to beat `.typeset :where(p)`, and unlayered rules
+   outrank layered ones whatever their specificity. */
 /* biome-ignore lint/suspicious/noUnknownAtRules: StyleX's build-time directive */
 @stylex;
