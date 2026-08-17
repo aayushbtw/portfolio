@@ -71,11 +71,12 @@ export default defineConfig({
       ],
     }),
     stylexAppendInPlace({
-      // Layers off, so StyleX's rules sit outside the cascade layers and win
-      // against them. typeset.css and its overrides in app.css are permanent
-      // and layered, and a component that says `color="fg-2"` has to beat the
-      // prose default for the tag it renders.
-      useCSSLayers: false,
+      // StyleX's layers are declared after the site's, so a component that says
+      // `color="fg-2"` beats the prose default in `components` by layer order.
+      // Naming them here rather than relying on `@stylex;` sitting last in
+      // app.css: with layers off StyleX pads every selector with six
+      // `:not(#\#)` to fake the same precedence, which is most of the CSS.
+      useCSSLayers: { before: ["base", "components"] },
       // StyleX resolves token imports itself, in Babel, and knows nothing about
       // Vite's resolver. Without this it cannot follow `~/` to a `.stylex.ts`.
       aliases: { "~/*": [path.join(import.meta.dirname, "src", "*")] },
