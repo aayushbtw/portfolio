@@ -1,15 +1,15 @@
 {
   "year": 2026,
-  "total": 2140791424,
-  "input": 149530,
-  "output": 7859549,
-  "cacheRead": 2083795872,
-  "cacheWrite": 48986473,
-  "sessions": 139,
+  "total": 3280551478,
+  "input": 165351,
+  "output": 11318985,
+  "cacheRead": 3201482230,
+  "cacheWrite": 67584912,
+  "sessions": 199,
   "models": [
     {
       "name": "Opus 5",
-      "tokens": 1393649249
+      "tokens": 2533409303
     },
     {
       "name": "Opus 4.8",
@@ -26,94 +26,89 @@
   ],
   "days": [
     {
-      "date": "2026-08-04",
-      "tokens": 213239696,
-      "barWidth": 85,
+      "date": "2026-08-21",
+      "tokens": 34907601,
+      "barWidth": 17,
       "models": [
         {
           "name": "Opus 5",
-          "tokens": 213239696,
+          "tokens": 34907601,
           "share": 100
         }
       ]
     },
     {
-      "date": "2026-08-03",
-      "tokens": 249423156,
-      "barWidth": 100,
+      "date": "2026-08-20",
+      "tokens": 66652956,
+      "barWidth": 32,
       "models": [
         {
           "name": "Opus 5",
-          "tokens": 249423156,
+          "tokens": 66652956,
           "share": 100
         }
       ]
     },
     {
-      "date": "2026-08-01",
-      "tokens": 124510854,
-      "barWidth": 50,
+      "date": "2026-08-19",
+      "tokens": 62242182,
+      "barWidth": 29,
       "models": [
         {
           "name": "Opus 5",
-          "tokens": 124510854,
+          "tokens": 62242182,
           "share": 100
         }
       ]
     },
     {
-      "date": "2026-07-31",
-      "tokens": 21338044,
+      "date": "2026-08-18",
+      "tokens": 89384690,
+      "barWidth": 42,
+      "models": [
+        {
+          "name": "Opus 5",
+          "tokens": 89384690,
+          "share": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-08-17",
+      "tokens": 100293004,
+      "barWidth": 47,
+      "models": [
+        {
+          "name": "Opus 5",
+          "tokens": 100293004,
+          "share": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-08-14",
+      "tokens": 18082697,
       "barWidth": 9,
       "models": [
         {
           "name": "Opus 5",
-          "tokens": 21338044,
+          "tokens": 18082697,
           "share": 100
         }
       ]
     },
     {
-      "date": "2026-07-30",
-      "tokens": 129787079,
-      "barWidth": 52,
+      "date": "2026-08-13",
+      "tokens": 211163730,
+      "barWidth": 100,
       "models": [
         {
           "name": "Opus 5",
-          "tokens": 129787079,
+          "tokens": 211163730,
           "share": 100
-        }
-      ]
-    },
-    {
-      "date": "2026-07-29",
-      "tokens": 172219934,
-      "barWidth": 69,
-      "models": [
-        {
-          "name": "Opus 5",
-          "tokens": 172219934,
-          "share": 100
-        }
-      ]
-    },
-    {
-      "date": "2026-07-28",
-      "tokens": 234635324,
-      "barWidth": 94,
-      "models": [
-        {
-          "name": "Opus 5",
-          "tokens": 233225873,
-          "share": 99
-        },
-        {
-          "name": "Fable 5",
-          "tokens": 1409451,
-          "share": 1
         }
       ]
     }
   ],
-  "generatedAt": "2026-08-04T20:03:48.790Z"
+  "generatedAt": "2026-08-21T10:31:06.250Z"
 }
