@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import {
   HoverCard,
@@ -37,12 +38,9 @@ function NowPlaying() {
         // Labelled because the visible text is "artist — track": it names the
         // thing, not where the link goes.
         render={
-          // biome-ignore lint/a11y/useAnchorContent: Base UI clones this element and injects the trigger's children into it, so the rule only ever sees the bare tag written here.
-          <a
-            aria-label={`${track.name} by ${track.artists[0].name} — open on Spotify`}
-            href={track.url}
-            rel="noopener"
-            target="_blank"
+          <Link
+            aria-label={`${track.name} by ${track.artists[0].name} — open the music page`}
+            to="/music"
           />
         }
       >
@@ -54,7 +52,7 @@ function NowPlaying() {
         </span>
       </HoverCardTrigger>
 
-      <HoverCardContent align="end" className="w-72" side="bottom">
+      <HoverCardContent align="end" className="w-64 p-sm" side="bottom">
         <TrackCard track={track} />
       </HoverCardContent>
     </HoverCard>
@@ -78,29 +76,28 @@ function Bars() {
 }
 
 function TrackCard({ track }: { track: SpotifyTrack }) {
-  const cover = track.album.images[0]?.url ?? track.album.images.at(-1)?.url;
+  const src = track.album.images[0]?.url ?? track.album.images.at(-1)?.url;
 
   return (
     <div className="not-typeset flex flex-col gap-sm">
-      <span className="text-fg-3 text-sm">Now playing on Spotify</span>
+      <span className="text-fg-3 text-xs">Now playing on Spotify</span>
 
-      <div className="flex items-center gap-md">
-        {cover ? (
+      <div className="flex items-center gap-sm">
+        {src ? (
           <Image
             alt=""
-            className="size-14 shrink-0 rounded-sm"
-            height={56}
-            src={cover}
-            width={56}
+            className="size-10 shrink-0 rounded-sm"
+            height={40}
+            src={src}
+            width={40}
           />
         ) : null}
 
         <div className="flex min-w-0 flex-col">
-          <span className="truncate text-fg-1">{track.name}</span>
-          <span className="truncate text-fg-3 text-sm">
+          <span className="truncate text-fg-1 text-sm">{track.name}</span>
+          <p className="truncate text-sm">
             {track.artists.map((a) => a.name).join(", ")}
-          </span>
-          <span className="truncate text-fg-3 text-sm">{track.album.name}</span>
+          </p>
         </div>
       </div>
     </div>
