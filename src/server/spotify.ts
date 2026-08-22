@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
-import { createServerOnlyFn } from "@tanstack/react-start";
+import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { setResponseHeader } from "@tanstack/react-start/server";
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const API = "https://api.spotify.com/v1";
@@ -217,3 +218,18 @@ export const getLive = createServerOnlyFn(async () => {
   ]);
   return { nowPlaying, recentlyPlayed };
 });
+
+// GET + its own cache headers: the music route's `headers()` only covers the
+// document, so on client navigation this would otherwise be a separate
+// uncacheable request.
+const getTopsFn = createServerFn({ method: "GET" }).handler(() => {
+  setResponseHeader(
+    "Cache-Control",
+    "public, s-maxage=86400, stale-while-revalidate=604800"
+  );
+  return getTops();
+});
+
+const getLiveFn = createServerFn().handler(() => getLive());
+
+export { getLiveFn, getTopsFn };

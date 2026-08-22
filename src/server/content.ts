@@ -1,7 +1,7 @@
 import "@tanstack/react-start/server-only";
 import type { MarkdownDocument } from "@tanstack/markdown";
 import { z } from "zod";
-import { parseContent } from "~/lib/markdown";
+import { parseContent } from "~/server/markdown";
 
 // A skill's `description` is written to tell an agent when to invoke it, so it
 // runs on past where a reader stops caring. The first sentence is the part

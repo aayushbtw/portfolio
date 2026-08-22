@@ -1,8 +1,6 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { Await, createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { setResponseHeader } from "@tanstack/react-start/server";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
@@ -10,29 +8,17 @@ import { PageHeader } from "~/components/ui/page-header";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import {
-  getLive,
-  getTops,
+  getLiveFn,
+  getTopsFn,
   type SpotifyArtist,
   type SpotifyTrack,
-} from "~/lib/spotify";
+} from "~/server/spotify";
 
 const title = "Music";
 const description = "What I’m listening to on Spotify.";
 
-// GET + its own cache headers: the route's `headers()` only covers the document,
-// so on client navigation this call is a separate uncacheable request otherwise.
-const fetchTops = createServerFn({ method: "GET" }).handler(() => {
-  setResponseHeader(
-    "Cache-Control",
-    "public, s-maxage=86400, stale-while-revalidate=604800"
-  );
-  return getTops();
-});
-
-const fetchLive = createServerFn().handler(() => getLive());
-
 export const Route = createFileRoute("/_app/music")({
-  loader: () => ({ tops: fetchTops() }),
+  loader: () => ({ tops: getTopsFn() }),
   head: () => seo({ title, description }),
   headers: () => ({
     "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
@@ -45,7 +31,7 @@ function MusicPage() {
 
   const { data: live } = useQuery({
     queryKey: ["spotify", "live"],
-    queryFn: () => fetchLive(),
+    queryFn: () => getLiveFn(),
     staleTime: 10_000,
     refetchInterval: 10_000,
     refetchIntervalInBackground: false,

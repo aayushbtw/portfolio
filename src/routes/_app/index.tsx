@@ -1,26 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Await, createFileRoute } from "@tanstack/react-router";
 import {
   GithubIcon,
   MailIcon,
   NetisionIcon,
   TwitterIcon,
 } from "~/components/icons";
-import { getContributions } from "~/components/rsc/contributions";
-import { getPostList } from "~/components/rsc/posts";
-import { getProjectList } from "~/components/rsc/projects";
+import { PostList } from "~/components/post-list";
+import { ProjectList } from "~/components/project-list";
+import {
+  ContributionGraph,
+  ContributionGraphSkeleton,
+} from "~/components/ui/contribution-graph";
+import { ListSkeleton } from "~/components/ui/list";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { seo } from "~/lib/seo";
+import { getContributions, getProjectList } from "~/server/octo";
+import { getPostList } from "~/server/posts";
 
 export const Route = createFileRoute("/_app/")({
-  loader: async () => {
-    const [contributions, projects, posts] = await Promise.all([
-      getContributions(),
-      getProjectList(),
-      getPostList(5),
-    ]);
-    return { contributions, projects, posts };
-  },
+  // Only the post list is awaited. It reads local content, so it is free; the
+  // two octo calls are handed over as promises and stream in behind skeletons
+  // rather than holding the whole page on a third-party service.
+  loader: async () => ({
+    contributions: getContributions(),
+    projects: getProjectList(),
+    posts: await getPostList(5),
+  }),
   head: () => seo({ title: config.name, description: config.description }),
   headers: () => ({
     "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
@@ -90,16 +96,39 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mt-lg">{contributions}</section>
+      <section className="mt-lg">
+        <Await fallback={<ContributionGraphSkeleton />} promise={contributions}>
+          {(data) =>
+            data ? (
+              <ContributionGraph data={data.contributions} total={data.total} />
+            ) : (
+              <p className="text-fg-3">
+                Contributions are unavailable right now.
+              </p>
+            )
+          }
+        </Await>
+      </section>
 
       <section className="mt-xl">
         <h2>Projects</h2>
-        {projects}
+        <Await
+          fallback={<ListSkeleton rowClassName="h-10" rows={4} />}
+          promise={projects}
+        >
+          {(list) =>
+            list ? (
+              <ProjectList projects={list} />
+            ) : (
+              <p className="text-fg-3">Projects are unavailable right now.</p>
+            )
+          }
+        </Await>
       </section>
 
       <section className="mt-xl">
         <h2>Writings</h2>
-        {posts}
+        <PostList posts={posts} />
       </section>
     </>
   );

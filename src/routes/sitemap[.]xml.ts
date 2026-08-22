@@ -2,7 +2,7 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import { config } from "~/lib/config";
-import { allPosts, allSkills } from "~/lib/content";
+import { allPosts, allSkills } from "~/server/content";
 
 interface Entry {
   lastmod?: string;

@@ -1,25 +1,25 @@
 import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
-import { createServerFn } from "@tanstack/react-start";
-import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { Suspense } from "react";
 import {
   List,
   ListItem,
   ListItemDescription,
   ListItemHover,
   ListItemTitle,
-  ListSkeleton,
 } from "~/components/ui/list";
-import { fetchPinnedRepos } from "~/lib/octo";
 
-async function ProjectList() {
-  let projects: Awaited<ReturnType<typeof fetchPinnedRepos>>;
-  try {
-    projects = await fetchPinnedRepos();
-  } catch {
-    return <p className="text-fg-3">Projects are unavailable right now.</p>;
-  }
+// The wire shape octo returns. It lives here rather than beside the fetch
+// because this is what consumes it, and a client component should not have to
+// import from a server-only module to name its own props.
+interface PinnedRepo {
+  description: string;
+  forks: number;
+  language: string;
+  repo: string;
+  stars: number;
+  url: string;
+}
 
+function ProjectList({ projects }: { projects: PinnedRepo[] }) {
   return (
     <List>
       {projects.map((item) => (
@@ -49,16 +49,4 @@ async function ProjectList() {
   );
 }
 
-const projectListFn = createServerFn({ method: "GET" }).handler(() =>
-  renderServerComponent(
-    <Suspense fallback={<ListSkeleton rowClassName="h-10" rows={4} />}>
-      <ProjectList />
-    </Suspense>
-  )
-);
-
-function getProjectList() {
-  return projectListFn();
-}
-
-export { getProjectList };
+export { type PinnedRepo, ProjectList };

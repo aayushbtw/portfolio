@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GithubIcon, VercelIcon } from "~/components/icons";
-import { getSkillBySlug } from "~/components/rsc/skills";
 import { Install, InstallLink } from "~/components/ui/install";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
+import { getSkillBySlug } from "~/server/skills";
 
 export const Route = createFileRoute("/_app/skills/$slug")({
   loader: ({ params: { slug } }) => getSkillBySlug(slug),

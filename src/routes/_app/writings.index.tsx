@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getPostList } from "~/components/rsc/posts";
+import { PostList } from "~/components/post-list";
 import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
+import { getPostList } from "~/server/posts";
 
 const title = "Writings";
 const description = "Thoughts on software, design and building for the web.";
@@ -18,7 +19,7 @@ function WritingsPage() {
   return (
     <section>
       <PageHeader title={title} />
-      {posts}
+      <PostList posts={posts} />
     </section>
   );
 }

@@ -67,7 +67,7 @@ const components = {
   "md-showcase-caption": ShowcaseCaption,
 } satisfies MarkdownComponents;
 
-// Parsed once per file at module scope in `~/lib/content`, never per render.
+// Parsed once per file at module scope in `~/server/content`, never per render.
 // The document carries its own frontmatter and headings, so nothing downstream
 // has to read the source text again.
 function parseContent(source: string): MarkdownDocument {

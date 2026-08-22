@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RightColumn } from "~/components/layout-provider";
-import { getPostBySlug } from "~/components/rsc/posts";
 import { TableOfContents } from "~/components/table-of-contents";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
+import { getPostBySlug } from "~/server/posts";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
   loader: ({ params: { slug } }) => getPostBySlug(slug),

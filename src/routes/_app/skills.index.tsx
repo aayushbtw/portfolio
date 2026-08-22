@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getSkillList } from "~/components/rsc/skills";
+import { SkillList } from "~/components/skill-list";
 import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
+import { getSkillList } from "~/server/skills";
 
 const title = "Skills";
 const description =
@@ -19,7 +20,7 @@ function SkillsPage() {
   return (
     <section>
       <PageHeader title={title} />
-      {skills}
+      <SkillList skills={skills} />
     </section>
   );
 }
