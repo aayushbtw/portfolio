@@ -227,7 +227,9 @@ function ContributionGraph({
           )}
         </Tooltip.Root>
 
-        <p>{formatNumber(total)} contributions in the last year</p>
+        <p className="text-sm">
+          {formatNumber(total)} contributions in the last year
+        </p>
       </div>
     </Tooltip.Provider>
   );
