@@ -75,7 +75,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <meta content={pageUrl} property="og:url" />
         <HeadContent />
       </head>
-      <body className="min-h-screen bg-bg-1 font-features-['cv01','ss03'] font-regular font-sans text-body text-fg-4 leading-body tracking-normal antialiased selection:bg-brand/20">
+      <body className="min-h-screen bg-bg-1 font-features-['cv01','ss03'] font-normal font-sans text-base text-fg-4 leading-normal tracking-normal antialiased selection:bg-brand/20">
         <a className="skip-link" href="#main">
           Skip to content
         </a>

@@ -47,7 +47,7 @@ function NowPlaying() {
         }
       >
         <Bars />
-        <span className="min-w-0 truncate text-compact">
+        <span className="min-w-0 truncate text-sm">
           {track.artists[0].name}
           <span className="text-fg-3"> — </span>
           <span className="text-fg-2">{track.name}</span>
@@ -76,7 +76,7 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
 
   return (
     <div className="not-typeset flex flex-col gap-sm">
-      <span className="text-compact text-fg-3">Now playing on Spotify</span>
+      <span className="text-fg-3 text-sm">Now playing on Spotify</span>
 
       <div className="flex items-center gap-md">
         {cover ? (
@@ -91,12 +91,10 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
 
         <div className="flex min-w-0 flex-col">
           <span className="truncate text-fg-1">{track.name}</span>
-          <span className="truncate text-compact text-fg-3">
+          <span className="truncate text-fg-3 text-sm">
             {track.artists.map((a) => a.name).join(", ")}
           </span>
-          <span className="truncate text-compact text-fg-3">
-            {track.album.name}
-          </span>
+          <span className="truncate text-fg-3 text-sm">{track.album.name}</span>
         </div>
       </div>
     </div>

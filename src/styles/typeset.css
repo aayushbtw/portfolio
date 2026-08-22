@@ -426,9 +426,10 @@
      tags, so `not-typeset` subtrees follow without opting in.
 
      `p` is the only thing that reliably wraps, so it is the one opt-up off the
-     18px default: 24px makes the next line findable from the end of the last. */
+     default leading: the looser box makes the next line findable from the end
+     of the last. */
   .typeset :where(p) {
-    @apply text-fg-4 leading-prose;
+    @apply text-fg-4 leading-relaxed;
   }
 
   /* The only place on the site that departs from the two defaults: a title

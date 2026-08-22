@@ -43,7 +43,7 @@ function ListItemDescription({
 }: React.ComponentProps<"p">) {
   return (
     <p
-      className={cn("mt-xs text-compact text-fg-4", className)}
+      className={cn("mt-xs text-fg-4 text-sm", className)}
       data-slot="list-item-description"
       {...props}
     />

@@ -75,7 +75,7 @@ function UsagePage() {
         </div>
       </section>
 
-      <p className="mt-xl text-compact text-fg-3">
+      <p className="mt-xl text-fg-3 text-sm">
         Last updated{" "}
         <time dateTime={usage.generatedAt}>
           {formatDate(usage.generatedAt)}

@@ -54,7 +54,7 @@ function WritingPage() {
     <section>
       <article>
         <h1 className="mb-sm text-balance">{post.title}</h1>
-        <time className="text-compact text-fg-3 tracking-tight">
+        <time className="text-fg-3 text-sm tracking-tight">
           {formatDate(post.publishedAt)}
         </time>
 

@@ -65,15 +65,15 @@
   /* Sized to the measure prose wants, around 68 characters. */
   --container-content: 644px;
 
-  --text-body: 15px;
-  --text-compact: 14px;
+  --text-base: 15px;
+  --text-sm: 14px;
 
   /* Not bundled into the size tokens: either leading can sit on either size.
-     `body` is tight on purpose, because almost every line on this site is a
-     single line and a 24px box around one is 24px of nothing. `prose` is the
-     opt-up for text that wraps, and typeset gives it to `p`. */
-  --leading-body: 18px;
-  --leading-prose: 24px;
+     `normal` is tight on purpose, because almost every line on this site is a
+     single line and a loose box around one is a box of nothing. `relaxed` is
+     the opt-up for text that wraps, and typeset gives it to `p`. */
+  --leading-normal: 18px;
+  --leading-relaxed: 24px;
   --leading-tight: 13.5px;
 
   /* A tracking curve corrects for size, and with one size there is nothing to
@@ -86,7 +86,7 @@
      than a weight change: it stops the `h1` from disappearing into copy of the
      same size and family. Reaching for it elsewhere means the colour step above
      it is not doing its job. */
-  --font-weight-regular: 400;
+  --font-weight-normal: 400;
   --font-weight-bold: 450;
 }
 
