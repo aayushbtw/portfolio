@@ -6,9 +6,9 @@ import { Skeleton } from "./skeleton";
 
 // Base UI's tooltip is the heaviest thing on the page and only matters once a
 // cell is hovered, so it loads on the first pointer entering the graph.
-const ContributionTooltip = lazy(() =>
-  import("./contribution-tooltip").then((m) => ({
-    default: m.ContributionTooltip,
+const Tooltip = lazy(() =>
+  import("./tooltip").then((m) => ({
+    default: m.Tooltip,
   }))
 );
 
@@ -217,11 +217,7 @@ function ContributionGraph({
 
       {armed && (
         <Suspense fallback={null}>
-          <ContributionTooltip
-            anchor={anchorRef}
-            open={open}
-            text={tooltipText}
-          />
+          <Tooltip anchor={anchorRef} open={open} text={tooltipText} />
         </Suspense>
       )}
 

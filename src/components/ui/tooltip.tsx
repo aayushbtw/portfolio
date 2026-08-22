@@ -1,6 +1,6 @@
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
 
-function ContributionTooltip({
+function Tooltip({
   anchor,
   open,
   text,
@@ -18,7 +18,7 @@ function ContributionTooltip({
           side="top"
           sideOffset={4}
         >
-          <TooltipPrimitive.Popup className="rounded-md bg-bg-contrast px-sm py-xs text-fg-contrast">
+          <TooltipPrimitive.Popup className="rounded-md bg-fg-1 px-sm py-xs text-bg-1">
             {text}
           </TooltipPrimitive.Popup>
         </TooltipPrimitive.Positioner>
@@ -27,4 +27,4 @@ function ContributionTooltip({
   );
 }
 
-export { ContributionTooltip };
+export { Tooltip };
