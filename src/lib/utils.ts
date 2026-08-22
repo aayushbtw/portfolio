@@ -1,5 +1,16 @@
 import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/**
+ * Tailwind v4 declares the theme in CSS, which tailwind-merge cannot read: it
+ * groups a class by guessing from the name. Every other scale on this site
+ * reuses a stock name and is grouped for free, but the spacing scale is
+ * lettered where Tailwind's is numeric, so it has to be named here or `p-xs`
+ * and `p-md` both survive a merge. Add a step in app.css, add it here.
+ */
+const twMerge = extendTailwindMerge({
+  extend: { theme: { spacing: ["xs", "sm", "md", "lg", "xl", "2xl"] } },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
