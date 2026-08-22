@@ -1,56 +1,56 @@
 {
   "year": 2026,
-  "total": 3355129388,
+  "total": 3355972122,
   "sessions": 200,
   "tokenTypes": [
     {
       "label": "Cache read",
-      "share": 97.62,
-      "tokens": 3275433454
+      "share": 97.625,
+      "tokens": 3276268827
     },
     {
       "label": "Cache write",
-      "share": 2.03,
-      "tokens": 67998512
+      "share": 2.0264,
+      "tokens": 68004221
     },
     {
       "label": "Output",
-      "share": 0.34,
-      "tokens": 11531431
+      "share": 0.3437,
+      "tokens": 11533079
     },
     {
       "label": "Input",
-      "share": 0,
-      "tokens": 165991
+      "share": 0.0049,
+      "tokens": 165995
     }
   ],
   "models": [
     {
       "name": "Opus 5",
-      "share": 77.73,
-      "tokens": 2607987213
+      "share": 77.7369,
+      "tokens": 2608829947
     },
     {
       "name": "Opus 4.8",
-      "share": 17.52,
+      "share": 17.5175,
       "tokens": 587882138
     },
     {
       "name": "Fable 5",
-      "share": 2.37,
+      "share": 2.3733,
       "tokens": 79645923
     },
     {
       "name": "Sonnet 5",
-      "share": 2.37,
+      "share": 2.3723,
       "tokens": 79614114
     }
   ],
   "days": [
     {
       "date": "2026-08-22",
-      "tokens": 71236827,
-      "barWidth": 71
+      "tokens": 72079561,
+      "barWidth": 72
     },
     {
       "date": "2026-08-21",
@@ -83,7 +83,7 @@
       "barWidth": 18
     }
   ],
-  "words": 2516347041,
+  "words": 2516979092,
   "novels": 31000,
-  "generatedAt": "2026-08-22T12:18:43.539Z"
+  "generatedAt": "2026-08-22T12:19:15.432Z"
 }
