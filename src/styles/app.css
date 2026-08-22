@@ -167,8 +167,6 @@
 
   html {
     scrollbar-gutter: stable;
-    /* Light-only for now. Saying so keeps the OS from theming native controls
-       and the scrollbar dark against a white page. */
     color-scheme: light;
   }
 
