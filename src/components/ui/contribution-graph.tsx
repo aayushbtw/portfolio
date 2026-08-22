@@ -1,16 +1,21 @@
 "use client";
 
-import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react";
+import { Tooltip } from "@base-ui/react/tooltip";
+import { useMemo } from "react";
 import { cn, formatNumber } from "~/lib/utils";
 import { Skeleton } from "./skeleton";
 
-// Base UI's tooltip is the heaviest thing on the page and only matters once a
-// cell is hovered, so it loads on the first pointer entering the graph.
-const Tooltip = lazy(() =>
-  import("./tooltip").then((m) => ({
-    default: m.Tooltip,
-  }))
-);
+/**
+ * One handle shared by every cell. Base UI's detached-trigger pattern: each
+ * `rect` is a `Tooltip.Trigger` carrying a payload, and a single `Tooltip.Root`
+ * renders whichever one is active. Hover, open/close timing, anchoring and
+ * repositioning between adjacent cells are all the library's problem now.
+ *
+ * The payload is the raw activity, not a formatted string: building the
+ * sentence here would run `Intl` formatting 365 times per render instead of
+ * once when the tooltip actually opens.
+ */
+const cellTooltip = Tooltip.createHandle<Activity>();
 
 export interface Activity {
   count: number;
@@ -22,7 +27,19 @@ const BLOCK = 12;
 const GAP = 2;
 const CELL = BLOCK + GAP;
 const RADIUS = 3;
-const LABEL_H = 22;
+/** Days in a week: the grid's height in cells, always. */
+const ROWS = 7;
+/** A year of weeks, for the skeleton, which has no data to count. */
+const WEEKS = 53;
+
+/**
+ * Span of `n` cells in viewBox units. Cells are square, so this measures either
+ * axis: the grid is `span(weeks)` wide and `span(ROWS)` tall. The `- GAP` drops
+ * the trailing gap after the last cell, which has nothing to separate it from.
+ */
+function span(n: number) {
+  return n * CELL - GAP;
+}
 
 const shortMonth = new Intl.DateTimeFormat("en", {
   month: "short",
@@ -129,100 +146,114 @@ function ContributionGraph({
 }: React.ComponentProps<"div"> & { data: Activity[]; total: number }) {
   const weeks = useMemo(() => toGrid(data), [data]);
   const months = useMemo(() => getMonthLabels(weeks), [weeks]);
-  const width = weeks.length * CELL - GAP;
-  const height = LABEL_H + 7 * CELL - GAP;
-
-  const anchorRef = useRef<SVGRectElement | null>(null);
-  const [armed, setArmed] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [tooltipText, setTooltipText] = useState("");
-
-  const arm = useCallback(() => setArmed(true), []);
-
-  const onPointerEnter = useCallback(
-    (e: React.PointerEvent<SVGRectElement>) => {
-      const date = e.currentTarget.dataset.date;
-      if (!date) {
-        return;
-      }
-      const count = Number(e.currentTarget.dataset.count);
-      anchorRef.current = e.currentTarget;
-      setTooltipText(
-        `${count > 0 ? count : "No"} contributions on ${formatDate(date)}`
-      );
-      setOpen(true);
-    },
-    []
-  );
-
-  const onPointerLeave = useCallback(() => {
-    setOpen(false);
-  }, []);
+  // The viewBox is a fixed coordinate system and the `svg` is `w-full`, so the
+  // grid scales to whatever column it is dropped into rather than to a width
+  // hard-coded here. It used to compute to exactly 740, which silently matched
+  // the old `--container-content`; when that token moved to 644 the graph
+  // started overflowing. Nothing reads the token now, which is the point: it
+  // fits its parent, whatever that parent turns out to be.
+  const width = span(weeks.length);
 
   if (data.length === 0) {
     return null;
   }
 
   return (
-    <div
-      className={cn(
-        "not-typeset flex w-max max-w-full flex-col gap-xs text-fg-3",
-        className
-      )}
-      data-slot="contribution-graph"
-      onPointerEnter={arm}
-      {...props}
-    >
-      <div className="max-w-full overflow-x-auto overflow-y-hidden">
-        <svg
-          aria-hidden="true"
-          className="block overflow-visible"
-          height={height}
-          viewBox={`0 0 ${width} ${height}`}
-          width={width}
-        >
-          <g className="fill-current">
-            {months.map(({ label, x }) => (
-              <text dominantBaseline="hanging" key={x} x={x}>
-                {label}
-              </text>
-            ))}
-          </g>
-          {weeks.map((week, wi) =>
-            week.map((activity, di) => {
-              if (!activity) {
-                return null;
-              }
+    // No delay either way: the graph is 365 targets in a small area and the
+    // tooltip is the only way to read one, so a 600ms wait (Base UI's default)
+    // makes the whole grid feel unresponsive.
+    <Tooltip.Provider closeDelay={0} delay={0}>
+      <div
+        className={cn(
+          "not-typeset flex w-full flex-col gap-xs text-fg-3",
+          className
+        )}
+        data-slot="contribution-graph"
+        {...props}
+      >
+        {/* Month labels are HTML, not `<text>` inside the svg. Anything in the
+          svg scales with it, so at a 644px column they would render at 13px and
+          fall off the type scale; out here they stay at the one size the site
+          has, and position proportionally instead. */}
+        <div className="relative h-5 w-full">
+          {months.map(({ label, x }) => (
+            <span
+              className="absolute top-0 leading-none"
+              key={x}
+              style={{ left: `${(x / width) * 100}%` }}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
 
-              return (
-                <rect
-                  className={LEVELS[activity.level]}
-                  data-count={activity.count}
-                  data-date={activity.date}
-                  height={BLOCK}
-                  key={activity.date}
-                  onPointerEnter={onPointerEnter}
-                  onPointerLeave={onPointerLeave}
-                  rx={RADIUS}
-                  ry={RADIUS}
-                  width={BLOCK}
-                  x={CELL * wi}
-                  y={LABEL_H + CELL * di}
-                />
-              );
-            })
+        <div className="w-full">
+          <svg
+            aria-hidden="true"
+            className="block h-auto w-full overflow-visible"
+            preserveAspectRatio="xMinYMin meet"
+            viewBox={`0 0 ${width} ${span(ROWS)}`}
+          >
+            {weeks.map((week, wi) =>
+              week.map((activity, di) => {
+                if (!activity) {
+                  return null;
+                }
+
+                return (
+                  <Tooltip.Trigger
+                    handle={cellTooltip}
+                    key={activity.date}
+                    payload={activity}
+                    render={
+                      <rect
+                        className={LEVELS[activity.level]}
+                        height={BLOCK}
+                        // The block is `BLOCK` wide but hit-tests as the full
+                        // `CELL`. A transparent stroke of `GAP` sits half in and
+                        // half out, so it reaches exactly to the midpoint of the
+                        // gutter on every side and neighbouring cells meet with
+                        // nothing between them. `pointer-events="all"` is what
+                        // makes an unpainted stroke count for hit testing; the
+                        // default only tests what is visibly painted.
+                        pointerEvents="all"
+                        rx={RADIUS}
+                        ry={RADIUS}
+                        stroke="transparent"
+                        strokeWidth={GAP}
+                        width={BLOCK}
+                        x={CELL * wi}
+                        y={CELL * di}
+                      />
+                    }
+                  />
+                );
+              })
+            )}
+          </svg>
+        </div>
+
+        <Tooltip.Root handle={cellTooltip}>
+          {({ payload }) => (
+            <Tooltip.Portal>
+              <Tooltip.Positioner
+                className="isolate z-50"
+                side="top"
+                sideOffset={4}
+              >
+                <Tooltip.Popup className="rounded-md bg-fg-1 px-sm py-xs text-bg-1">
+                  {payload
+                    ? `${payload.count > 0 ? payload.count : "No"} contributions on ${formatDate(payload.date)}`
+                    : null}
+                </Tooltip.Popup>
+              </Tooltip.Positioner>
+            </Tooltip.Portal>
           )}
-        </svg>
+        </Tooltip.Root>
+
+        <p>{formatNumber(total)} contributions in the last year</p>
       </div>
-
-      {armed && (
-        <Suspense fallback={null}>
-          <Tooltip anchor={anchorRef} open={open} text={tooltipText} />
-        </Suspense>
-      )}
-
-      <p>{formatNumber(total)} contributions in the last year</p>
-    </div>
+    </Tooltip.Provider>
   );
 }
 
@@ -231,9 +262,12 @@ function ContributionGraph({
 function ContributionGraphSkeleton() {
   return (
     <div className="flex max-w-full flex-col gap-xs">
+      {/* The grid scales with its column, so its height is a ratio rather than
+          a number. `h-5` matches the month label row above it. */}
+      <div className="h-5" />
       <Skeleton
         className="w-full"
-        style={{ height: LABEL_H + 7 * CELL - GAP }}
+        style={{ aspectRatio: `${span(WEEKS)} / ${span(ROWS)}` }}
       />
       <Skeleton className="h-4 w-64" />
     </div>
