@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GithubIcon, VercelIcon } from "~/components/icons";
-import { Install, InstallLink } from "~/components/ui/install";
+import { Install, InstallLink } from "~/components/install";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { getSkillBySlug } from "~/server/skills";

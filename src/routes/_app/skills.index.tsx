@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "~/components/page-header";
 import { SkillList } from "~/components/skill-list";
-import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
 import { getSkillList } from "~/server/skills";
 

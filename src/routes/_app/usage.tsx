@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "~/components/page-header";
 import { Meter } from "~/components/ui/meter";
-import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import {

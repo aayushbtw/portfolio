@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
+import type { Activity } from "~/components/contribution-graph";
 import type { PinnedRepo } from "~/components/project-list";
-import type { Activity } from "~/components/ui/contribution-graph";
 import { config } from "~/lib/config";
 
 // octo is a separate service that proxies GitHub. Both endpoints degrade to

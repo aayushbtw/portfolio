@@ -17,7 +17,7 @@ const links: {
   { name: "Usage", to: "/usage", key: "U" },
 ];
 
-export function Navbar() {
+function Navbar() {
   const navigate = useNavigate();
   const { trigger } = useHaptics();
 
@@ -51,3 +51,5 @@ export function Navbar() {
     </aside>
   );
 }
+
+export { Navbar };

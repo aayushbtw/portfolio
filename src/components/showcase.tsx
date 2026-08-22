@@ -1,13 +1,10 @@
 import { Image } from "@unpic/react";
 
-export function Showcase({
-  className,
-  ...props
-}: React.ComponentProps<"figure">) {
+function Showcase({ className, ...props }: React.ComponentProps<"figure">) {
   return <figure className={className} data-slot="showcase" {...props} />;
 }
 
-export function ShowcaseImage({
+function ShowcaseImage({
   src,
   alt = "",
   height,
@@ -41,7 +38,7 @@ export function ShowcaseImage({
   );
 }
 
-export function ShowcaseCaption({
+function ShowcaseCaption({
   className,
   ...props
 }: React.ComponentProps<"figcaption">) {
@@ -49,3 +46,5 @@ export function ShowcaseCaption({
     <figcaption className={className} data-slot="showcase-caption" {...props} />
   );
 }
+
+export { Showcase, ShowcaseCaption, ShowcaseImage };

@@ -20,7 +20,7 @@ const LayoutContext = createContext<LayoutContextValue>({
   setRight: () => undefined,
 });
 
-export function LayoutProvider({ children }: { children: ReactNode }) {
+function LayoutProvider({ children }: { children: ReactNode }) {
   const [left, setLeft] = useState<ReactNode>(null);
   const [right, setRight] = useState<ReactNode>(null);
   return (
@@ -30,15 +30,15 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useLeftColumn() {
+function useLeftColumn() {
   return useContext(LayoutContext).left;
 }
 
-export function useRightColumn() {
+function useRightColumn() {
   return useContext(LayoutContext).right;
 }
 
-export function LeftColumn({ children }: { children: ReactNode }) {
+function LeftColumn({ children }: { children: ReactNode }) {
   const { setLeft } = useContext(LayoutContext);
   useEffect(() => {
     setLeft(children);
@@ -47,7 +47,7 @@ export function LeftColumn({ children }: { children: ReactNode }) {
   return null;
 }
 
-export function RightColumn({ children }: { children: ReactNode }) {
+function RightColumn({ children }: { children: ReactNode }) {
   const { setRight } = useContext(LayoutContext);
   useEffect(() => {
     setRight(children);
@@ -55,3 +55,11 @@ export function RightColumn({ children }: { children: ReactNode }) {
   }, [children, setRight]);
   return null;
 }
+
+export {
+  LayoutProvider,
+  LeftColumn,
+  RightColumn,
+  useLeftColumn,
+  useRightColumn,
+};

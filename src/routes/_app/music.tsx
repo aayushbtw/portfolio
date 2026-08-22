@@ -3,8 +3,8 @@ import { Await, createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
 import { useLive } from "~/components/now-playing";
+import { PageHeader } from "~/components/page-header";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
-import { PageHeader } from "~/components/ui/page-header";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import {

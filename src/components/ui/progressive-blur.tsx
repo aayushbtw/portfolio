@@ -13,7 +13,7 @@ interface ProgressiveBlurProps {
   position?: "top" | "bottom";
 }
 
-export function ProgressiveBlur({
+function ProgressiveBlur({
   className,
   position = "bottom",
 }: ProgressiveBlurProps) {
@@ -47,3 +47,5 @@ export function ProgressiveBlur({
     </div>
   );
 }
+
+export { ProgressiveBlur };

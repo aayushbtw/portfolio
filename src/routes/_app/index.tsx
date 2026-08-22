@@ -1,5 +1,9 @@
 import { Await, createFileRoute } from "@tanstack/react-router";
 import {
+  ContributionGraph,
+  ContributionGraphSkeleton,
+} from "~/components/contribution-graph";
+import {
   GithubIcon,
   MailIcon,
   NetisionIcon,
@@ -7,10 +11,6 @@ import {
 } from "~/components/icons";
 import { PostList } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
-import {
-  ContributionGraph,
-  ContributionGraphSkeleton,
-} from "~/components/ui/contribution-graph";
 import { ListSkeleton } from "~/components/ui/list";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";

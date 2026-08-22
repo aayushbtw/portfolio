@@ -6,7 +6,7 @@ interface Heading {
   text: string;
 }
 
-export function TableOfContents({ headings }: { headings: Heading[] }) {
+function TableOfContents({ headings }: { headings: Heading[] }) {
   const activeId = useActiveHeading(headings);
 
   return (
@@ -101,3 +101,5 @@ function useActiveHeading(headings: Heading[]) {
     () => headings[0]?.id ?? ""
   );
 }
+
+export { TableOfContents };

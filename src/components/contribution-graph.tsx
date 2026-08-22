@@ -2,8 +2,8 @@
 
 import { Tooltip } from "@base-ui/react/tooltip";
 import { useMemo } from "react";
+import { Skeleton } from "~/components/ui/skeleton";
 import { cn, formatNumber } from "~/lib/utils";
-import { Skeleton } from "./skeleton";
 
 /**
  * One handle shared by every cell, so a single `Tooltip.Root` renders whichever
@@ -12,7 +12,7 @@ import { Skeleton } from "./skeleton";
  */
 const cellTooltip = Tooltip.createHandle<Activity>();
 
-export interface Activity {
+interface Activity {
   count: number;
   date: string;
   level: number;
@@ -250,4 +250,4 @@ function ContributionGraphSkeleton() {
   );
 }
 
-export { ContributionGraph, ContributionGraphSkeleton };
+export { type Activity, ContributionGraph, ContributionGraphSkeleton };

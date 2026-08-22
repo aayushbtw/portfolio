@@ -12,7 +12,7 @@ import {
   Showcase,
   ShowcaseCaption,
   ShowcaseImage,
-} from "~/components/ui/showcase";
+} from "~/components/showcase";
 
 // `shell` already answers to bash, sh, zsh, cmd and console. Register another
 // only once a fence in content/ uses it: each adds a tokenizer to the server

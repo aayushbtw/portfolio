@@ -1,6 +1,6 @@
 type IconProps = React.ComponentProps<"svg">;
 
-export function NetisionIcon(props: IconProps) {
+function NetisionIcon(props: IconProps) {
   return (
     <svg
       fill="none"
@@ -51,7 +51,7 @@ export function NetisionIcon(props: IconProps) {
   );
 }
 
-export function GithubIcon(props: IconProps) {
+function GithubIcon(props: IconProps) {
   return (
     <svg
       aria-hidden="true"
@@ -68,7 +68,7 @@ export function GithubIcon(props: IconProps) {
   );
 }
 
-export function TwitterIcon(props: IconProps) {
+function TwitterIcon(props: IconProps) {
   return (
     <svg
       aria-hidden="true"
@@ -85,7 +85,7 @@ export function TwitterIcon(props: IconProps) {
   );
 }
 
-export function MailIcon(props: IconProps) {
+function MailIcon(props: IconProps) {
   return (
     <svg
       aria-hidden="true"
@@ -106,7 +106,7 @@ export function MailIcon(props: IconProps) {
   );
 }
 
-export function VercelIcon(props: IconProps) {
+function VercelIcon(props: IconProps) {
   return (
     <svg
       aria-hidden="true"
@@ -122,3 +122,5 @@ export function VercelIcon(props: IconProps) {
     </svg>
   );
 }
+
+export { GithubIcon, MailIcon, NetisionIcon, TwitterIcon, VercelIcon };

@@ -9,7 +9,7 @@ function NavListIndicator() {
   );
 }
 
-export function NavList({
+function NavList({
   className,
   children,
   ...props
@@ -28,3 +28,5 @@ export function NavList({
     </ul>
   );
 }
+
+export { NavList };

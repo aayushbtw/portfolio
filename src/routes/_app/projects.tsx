@@ -1,7 +1,7 @@
 import { Await, createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "~/components/page-header";
 import { ProjectList } from "~/components/project-list";
 import { ListSkeleton } from "~/components/ui/list";
-import { PageHeader } from "~/components/ui/page-header";
 import { seo } from "~/lib/seo";
 import { getProjectList } from "~/server/octo";
 
