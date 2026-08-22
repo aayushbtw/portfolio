@@ -75,11 +75,11 @@ Two steps, and which one you want follows from what the thing is.
 
 ## Layout
 
-The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). About 85 characters at 15px. 520 was tried first and read as too narrow next to the code blocks in a post; 740 ran long enough that the eye hunted for the start of the next line.
+The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). About 86 characters at 15px, which is wider than the 60-68 prose wants; see TODO.md. 520 was tried first and read as too narrow next to the code blocks in a post; 740 ran long enough that the eye hunted for the start of the next line.
 
-List rows are `py-md` with a `border-b` hairline and no border on the last row. The row is three parts — date left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
+List rows are `py-sm`, negatively inset by `-mx-md` so the hover surface bleeds past the text, with no divider between them. A post row is three parts — year left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
 
-Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit outside it: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on `eq-bar`, which is 2px wide and would otherwise render as a lozenge.
+Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit outside it: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on the now-playing eq bars, which are 2px wide and would otherwise render as lozenges.
 
 `--radius` in `:root` points at `md` and is what typeset reads for code blocks and tables.
 
@@ -88,17 +88,24 @@ Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit out
 **Four axes, two or three tokens each, and one default that everything inherits.** The default sits on `body` and is the only place any axis is set globally:
 
 ```css
-@apply text-body font-regular leading-body tracking-normal;
+@apply text-base font-normal leading-normal tracking-normal;
 ```
 
 | Axis     | Tokens                                                        |
 | -------- | ------------------------------------------------------------- |
-| Size     | `text-body` 15px · `text-compact` 14px                        |
-| Leading  | `leading-body` 18px · `leading-prose` 24px · `leading-tight` 13.5px |
+| Size     | `text-base` 15px · `text-sm` 14px                             |
+| Leading  | `leading-normal` 18px · `leading-relaxed` 24px · `leading-tight` 13.5px |
 | Tracking | `tracking-normal` · `tracking-tight` -0.1px                   |
-| Weight   | `font-regular` 400 · `font-bold` 450, `h1` only               |
+| Weight   | `font-normal` 400 · `font-bold` 450, `h1` only                |
 
-**Leading defaults tight, not loose.** `leading-body` is 18px because almost everything here is one line long: a nav item, a list row, a stat, a label, a heading. A 24px line box around a single line is 24px of nothing, and it makes a column of rows read as loose rather than as a set. `leading-prose` (24px) is the opt-up, and typeset gives it to `p` — the one element that reliably wraps, where the extra leading is what makes the next line findable from the end of the last. `leading-tight` (13.5px) goes on `h1`, so a page title that wraps reads as one object rather than two lines.
+Every one of those reuses a stock Tailwind name, with the site's value behind
+it. That is deliberate: tailwind-merge groups a class by guessing from its name,
+so a bespoke name like `text-compact` was read as a *colour* and silently
+deleted by the `text-fg-4` beside it in `cn()`. Stock names group correctly for
+free. The spacing scale is the one exception, and it pays for it with an entry
+in `extendTailwindMerge` at [lib/utils.ts](src/lib/utils.ts).
+
+**Leading defaults tight, not loose.** `leading-normal` is 18px because almost everything here is one line long: a nav item, a list row, a stat, a label, a heading. A 24px line box around a single line is 24px of nothing, and it makes a column of rows read as loose rather than as a set. `leading-relaxed` (24px) is the opt-up, and typeset gives it to `p` — the one element that reliably wraps, where the extra leading is what makes the next line findable from the end of the last. `leading-tight` (13.5px) goes on `h1`, so a page title that wraps reads as one object rather than two lines.
 
 **Weight is not a hierarchy tool.** `font-medium` doesn't compile, typeset's entire 600/500 ladder was deleted rather than remapped, and `<strong>` carries no visual change at all. Hierarchy is colour: a title is black, the copy under it is `fg-4`, a label beside it is `fg-3`.
 
@@ -106,13 +113,13 @@ Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit out
 
 **`tracking-tight` belongs to the title block** — the `h1` and the date directly under it, and nothing else. Those two lines are read as a unit rather than as running copy, and pulling them in is what makes them read as one object. Body copy stays `tracking-normal`: tracking a wrapping paragraph fights the reading it's meant to help.
 
-Each axis is cleared with a `--<axis>-*: initial` reset before it's redeclared, so Tailwind's own steps don't survive: `text-sm`, `tracking-wide`, `leading-relaxed` and `font-medium` don't compile. The resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears and Biome's property sorter moves those lines to the end of whatever block they're in.
+Each axis is cleared with a `--<axis>-*: initial` reset before it's redeclared, so Tailwind's own steps don't survive: `text-3xl`, `tracking-wide`, `font-medium` and `rounded-3xl` don't compile. The names the site *does* declare keep working, and only those. `rounded-full` and `rounded-none` survive the radius reset, being static utilities rather than steps on a scale. The resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears and Biome's property sorter moves those lines to the end of whatever block they're in.
 
 **The one hole is `leading-<number>`.** It reads `--spacing`, not `--leading-*`, so `leading-6` compiles regardless, and clearing `--spacing` would take the spacing scale with it. That one is convention.
 
 **Leading is not bundled into the size tokens.** Either leading can sit on either size, so pairing them would have made the choice for you. A departure names the single axis it changes.
 
-`text-compact` is the secondary line: a list item's description, a meter legend, a post's date, the now-playing card. In every case it sits directly under the thing it belongs to and is read with it, never instead of it. Anything read on its own is `text-body`.
+`text-sm` is the secondary line: a list item's description, a meter legend, a post's date, the now-playing card. In every case it sits directly under the thing it belongs to and is read with it, never instead of it. Anything read on its own is `text-base`.
 
 The one element that sets its own size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full size stops reading as a marker.
 
@@ -156,17 +163,28 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | Utility            | What it is                                                     |
 | ------------------ | -------------------------------------------------------------- |
 | `skip-link`        | Off-screen until focused, then a real target top-left. One per document |
-| `animated-link`    | Inline prose link: `fg-2`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
+| `animated-link`    | Inline prose link: `fg-1`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
-| `indicator-spring` | Springy sliding position indicator                               |
-| `indicator-brand`  | Brand gradient fill for that indicator                           |
-| `eq-bar`           | Animated equalizer bar (now-playing)                             |
+| `indicator-brand`  | Brand gradient fill for the nav indicator and meter segments      |
+
+**A `@utility` earns its place two ways: it lands on tags the caller chooses, or
+it needs selectors a `className` can't express.** `row-link` sits on a `Link`, an
+`a` and a `div`; `nav-link` on a `Link` and an `a`; `indicator-brand` on a nav
+span and a meter segment. That is the first kind. `icon-link` and `skip-link`
+each have a single call site and stay anyway: one needs descendant rules for its
+`svg`, the other a twelve-variant `focus-visible:` chain, and a stylesheet says
+both better than JSX can.
+
+Anything else belongs in the component that renders it. The eq bars and the nav
+indicator were utilities once, each with exactly one consumer that was already a
+component — so the utility was a second name for the same thing in a different
+file, and the class list moved to where the markup lives.
 
 ## Page shape
 
-`_app/route.tsx` owns the frame: centered, `max-w-7xl`, three columns on `lg` (`1fr / 740px / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
+`_app/route.tsx` owns the frame: centered, `max-w-7xl`, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
 
 ```tsx
 <section>
@@ -194,7 +212,7 @@ Every page but home opens with `<PageHeader title={title} />`, which owns the `h
 
 ## Components
 
-`ui/` holds the primitives: `PageHeader`, `List`, `ListItem`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ContributionGraph`, `ProgressiveBlur`, `Install`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
+`ui/` holds the primitives: `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ContributionGraph`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
 
 Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it doesn't reach into `usage.json` to work out a percentage. When a figure needs page-specific arithmetic, do it in the route and pass the result down.
 
@@ -219,7 +237,7 @@ There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so eve
 
 - Upstream's type declarations are stripped at the source — every `font-size`, `line-height`, `letter-spacing` and `font-weight` — each removal commented in place so the file reads as its own history.
 - It sets its own `--typeset-*` vars, pointed straight at the site's fonts.
-- A block at the bottom holds what the site adds on top: the colour guide per tag, the `h1` treatment, `p` at `leading-prose`, links as `animated-link`, heading anchors, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
+- A block at the bottom holds what the site adds on top: the colour guide per tag, the `h1` treatment, `p` at `leading-relaxed`, links as `animated-link`, heading anchors, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
 
 That bottom block **must** stay in `@layer components` and after the vendored rules in source order. Same layer and later means it beats them, while a utility on the element still beats it; unlayered, it would outrank utilities instead.
 

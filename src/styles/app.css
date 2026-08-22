@@ -65,7 +65,8 @@
   --radius-sm: 0.375rem; /* 6px  buttons, fields, covers, skeletons */
   --radius-md: 0.5rem; /*   8px  rows, panels, media, tooltips */
 
-  /* Sized to the measure prose wants, around 68 characters. */
+  /* Runs ~86 characters at 15px, against the 60-68 prose wants. Narrowed from
+     740px (~99) and still wide; see TODO.md. */
   --container-content: 644px;
 
   --text-base: 15px;
