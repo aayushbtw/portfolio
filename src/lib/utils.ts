@@ -20,11 +20,9 @@ export function formatNumber(value: number) {
 }
 
 /**
- * Every date on the site is either a calendar day ("2026-03-27") or a UTC
- * instant. Both are parsed *and* formatted in UTC, so the server and the
- * browser produce the same string no matter which timezone either sits in.
- * Parsing a bare "2026-03-27" as local time is what makes a post drift a day
- * either way, and formatting in local time is what makes it drift back.
+ * Dates are parsed *and* formatted in UTC, so the server and the browser agree
+ * whatever timezone either sits in. Parsing a bare "2026-03-27" as local time
+ * is what makes a post drift a day either way.
  */
 export function toUtcDate(date: string) {
   return new Date(date.includes("T") ? date : `${date}T00:00:00Z`);

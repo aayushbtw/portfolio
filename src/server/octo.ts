@@ -4,9 +4,8 @@ import type { Activity } from "~/components/ui/contribution-graph";
 import { config } from "~/lib/config";
 
 // octo is a separate service that proxies GitHub. Both endpoints degrade to
-// `null` rather than throwing: if it is down, its own section says so and the
-// rest of the page still renders, instead of the loader rejecting and taking
-// the whole route with it.
+// `null` rather than throwing, so a rejected loader can't take a route down
+// when the service is.
 const USERNAME = config.socials.github;
 const BASE = "https://octo.aayush.cv";
 

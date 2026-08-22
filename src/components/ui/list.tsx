@@ -73,8 +73,7 @@ function ListSkeleton({
   return (
     <List>
       {/* Same box as `ListItem` minus the hover, so nothing shifts when the
-          real rows land. A placeholder that isn't the shape of the thing it
-          stands in for is worse than no placeholder. */}
+          real rows land. */}
       {Array.from({ length: rows }, (_, i) => `row-${i}`).map((key) => (
         <li className="-mx-md px-md py-sm" key={key}>
           <Skeleton className={cn("w-full", rowClassName ?? "h-5")} />

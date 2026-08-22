@@ -7,8 +7,7 @@ import {
   ListItemTitle,
 } from "~/components/ui/list";
 
-// The wire shape octo returns. It lives here rather than beside the fetch
-// because this is what consumes it, and a client component should not have to
+// The wire shape octo returns, declared here so a client component doesn't
 // import from a server-only module to name its own props.
 interface PinnedRepo {
   description: string;

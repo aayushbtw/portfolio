@@ -1,5 +1,3 @@
-// src/routes/robots[.]txt.ts
-
 import { createFileRoute } from "@tanstack/react-router";
 import { config } from "~/lib/config";
 

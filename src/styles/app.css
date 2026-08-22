@@ -6,19 +6,13 @@
 
 @import "./typeset.css";
 
-/* This block is what makes the tokens below the only ones that exist. Declaring
-   `--text-body` does not replace Tailwind's scale, it adds to it: without these
-   four lines `text-sm`, `text-3xl`, `leading-relaxed`, `tracking-widest` and
-   `font-medium` all still compile, silently, alongside the two or three tokens
-   this site actually wants. Each `*: initial` clears its namespace first.
+/* Declaring a token adds to Tailwind's scale rather than replacing it, so
+   without these four lines `text-3xl` and `font-medium` still compile silently
+   alongside the tokens below. `leading-<number>` can't be closed: it reads
+   `--spacing`, and clearing that takes the spacing scale with it.
 
-   The one namespace it can't close is `leading-<number>`, which reads
-   `--spacing` rather than `--leading-*`: `leading-6` compiles no matter what,
-   and clearing `--spacing` would take the whole spacing scale with it.
-
-   In a block of its own because a `*` reset has to come before what it clears,
-   and Biome's property sorter moves those lines to the end of whatever block
-   they sit in. */
+   Its own block because a `*` reset has to come before what it clears, and
+   Biome's property sorter moves those lines to the end of their block. */
 @theme {
   --text-*: initial;
   --leading-*: initial;
@@ -38,15 +32,13 @@
   --color-fg-3: oklch(from var(--color-black) l c h / 0.4);
   --color-fg-4: oklch(from var(--color-gray-600) l c h);
 
-  /* The inverted surface, and the only text colour that runs light on dark.
-     One user today (the graph tooltip), named so the second one doesn't
-     reinvent it out of `bg-fg-1 text-bg-1`. */
+  /* The only text colour that runs light on dark. Named so the next user
+     doesn't reinvent it out of `bg-fg-1 text-bg-1`. */
   --color-bg-contrast: oklch(from var(--color-gray-900) l c h);
   --color-fg-contrast: oklch(from var(--color-white) l c h);
 
   --color-border: oklch(from var(--color-gray-200) l c h);
-  /* One step up, for a boundary that has to read as a line rather than as a
-     hairline: the underline under a prose link. */
+  /* For a boundary that has to read as a line rather than a hairline. */
   --color-border-strong: oklch(from var(--color-gray-300) l c h);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
@@ -57,8 +49,7 @@
   --color-graph-3: oklch(from #30a14e l c h);
   --color-graph-4: oklch(from #216e39 l c h);
 
-  /* Spacing scale: 4, 8, 16, 24, 48, 96. Doubling to md, 1.5x to lg, then
-     doubling again. The only gaps, pads and margins there are. */
+  /* The only gaps, pads and margins there are. */
   --spacing-xs: calc(var(--spacing) * 1); /*  4px */
   --spacing-sm: calc(var(--spacing) * 2); /*  8px */
   --spacing-md: calc(var(--spacing) * 4); /* 16px */
@@ -66,70 +57,41 @@
   --spacing-xl: calc(var(--spacing) * 12); /* 48px */
   --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 
-  /* Radius. Two steps, and which one you want follows from what the thing is:
-     `sm` for a control you press or type into, `md` for a box that holds
-     other things. Nested boxes step down, so an `md` panel holds `sm` fields. */
+  /* `sm` for a control you press or type into, `md` for a box that holds other
+     things. Nested boxes step down: an `md` panel holds `sm` fields. */
   --radius-sm: 0.375rem; /* 6px  buttons, fields, covers, skeletons */
   --radius-md: 0.5rem; /*   8px  rows, panels, media, tooltips */
 
-  /* The content column: about 68 characters at 15px, which is the measure prose
-     wants. The old 740px ran to ~95 and made the eye hunt for the next line. */
+  /* Sized to the measure prose wants, around 68 characters. */
   --container-content: 644px;
 
-  /* Size. `body` is the default and is what every element on the site is at
-     today. `compact` is declared with no user yet: the one step down, for
-     whatever turns out to sit under the copy rather than in it. */
   --text-body: 15px;
   --text-compact: 14px;
 
-  /* Leading, deliberately not bundled into the size tokens: either leading can
-     sit on either size, and pairing them would have picked for you.
-
-     `body` (18px) is the default and is tight on purpose. Almost everything on
-     this site is one line long: a nav item, a list row, a stat, a label, a
-     heading. A 24px line box around a single line is 24px of nothing, and it
-     makes a column of rows read as loose rather than as a set.
-
-     `prose` (24px) is the opt-up, and typeset gives it to `p`. It is for text
-     that actually wraps, where the extra leading is what makes the start of the
-     next line findable from the end of the last.
-
-     `tight` (13.5px) is for a heading that wraps and has to read as one object
-     rather than as two lines. No user yet. */
+  /* Not bundled into the size tokens: either leading can sit on either size.
+     `body` is tight on purpose, because almost every line on this site is a
+     single line and a 24px box around one is 24px of nothing. `prose` is the
+     opt-up for text that wraps, and typeset gives it to `p`. */
   --leading-body: 18px;
   --leading-prose: 24px;
   --leading-tight: 13.5px;
 
-  /* Tracking. `normal` is the default, and is what one size buys: a tracking
-     curve corrects for size, and with one size there is nothing to correct
-     against.
-
-     `tight` belongs to the title block, the `h1` and the date directly under
-     it. Those two are the only lines on a page read as a unit rather than as
-     running copy, and pulling them in is what makes them read as one object.
-     Body copy stays `normal`: tracking a wrapping paragraph fights the reading
-     it is supposed to help. */
+  /* A tracking curve corrects for size, and with one size there is nothing to
+     correct against. `tight` belongs to the title block alone: tracking a
+     wrapping paragraph fights the reading it is supposed to help. */
   --tracking-normal: normal;
   --tracking-tight: -0.1px;
 
-  /* Weight. `regular` is the default and carries the whole site; hierarchy is
-     otherwise colour, not weight. A title is black, the copy under it is
-     black/45, a label beside it is black/40, and that ladder is enough because
-     nothing here is long enough to need scanning.
-
-     `bold` (450) has exactly one user: the `h1`. Four steps is not a weight
-     change so much as an optical correction, and it is what stops a page title
-     from disappearing into the copy when it is the same size and family as
-     everything under it. Reaching for it anywhere else is the signal that the
-     colour step above it is not doing its job. */
+  /* Hierarchy is colour, not weight. `bold` is an optical correction rather
+     than a weight change: it stops the `h1` from disappearing into copy of the
+     same size and family. Reaching for it elsewhere means the colour step above
+     it is not doing its job. */
   --font-weight-regular: 400;
   --font-weight-bold: 450;
 }
 
-/* The shadcn variable names, pointed at this site's tokens. Not typeset's own
-   contract, which it now sets for itself: these are the generic names anything
-   from that registry reads, and `--color-ring` also feeds `:focus-visible`
-   below. */
+/* The generic names anything from the shadcn registry reads, pointed at this
+   site's tokens. `--color-ring` also feeds `:focus-visible` below. */
 :root {
   --color-foreground: var(--color-fg-1);
   --color-muted-foreground: var(--color-fg-3);
@@ -178,9 +140,8 @@
   @apply flex items-center gap-md;
 }
 
-/* Off-screen until tabbed to, then a real target in the top-left corner. The
-   nav is a sticky sidebar with six links, so keyboard users otherwise walk the
-   whole thing on every page. */
+/* The nav is a sticky sidebar, so keyboard users otherwise walk the whole
+   thing on every page. */
 @utility skip-link {
   @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:left-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
 }
@@ -198,11 +159,9 @@
   }
 
   html {
-    /* The page is light-only for now. Saying so keeps native controls and the
-       scrollbar from being themed dark by the OS against a white page. */
     scrollbar-gutter: stable;
-    /* The page is light-only for now. Saying so keeps native controls and the
-       scrollbar from being themed dark by the OS against a white page. */
+    /* Light-only for now. Saying so keeps the OS from theming native controls
+       and the scrollbar dark against a white page. */
     color-scheme: light;
   }
 
@@ -212,29 +171,23 @@
     @apply border-border outline-border;
   }
 
-  /* Kills the 300ms double-tap delay on things you tap, without disabling
-     double-tap zoom on the content itself. */
+  /* Kills the 300ms double-tap delay without disabling zoom on the content. */
   :where(a, button, summary, input, select, textarea, label) {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* The rule above paints every outline at `border`, which is 1.24:1 and
-     invisible as a focus ring. Keyboard focus overrides it with `ring`, and
-     hangs off the pseudo-class rather than a utility so nothing has to opt in.
-     The offset keeps it clear of the element's own border and of a hovered
-     row's `bg-2`. */
+  /* The rule above paints every outline at `border`, which is too faint to
+     read as a focus ring. On the pseudo-class, not a utility, so nothing has
+     to opt in. */
   :focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
   }
 
-  /* Every animation here is decoration: hover fades, the press scale, the
-     springy nav indicator, the now-playing bars. None of it carries meaning
-     the static state doesn't, so reduced motion switches it off outright
-     rather than shortening it. Nothing uses `animation-fill-mode`, so each
-     element settles on its own base style: the eq bars stand at full height,
-     skeletons sit at full opacity. */
+  /* Every animation here is decoration, so reduced motion switches it off
+     outright rather than shortening it. Nothing uses `animation-fill-mode`, so
+     each element settles on its own base style. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

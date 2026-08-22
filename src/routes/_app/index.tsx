@@ -19,9 +19,8 @@ import { getContributions, getProjectList } from "~/server/octo";
 import { getPostList } from "~/server/posts";
 
 export const Route = createFileRoute("/_app/")({
-  // Only the post list is awaited. It reads local content, so it is free; the
-  // two octo calls are handed over as promises and stream in behind skeletons
-  // rather than holding the whole page on a third-party service.
+  // Only the post list is awaited: it reads local content. The octo calls are
+  // handed over as promises and stream in behind skeletons.
   loader: async () => ({
     contributions: getContributions(),
     projects: getProjectList(),

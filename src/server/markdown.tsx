@@ -14,10 +14,9 @@ import {
   ShowcaseImage,
 } from "~/components/ui/showcase";
 
-// `shell` already answers to bash, sh, zsh, cmd and console. Register a language
-// here only once a fence in content/ actually uses it: every one adds a
-// tokenizer to the server bundle. Built once: `createHighlighter` compiles a
-// registry, so calling it per render would rebuild it every time.
+// `shell` already answers to bash, sh, zsh, cmd and console. Register another
+// only once a fence in content/ uses it: each adds a tokenizer to the server
+// bundle. Built once, because `createHighlighter` compiles a registry.
 const highlighter = createHighlighter({ languages: [shell] });
 
 const highlightCode = createTanStackMarkdownHighlighter(highlighter);
@@ -29,8 +28,8 @@ function transformComponent(node: ComponentNode): ComponentNode {
   return { ...node, tagName: `md-${node.name}`, properties: node.attributes };
 }
 
-// One array, shared by every parse: the renderer has to be handed the same
-// extensions the document was parsed with.
+// The renderer has to be handed the same extensions the document was parsed
+// with.
 const extensions = [
   commentComponentsExtension({ transformComponent }),
   headingCollectionExtension(),
@@ -67,9 +66,9 @@ const components = {
   "md-showcase-caption": ShowcaseCaption,
 } satisfies MarkdownComponents;
 
-// Parsed once per file at module scope in `~/server/content`, never per render.
+// Called once per file at module scope in `~/server/content`, never per render.
 // The document carries its own frontmatter and headings, so nothing downstream
-// has to read the source text again.
+// reads the source text again.
 function parseContent(source: string): MarkdownDocument {
   return parseMarkdown(source, {
     extensions,

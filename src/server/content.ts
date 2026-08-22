@@ -3,18 +3,16 @@ import type { MarkdownDocument } from "@tanstack/markdown";
 import { z } from "zod";
 import { parseContent } from "~/server/markdown";
 
-// A skill's `description` is written to tell an agent when to invoke it, so it
-// runs on past where a reader stops caring. The first sentence is the part
-// addressed to a human, and it is what the list and the meta description show.
+// A skill's `description` is written for an agent and runs long. Its first
+// sentence is the part addressed to a human.
 const FIRST_SENTENCE_REGEX = /^.*?\.(?=\s|$)/s;
 const POST_SLUG_REGEX = /^.*\/(.+)\.md$/;
 const QUOTED_REGEX = /^(['"])(.*)\1$/;
 
-// Every frontmatter field on this site is a single-line string, so splitting on
-// the first colon covers all of them and keeps the `yaml` package (30KB gz) out
-// of the Worker. It does NOT handle nested maps, lists, multi-line values, `#`
-// comments, or typed scalars: `published: true` arrives as the string "true".
-// Add a field that needs any of those and this has to go back to a real parser.
+// Splitting on the first colon covers every field this site uses and keeps the
+// `yaml` package out of the Worker. It does NOT handle nested maps,
+// lists, multi-line values, `#` comments, or typed scalars (`published: true`
+// arrives as "true"). A field needing any of those means a real parser.
 function parseFrontmatter(text: string): Record<string, string> {
   const fields: Record<string, string> = {};
   for (const line of text.split("\n")) {
@@ -28,9 +26,9 @@ function parseFrontmatter(text: string): Record<string, string> {
   return fields;
 }
 
-// Zod names the offending field but not the file, and these throw during
-// prerender where the stack points at the glob rather than the content. The path
-// has to be in the message or a bad post is a scavenger hunt.
+// Zod names the offending field but not the file, and the prerender stack
+// points at the glob rather than the content, so the path has to be in the
+// message.
 function collect<TFrontmatter, TEntry>(
   files: Record<string, string>,
   schema: z.ZodType<TFrontmatter>,
@@ -53,10 +51,9 @@ function collect<TFrontmatter, TEntry>(
   });
 }
 
-// Vite inlines every match at build time. That is the requirement, not a
-// convenience: the Worker has no filesystem to read content/ from at runtime.
-// Both argument literals must stay inline; Vite parses this call statically and
-// rejects a shared options constant.
+// Vite inlines every match at build time, which is required: the Worker has no
+// filesystem at runtime. Both argument literals must stay inline, since Vite
+// parses this call statically and rejects a shared options constant.
 const postFiles = import.meta.glob<string>("/content/posts/*.md", {
   eager: true,
   import: "default",

@@ -1,12 +1,9 @@
 import { cn } from "~/lib/utils";
 
 /**
- * A row of peer figures. Every `Stat` inside shares one treatment, because the
- * whole point of a strip is that its members are comparable: the moment one
- * gets a bigger value or a longer label it must not get bigger type.
- *
- * The column counts are tuned for four peers. Pass `className` for another
- * shape rather than adding a prop.
+ * A row of peer figures, all sharing one treatment: a longer value or label
+ * must not buy a `Stat` bigger type. Pass `className` for a shape the default
+ * column counts don't cover, rather than adding a prop.
  */
 function StatStrip({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -22,9 +19,8 @@ function StatStrip({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 /**
- * Label, value, and an optional subordinate detail. The value sits at `md`
- * rather than a display size on purpose: several of these on one page are
- * secondary to whatever single figure the page is actually about.
+ * The value sits at `md` rather than a display size: several of these on one
+ * page are secondary to whatever single figure the page is about.
  */
 function Stat({
   label,

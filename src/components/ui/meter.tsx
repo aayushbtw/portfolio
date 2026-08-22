@@ -9,12 +9,9 @@ interface MeterSegment {
 
 /**
  * One horizontal bar, filled to `value` percent of the track and split into
- * segments that divide that fill.
- *
- * Every bar in a group must be given its `value` on one shared scale, or the
- * lengths compare things that aren't comparable. The bar carries no text: it
- * is `aria-hidden` because `MeterLegend` states the same numbers in words, and
- * two announcements of one fact is worse than none.
+ * segments dividing that fill. Every bar in a group must take its `value` on
+ * one shared scale, or the lengths compare things that aren't comparable.
+ * `aria-hidden` because `MeterLegend` states the same numbers in words.
  */
 function Meter({
   className,
@@ -31,9 +28,8 @@ function Meter({
       className={cn("h-1.5 overflow-hidden rounded-full bg-bg-2", className)}
       data-slot="meter"
     >
-      {/* `gap-px` is off the spacing scale on purpose: it is a hairline that
-          keeps two adjacent shades from reading as one segment, tuned to the
-          bar rather than to a step. Same exemption as an optical nudge. */}
+      {/* `gap-px` is off the spacing scale: a hairline tuned to the bar, so
+          two adjacent shades don't read as one segment. */}
       <div
         className="flex h-full gap-px overflow-hidden rounded-full"
         style={{ width: `${value}%` }}

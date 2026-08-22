@@ -13,9 +13,8 @@ function sortedPosts() {
   );
 }
 
-// Plain data, not a rendered element. `allPosts` is local content with no
-// network behind it, so there is no latency to stream around and no heavy
-// renderer to keep off the client. `PostList` is an ordinary component.
+// Plain data, not a rendered element: `allPosts` is local content with no
+// latency to stream around and no heavy renderer to keep off the client.
 const postListFn = createServerFn({ method: "GET" })
   .inputValidator((limit?: number) => limit)
   .handler(({ data: limit }): PostListItem[] =>

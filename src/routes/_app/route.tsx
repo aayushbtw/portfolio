@@ -13,9 +13,8 @@ function AppLayout() {
 
   return (
     <>
-      {/* Fixed, so it is a sibling of the grid rather than a column in it, and
-          scoped to this layout rather than the root: the 404 and error pages
-          render outside `_app` and have no business advertising a song. */}
+      {/* Scoped to this layout, not the root: the 404 and error pages render
+          outside `_app` and have no business advertising a song. */}
       <NowPlaying />
 
       <div className="typeset mx-auto max-w-7xl px-md py-xl sm:px-lg lg:grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-lg lg:pt-2xl">

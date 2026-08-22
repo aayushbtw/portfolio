@@ -1,5 +1,3 @@
-// src/routes/sitemap[.]xml.ts
-
 import { createFileRoute } from "@tanstack/react-router";
 import { config } from "~/lib/config";
 import { allPosts, allSkills } from "~/server/content";

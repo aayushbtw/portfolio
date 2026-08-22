@@ -6,14 +6,9 @@ import { cn, formatNumber } from "~/lib/utils";
 import { Skeleton } from "./skeleton";
 
 /**
- * One handle shared by every cell. Base UI's detached-trigger pattern: each
- * `rect` is a `Tooltip.Trigger` carrying a payload, and a single `Tooltip.Root`
- * renders whichever one is active. Hover, open/close timing, anchoring and
- * repositioning between adjacent cells are all the library's problem now.
- *
- * The payload is the raw activity, not a formatted string: building the
- * sentence here would run `Intl` formatting 365 times per render instead of
- * once when the tooltip actually opens.
+ * One handle shared by every cell, so a single `Tooltip.Root` renders whichever
+ * trigger is active. The payload stays raw: formatting it here would run `Intl`
+ * once per cell per render instead of once when the tooltip opens.
  */
 const cellTooltip = Tooltip.createHandle<Activity>();
 
@@ -27,16 +22,11 @@ const BLOCK = 12;
 const GAP = 2;
 const CELL = BLOCK + GAP;
 const RADIUS = 3;
-/** Days in a week: the grid's height in cells, always. */
 const ROWS = 7;
 /** A year of weeks, for the skeleton, which has no data to count. */
 const WEEKS = 53;
 
-/**
- * Span of `n` cells in viewBox units. Cells are square, so this measures either
- * axis: the grid is `span(weeks)` wide and `span(ROWS)` tall. The `- GAP` drops
- * the trailing gap after the last cell, which has nothing to separate it from.
- */
+/** Span of `n` cells in viewBox units, minus the trailing gap after the last. */
 function span(n: number) {
   return n * CELL - GAP;
 }
@@ -51,8 +41,7 @@ const longMonth = new Intl.DateTimeFormat("en", {
   timeZone: "UTC",
 });
 
-// "1st", "2nd", "3rd", "4th". `Intl.PluralRules` knows which suffix a number
-// takes; hand-rolling it means rediscovering that 11 through 13 are exceptions.
+// Hand-rolling the suffix means rediscovering that 11 through 13 are exceptions.
 const ordinalRules = new Intl.PluralRules("en", { type: "ordinal" });
 
 const ORDINAL_SUFFIX: Record<Intl.LDMLPluralRule, string> = {
@@ -72,9 +61,8 @@ const LEVELS = [
   "fill-graph-4",
 ];
 
-// The grid is built from calendar days, so every field is read in UTC. Reading
-// them locally would shift the whole grid by a day west of Greenwich, and the
-// graph is rendered on the server and hydrated on the client.
+// Every field is read in UTC: the graph renders on the server and hydrates on
+// the client, and local time would shift the grid a day west of Greenwich.
 function parseDate(date: string): Date {
   return new Date(`${date}T00:00:00Z`);
 }
@@ -146,12 +134,6 @@ function ContributionGraph({
 }: React.ComponentProps<"div"> & { data: Activity[]; total: number }) {
   const weeks = useMemo(() => toGrid(data), [data]);
   const months = useMemo(() => getMonthLabels(weeks), [weeks]);
-  // The viewBox is a fixed coordinate system and the `svg` is `w-full`, so the
-  // grid scales to whatever column it is dropped into rather than to a width
-  // hard-coded here. It used to compute to exactly 740, which silently matched
-  // the old `--container-content`; when that token moved to 644 the graph
-  // started overflowing. Nothing reads the token now, which is the point: it
-  // fits its parent, whatever that parent turns out to be.
   const width = span(weeks.length);
 
   if (data.length === 0) {
@@ -159,9 +141,7 @@ function ContributionGraph({
   }
 
   return (
-    // No delay either way: the graph is 365 targets in a small area and the
-    // tooltip is the only way to read one, so a 600ms wait (Base UI's default)
-    // makes the whole grid feel unresponsive.
+    // Base UI's default delay feels unresponsive across a grid this dense.
     <Tooltip.Provider closeDelay={0} delay={0}>
       <div
         className={cn(
@@ -171,10 +151,9 @@ function ContributionGraph({
         data-slot="contribution-graph"
         {...props}
       >
-        {/* Month labels are HTML, not `<text>` inside the svg. Anything in the
-          svg scales with it, so at a 644px column they would render at 13px and
-          fall off the type scale; out here they stay at the one size the site
-          has, and position proportionally instead. */}
+        {/* Labels are HTML, not `<text>`: anything inside the svg scales with
+          it and falls off the type scale. Out here they hold one size and
+          position proportionally. */}
         <div className="relative h-5 w-full">
           {months.map(({ label, x }) => (
             <span
@@ -209,13 +188,10 @@ function ContributionGraph({
                       <rect
                         className={LEVELS[activity.level]}
                         height={BLOCK}
-                        // The block is `BLOCK` wide but hit-tests as the full
-                        // `CELL`. A transparent stroke of `GAP` sits half in and
-                        // half out, so it reaches exactly to the midpoint of the
-                        // gutter on every side and neighbouring cells meet with
-                        // nothing between them. `pointer-events="all"` is what
-                        // makes an unpainted stroke count for hit testing; the
-                        // default only tests what is visibly painted.
+                        // A transparent `GAP` stroke straddles the gutter so
+                        // cells hit-test as a full `CELL` with no dead space
+                        // between them. `all` is what makes an unpainted stroke
+                        // count for hit testing.
                         pointerEvents="all"
                         rx={RADIUS}
                         ry={RADIUS}
@@ -257,13 +233,11 @@ function ContributionGraph({
   );
 }
 
-// Reserves the graph's exact height so the shell does not shift when the
-// contributions land.
+// Reserves the graph's exact height so nothing shifts when the data lands.
 function ContributionGraphSkeleton() {
   return (
     <div className="flex max-w-full flex-col gap-xs">
-      {/* The grid scales with its column, so its height is a ratio rather than
-          a number. `h-5` matches the month label row above it. */}
+      {/* Matches the month label row. */}
       <div className="h-5" />
       <Skeleton
         className="w-full"

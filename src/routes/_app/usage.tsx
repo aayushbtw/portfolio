@@ -18,11 +18,7 @@ export const Route = createFileRoute("/_app/usage")({
   component: UsagePage,
 });
 
-/**
- * Every share arrives from `scripts/token-usage.ts` already computed, to four
- * decimals. This page only decides how to print it, and `<1%` rather than a
- * rounded-down `0%`: input is 0.0049% of the total, which is small, not absent.
- */
+/** `<1%` rather than a rounded-down `0%`: input is small, not absent. */
 function formatShare(share: number) {
   return share < 1 ? "<1%" : `${Math.round(share)}%`;
 }
@@ -66,8 +62,7 @@ function UsagePage() {
 
       <section className="mt-xl">
         <h2>Last {usage.days.length} active days</h2>
-        {/* Each day's bar is a share of the busiest day, so the row lengths
-            compare to each other rather than to the year. */}
+        {/* Each bar is a share of the busiest day, not of the year. */}
         <div className="mt-sm flex flex-col gap-sm">
           {usage.days.map((day) => (
             <BarRow
@@ -91,14 +86,6 @@ function UsagePage() {
   );
 }
 
-/**
- * One sentence, no jargon: this page is for anyone who lands on it, not for
- * someone who already knows how prompt caching is billed, so the cache split
- * and the model split stay in the sections that are about them.
- *
- * It anchors the headline number rather than only stating it. 3.28B means
- * nothing on its own; a shelf of novels is something a reader can picture.
- */
 function Lead() {
   return (
     <p className="mt-lg">
@@ -116,13 +103,7 @@ function Figure({ children }: { children: React.ReactNode }) {
   return <span className="text-fg-1 tabular-nums">{children}</span>;
 }
 
-/**
- * Label, bar, value on one line. The bar is the only thing that stretches.
- *
- * Every bar is full `brand`. An earlier pass shaded them down the scale to tell
- * them apart, but a faded accent reads as disabled rather than as smaller, and
- * the label already says which row is which.
- */
+/** Every bar is full `brand`: a faded accent reads as disabled, not smaller. */
 function BarRow({
   label,
   percent,
