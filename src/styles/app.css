@@ -21,7 +21,7 @@
 }
 
 @theme {
-  --font-sans: "--apple-system", "Inter Variable", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter Variable", sans-serif;
   --font-mono: "JetBrains Mono Variable", monospace;
 
   --color-bg-1: oklch(from var(--color-white) l c h);
