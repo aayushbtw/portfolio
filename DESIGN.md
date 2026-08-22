@@ -112,7 +112,7 @@ Each axis is cleared with a `--<axis>-*: initial` reset before it's redeclared, 
 
 **Leading is not bundled into the size tokens.** Either leading can sit on either size, so pairing them would have made the choice for you. A departure names the single axis it changes.
 
-`text-compact` is declared with no user yet. Every element on the site is at `text-body`.
+`text-compact` is the secondary line: a list item's description, a meter legend, a post's date, the now-playing card. In every case it sits directly under the thing it belongs to and is read with it, never instead of it. Anything read on its own is `text-body`.
 
 The one element that sets its own size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full size stops reading as a marker.
 
@@ -147,7 +147,7 @@ That file now owns rendered markdown end to end: prose structure (flow margins, 
 
 The 404 title, the four usage stat values and every caption, code block and footnote used to differ in size and no longer do. Captions and code separate by family (`font-mono`), colour and rule instead.
 
-Pages here are short enough to take in at once, which is the bet the whole thing rests on. `text-compact` exists for when that bet stops paying: a page long enough to need scanning gets the second size, rather than a workaround for its absence.
+Pages here are short enough to take in at once, which is the bet the whole thing rests on. A page long enough to need scanning would need a second size in the copy itself, and that's the signal to add one rather than to work around its absence.
 
 ## Utilities
 

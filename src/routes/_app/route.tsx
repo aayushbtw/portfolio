@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useLeftColumn, useRightColumn } from "~/components/layout-provider";
 import { Navbar } from "~/components/navbar";
+import { NowPlaying } from "~/components/now-playing";
 
 export const Route = createFileRoute("/_app")({
   component: AppLayout,
@@ -11,14 +12,21 @@ function AppLayout() {
   const right = useRightColumn();
 
   return (
-    <div className="typeset mx-auto max-w-7xl px-md py-xl sm:px-lg lg:grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-lg lg:pt-2xl">
-      <div>{left ?? <Navbar />}</div>
+    <>
+      {/* Fixed, so it is a sibling of the grid rather than a column in it, and
+          scoped to this layout rather than the root: the 404 and error pages
+          render outside `_app` and have no business advertising a song. */}
+      <NowPlaying />
 
-      <main className="mx-auto w-full min-w-0 max-w-content" id="main">
-        <Outlet />
-      </main>
+      <div className="typeset mx-auto max-w-7xl px-md py-xl sm:px-lg lg:grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-lg lg:pt-2xl">
+        <div>{left ?? <Navbar />}</div>
 
-      <div>{right}</div>
-    </div>
+        <main className="mx-auto w-full min-w-0 max-w-content" id="main">
+          <Outlet />
+        </main>
+
+        <div>{right}</div>
+      </div>
+    </>
   );
 }

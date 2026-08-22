@@ -1,14 +1,13 @@
 import { IconArrowUpRight } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
 import { Await, createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
+import { useLive } from "~/components/now-playing";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
 import { PageHeader } from "~/components/ui/page-header";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import {
-  getLiveFn,
   getTopsFn,
   type SpotifyArtist,
   type SpotifyTrack,
@@ -29,21 +28,13 @@ export const Route = createFileRoute("/_app/music")({
 function MusicPage() {
   const { tops } = Route.useLoaderData();
 
-  const { data: live } = useQuery({
-    queryKey: ["spotify", "live"],
-    queryFn: () => getLiveFn(),
-    staleTime: 10_000,
-    refetchInterval: 10_000,
-    refetchIntervalInBackground: false,
-  });
+  // Same query key the shell's `NowPlaying` uses, so this reads the cache
+  // rather than opening a second poll against the service.
+  const { data: live } = useLive();
 
   return (
     <>
-      <PageHeader title={title}>
-        {live?.nowPlaying.isPlaying && live.nowPlaying.track ? (
-          <NowPlaying track={live.nowPlaying.track} />
-        ) : null}
-      </PageHeader>
+      <PageHeader title={title} />
 
       <Suspense fallback={<TopsSkeleton />}>
         <Await promise={tops}>
@@ -91,28 +82,6 @@ function MusicPage() {
         </List>
       </div>
     </>
-  );
-}
-
-function NowPlaying({ track }: { track: SpotifyTrack }) {
-  return (
-    <a
-      className="flex items-center gap-sm"
-      href={track.url}
-      rel="noopener"
-      target="_blank"
-    >
-      <span aria-hidden className="flex h-2.5 items-end gap-xs">
-        <span className="eq-bar" style={{ animationDelay: "0s" }} />
-        <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
-        <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
-      </span>
-      <span>
-        {track.artists[0].name}
-        <span className="text-fg-3"> — </span>
-        <span className="text-fg-2">{track.name}</span>
-      </span>
-    </a>
   );
 }
 
