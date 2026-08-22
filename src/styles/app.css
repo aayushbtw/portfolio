@@ -7,9 +7,11 @@
 @import "./typeset.css";
 
 /* Declaring a token adds to Tailwind's scale rather than replacing it, so
-   without these four lines `text-3xl` and `font-medium` still compile silently
-   alongside the tokens below. `leading-<number>` can't be closed: it reads
-   `--spacing`, and clearing that takes the spacing scale with it.
+   without these lines `text-3xl`, `font-medium` and `rounded-3xl` still
+   compile silently alongside the tokens below. `leading-<number>` can't be
+   closed: it reads `--spacing`, and clearing that takes the spacing scale with
+   it. `rounded-full` and `rounded-none` survive, being static utilities rather
+   than steps on the scale.
 
    Its own block because a `*` reset has to come before what it clears, and
    Biome's property sorter moves those lines to the end of their block. */
@@ -18,6 +20,7 @@
   --leading-*: initial;
   --tracking-*: initial;
   --font-weight-*: initial;
+  --radius-*: initial;
 }
 
 @theme {
