@@ -88,6 +88,20 @@
      it is not doing its job. */
   --font-weight-normal: 400;
   --font-weight-bold: 450;
+
+  /* In `@theme` rather than at top level so the keyframes are dropped when
+     nothing uses the animation. */
+  --animate-eq-bar: eq-bar 0.9s ease-in-out infinite;
+
+  @keyframes eq-bar {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 }
 
 /* The generic names anything from the shadcn registry reads, pointed at this
@@ -100,19 +114,8 @@
   --radius: var(--radius-md);
 }
 
-@keyframes eq-bar {
-  0%,
-  100% {
-    transform: scaleY(0.35);
-  }
-  50% {
-    transform: scaleY(1);
-  }
-}
-
 @utility eq-bar {
-  animation: eq-bar 0.9s ease-in-out infinite;
-  @apply inline-block w-0.5 h-3 bg-brand origin-bottom rounded-[1px];
+  @apply animate-eq-bar inline-block w-0.5 h-3 bg-brand origin-bottom rounded-[1px];
 }
 
 @utility indicator-spring {
