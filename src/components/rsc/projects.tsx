@@ -5,7 +5,9 @@ import { Suspense } from "react";
 import {
   List,
   ListItem,
+  ListItemDescription,
   ListItemHover,
+  ListItemTitle,
   ListSkeleton,
 } from "~/components/ui/list";
 import { fetchPinnedRepos } from "~/lib/octo";
@@ -29,8 +31,8 @@ async function ProjectList() {
             target="_blank"
           >
             <div className="flex min-w-0 flex-col">
-              <span className="text-fg-2 capitalize">{item.repo}</span>
-              <p>{item.description}</p>
+              <ListItemTitle className="capitalize">{item.repo}</ListItemTitle>
+              <ListItemDescription>{item.description}</ListItemDescription>
             </div>
 
             <ListItemHover>

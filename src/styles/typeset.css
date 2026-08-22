@@ -1,15 +1,29 @@
 /*
  * shadcn/typeset
  * https://ui.shadcn.com/docs/typeset.
+ *
+ * Diverged from upstream: every `font-size`, `line-height`, `letter-spacing`
+ * and `font-weight` is stripped out. The site has one size and one weight, so
+ * none of those declarations could say anything. This file owns prose
+ * *structure* (flow, rules, code frames, lists, tables); the site's defaults
+ * sit on the `<body>` element in __root.tsx and are not overridden here.
+ * `sup`/`sub` keep their size, which is positioning rather than hierarchy.
+ *
+ * Everything the site adds on top of prose lives at the bottom of this file
+ * rather than in app.css, so one file answers "what does rendered markdown look
+ * like" and app.css stays tokens, base and utilities.
+ *
+ * Re-pulling this component from the registry will undo all of it.
  */
 
 @layer components {
   .typeset {
-    --typeset-font-body: inherit;
-    --typeset-font-heading: var(--font-heading);
+    /* Changed: upstream defaults (`inherit`, `--font-heading`) pointed at names
+       this project doesn't define. Wired straight to the site's fonts; prose
+       and UI are the same family, so heading and body are the same var. */
+    --typeset-font-body: var(--font-sans);
+    --typeset-font-heading: var(--font-sans);
     --typeset-font-mono: var(--font-mono);
-    --typeset-size: 1em;
-    --typeset-leading: 1.75;
     --typeset-flow: 1.25em;
   }
 }
@@ -17,15 +31,9 @@
 @layer components {
   .typeset {
     font-family: var(--typeset-font-body);
-    font-size: calc(var(--typeset-size) * 1.125);
-    line-height: var(--typeset-leading);
     color: var(--color-foreground, currentColor);
     overflow-wrap: break-word;
     margin-trim: block-start;
-
-    @media (min-width: 48rem), print {
-      font-size: var(--typeset-size);
-    }
 
     --typeset-muted: var(
       --color-muted-foreground,
@@ -56,44 +64,27 @@
     &:where(h1, h2, h3, h4, h5, h6) {
       color: var(--color-foreground, currentColor);
       font-family: var(--typeset-font-heading);
-      font-weight: 600;
       margin-block-end: 0;
     }
-    &:where(h1) {
-      font-size: 1.75em;
-      line-height: 1.3;
+    &:where(h1, h3, h4, h5) {
       margin-block-start: var(--typeset-flow);
     }
+    /* The one heading that opens more air above it, so a top-level section
+       reads as a break rather than as the next paragraph. All the separation
+       there is now that the levels are the same size. */
     &:where(h2) {
-      font-size: 1.25em;
-      line-height: 1.4;
       margin-block-start: calc(var(--typeset-flow) * 1.4);
     }
-    &:where(h3) {
-      font-size: 1.125em;
-      line-height: 1.45;
-      margin-block-start: var(--typeset-flow);
-    }
-    &:where(h4) {
-      font-size: 1em;
-      line-height: 1.5;
-      margin-block-start: var(--typeset-flow);
-    }
     &:where(h5) {
-      font-size: 0.875em;
-      line-height: 1.5;
-      font-weight: 500;
       color: var(--typeset-muted);
-      margin-block-start: calc(var(--typeset-flow) / 0.875);
     }
+    /* Removed: `font-size: 0.8125em`, `line-height: 1.5`, `letter-spacing:
+       0.08em`, `text-transform: uppercase`. Upstream styles h6 as a shouty
+       eyebrow, which is the one thing this site removed everywhere else.
+       The margin lost its `/ 0.8125` divisor with the size it compensated for. */
     &:where(h6) {
-      font-size: 0.8125em;
-      line-height: 1.5;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
       color: var(--typeset-muted);
-      margin-block-start: calc(var(--typeset-flow) / 0.8125);
+      margin-block-start: var(--typeset-flow);
     }
     /* Anchors. */
     &:where([id]) {
@@ -104,14 +95,13 @@
     &:where(h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + *) {
       margin-block-start: 1em;
     }
-    &:where(:is(h1, h2, h3, h4) :is(code)) {
-      font-size: 0.9em;
-    }
+    /* Removed: `:is(h1, h2, h3, h4) code { font-size: 0.9em }`. Code in a
+       heading is the same size as the heading, which is the same size as
+       everything. */
 
     /* Links. */
     &:where(a) {
       color: inherit;
-      font-weight: 500;
       text-decoration-line: underline;
       text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
     }
@@ -123,17 +113,14 @@
       outline-offset: 2px;
       border-radius: 0.125em;
     }
-    &:where(:is(h1, h2, h3, h4, h5, h6) :is(a)) {
-      font-weight: inherit;
-    }
+    /* Inline semantics.
 
-    /* Inline semantics. */
-    &:where(strong, b) {
-      font-weight: 600;
-    }
-    &:where(:is(h1, h2, h3, h4) :is(strong, b)) {
-      font-weight: 600;
-    }
+       Removed: every `font-weight` in this file. Upstream runs a two-tier
+       ladder (600 for headings and `strong`, 500 for links, `th`, `dt`, `kbd`,
+       `summary`); this site has one weight, so `strong` and `b` are semantic
+       only and carry no visual change at all. Emphasis is a colour step here,
+       or it is nothing. That also took out the two rules whose whole job was
+       cancelling an inherited weight inside a heading. */
     &:where(mark) {
       background-color: color-mix(
         in oklab,
@@ -154,6 +141,9 @@
       color: var(--typeset-muted);
       text-decoration-line: line-through;
     }
+    /* Kept, and the only surviving `font-size` in the file: a footnote marker
+       at full size stops reading as a marker, and `line-height: 0` is what
+       keeps the raised glyph from opening up the line box it sits in. */
     &:where(sup, sub) {
       font-size: 0.75em;
       line-height: 0;
@@ -168,7 +158,6 @@
     }
     &:where(sup a) {
       text-decoration-line: none;
-      font-weight: 500;
     }
 
     /* Lists. */
@@ -233,17 +222,15 @@
     }
     &:where(summary) {
       cursor: pointer;
-      font-weight: 500;
     }
     &:where(summary)::marker {
       color: var(--typeset-muted);
     }
 
     /* Keyboard keys. */
+    /* Removed: `font-size: 0.85em`. The border and padding make it a key. */
     &:where(kbd) {
       font-family: inherit;
-      font-size: 0.85em;
-      font-weight: 500;
       border: 1px solid var(--typeset-rule);
       border-block-end-width: 2px;
       border-radius: min(calc(var(--radius, 0.5em) * 0.6), 0.35em);
@@ -256,7 +243,6 @@
       margin-block-end: 0;
     }
     &:where(dt) {
-      font-weight: 500;
       margin-block-start: 1em;
     }
     &:where(dt + dt) {
@@ -275,8 +261,9 @@
         --color-muted,
         color-mix(in oklab, currentColor 8%, transparent)
       );
+      /* Removed: `font-size: 0.85em`. Mono at body size next to Inter already
+         reads as code, and the tint carries the rest. */
       font-family: var(--typeset-font-mono);
-      font-size: 0.85em;
       border-radius: min(calc(var(--radius, 0.5em) * 0.6), 0.35em);
       padding: 0.125em 0.3em;
     }
@@ -287,9 +274,10 @@
         --color-muted,
         color-mix(in oklab, currentColor 8%, transparent)
       );
+      /* Removed: `font-size: 0.875em`, `line-height: 1.5`. A code block keeps
+         the page's 24px line box, so it stays on the same rhythm as the prose
+         around it instead of setting its own. */
       font-family: var(--typeset-font-mono);
-      font-size: 0.875em;
-      line-height: 1.5;
       tab-size: 2;
       direction: ltr;
       border-radius: var(--radius, 0.5em);
@@ -298,10 +286,10 @@
       margin-block-start: calc(var(--typeset-flow) / 0.875);
       margin-block-end: 0;
     }
+    /* Removed: `font-size: inherit`, which reset a `pre` size that is gone. */
     &:where(pre code) {
       background-color: transparent;
       font-family: inherit;
-      font-size: inherit;
       padding: 0;
       border-radius: 0;
     }
@@ -330,8 +318,9 @@
     &:where(.footnotes, [data-footnotes]) {
       margin-block-start: calc(var(--typeset-flow) * 2);
       border-block-start: 1px solid var(--typeset-rule);
+      /* Removed: `font-size: 0.875em`. The rule above the block and the muted
+         colour separate it. */
       padding-block-start: var(--typeset-flow);
-      font-size: 0.875em;
       color: var(--typeset-muted);
     }
 
@@ -360,11 +349,12 @@
       margin-block-end: 0;
       margin-inline: 0;
     }
+    /* Removed: `font-size: 0.875em`. The margin lost its `/ 0.875` divisor
+       with the size it compensated for. */
     &:where(figcaption, caption) {
       color: var(--typeset-muted);
-      font-size: 0.875em;
       text-align: center;
-      margin-block-start: calc(0.75em / 0.875);
+      margin-block-start: 0.75em;
     }
     &:where(caption) {
       caption-side: bottom;
@@ -372,10 +362,9 @@
 
     /* Tables. Separators sit on cells, not tr:last-child: append-safe.
        Bare tables stay real tables (keep their semantics) and wrap to fit. */
+    /* Removed: `font-size: 1em`, `line-height: 1.5`. Both are inherited now. */
     &:where(table) {
       max-width: 100%;
-      font-size: 1em;
-      line-height: 1.5;
       font-variant-numeric: tabular-nums;
       border-collapse: separate;
       border-spacing: 0;
@@ -399,7 +388,6 @@
       max-width: none;
     }
     &:where(thead th) {
-      font-weight: 500;
       text-align: start;
       white-space: nowrap;
       padding: 0.65em 1em;
@@ -409,9 +397,6 @@
       text-align: start;
       vertical-align: top;
       border-block-start: 1px solid var(--typeset-rule);
-    }
-    &:where(tbody th, tfoot th) {
-      font-weight: 500;
     }
     &:where(th:first-child, td:first-child) {
       padding-inline-start: 0;
@@ -486,5 +471,129 @@
       )
     ) {
     margin-block-start: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The site's own prose rules. Moved here from app.css, which is now only
+   tokens, base and utilities. Same layer as the block above and later in the
+   file, so these win the tie against it while a utility on the element still
+   wins against these.
+   --------------------------------------------------------------------------- */
+@layer components {
+  .typeset {
+    color: var(--color-fg-3);
+  }
+
+  /* The colour guide, applied to tags rather than to a prose class. These reach
+     into `not-typeset` subtrees too, so UI follows it without opting in.
+     It is the whole hierarchy: with one size and one weight, colour is the only
+     thing separating a title from a section from the copy under it. */
+  /* `p` is the only thing here that reliably wraps, so it is the one opt-up off
+     the 18px default: 24px is what makes the next line findable from the end of
+     the last. */
+  .typeset :where(p) {
+    @apply text-fg-4 leading-prose;
+  }
+
+  /* The title block, and the only place on the site that departs from the two
+     defaults. `leading-tight` so a title that wraps reads as one object rather
+     than two lines; `font-bold` and `tracking-tight` so it holds its own
+     against copy it shares a size and a family with. */
+  .typeset :where(h1) {
+    @apply text-fg-1 font-bold leading-tight tracking-tight;
+  }
+
+  /* No leading here: 18px is the default, and a prose heading is one line. */
+  .typeset :where(h2, h3, h4, h5, h6) {
+    @apply text-fg-2 tracking-tight;
+  }
+
+  .typeset :where(a) {
+    @apply animated-link;
+  }
+
+  /* Typeset only trims the first two levels; the shell nests content deeper. */
+  .typeset :where(:first-child) {
+    margin-block-start: 0;
+  }
+
+  /* Typeset clears only `--typeset-flow` above an anchor target, but the fixed
+     top blur is 48px tall, so a heading jumped to from the table of contents
+     landed underneath it. One `md` step of air on top of that. */
+  .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
+    position: relative;
+    scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
+  }
+
+  /* Class selector, not `:where`, so it outranks the `animated-link` every
+     prose anchor gets. The anchor is `aria-hidden` and unfocusable by default:
+     it is a mouse shortcut, and the table of contents already gives keyboard
+     and screen reader users a link to every section.
+
+     The renderer emits it as the heading's last child, so it is pulled out of
+     flow and hung in the margin rather than reordered. In flow it would either
+     indent every heading away from the body copy or shift the text sideways on
+     hover. `top-0` pins it to the first line; its static position would put it
+     beside the last line of a heading that wraps. */
+  .typeset .heading-anchor {
+    @apply absolute top-0 right-full pr-xs text-fg-3 no-underline opacity-0 transition-opacity duration-200;
+  }
+
+  .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
+    @apply opacity-100;
+  }
+
+  /* A skill is rendered straight from its SKILL.md, which opens with its own
+     h1. The route prints the title and install command above it, so the file's
+     copy would land twice. */
+  .typeset :where([data-slot="skill-body"]) > h1:first-child {
+    display: none;
+  }
+}
+
+/* TanStack Markdown emits a title bar and per-line spans that typeset has no
+   concept of: it reads the title as a photo caption and centers it. A titled
+   fence gets a figure that owns the frame, so the pre sits flush inside it; an
+   untitled one is a bare pre and has to carry the frame itself. */
+@layer components {
+  .typeset :where(figure.tm-code-frame) {
+    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono;
+  }
+
+  .typeset :where(figure.tm-code-frame > figcaption) {
+    @apply border-b px-md py-xs text-left text-fg-2;
+  }
+
+  .typeset :where(pre.tm-code) {
+    @apply overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono;
+  }
+
+  .typeset :where(figure.tm-code-frame > pre.tm-code) {
+    margin-block-start: 0;
+    @apply rounded-none border-0 bg-transparent;
+  }
+
+  .typeset :where(pre.tm-code .th-line) {
+    @apply inline-block w-max min-w-full;
+  }
+
+  .typeset :where(pre.tm-code .th-line)::before {
+    content: attr(data-line);
+    @apply inline-block w-4 pr-lg pl-sm text-right text-fg-2;
+  }
+
+  /* The palette is the site's, not the theme package's: code is prose here, so
+     it reads on the same greys plus one accent. */
+  .typeset :where(.th-comment, .th-meta) {
+    @apply text-fg-3;
+  }
+
+  .typeset :where(.th-command, .th-function, .th-keyword) {
+    @apply text-fg-1;
+  }
+
+  .typeset :where(.th-string, .th-number, .th-literal) {
+    @apply text-brand;
   }
 }

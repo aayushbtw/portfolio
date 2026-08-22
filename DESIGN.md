@@ -18,9 +18,10 @@ Defined in `@theme`, all in oklch.
 | ------------- | ------------------------------------------------ |
 | `bg-1`        | Page background                                  |
 | `bg-2`        | Raised surface: hovered list item, inline code   |
-| `fg-1`        | `h1`, active nav                                 |
+| `fg-1`        | `h1`, active nav. Solid black                    |
 | `fg-2`        | `h2`–`h6`, link text, list item titles           |
-| `fg-3`        | `p`, labels, metadata. The default everything sits at |
+| `fg-3`        | `p`, labels, metadata                            |
+| `fg-4`        | What `body` sits at. Out of numeric order: it is darker than `fg-2` and `fg-3`, not lighter |
 | `bg-contrast` | Inverted surface: the graph tooltip               |
 | `fg-contrast` | Text on `bg-contrast`. The only light-on-dark text |
 | `border`      | All borders and outlines                         |
@@ -29,7 +30,7 @@ Defined in `@theme`, all in oklch.
 | `brand`       | Orange. Accent only: link underline hover, meters, eq bars |
 | `graph-0`–`graph-4` | Contribution levels, empty to busiest      |
 
-Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes an opacity: `fg-3` is already the lightest text that clears 4.5:1 on `bg-1`, so `text-fg-3/60` is not a lighter grey, it's an unreadable one. Opacity on a *background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
+`fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%; `fg-4` is a solid `gray-900` and is what `body` sits at. The alpha is *in the token*, so text composites onto whatever it sits on and a row reads the same over `bg-1` and over its `bg-2` hover. Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it's an unreadable one. Opacity on a *background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
 
 The mapping is attached to the tags themselves in [src/styles/app.css](src/styles/app.css), not to a prose class, so `<p>` and `<h2>` are already the right color with no utility on them. Those rules deliberately reach into `not-typeset` subtrees as well: UI opts out of prose *layout*, never out of the color guide. Only write `text-fg-*` when a tag needs to depart from its default.
 
@@ -48,7 +49,7 @@ Six steps: **4, 8, 16, 24, 48, 96**. Doubling from `xs` up to `md`, 1.5× to `lg
 
 Used as `mt-lg`, `gap-md`, `px-md`, `py-sm`. Nothing exists between the steps, so a gap that feels wrong is the wrong step, not a missing value. Reaching for `mt-7` means one of these is what you meant.
 
-**Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with a `text-section-label` is a new section and takes `mt-xl`; a block that continues the one above it takes `mt-lg`. So on the home page the contribution graph sits `lg` under the hero it belongs to, while Projects and Writings each open `xl` below. The rule is checkable: if it has its own label, it gets the bigger step.
+**Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with its own `h2` is a new section and takes `mt-xl`; a block that continues the one above it takes `mt-lg`. So on the home page the contribution graph sits `lg` under the hero it belongs to, while Projects and Writings each open `xl` below. The rule is checkable: if it has its own label, it gets the bigger step.
 
 Note these read next to Tailwind's responsive prefixes, so `sm:mt-sm` is "8px top margin from the `sm` breakpoint up". The prefix is before the colon, the scale after it.
 
@@ -61,9 +62,7 @@ Two things sit outside the scale:
 
 Anything else in a `m-`, `p-`, or `gap-` slot comes from the table above.
 
-Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features; size, leading and tracking all come from the text scale below.
-
-Weight has two steps and no arbitrary values. `font-regular` (450) is the site default and sits on `body`: Inter looks thin at a flat 400 at body's 14px. `font-medium` (500) is the heaviest thing on the site. Anything that needs body weight writes `font-weight: inherit` rather than restating a number, which is how `text-section-label` cancels typeset's 500 without pinning itself to a breakpoint.
+Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features, and the size, leading and weight described under **Type** below.
 
 ## Radius
 
@@ -74,71 +73,81 @@ Two steps, and which one you want follows from what the thing is.
 | `sm`  | 6px   | A control you press or type into: buttons, fields, covers, skeletons |
 | `md`  | 8px   | A box that holds other things: rows, panels, media, tooltips |
 
+## Layout
+
+The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). About 85 characters at 15px. 520 was tried first and read as too narrow next to the code blocks in a post; 740 ran long enough that the eye hunted for the start of the next line.
+
+List rows are `py-md` with a `border-b` hairline and no border on the last row. The row is three parts — date left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
+
 Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit outside it: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on `eq-bar`, which is 2px wide and would otherwise render as a lozenge.
 
 `--radius` in `:root` points at `md` and is what typeset reads for code blocks and tables.
 
-## Type scale
+## Type
 
-Four sizes are used, declared in `@theme` on Tailwind's own step names.
+**Four axes, two or three tokens each, and one default that everything inherits.** The default sits on `body` and is the only place any axis is set globally:
 
-| Token  | Size | Leading | Use                                     |
-| ------ | ---- | ------- | --------------------------------------- |
-| `xs`   | 12px | 20px    | Labels, captions, code, `text-label`    |
-| `base` | 14px | 22.75px | Body                                    |
-| `lg`   | 16px | 22.75px | A figure worth reading first            |
-| `3xl`  | 30px | 36px    | Display. The 404 title, and nothing else |
+```css
+@apply text-body font-regular leading-body tracking-normal;
+```
 
-`text-base` is 14px here rather than Tailwind's 16px: the base of the scale is the size the site actually reads at.
+| Axis     | Tokens                                                        |
+| -------- | ------------------------------------------------------------- |
+| Size     | `text-body` 15px · `text-compact` 14px                        |
+| Leading  | `leading-body` 18px · `leading-prose` 24px · `leading-tight` 13.5px |
+| Tracking | `tracking-normal` · `tracking-tight` -0.1px                   |
+| Weight   | `font-regular` 400 · `font-bold` 450, `h1` only               |
 
-The type scale no longer shares the spacing scale's names, so `lg` means 16px of type and 24px of space. Read the prefix, not the step: `text-lg` and `gap-lg` are unrelated.
+**Leading defaults tight, not loose.** `leading-body` is 18px because almost everything here is one line long: a nav item, a list row, a stat, a label, a heading. A 24px line box around a single line is 24px of nothing, and it makes a column of rows read as loose rather than as a set. `leading-prose` (24px) is the opt-up, and typeset gives it to `p` — the one element that reliably wraps, where the extra leading is what makes the next line findable from the end of the last. `leading-tight` (13.5px) goes on `h1`, so a page title that wraps reads as one object rather than two lines.
 
-**A size token is the whole treatment.** Each carries its own `line-height` and `letter-spacing`, so `text-xs` is complete on its own and never needs a `leading-*` beside it. Write the size, take the leading. If you catch yourself pairing a size with a hand-picked leading, that pair belongs in `@theme`, not at the call site.
+**Weight is not a hierarchy tool.** `font-medium` doesn't compile, typeset's entire 600/500 ladder was deleted rather than remapped, and `<strong>` carries no visual change at all. Hierarchy is colour: a title is black, the copy under it is `fg-4`, a label beside it is `fg-3`.
 
-Body is `text-base` at every width, so it's part of the scale rather than a special case. `lg` carries the same 22.75px line box, so a stat or a standalone paragraph sits in the same vertical rhythm as the copy around it.
+`font-bold` (450) has exactly one user, the `h1`. Four steps is less a weight change than an optical correction, and it's what stops a page title from disappearing into copy it shares a size and a family with. Reaching for it anywhere else is the signal that the colour step above it isn't doing its job.
 
-**Three steps are declared but unused: `sm` (13px), `xl` (20px), `2xl` (24px).** They exist to keep the ladder ordered. With `base` moved down to 14px, a step left at its Tailwind default would either land level with body (`sm` is 14px there) or sit *below* the step after it (`2xl` is 24px, under `3xl`'s 30px but over `lg`'s 16px with nothing declared between). Every step through `3xl` is declared rather than inherited, so the value is readable here instead of in Tailwind's theme.
+**`tracking-tight` belongs to the title block** — the `h1` and the date directly under it, and nothing else. Those two lines are read as a unit rather than as running copy, and pulling them in is what makes them read as one object. Body copy stays `tracking-normal`: tracking a wrapping paragraph fights the reading it's meant to help.
 
-**Tracking runs inversely to size**, and is written in `em` because the intent is "tighten by a percentage of the size", not "by a fixed number of px". The values follow Inter's dynamic metrics, `-0.0223 + 0.185e^(-0.1745·size)`:
+Each axis is cleared with a `--<axis>-*: initial` reset before it's redeclared, so Tailwind's own steps don't survive: `text-sm`, `tracking-wide`, `leading-relaxed` and `font-medium` don't compile. The resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears and Biome's property sorter moves those lines to the end of whatever block they're in.
 
-| Token  | Size | Tracking   |
-| ------ | ---- | ---------- |
-| `xs`   | 12px | `0`        |
-| `sm`   | 13px | `-0.003em` |
-| `base` | 14px | `-0.006em` |
-| `lg`   | 16px | `-0.011em` |
-| `xl`   | 20px | `-0.017em` |
-| `2xl`  | 24px | `-0.019em` |
-| `3xl`  | 30px | `-0.021em` |
+**The one hole is `leading-<number>`.** It reads `--spacing`, not `--leading-*`, so `leading-6` compiles regardless, and clearing `--spacing` would take the spacing scale with it. That one is convention.
 
-Small text crowds and wants opening up; large text looks loose and wants tightening. One flat px value across every step is wrong at both ends at once. All of this assumes lowercase: uppercase needs *positive* tracking at any size, which is one more reason nothing here is uppercase. The OG image in [src/routes/api/og.tsx](src/routes/api/og.tsx) restates the same curve in px, because Satori renders outside the token scale.
+**Leading is not bundled into the size tokens.** Either leading can sit on either size, so pairing them would have made the choice for you. A departure names the single axis it changes.
 
-The formula is Inter v3's. Inter v4 replaced it with an `opsz` axis that does the same job inside the font, but `@fontsource-variable/inter` resolves to the wght-only build, so the loaded font carries no `opsz` and `font-optical-sizing` does nothing. If that import ever moves to `@fontsource-variable/inter/opsz.css`, every tracking value has to go back to `0` or the correction lands twice.
+`text-compact` is declared with no user yet. Every element on the site is at `text-body`.
 
-That's why no `leading-[…]` or `tracking-[…]` exists anywhere. The one deliberate exception is `List`, which tightens to `leading-5`: list rows are scanned, not read.
+The one element that sets its own size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full size stops reading as a marker.
 
-**Size marks the page, not the prose.** There are three roles for it:
+**`tracking-normal` is the default on purpose.** A tracking curve corrects for size, and with one size there is nothing to correct: Inter at 15px wants no adjustment. `tracking-tight` (-0.1px) is the single hand-picked departure. The OG image in [src/routes/api/og.tsx](src/routes/api/og.tsx) renders at display sizes outside this system and keeps its own tracking, because Satori draws outside the token scale entirely.
 
-| Role            | Treatment              | Where                                     |
-| --------------- | ---------------------- | ----------------------------------------- |
-| Page title      | none, `h1` as typeset styles it | The `h1`. One per page, naming what you're on |
-| Section label   | `text-section-label`   | The `h2` above a list or block             |
-| Field label     | `text-label`           | The compact name over a figure, inside a component |
-| Everything else | body                   | Copy, headings inside prose, list rows     |
+### What carries hierarchy instead
 
-Below the `h1`, size stops meaning anything. Headings *inside* an article are body size at weight 500 and separate from copy by *colour*, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. Nothing in a paragraph flow goes above body size, and nothing is heavier than 500. To signal importance mid-text, step the colour up.
+Colour and weight, and nothing else:
 
-**The page title carries no class.** Typeset already sets `h1` to body size, weight 500, `fg-1`, which is exactly the treatment a page title wants. `PageHeader` renders a bare `<h1>` and gets it for free, so the home page and every other page agree without anything enforcing it. Don't add a size class to an `h1`; if one looks wrong, the rule is wrong.
+| Role            | Treatment                                       |
+| --------------- | ----------------------------------------------- |
+| Page title      | `h1` as typeset styles it: `fg-1`, `font-bold`, `leading-tight`, `tracking-tight`. No class |
+| Section label   | a bare `<h2>`: `fg-2` from the colour guide      |
+| Field label     | `text-fg-3` written directly                    |
+| Everything else | body: `fg-4`                                    |
 
-A section label sits one step quieter than the title it follows: same size, normal weight, `fg-3`. The hierarchy between them comes from weight and colour plus the `h1`/`h2` tags, not from size. These pages are short enough to take in at once, and a title that outweighed its sections would fight the content it's introducing.
+Headings below `h1` are body size at body weight and separate from copy by colour alone, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. To signal importance mid-text, step the colour up.
 
-Neither is uppercase and neither is tracked out. A label that shouts competes with the thing it is labelling, and the tag already carries the structure.
+**The page title carries no class.** Typeset gives `h1` `fg-1`, `font-bold`, `leading-tight` and `tracking-tight`, which is exactly the treatment a page title wants, and Tailwind's preflight already sets `h1`–`h6` to `font-size: inherit`. `PageHeader` renders a bare `<h1>` and gets it for free.
 
-**`3xl` is the one display step, and it is for empty pages.** It goes on the single element that *is* the page's subject where no prose competes with it, which today means the 404 title and nothing else. One per page at most. Never on a sentence, and never on something that repeats: the usage page's four stat values sit at `lg` precisely because there are four of them.
+A section heading is a bare `<h2>` and carries no class at all: the colour guide gives it `fg-2`, one step quieter than the `h1` above it and one louder than the copy below. It isn't uppercase and isn't tracked out — a label that shouts competes with the thing it's labelling, and the tag already carries the structure.
 
-Nothing is used between `lg` and `3xl`. `xl` and `2xl` are declared for ordering, not for reaching: a scale earns a step by being used, and a display size that gets picked up on an ordinary page is how size creeps back into prose.
+**There are no label utilities.** `text-section-label` and `text-label` both existed and both are gone. Once size, weight and tracking left the label treatment, each was a second name for `text-fg-3`, and a utility that expands to one declaration you could have written is indirection with nothing on the other end. A field label writes `text-fg-3`; a section heading writes nothing at all. Bring a name back when it earns more than one declaration.
 
-Sizes above `3xl` still come from Tailwind and are outside the scale. The table is the contract; the build doesn't enforce it yet.
+### Prose
+
+[src/styles/typeset.css](src/styles/typeset.css) is a vendored `shadcn/typeset` copy, and it has been forked rather than overridden. Every `font-size`, `line-height` and `letter-spacing` it set is stripped out at the source, and its 600/500 weight ladder is deleted outright. Each removal is commented in place, so the file reads as its own history. **Re-pulling the component from the registry undoes all of it.**
+
+That file now owns rendered markdown end to end: prose structure (flow margins, rules, lists, tables, code frames) *and* the site's rules on top of it (the colour guide, heading anchors, the TanStack Markdown frames). app.css is tokens, base and utilities, and holds no `.typeset` selector at all.
+
+### What this cost
+
+The 404 title, the four usage stat values and every caption, code block and footnote used to differ in size and no longer do. Captions and code separate by family (`font-mono`), colour and rule instead.
+
+Pages here are short enough to take in at once, which is the bet the whole thing rests on. `text-compact` exists for when that bet stops paying: a page long enough to need scanning gets the second size, rather than a workaround for its absence.
 
 ## Utilities
 
@@ -146,10 +155,8 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 
 | Utility            | What it is                                                     |
 | ------------------ | -------------------------------------------------------------- |
-| `text-section-label` | The `h2` above a list or block: `fg-3`, body size, normal weight |
-| `text-label`       | A compact field name inside a component: `fg-3`, xs, normal weight |
 | `skip-link`        | Off-screen until focused, then a real target top-left. One per document |
-| `animated-link`    | Inline prose link: medium, `fg-2`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
+| `animated-link`    | Inline prose link: `fg-2`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
@@ -168,7 +175,7 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 </section>
 
 <section className="mt-lg">
-  <h2 className="text-section-label">Writings</h2>
+  <h2>Writings</h2>
   <ListPosts posts={posts} />
 </section>
 ```
@@ -208,12 +215,17 @@ There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so eve
 </section>
 ```
 
-[src/styles/typeset.css](src/styles/typeset.css) is vendored from [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and never edited. It's configured in two places in [src/styles/app.css](src/styles/app.css):
+[src/styles/typeset.css](src/styles/typeset.css) is vendored from [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and **has been forked**, not configured. It owns rendered markdown end to end:
 
-- `:root` maps typeset's variable contract (`--typeset-*`, plus `--color-foreground`, `--color-muted-foreground`, `--color-muted`, `--radius`) onto the tokens above, so prose resolves to the site's colors and fonts.
-- An `@layer components` block holds what typeset has no variable for: the color guide per tag, headings at `1em`/500, `strong` at 500, links as `animated-link`, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
+- Upstream's type declarations are stripped at the source — every `font-size`, `line-height`, `letter-spacing` and `font-weight` — each removal commented in place so the file reads as its own history.
+- It sets its own `--typeset-*` vars, pointed straight at the site's fonts.
+- A block at the bottom holds what the site adds on top: the colour guide per tag, the `h1` treatment, `p` at `leading-prose`, links as `animated-link`, heading anchors, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
 
-That block **must** stay in `@layer components`, imported after typeset.css. Same layer and later in source means it beats typeset's defaults; being below `@layer utilities` means a utility on the element still beats it. Unlayered would win over utilities and silently break every `text-section-label` heading.
+That bottom block **must** stay in `@layer components` and after the vendored rules in source order. Same layer and later means it beats them, while a utility on the element still beats it; unlayered, it would outrank utilities instead.
+
+app.css holds no `.typeset` selector at all. It is tokens, the shadcn `:root` aliases, `@utility` definitions and `@layer base`.
+
+**Re-pulling the component from the registry undoes every change above.**
 
 ### Opting out
 

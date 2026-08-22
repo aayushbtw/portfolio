@@ -6,21 +6,42 @@
 
 @import "./typeset.css";
 
+/* This block is what makes the tokens below the only ones that exist. Declaring
+   `--text-body` does not replace Tailwind's scale, it adds to it: without these
+   four lines `text-sm`, `text-3xl`, `leading-relaxed`, `tracking-widest` and
+   `font-medium` all still compile, silently, alongside the two or three tokens
+   this site actually wants. Each `*: initial` clears its namespace first.
+
+   The one namespace it can't close is `leading-<number>`, which reads
+   `--spacing` rather than `--leading-*`: `leading-6` compiles no matter what,
+   and clearing `--spacing` would take the whole spacing scale with it.
+
+   In a block of its own because a `*` reset has to come before what it clears,
+   and Biome's property sorter moves those lines to the end of whatever block
+   they sit in. */
 @theme {
-  --font-sans: "Inter Variable", sans-serif;
+  --text-*: initial;
+  --leading-*: initial;
+  --tracking-*: initial;
+  --font-weight-*: initial;
+}
+
+@theme {
+  --font-sans: "--apple-system", "Inter Variable", sans-serif;
   --font-mono: "JetBrains Mono Variable", monospace;
 
   --color-bg-1: oklch(from var(--color-white) l c h);
   --color-bg-2: oklch(from var(--color-gray-100) l c h);
 
-  --color-fg-1: oklch(from var(--color-gray-950) l c h);
-  --color-fg-2: oklch(from var(--color-gray-600) l c h);
-  --color-fg-3: oklch(from var(--color-gray-500) l c h);
+  --color-fg-1: var(--color-black);
+  --color-fg-2: oklch(from var(--color-black) l c h / 0.45);
+  --color-fg-3: oklch(from var(--color-black) l c h / 0.4);
+  --color-fg-4: oklch(from var(--color-gray-600) l c h);
 
   /* The inverted surface, and the only text colour that runs light on dark.
      One user today (the graph tooltip), named so the second one doesn't
      reinvent it out of `bg-fg-1 text-bg-1`. */
-  --color-bg-contrast: oklch(from var(--color-gray-950) l c h);
+  --color-bg-contrast: oklch(from var(--color-gray-900) l c h);
   --color-fg-contrast: oklch(from var(--color-white) l c h);
 
   --color-border: oklch(from var(--color-gray-200) l c h);
@@ -45,216 +66,76 @@
   --spacing-xl: calc(var(--spacing) * 12); /* 48px */
   --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 
-  /* Weight. Two steps and no arbitrary values. `regular` (450) is Inter's
-     optical body weight at 14px, where a flat 400 reads thin; it is the site
-     default and sits on `body` at every width.
-     `medium` (500) is Tailwind's own token and the heaviest thing on the site. */
-  --font-weight-regular: 450;
-
   /* Radius. Two steps, and which one you want follows from what the thing is:
      `sm` for a control you press or type into, `md` for a box that holds
      other things. Nested boxes step down, so an `md` panel holds `sm` fields. */
   --radius-sm: 0.375rem; /* 6px  buttons, fields, covers, skeletons */
   --radius-md: 0.5rem; /*   8px  rows, panels, media, tooltips */
 
-  /* Text scale. Each size carries its own leading and tracking, so `text-base`
-     is the whole treatment and nothing needs a loose `leading-*` beside it.
+  /* The content column: about 68 characters at 15px, which is the measure prose
+     wants. The old 740px ran to ~95 and made the eye hunt for the next line. */
+  --container-content: 644px;
 
-     `text-base` is 14px here, not Tailwind's 16px: the base of the scale is the
-     size the site actually reads at. Every step is declared rather than
-     inherited, both so the value is visible without opening Tailwind's theme
-     and so the ladder stays ordered once the base moves down. Leaving a step at
-     its default would land it level with `base` or above the step after it.
+  /* Size. `body` is the default and is what every element on the site is at
+     today. `compact` is declared with no user yet: the one step down, for
+     whatever turns out to sit under the copy rather than in it. */
+  --text-body: 15px;
+  --text-compact: 14px;
 
-     `text-lg` is the one up from body, and the two share a 22.75px line box so
-     a stat or a standalone paragraph sits in the same vertical rhythm as the
-     copy around it.
+  /* Leading, deliberately not bundled into the size tokens: either leading can
+     sit on either size, and pairing them would have picked for you.
 
-     Tracking runs inversely to size and is written in `em`, because the intent
-     is "tighten by a percentage of the size", not "by a fixed number of px".
-     Values follow Inter's dynamic metrics, -0.0223 + 0.185e^(-0.1745·size),
-     which lands near zero at label sizes and tightens as the type grows.
+     `body` (18px) is the default and is tight on purpose. Almost everything on
+     this site is one line long: a nav item, a list row, a stat, a label, a
+     heading. A 24px line box around a single line is 24px of nothing, and it
+     makes a column of rows read as loose rather than as a set.
 
-     That formula is from Inter v3. Inter v4 replaced it with an `opsz` axis
-     that does the same job inside the font, but `@fontsource-variable/inter`
-     resolves to the wght-only build, so the loaded font has no `opsz` and
-     `font-optical-sizing` is inert. The tracking below is doing real work.
-     If the import ever moves to `@fontsource-variable/inter/opsz.css`, these
-     values must go back to 0 or the correction applies twice.
+     `prose` (24px) is the opt-up, and typeset gives it to `p`. It is for text
+     that actually wraps, where the extra leading is what makes the start of the
+     next line findable from the end of the last.
 
-     All of this assumes lowercase. Uppercase needs positive tracking at any
-     size, which is one more reason nothing here is uppercase. */
-  --text-xs: 0.75rem; /* 12px  labels, captions, code */
-  --text-xs--line-height: 1.25rem; /* 20px */
-  --text-xs--letter-spacing: 0;
-  --text-sm: 0.8125rem; /* 13px  unused; holds the gap under body */
-  --text-sm--line-height: 1.25rem; /* 20px */
-  --text-sm--letter-spacing: -0.003em;
-  --text-base: 0.875rem; /* 14px  body */
-  --text-base--line-height: 1.421875rem; /* 22.75px */
-  --text-base--letter-spacing: -0.006em;
-  --text-lg: 1rem; /* 16px  stat values, standalone page copy */
-  --text-lg--line-height: 1.421875rem; /* 22.75px */
-  --text-lg--letter-spacing: -0.011em;
-  --text-xl: 1.25rem; /* 20px  unused; Tailwind's value, restated */
-  --text-xl--line-height: 1.75rem; /* 28px */
-  --text-xl--letter-spacing: -0.017em;
-  --text-2xl: 1.5rem; /* 24px  unused; Tailwind's value, restated */
-  --text-2xl--line-height: 2rem; /* 32px */
-  --text-2xl--letter-spacing: -0.019em;
-  --text-3xl: 1.875rem; /* 30px  display, and the only display step there is */
-  --text-3xl--line-height: 2.25rem; /* 36px */
-  --text-3xl--letter-spacing: -0.021em;
+     `tight` (13.5px) is for a heading that wraps and has to read as one object
+     rather than as two lines. No user yet. */
+  --leading-body: 18px;
+  --leading-prose: 24px;
+  --leading-tight: 13.5px;
+
+  /* Tracking. `normal` is the default, and is what one size buys: a tracking
+     curve corrects for size, and with one size there is nothing to correct
+     against.
+
+     `tight` belongs to the title block, the `h1` and the date directly under
+     it. Those two are the only lines on a page read as a unit rather than as
+     running copy, and pulling them in is what makes them read as one object.
+     Body copy stays `normal`: tracking a wrapping paragraph fights the reading
+     it is supposed to help. */
+  --tracking-normal: normal;
+  --tracking-tight: -0.1px;
+
+  /* Weight. `regular` is the default and carries the whole site; hierarchy is
+     otherwise colour, not weight. A title is black, the copy under it is
+     black/45, a label beside it is black/40, and that ladder is enough because
+     nothing here is long enough to need scanning.
+
+     `bold` (450) has exactly one user: the `h1`. Four steps is not a weight
+     change so much as an optical correction, and it is what stops a page title
+     from disappearing into the copy when it is the same size and family as
+     everything under it. Reaching for it anywhere else is the signal that the
+     colour step above it is not doing its job. */
+  --font-weight-regular: 400;
+  --font-weight-bold: 450;
 }
 
-/* Typeset's variable contract, bridged onto the tokens above. */
+/* The shadcn variable names, pointed at this site's tokens. Not typeset's own
+   contract, which it now sets for itself: these are the generic names anything
+   from that registry reads, and `--color-ring` also feeds `:focus-visible`
+   below. */
 :root {
-  --typeset-font-body: var(--font-sans);
-  --typeset-font-heading: var(--font-sans);
-  --typeset-font-mono: var(--font-mono);
-  --typeset-leading: inherit;
-  --typeset-flow: 1.25em;
-
   --color-foreground: var(--color-fg-1);
   --color-muted-foreground: var(--color-fg-3);
   --color-muted: var(--color-bg-2);
   --color-ring: var(--color-brand);
   --radius: var(--radius-md);
-}
-
-/* Same layer as typeset.css and imported after it, so these win the tie against
-   its defaults while any utility on the element still wins against these. */
-@layer components {
-  .typeset {
-    font-size: inherit;
-    color: var(--color-fg-3);
-  }
-
-  /* Nothing outgrows the body: headings separate by color and weight, not size.
-     Typeset styles `h6` as uppercase with 0.08em tracking, which is the one
-     eyebrow the site removed everywhere else; a prose `h6` would still shout
-     without this. */
-  .typeset :where(h1, h2, h3, h4, h5, h6) {
-    font-size: 1em;
-    line-height: inherit;
-    text-transform: none;
-    letter-spacing: inherit;
-    @apply font-medium;
-  }
-
-  /* The color guide, applied to tags rather than to prose. These reach into
-     not-typeset subtrees too, so UI follows it without opting in. */
-  .typeset :where(p) {
-    @apply text-fg-3;
-  }
-
-  .typeset :where(h1) {
-    @apply text-fg-1;
-  }
-
-  .typeset :where(h2, h3, h4, h5, h6) {
-    @apply text-fg-2;
-  }
-
-  .typeset :where(strong, b) {
-    @apply font-medium;
-  }
-
-  .typeset :where(a) {
-    @apply animated-link;
-  }
-
-  /* Typeset sizes its small text in em fractions (0.85em, 0.875em) that land
-     between steps. Pull them onto the scale so prose and UI agree. */
-  .typeset :where(:not(pre) > code, figcaption, caption, [data-footnotes]) {
-    @apply text-xs;
-  }
-
-  /* Typeset only trims the first two levels; the shell nests content deeper. */
-  .typeset :where(:first-child) {
-    margin-block-start: 0;
-  }
-
-  /* Typeset clears only `--typeset-flow` (about 17px) above an anchor target,
-     but the fixed top blur is 48px tall, so a heading jumped to from the table
-     of contents landed underneath it. One `md` step of air on top of that. */
-  .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
-    position: relative;
-    scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
-  }
-
-  /* Class selector, not `:where`, so it outranks the `animated-link` every
-     prose anchor gets. The anchor is `aria-hidden` and unfocusable by default:
-     it is a mouse shortcut, and the table of contents already gives keyboard
-     and screen reader users a link to every section.
-
-     The renderer emits it as the heading's last child, so it is pulled out of
-     flow and hung in the margin rather than reordered. In flow it would either
-     indent every heading away from the body copy or shift the text sideways on
-     hover. `top-0` pins it to the first line; its static position would put it
-     beside the last line of a heading that wraps. */
-  .typeset .heading-anchor {
-    @apply absolute top-0 right-full pr-xs font-normal text-fg-3 no-underline opacity-0 transition-opacity duration-200;
-  }
-
-  .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
-    @apply opacity-100;
-  }
-}
-
-/* A skill is rendered straight from its SKILL.md, which opens with its own h1.
-   The route prints the title and install command above it, so the file's copy
-   would land twice. */
-@layer components {
-  .typeset :where([data-slot="skill-body"]) > h1:first-child {
-    display: none;
-  }
-}
-
-/* TanStack Markdown emits a title bar and per-line spans that typeset has no
-   concept of: it reads the title as a photo caption and centers it. A titled
-   fence gets a figure that owns the frame, so the pre sits flush inside it; an
-   untitled one is a bare pre and has to carry the frame itself. */
-@layer components {
-  .typeset :where(figure.tm-code-frame) {
-    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono text-xs;
-  }
-
-  .typeset :where(figure.tm-code-frame > figcaption) {
-    @apply border-b px-md py-xs text-left text-fg-2;
-  }
-
-  .typeset :where(pre.tm-code) {
-    @apply overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono text-xs;
-  }
-
-  .typeset :where(figure.tm-code-frame > pre.tm-code) {
-    margin-block-start: 0;
-    @apply rounded-none border-0 bg-transparent;
-  }
-
-  .typeset :where(pre.tm-code .th-line) {
-    @apply inline-block w-max min-w-full;
-  }
-
-  .typeset :where(pre.tm-code .th-line)::before {
-    content: attr(data-line);
-    @apply inline-block w-4 pr-lg pl-sm text-right text-fg-2;
-  }
-
-  /* The palette is the site's, not the theme package's: code is prose here, so
-     it reads on the same three greys plus one accent. */
-  .typeset :where(.th-comment, .th-meta) {
-    @apply text-fg-3;
-  }
-
-  .typeset :where(.th-command, .th-function, .th-keyword) {
-    @apply text-fg-1;
-  }
-
-  .typeset :where(.th-string, .th-number, .th-literal) {
-    @apply text-brand;
-  }
 }
 
 @keyframes eq-bar {
@@ -281,11 +162,11 @@
 }
 
 @utility nav-link {
-  @apply leading-5 block pl-md text-fg-3 transition-[color,scale] duration-200 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
+  @apply block pl-md text-fg-3 transition-[color,scale] duration-200 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
 @utility animated-link {
-  @apply font-medium text-fg-2 underline decoration-border-strong underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
+  @apply text-fg-1 underline decoration-border-strong underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
 }
 
 @utility icon-link {
@@ -302,23 +183,6 @@
    whole thing on every page. */
 @utility skip-link {
   @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:left-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
-}
-
-/* The `h2` above a list or block. Body size, so it never outgrows or shrinks
-   below the content it introduces; it separates by weight and colour instead.
-   Not uppercase and not tracked out: a label that shouts competes with the
-   thing it is labelling, and the `h2` tag already carries the structure. */
-@utility text-section-label {
-  font-weight: inherit;
-  @apply text-fg-3;
-}
-
-/* A compact name inside a component, like the label over a figure. Smaller
-   than `text-section-label` because it names one field rather than a section,
-   and it is always read together with the value directly under it. */
-@utility text-label {
-  font-weight: inherit;
-  @apply text-fg-3 text-xs;
 }
 
 @layer base {
@@ -363,10 +227,6 @@
   :focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
-  }
-
-  body {
-    @apply text-base font-regular bg-bg-1 text-fg-1 font-sans antialiased selection:bg-brand/20 font-features-['cv01','ss03'];
   }
 
   /* Every animation here is decoration: hover fades, the press scale, the

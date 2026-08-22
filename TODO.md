@@ -85,15 +85,28 @@ picking a dark contribution scale.
   from filenames, so `&` is unlikely, but one file named `foo&bar.md` emits
   malformed XML and breaks the sitemap for every crawler, not just that URL.
   3 lines.
+- **One size, checked in a browser.** The scale is gone: 15px / 400 / 24px
+  everywhere, and `text-*` size utilities no longer compile. Unseen so far, and
+  the places that lost a size are the ones to look at: the 404 title, the four
+  usage stat values, prose code blocks and captions. If a page turns out to need
+  scanning rather than reading, that's the signal to add a second size back, not
+  to work around its absence.
+
+- **Body contrast.** `fg-2` (black/45) and `fg-3` (black/40) land near 3.4:1 and
+  2.9:1 on `bg-1`, under WCAG AA's 4.5:1 for body text, and `fg-3` is where most
+  copy sits. Deliberate for now: the new palette is set by eye. If AA has to
+  hold, the two alphas move up (roughly 62% and 58% black) without anything at a
+  call site changing.
+
 - **Spotify preconnect.** WIG wants one; the host needs confirming from a network
   tab on `/music` (likely `i.scdn.co`). Belongs in that route's `head()`, not
   root, since six pages never touch it. 5 min once the host is known.
 
 ## Closed
 
-Contrast (`fg-3` now clears AA), focus rings, skip link, reduced motion,
+Focus rings, skip link, reduced motion,
 `color-scheme`, `touch-action`, anchor offsets, radius tokens, weight tokens,
-tracking curve, type roles, the inverted-surface token, `border-strong`,
+type roles, the inverted-surface token, `border-strong`,
 `PageHeader` / `Stat` / `StatStrip` / `Meter` / `MeterLegend` primitives, `Intl`
 dates in UTC, decorative-icon labelling, `min-w-0` truncation, dead `no-scrollbar`,
 skeleton/content mismatches, prose `h6`, curly quotes, font preload, 404 casing,

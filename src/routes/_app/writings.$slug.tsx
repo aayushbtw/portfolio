@@ -53,8 +53,10 @@ function WritingPage() {
   return (
     <section>
       <article>
-        <h1 className="text-balance">{post.title}</h1>
-        <time className="text-fg-3">{formatDate(post.publishedAt)}</time>
+        <h1 className="mb-sm text-balance">{post.title}</h1>
+        <time className="text-compact text-fg-3 tracking-tight">
+          {formatDate(post.publishedAt)}
+        </time>
 
         {post.body}
       </article>
@@ -63,7 +65,7 @@ function WritingPage() {
         <RightColumn>
           <aside className="sticky top-2xl hidden lg:block">
             <nav>
-              <p className="mb-sm font-medium text-fg-2">On this page</p>
+              <p className="mb-sm text-fg-2">On this page</p>
 
               <TableOfContents headings={post.headings} />
             </nav>

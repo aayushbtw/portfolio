@@ -1,8 +1,12 @@
-import { IconArrowRight } from "@tabler/icons-react";
 import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import {
+  List,
+  ListItem,
+  ListItemDescription,
+  ListItemTitle,
+} from "~/components/ui/list";
 import { allSkills } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 
@@ -21,13 +25,9 @@ function SkillList() {
             to="/skills/$slug"
           >
             <div className="flex min-w-0 flex-col">
-              <span className="text-fg-2">{skill.title}</span>
-              <p>{skill.summary}</p>
+              <ListItemTitle>{skill.title}</ListItemTitle>
+              <ListItemDescription>{skill.summary}</ListItemDescription>
             </div>
-
-            <ListItemHover>
-              <IconArrowRight aria-hidden="true" />
-            </ListItemHover>
           </Link>
         </ListItem>
       ))}

@@ -37,11 +37,9 @@ function Stat({
 }) {
   return (
     <div className="flex flex-col gap-xs" data-slot="stat">
-      <span className="text-label">{label}</span>
-      <span className="text-fg-2 text-lg tabular-nums">{value}</span>
-      {detail ? (
-        <span className="text-fg-3 text-xs tabular-nums">{detail}</span>
-      ) : null}
+      <span className="text-fg-3">{label}</span>
+      <span className="text-fg-2 tabular-nums">{value}</span>
+      {detail ? <span className="text-fg-3 tabular-nums">{detail}</span> : null}
     </div>
   );
 }

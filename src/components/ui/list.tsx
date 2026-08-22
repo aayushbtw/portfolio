@@ -5,7 +5,7 @@ function List({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
       className={cn(
-        "not-typeset mt-sm text-fg-3 leading-5 [&_a]:no-underline",
+        "not-typeset mt-sm text-fg-3 [&_a]:no-underline",
         className
       )}
       data-slot="list"
@@ -22,6 +22,29 @@ function ListItem({ className, ...props }: React.ComponentProps<"li">) {
         className
       )}
       data-slot="list-item"
+      {...props}
+    />
+  );
+}
+
+function ListItemTitle({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      className={cn("text-fg-1", className)}
+      data-slot="list-item-title"
+      {...props}
+    />
+  );
+}
+
+function ListItemDescription({
+  className,
+  ...props
+}: React.ComponentProps<"p">) {
+  return (
+    <p
+      className={cn("mt-xs text-compact text-fg-4", className)}
+      data-slot="list-item-description"
       {...props}
     />
   );
@@ -61,4 +84,11 @@ function ListSkeleton({
   );
 }
 
-export { List, ListItem, ListItemHover, ListSkeleton };
+export {
+  List,
+  ListItem,
+  ListItemDescription,
+  ListItemHover,
+  ListItemTitle,
+  ListSkeleton,
+};

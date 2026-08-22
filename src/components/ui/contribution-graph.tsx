@@ -166,7 +166,7 @@ function ContributionGraph({
   return (
     <div
       className={cn(
-        "not-typeset flex w-max max-w-full flex-col gap-xs text-fg-3 text-xs",
+        "not-typeset flex w-max max-w-full flex-col gap-xs text-fg-3",
         className
       )}
       data-slot="contribution-graph"

@@ -1,7 +1,7 @@
 import { Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { List, ListItem } from "~/components/ui/list";
+import { List, ListItem, ListItemTitle } from "~/components/ui/list";
 import { allPosts } from "~/lib/content";
 import { renderMarkdown } from "~/lib/markdown";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
@@ -30,15 +30,15 @@ function PostList({ limit }: { limit?: number }) {
         return (
           <ListItem key={post.slug}>
             <Link
-              className="row-link"
+              className="row-link grid grid-cols-[56px_minmax(0,1fr)_auto]"
               params={{ slug: post.slug }}
               to="/writings/$slug"
             >
-              <span className="w-12 tabular-nums">
+              <span className="text-fg-3 tabular-nums">
                 {showYear ? post.year : ""}
               </span>
-              <span className="flex-1 text-fg-2">{post.title}</span>
-              <time className="tabular-nums">{post.date}</time>
+              <ListItemTitle className="flex-1">{post.title}</ListItemTitle>
+              <time className="text-fg-3 tabular-nums">{post.date}</time>
             </Link>
           </ListItem>
         );

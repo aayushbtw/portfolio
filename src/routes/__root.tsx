@@ -75,7 +75,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <meta content={pageUrl} property="og:url" />
         <HeadContent />
       </head>
-      <body className="min-h-screen">
+      <body className="min-h-screen bg-bg-1 font-features-['cv01','ss03'] font-regular font-sans text-body text-fg-4 leading-body tracking-normal antialiased selection:bg-brand/20">
         <a className="skip-link" href="#main">
           Skip to content
         </a>
@@ -116,8 +116,8 @@ function Fallback({
   return (
     <div className="typeset mx-auto px-lg py-xl sm:py-2xl">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
-        <h1 className="mb-sm text-balance text-3xl">{title}</h1>
-        <p className="my-0 text-lg">{children}</p>
+        <h1 className="mb-sm text-balance">{title}</h1>
+        <p className="my-0">{children}</p>
         <Link
           className="mt-lg inline-flex min-h-9 items-center rounded-md px-md no-underline outline transition-[color,scale] duration-300 hover:text-fg-1 active:scale-[0.96]"
           to="/"

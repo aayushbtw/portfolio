@@ -61,7 +61,7 @@ function MeterLegend({
   return (
     <div
       className={cn(
-        "flex flex-wrap gap-x-md text-fg-3 text-xs tabular-nums",
+        "flex flex-wrap gap-x-md text-fg-3 tabular-nums",
         className
       )}
       data-slot="meter-legend"

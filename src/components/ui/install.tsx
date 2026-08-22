@@ -44,7 +44,7 @@ function InstallCommand({ command }: { command: string }) {
 
   return (
     <div
-      className="flex items-center gap-md rounded-sm border bg-bg-1 py-sm pr-sm pl-md font-mono text-xs"
+      className="flex items-center gap-md rounded-sm border bg-bg-1 py-sm pr-sm pl-md font-mono"
       data-slot="install-command"
     >
       <code

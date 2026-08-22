@@ -65,7 +65,7 @@ function MusicPage() {
             <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
               {topTracks.length > 0 ? (
                 <div>
-                  <h2 className="text-section-label">Top Tracks</h2>
+                  <h2>Top Tracks</h2>
                   <List>
                     {topTracks.map((track) => (
                       <TrackItem key={track.id} track={track} />
@@ -76,7 +76,7 @@ function MusicPage() {
 
               {topArtists.length > 0 ? (
                 <div>
-                  <h2 className="text-section-label">Top Artists</h2>
+                  <h2>Top Artists</h2>
                   <List>
                     {topArtists.map((artist) => (
                       <ArtistItem artist={artist} key={artist.id} />
@@ -90,7 +90,7 @@ function MusicPage() {
       </Suspense>
 
       <div className="mt-xl">
-        <h2 className="text-section-label">Recently Played</h2>
+        <h2>Recently Played</h2>
         <List>
           {live
             ? live.recentlyPlayed.map((track) => (
@@ -121,7 +121,7 @@ function NowPlaying({ track }: { track: SpotifyTrack }) {
         <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
         <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
       </span>
-      <span className="text-xs">
+      <span>
         {track.artists[0].name}
         <span className="text-fg-3"> — </span>
         <span className="text-fg-2">{track.name}</span>
@@ -135,9 +135,7 @@ function TopsSkeleton() {
     <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
       {["tracks", "artists"].map((key) => (
         <div key={key}>
-          <h2 className="text-section-label">
-            {key === "tracks" ? "Top Tracks" : "Top Artists"}
-          </h2>
+          <h2>{key === "tracks" ? "Top Tracks" : "Top Artists"}</h2>
           <List>
             {Array.from({ length: 5 }, (_, i) => `${key}-${i}`).map((k) => (
               <TrackSkeleton key={k} />

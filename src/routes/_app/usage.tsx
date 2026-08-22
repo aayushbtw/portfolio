@@ -23,7 +23,7 @@ function UsagePage() {
   return (
     <section>
       <PageHeader title={title}>
-        <span className="text-xs">
+        <span>
           ~ {formatNumber(usage.total)} tokens in {usage.year}
         </span>
       </PageHeader>
@@ -36,9 +36,7 @@ function UsagePage() {
       </StatStrip>
 
       <div className="mt-xl">
-        <h2 className="text-section-label">
-          Last {usage.days.length} active days
-        </h2>
+        <h2>Last {usage.days.length} active days</h2>
         <div className="mt-sm flex flex-col gap-sm">
           {usage.days.map((day) => {
             const segments = daySegments(day.models);
@@ -47,7 +45,7 @@ function UsagePage() {
               <div className="flex flex-col gap-xs" key={day.date}>
                 <div className="flex items-baseline gap-md">
                   <span className="text-fg-2">{formatShortDate(day.date)}</span>
-                  <span className="ml-auto text-fg-3 text-xs tabular-nums">
+                  <span className="ml-auto text-fg-3 tabular-nums">
                     {formatCompact(day.tokens)}
                   </span>
                 </div>
@@ -61,7 +59,7 @@ function UsagePage() {
       </div>
 
       <div className="mt-lg flex justify-end">
-        <p className="text-fg-3 text-xs tabular-nums">
+        <p className="text-fg-3 tabular-nums">
           {formatNumber(usage.sessions)} sessions · updated{" "}
           {formatDate(usage.generatedAt)}
         </p>
