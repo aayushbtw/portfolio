@@ -61,12 +61,18 @@ function NowPlaying() {
   );
 }
 
+const BAR_DELAYS = ["0s", "0.15s", "0.3s"];
+
 function Bars() {
   return (
     <span aria-hidden className="flex h-2.5 shrink-0 items-end gap-xs">
-      <span className="eq-bar" style={{ animationDelay: "0s" }} />
-      <span className="eq-bar" style={{ animationDelay: "0.15s" }} />
-      <span className="eq-bar" style={{ animationDelay: "0.3s" }} />
+      {BAR_DELAYS.map((delay) => (
+        <span
+          className="inline-block h-3 w-0.5 origin-bottom animate-eq-bar rounded-[1px] bg-brand"
+          key={delay}
+          style={{ animationDelay: delay }}
+        />
+      ))}
     </span>
   );
 }

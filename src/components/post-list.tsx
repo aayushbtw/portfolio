@@ -18,7 +18,7 @@ function PostList({ posts }: { posts: PostListItem[] }) {
         return (
           <ListItem key={post.slug}>
             <Link
-              className="row-link grid grid-cols-[56px_minmax(0,1fr)_auto]"
+              className="grid grid-cols-[56px_minmax(0,1fr)_auto] items-center gap-md"
               params={{ slug: post.slug }}
               to="/writings/$slug"
             >
