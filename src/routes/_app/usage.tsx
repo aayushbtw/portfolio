@@ -4,12 +4,7 @@ import { PageHeader } from "~/components/ui/page-header";
 import { Stat, StatStrip } from "~/components/ui/stat";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
-import {
-  formatCompact,
-  formatDate,
-  formatNumber,
-  formatShortDate,
-} from "~/lib/utils";
+import { formatCompact, formatDate, formatShortDate } from "~/lib/utils";
 
 const title = "Claude Usage";
 const description = "How many tokens I’ve burned coding with Claude Code.";
@@ -22,11 +17,7 @@ export const Route = createFileRoute("/_app/usage")({
 function UsagePage() {
   return (
     <section>
-      <PageHeader title={title}>
-        <span>
-          ~ {formatNumber(usage.total)} tokens in {usage.year}
-        </span>
-      </PageHeader>
+      <PageHeader title={title} />
 
       <StatStrip className="mt-lg">
         <TokenStat label="Input" value={usage.input} />
@@ -58,10 +49,15 @@ function UsagePage() {
         </div>
       </div>
 
-      <div className="mt-lg flex justify-end">
-        <p className="text-fg-3 tabular-nums">
-          {formatNumber(usage.sessions)} sessions · updated{" "}
-          {formatDate(usage.generatedAt)}
+      <div className="mt-lg flex justify-center">
+        <p className="text-compact text-fg-3">
+          <span className="tabular-nums">{formatCompact(usage.total)}</span>{" "}
+          total tokens /{" "}
+          <span className="tabular-nums">{formatCompact(usage.sessions)}</span>{" "}
+          sessions / last updated{" "}
+          <time className="tabular-nums" dateTime={usage.generatedAt}>
+            {formatDate(usage.generatedAt)}
+          </time>
         </p>
       </div>
     </section>
