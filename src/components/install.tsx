@@ -6,6 +6,8 @@ import { cn } from "~/lib/utils";
 
 const RESET_DELAY = 1500;
 
+/* The children take `rounded-xs` rather than `rounded-sm`: the frame's 4px
+   pad plus a 4px inner radius is what makes the two curves concentric. */
 function Install({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -41,7 +43,7 @@ function InstallCommand({
   return (
     <div
       className={cn(
-        "flex items-center gap-md rounded-sm border bg-bg-1 py-sm pr-sm pl-md font-mono",
+        "flex items-center gap-md rounded-xs border bg-bg-1 py-sm pr-sm pl-md font-mono",
         className
       )}
       data-slot="install-command"
@@ -111,7 +113,7 @@ function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       className={cn(
-        "flex flex-1 items-center justify-center gap-xs rounded-sm border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98] *:[svg:not([class*='size-'])]:size-4",
+        "flex flex-1 items-center justify-center gap-xs rounded-xs border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98] *:[svg:not([class*='size-'])]:size-4",
         className
       )}
       data-slot="install-link"

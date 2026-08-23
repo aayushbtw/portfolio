@@ -57,7 +57,7 @@ function SkillPage() {
           className="mt-lg rounded-md border bg-bg-2/50 p-xs"
           data-slot="skill-body"
         >
-          <div className="rounded-sm border bg-bg-1 p-md">{skill.body}</div>
+          <div className="rounded-xs border bg-bg-1 p-md">{skill.body}</div>
         </div>
       </article>
     </section>
