@@ -9,6 +9,7 @@ How this site is styled. The home page ([src/routes/\_app/index.tsx](src/routes/
 3. Components own their own spacing. `List` ships with `mt-sm`; callers don't pass it.
 4. `cn()` is for merging a `className` prop, not for stacking string literals. A single static string means no `cn()`.
 5. Semantic HTML first: `section`, `h1`/`h2`, `time`, `ul`/`li`. Styling hangs off the utility, not the tag.
+6. No fixed width or height on a box holding text. Where a column has to line up across rows, one grid owns the rows and the rows render as `contents`.
 
 ## Tokens
 
@@ -83,6 +84,10 @@ The content column is `--container-content`, 644px, used as `max-w-content` on `
 List rows are `py-sm`, negatively inset by `-mx-md` so the hover surface bleeds past the text, with no divider between them. A post row is three parts — year left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
 
 Nested boxes step down by their padding, so an `md` panel padded by `xs` holds `xs` children. Three things sit outside the scale: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on the now-playing eq bars, which are 2px wide and would otherwise render as lozenges.
+
+**Inline sides are logical.** `ps-`/`pe-`, `ms-`/`me-`, `start-`/`end-`, `text-end`. Physical `left` and `right` are reserved for geometry that really is physical: the code block's line-number gutter and its title bar, which read left to right whatever the page around them does; the hover card's `data-[side]` slide, which is relative to its anchor; and `env(safe-area-inset-*)`. The site is `lang="en"` with no i18n, so this buys nothing today. It costs nothing either, and it is the kind of thing that is free now and a sweep later.
+
+**A column that repeats down a list belongs to a grid, not to a width on each row.** The usage bars were a flex row each with a `w-20` label, which is a width guessed for one language: `Cache write` already filled all 80px of it, and since the width was fixed rather than a floor, anything longer overflowed into the meter instead of pushing it. `BarGroup` is now one grid per group with each `BarRow` as `display: contents`, so the label and value columns size to the longest entry and every bar still starts on the same line.
 
 `--radius` in `:root` points at `md` and is what typeset reads for code blocks and tables.
 
@@ -170,7 +175,10 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
+| `page-inline`      | The page's inline margin, floored by the display cutout. `md`, `lg` from `sm` up |
 | `indicator-brand`  | Brand gradient fill for the nav indicator and meter segments      |
+
+There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing at rest what hover would otherwise reveal. See the list-row model under **Interaction**.
 
 **A `@utility` earns its place two ways: it lands on tags the caller chooses, or
 it needs selectors a `className` can't express.** `row-link` sits on a `Link`, an
@@ -187,7 +195,11 @@ file, and the class list moved to where the markup lives.
 
 ## Page shape
 
-`_app/route.tsx` owns the frame: centered, `max-w-7xl`, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
+`_app/route.tsx` owns the frame: centered, `max-w-7xl`, `page-inline` for the margin, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
+
+The margin comes from `page-inline` rather than `px-md sm:px-lg` so it is floored by `env(safe-area-inset-*)`: in landscape on a notched phone the plain padding put the leading edge of every line under the cutout. `env()` stays physical there, unlike the rest of the site's inline sides, because the notch is where it is whatever the writing direction.
+
+**The nav collapses, it doesn't disappear.** Below `lg` the sidebar becomes a wrapped row above the content; from `lg` up it is the sticky rail. It was `hidden lg:block` once, and since it is the only navigation the site has, that left every page but home unreachable on a phone: the home copy links out to profiles and down to posts, never across to `/skills` or `/usage`, and the `G`+key sequences need a keyboard. The brand indicator and the `ps-md` that makes room for it are `lg`-only, because the indicator tracks the active link's vertical centre and a wrapped row has none. There the active colour carries it alone.
 
 ```tsx
 <section>
@@ -210,7 +222,7 @@ Every page but home opens with `<PageHeader title={title} />`, which owns the `h
 - Icons carry the optical weight of the text beside them. `stroke={1.5}` against 400 copy, one library (`@tabler/icons-react`), 16px unless the row says otherwise, and `currentColor` so hover and state come from CSS rather than a second asset.
 - An icon that swaps by state cross-fades instead of popping: `scale` 0.25 to 1, `opacity` 0 to 1, `blur` 4px to 0, 300ms on `cubic-bezier(0.2, 0, 0, 1)`, with both icons mounted so the exit animates too. The copy button in `Install` is the reference. Motion is never the only channel, which is why the check mark also turns `brand`.
 - Remote artwork carries `ring-1 ring-fg-1/10`: pure black at 10%, never a tinted neutral, which picks up the surface underneath and reads as dirt on the image edge. Album covers, artist photos, the `Showcase` screenshot.
-- **One list-row hover model.** Every list row is a `ListItem`: the row lifts to `bg-2` on hover. A surface has to be earned by communicating interaction, and a divider between rows isn't earned when spacing already separates them. Secondary metadata (star counts, arrows) is `opacity-0` until row hover, via `ListItemHover`.
+- **One list-row hover model.** Every list row is a `ListItem`: the row lifts to `bg-2` on hover. A surface has to be earned by communicating interaction, and a divider between rows isn't earned when spacing already separates them. Secondary metadata (star counts, arrows) fades in on row hover via `ListItemHover`, and shows at rest wherever there is no hover to fade it in: the `can-hover` variant (`@media (hover: hover)`) gates the `opacity-0`. Tailwind already wraps `hover:` in that query, so a hover-only affordance is not subtle on touch, it is absent, and the arrow is the only signal a project row leaves the site.
 - Focus is a 2px `ring` outline at 2px offset, from a bare `:focus-visible` rule in `@layer base`. It hangs off the pseudo-class, not a utility, so nothing opts in and nothing can forget.
 - Haptics (`useHaptics`) fire on nav clicks and on hover of the home page links. `tick` for hover, `click` for navigation.
 - Numbers are always `tabular-nums`.
