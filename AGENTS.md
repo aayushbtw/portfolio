@@ -26,8 +26,4 @@ Never write history. "Was sized for English", "had drifted", "zeroed for the
 same reason": how the code got here belongs in the commit message, and what it
 means for the system belongs in `DESIGN.md`.
 
-**Do not read density as licence.** Parts of `app.css` and `typeset.css` are
-already over-commented, restating what `DESIGN.md` covers. Those paragraphs are
-a bug to fix when you next touch the block, not a house style to match.
-
 One line by default. If it needs a paragraph, it is a `DESIGN.md` edit.
