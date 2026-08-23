@@ -24,14 +24,15 @@ Defined in `@theme`, all in oklch.
 | `fg-3`        | `p`, labels, metadata                            |
 | `fg-4`        | What `body` sits at. Out of numeric order: it is darker than `fg-2` and `fg-3`, not lighter |
 | `bg-contrast` | Inverted surface: the graph tooltip               |
-| `fg-contrast` | Text on `bg-contrast`. The only light-on-dark text |
+| `fg-contrast` | Text on `bg-contrast`: the graph tooltip, the active tab   |
+| `fg-contrast-2` | Its quiet step, the light-on-dark answer to `fg-3`: the inactive tabs |
 | `border`      | All borders and outlines                         |
 | `border-strong` | One step darker, for a boundary that must read as a line: the prose link underline |
 | `ring`        | Focus ring. Points at `brand`, and is also typeset's variable name |
 | `brand`       | Orange. Accent only: link underline hover, meters, eq bars |
 | `graph-0`–`graph-4` | Contribution levels, empty to busiest      |
 
-`fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%; `fg-4` is a solid `gray-900` and is what `body` sits at. The alpha is *in the token*, so text composites onto whatever it sits on and a row reads the same over `bg-1` and over its `bg-2` hover. Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it's an unreadable one. Opacity on a *background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
+The light-on-dark pair is the same idea one surface up: `fg-contrast` is white, `fg-contrast-2` is white at 50%, and both composite onto whatever dark thing carries them. `fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%; `fg-4` is a solid `gray-900` and is what `body` sits at. The alpha is *in the token*, so text composites onto whatever it sits on and a row reads the same over `bg-1` and over its `bg-2` hover. Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it's an unreadable one. Opacity on a *background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
 
 The mapping is attached to the tags themselves in [src/styles/app.css](src/styles/app.css), not to a prose class, so `<p>` and `<h2>` are already the right color with no utility on them. Those rules deliberately reach into `not-typeset` subtrees as well: UI opts out of prose *layout*, never out of the color guide. Only write `text-fg-*` when a tag needs to depart from its default.
 
@@ -202,7 +203,11 @@ file, and the class list moved to where the markup lives.
 
 The margin comes from `page-inline` rather than `px-md sm:px-lg` so it is floored by `env(safe-area-inset-*)`: in landscape on a notched phone the plain padding put the leading edge of every line under the cutout. `env()` stays physical there, unlike the rest of the site's inline sides, because the notch is where it is whatever the writing direction.
 
-**The nav collapses, it doesn't disappear.** Below `lg` the sidebar becomes a wrapped row above the content; from `lg` up it is the sticky rail. It was `hidden lg:block` once, and since it is the only navigation the site has, that left every page but home unreachable on a phone: the home copy links out to profiles and down to posts, never across to `/skills` or `/usage`, and the `G`+key sequences need a keyboard. The brand indicator and the `ps-md` that makes room for it are `lg`-only, because the indicator tracks the active link's vertical centre and a wrapped row has none. There the active colour carries it alone.
+**Two navs, one link list.** From `lg` up it is the sticky text rail. Below `lg` it is `MobileNav`: a floating capsule pinned above the bottom inset, inverted onto `bg-contrast` so it reads as a control over the page rather than a second page edge. Both render the same array in `navbar.tsx`, and the hotkey sequences are registered from the rail, which stays mounted at every width because it hides in CSS.
+
+The rail was `hidden lg:block` with nothing behind it once, and since it is the only navigation the site has, that left every page but home unreachable on a phone: the home copy links out to profiles and down to posts, never across to `/skills` or `/usage`, and the `G`+key sequences need a keyboard.
+
+The capsule is icon-only, and that follows from the type scale rather than from taste: six labels at `text-sm` overflow a 320px screen, and there is nothing below `text-sm` on purpose. So each tab is a 44px target carrying a 20px icon and an `aria-label`, six of them plus the capsule's `xs` padding coming to 272px, which clears 320px minus the page margin. The row is gapless because of that budget, and it works because the active pill is what separates one tab from the next. Active is a filled icon on a `fg-contrast/10` pill: with no label underneath, a colour step alone is too thin a signal at icon size.
 
 ```tsx
 <section>
