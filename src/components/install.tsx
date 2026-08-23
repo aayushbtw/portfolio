@@ -43,7 +43,7 @@ function InstallCommand({
   return (
     <div
       className={cn(
-        "flex items-center gap-md rounded-xs border bg-bg-1 py-sm pr-sm pl-md font-mono",
+        "flex items-center gap-md rounded-xs border bg-bg-1 py-sm ps-md pe-sm font-mono",
         className
       )}
       data-slot="install-command"

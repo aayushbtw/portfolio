@@ -145,8 +145,8 @@ function BarRow({
         segments={[{ className: "indicator-brand", label, share: 100 }]}
         value={Math.max(percent, 0.5)}
       />
-      <span className="text-right tabular-nums">{value}</span>
-      {share ? <span className="text-right tabular-nums">{share}</span> : null}
+      <span className="text-end tabular-nums">{value}</span>
+      {share ? <span className="text-end tabular-nums">{share}</span> : null}
     </div>
   );
 }

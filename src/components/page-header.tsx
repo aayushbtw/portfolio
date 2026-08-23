@@ -19,7 +19,7 @@ function PageHeader({
       <h1>{title}</h1>
 
       {children ? (
-        <div className="ml-auto flex items-center gap-sm">{children}</div>
+        <div className="ms-auto flex items-center gap-sm">{children}</div>
       ) : null}
     </div>
   );

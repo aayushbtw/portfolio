@@ -144,7 +144,7 @@
 }
 
 @utility nav-link {
-  @apply block text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active] lg:pl-md;
+  @apply block text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active] lg:ps-md;
 }
 
 @utility animated-link {
@@ -157,7 +157,7 @@
   @apply animated-link;
 
   & svg {
-    @apply mr-xs mb-0.5 inline-block size-4 text-fg-3;
+    @apply me-xs mb-0.5 inline-block size-4 text-fg-3;
   }
 
   &:hover svg {
@@ -172,7 +172,7 @@
 /* The nav is a sticky sidebar, so keyboard users otherwise walk the whole
    thing on every page. */
 @utility skip-link {
-  @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:left-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
+  @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:start-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
 }
 
 @layer base {
