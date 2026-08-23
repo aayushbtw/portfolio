@@ -54,7 +54,7 @@ function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "ml-auto flex items-center gap-md text-fg-3 opacity-0 transition-opacity duration-150 group-hover/list-item:opacity-100 *:[svg:not([class*='size-'])]:size-4",
+        "ml-auto flex items-center gap-md text-fg-3 can-hover:opacity-0 opacity-100 transition-opacity duration-150 can-hover:group-hover/list-item:opacity-100 *:[svg:not([class*='size-'])]:size-4",
         className
       )}
       data-slot="list-item-hover"

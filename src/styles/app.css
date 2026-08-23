@@ -121,6 +121,11 @@
   --radius: var(--radius-md);
 }
 
+/* Tailwind already wraps `hover:` in this query, so a hover-only affordance
+   simply never appears on touch. Naming the variant lets one show at rest
+   there instead of going missing. */
+@custom-variant can-hover (@media (hover: hover));
+
 @utility indicator-brand {
   @apply bg-linear-to-b from-brand to-brand/60;
 }
