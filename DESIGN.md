@@ -66,12 +66,15 @@ Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Vari
 
 ## Radius
 
-Two steps, and which one you want follows from what the thing is.
+Three steps, and which one you want follows from what the thing is.
 
 | Token | Value | For                                        |
 | ----- | ----- | ------------------------------------------ |
+| `xs`  | 4px   | A box inset in an `md` frame: the install command, the install links, the skill body |
 | `sm`  | 6px   | A control you press or type into: buttons, fields, covers, skeletons |
 | `md`  | 8px   | A box that holds other things: rows, panels, media, tooltips |
+
+**Nested radii are concentric: outer = inner + padding.** `xs` is derived from that, not a step for smaller controls. An `md` box padded by `xs` is 8px of radius around 4px of pad, which leaves its child 4px. Reach for `xs` only inside that frame; a control that happens to be small is still `sm`.
 
 ## Layout
 
@@ -79,7 +82,7 @@ The content column is `--container-content`, 644px, used as `max-w-content` on `
 
 List rows are `py-sm`, negatively inset by `-mx-md` so the hover surface bleeds past the text, with no divider between them. A post row is three parts — year left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
 
-Nested boxes step down, so an `md` panel holds `sm` fields. Three things sit outside it: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on the now-playing eq bars, which are 2px wide and would otherwise render as lozenges.
+Nested boxes step down by their padding, so an `md` panel padded by `xs` holds `xs` children. Three things sit outside the scale: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on the now-playing eq bars, which are 2px wide and would otherwise render as lozenges.
 
 `--radius` in `:root` points at `md` and is what typeset reads for code blocks and tables.
 
@@ -202,8 +205,11 @@ Every page but home opens with `<PageHeader title={title} />`, which owns the `h
 
 ## Interaction
 
-- Hover is a color or background change, 150–200ms, `ease-out`. Never a layout shift.
-- Press is `active:scale-[0.96–0.99]`, scaled to element size. Small targets compress more.
+- Hover is a color or background change, at most 150ms, `ease-out`. Never a layout shift. It fires on every pass of the pointer, so anything slower reads as lag rather than as feedback.
+- Press is `active:scale-[0.96]`. One departure: `ListItem` sits at `0.98`, because a row spanning the whole column reads as a lurch at 0.96.
+- Icons carry the optical weight of the text beside them. `stroke={1.5}` against 400 copy, one library (`@tabler/icons-react`), 16px unless the row says otherwise, and `currentColor` so hover and state come from CSS rather than a second asset.
+- An icon that swaps by state cross-fades instead of popping: `scale` 0.25 to 1, `opacity` 0 to 1, `blur` 4px to 0, 300ms on `cubic-bezier(0.2, 0, 0, 1)`, with both icons mounted so the exit animates too. The copy button in `Install` is the reference. Motion is never the only channel, which is why the check mark also turns `brand`.
+- Remote artwork carries `ring-1 ring-fg-1/10`: pure black at 10%, never a tinted neutral, which picks up the surface underneath and reads as dirt on the image edge. Album covers, artist photos, the `Showcase` screenshot.
 - **One list-row hover model.** Every list row is a `ListItem`: the row lifts to `bg-2` on hover. A surface has to be earned by communicating interaction, and a divider between rows isn't earned when spacing already separates them. Secondary metadata (star counts, arrows) is `opacity-0` until row hover, via `ListItemHover`.
 - Focus is a 2px `ring` outline at 2px offset, from a bare `:focus-visible` rule in `@layer base`. It hangs off the pseudo-class, not a utility, so nothing opts in and nothing can forget.
 - Haptics (`useHaptics`) fire on nav clicks and on hover of the home page links. `tick` for hover, `click` for navigation.
