@@ -71,7 +71,7 @@ const links: {
   },
 ];
 
-/** Registered once for the whole app, from whichever nav is mounted. */
+/** Lives on the rail, which hides in CSS, so the keys work at every width. */
 function useNavHotkeys() {
   const navigate = useNavigate();
   const { trigger } = useHaptics();
@@ -112,22 +112,15 @@ function Navbar() {
   );
 }
 
-/**
- * The phone bar: a floating capsule rather than a full-width shelf, inverted so
- * it reads as a control over the page instead of a second page edge. Icon-only
- * because six labels at the site's smallest size overflow a 320px screen, and
- * the type scale has nothing below `text-sm` on purpose. Six 44px targets and
- * the capsule's own padding come to 272px, which is what clears 320px minus the
- * page margin, so the row is gapless: the active pill is what separates them.
- */
+/** Gapless on purpose: six 44px targets plus padding is all 320px allows. */
 function MobileNav() {
   const { trigger } = useHaptics();
 
   return (
     <nav
       aria-label="Primary"
-      // Transparent to the pointer everywhere but the capsule, so it doesn't
-      // swallow taps across the width of the page.
+      // Paired with `pointer-events-auto` below, so the full-width nav
+      // doesn't swallow taps either side of the capsule.
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-md pb-[max(var(--spacing-md),env(safe-area-inset-bottom))] lg:hidden"
     >
       <ul className="not-typeset pointer-events-auto flex items-center rounded-full bg-bg-contrast p-xs shadow-lg [&_a]:no-underline">
@@ -140,8 +133,6 @@ function MobileNav() {
               to={tab.to}
             >
               {({ isActive }) => {
-                // Outline by default, filled for the active tab. With no label
-                // under it, colour alone is too thin a signal at icon size.
                 const Icon = isActive ? tab.activeIcon : tab.icon;
                 return (
                   <Icon aria-hidden="true" className="size-5" stroke={1.5} />

@@ -86,9 +86,6 @@ function MusicPage() {
   );
 }
 
-/* Shared by the real grid and its skeleton, which had drifted to a different
-   gap. The two columns are peer sections, so they sit `xl` apart like sections
-   anywhere else. */
 function TopsGrid({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-1 gap-xl md:grid-cols-2">{children}</div>

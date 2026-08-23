@@ -39,8 +39,7 @@
      doesn't reinvent it out of `bg-fg-1 text-bg-1`. */
   --color-bg-contrast: oklch(from var(--color-gray-900) l c h);
   --color-fg-contrast: oklch(from var(--color-white) l c h);
-  /* Its quiet step, the light-on-dark answer to `fg-3`. Alpha in the token for
-     the same reason: it composites onto whatever dark surface carries it. */
+  /* The light-on-dark answer to `fg-3`: inactive tabs in the phone bar. */
   --color-fg-contrast-2: oklch(from var(--color-white) l c h / 0.5);
 
   --color-border: oklch(from var(--color-gray-200) l c h);
@@ -124,14 +123,12 @@
   --radius: var(--radius-md);
 }
 
-/* Tailwind already wraps `hover:` in this query, so a hover-only affordance
-   simply never appears on touch. Naming the variant lets one show at rest
-   there instead of going missing. */
+/* Tailwind already wraps `hover:` in this query, so a hover-only affordance is
+   absent on touch rather than subtle. Naming it lets one show at rest instead. */
 @custom-variant can-hover (@media (hover: hover));
 
-/* The page's inline margin, floored by the display cutout. `env()` is physical
-   on purpose: the notch sits where it sits whatever the writing direction, and
-   `max()` keeps the ordinary margin on every device that has no inset. */
+/* The page's inline margin, floored by the display cutout. `env()` stays
+   physical: the notch sits where it sits whatever the writing direction. */
 @utility page-inline {
   padding-inline-start: max(var(--spacing-md), env(safe-area-inset-left));
   padding-inline-end: max(var(--spacing-md), env(safe-area-inset-right));
@@ -142,12 +139,10 @@
   }
 }
 
-/* Fades the trailing edge of a horizontal scroller, so a clipped line reads as
-   scrollable rather than as a rendering fault. The keyframes hold one value at
-   both ends: the animation is not an effect, it is the only way CSS can ask
-   whether an element overflows. A scroller with nothing to scroll has an
-   inactive timeline, so a line that fits is never faded. Browsers without
-   scroll timelines get the plain hard edge. */
+/* Fades the trailing edge of a horizontal scroller. The keyframes hold one
+   value at both ends because the animation is not an effect: it is the only way
+   CSS can ask whether an element overflows, since a scroller with nothing to
+   scroll has an inactive timeline and keeps its base style. */
 @utility scroll-fade-end {
   @supports (animation-timeline: scroll(self inline)) {
     animation: scroll-fade-end linear both;

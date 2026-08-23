@@ -9,15 +9,11 @@ import {
 import { useLive } from "~/lib/spotify";
 import type { SpotifyTrack } from "~/server/spotify";
 
-// Tailwind's `lg`, written out because a media query string can't read the
-// breakpoint. Change both or neither.
+// Tailwind's `lg`. A media query string can't read the token, so this is a
+// second copy of it: change both or neither.
 const DESKTOP = "(min-width: 64rem)";
 
-/**
- * `false` on the server and on the first client render, so the corner is gated
- * in JS rather than by a `hidden lg:flex` that would leave the poll running
- * behind it.
- */
+/** `false` until the client says otherwise, so the server renders nothing. */
 function useIsDesktop() {
   return useSyncExternalStore(
     (onStoreChange) => {

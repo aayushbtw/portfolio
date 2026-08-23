@@ -6,8 +6,6 @@ import { cn } from "~/lib/utils";
 
 const RESET_DELAY = 1500;
 
-/* The children take `rounded-xs` rather than `rounded-sm`: the frame's 4px
-   pad plus a 4px inner radius is what makes the two curves concentric. */
 function Install({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -70,8 +68,7 @@ function InstallCommand({
         onClick={copy}
         type="button"
       >
-        {/* Both icons stay mounted so the swap cross-fades in and out; the
-            copy icon is the one in flow, so it sets the button's size. */}
+        {/* Both stay mounted so the swap animates out as well as in. */}
         <span className="relative block">
           <IconCheck
             aria-hidden="true"

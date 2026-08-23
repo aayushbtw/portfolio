@@ -106,12 +106,7 @@ function Figure({ children }: { children: React.ReactNode }) {
   return <span className="text-fg-1 tabular-nums">{children}</span>;
 }
 
-/**
- * One grid for the whole group rather than a flex row each: the label and value
- * columns size to the longest entry in the group and every bar still starts on
- * the same line. A fixed `w-20` was sized for English and "Cache write" already
- * filled it.
- */
+/** One grid, not a row each, so the columns size to the group's longest entry. */
 function BarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -138,8 +133,7 @@ function BarRow({
   value: string;
 }) {
   return (
-    // `contents` so the cells below join the group's grid and its columns line
-    // up across rows.
+    // `contents` so these cells join the group's grid rather than nest in it.
     <div className="contents">
       <span className="whitespace-nowrap">{label}</span>
       <Meter

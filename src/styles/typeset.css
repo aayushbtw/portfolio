@@ -496,10 +496,9 @@
     @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono;
   }
 
-  /* Zeroed for the same reason the `pre` below is: typeset reads this as a
-     photo caption and gives it `0.75em` of air above, which inside a title bar
-     lands the text below its own centre. `pl-md` puts the title on the line
-     numbers' left edge, the only vertical the frame has. */
+  /* Typeset reads this as a photo caption and gives it `0.75em` above, which
+     in a title bar lands the text below its own centre. `pl-md` puts the title
+     on the line numbers' left edge, the only vertical the frame has. */
   .typeset :where(figure.tm-code-frame > figcaption) {
     margin-block-start: 0;
     @apply border-b px-md py-sm text-left text-fg-2;
@@ -515,14 +514,8 @@
   }
 
   /* `block`, not `inline-block`: the `pre` is `whitespace-nowrap`, so the
-     newlines between the spans collapse and inline lines all run onto one.
-     `w-max min-w-full` keeps each line as wide as the widest, so a hovered or
-     highlighted line spans the full frame rather than stopping at its text.
-
-     The `pre` carries no inline padding, so the line owns both edges: the
-     gutter below pads the left, `pr-md` keeps a long line off the right border
-     when it scrolls. Code steps up from `leading-tight`, which is sized for a
-     one-line inline chip and stacks badly over a fence. */
+     newlines between the spans collapse and every line runs onto one. The `pre`
+     carries no inline padding either, so the line owns both edges. */
   .typeset :where(pre.tm-code .th-line) {
     @apply block w-max min-w-full pr-md leading-normal;
   }

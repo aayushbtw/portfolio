@@ -95,8 +95,6 @@ function HomePage() {
           </p>
         </div>
 
-        {/* Inside the hero rather than beside it: it illustrates the copy above
-            it, so it takes the smaller step and moves with it. */}
         <div className="mt-lg">
           <Await
             fallback={<ContributionGraphSkeleton />}
