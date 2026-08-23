@@ -176,7 +176,10 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
 | `page-inline`      | The page's inline margin, floored by the display cutout. `md`, `lg` from `sm` up |
+| `scroll-fade-end`  | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
 | `indicator-brand`  | Brand gradient fill for the nav indicator and meter segments      |
+
+`scroll-fade-end` is the odd one: it declares a scroll-driven animation whose keyframes hold a single value at both ends. The animation isn't an effect, it's the only way CSS can ask whether an element overflows, since a scroller with nothing to scroll has an inactive timeline and keeps its base style. A line that fits is never faded, and holding one value also makes it immune to the reduced-motion block, which forces `animation-duration` to `0.01ms` site-wide. Browsers without scroll timelines fall back to the hard edge that was there before.
 
 There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing at rest what hover would otherwise reveal. See the list-row model under **Interaction**.
 
