@@ -213,6 +213,8 @@ The rail was `hidden lg:block` with nothing behind it once, and since it is the 
 
 The capsule is icon-only, and that follows from the type scale rather than from taste: six labels at `text-sm` overflow a 320px screen, and there is nothing below `text-sm` on purpose. So each tab is a 44px target carrying a 20px icon and an `aria-label`, six of them plus the capsule's `xs` padding coming to 272px, which clears 320px minus the page margin. The row is gapless because of that budget, and it works because the active pill is what separates one tab from the next. Active is a filled icon on a `fg-contrast/10` pill: with no label underneath, a colour step alone is too thin a signal at icon size.
 
+**The now-playing corner hangs off the viewport, not the frame.** On a wide screen it sits at the window's edge rather than the content column's, and that is the decision rather than an oversight: it is chrome about the window, like the scrollbar, not part of the page. Aligning it was tried and reverted, because the only way to do it from a `fixed` element is `max(margin, (100vw - frame) / 2 + margin)`, and `100vw` counts the stable scrollbar gutter that the centred layout does not.
+
 ```tsx
 <section>
   <PageHeader title={title} />

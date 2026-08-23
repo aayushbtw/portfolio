@@ -23,19 +23,6 @@ Three separate objections, and you may only care about some:
 Middle path: drop 5 layers to 3. Halves the cost, near-invisible difference,
 since the 0.5px and 1px layers contribute least. ~10 min.
 
-### NowPlaying's inline edge
-
-[now-playing.tsx](src/components/now-playing.tsx) is `fixed … right-lg`, so it
-hangs off the viewport while every other thing on the page hangs off the layout
-margin. On a wide screen it drifts a few hundred pixels away from the content
-column it belongs to.
-
-A `frame-inline-end` utility doing the `max(margin, (100vw - frame) / 2 +
-margin)` math was built and rejected: `100vw` counts the stable scrollbar
-gutter and the centred layout doesn't, so it lands ~2.5px off above 1280px. The
-clean version is moving it inside the frame as sticky chrome, which needs no
-viewport math at all but does mean it stops being a sibling of the layout. ~1h.
-
 ## Deferred, with context
 
 ### The 404 page
