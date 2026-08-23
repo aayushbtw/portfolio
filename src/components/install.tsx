@@ -113,7 +113,7 @@ function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       className={cn(
-        "flex flex-1 items-center justify-center gap-xs rounded-xs border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.98] *:[svg:not([class*='size-'])]:size-4",
+        "flex flex-1 items-center justify-center gap-xs rounded-xs border bg-bg-1 py-sm text-fg-2 no-underline transition-[background-color,scale] duration-150 hover:bg-bg-2 active:scale-[0.96] *:[svg:not([class*='size-'])]:size-4",
         className
       )}
       data-slot="install-link"
