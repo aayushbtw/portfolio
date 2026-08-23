@@ -32,7 +32,10 @@ function Navbar() {
   );
 
   return (
-    <aside className="sticky top-2xl hidden lg:block">
+    // Below `lg` this is a wrapped row above the content rather than a rail:
+    // the sidebar is the only navigation the site has, and hiding it left every
+    // page but home unreachable on a phone.
+    <aside className="mb-lg lg:sticky lg:top-2xl lg:mb-0">
       <nav>
         <NavList>
           {links.map((item) => (

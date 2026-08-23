@@ -126,7 +126,7 @@
 }
 
 @utility nav-link {
-  @apply block pl-md text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
+  @apply block text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active] lg:pl-md;
 }
 
 @utility animated-link {
