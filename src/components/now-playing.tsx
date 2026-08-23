@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
+import { useSyncExternalStore } from "react";
 import {
   HoverCard,
   HoverCardContent,
@@ -10,23 +11,48 @@ import { getLiveFn, type SpotifyTrack } from "~/server/spotify";
 
 /**
  * The music route reads `recentlyPlayed` off the same query key, so it and the
- * `__root` corner share one request and one interval.
+ * `__root` corner share one request and one interval. `enabled` is per
+ * observer: the corner switching itself off on a phone leaves the music route's
+ * own call, and its poll, untouched.
  */
-function useLive() {
+function useLive({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: ["spotify", "live"],
     queryFn: () => getLiveFn(),
+    enabled,
     staleTime: 10_000,
     refetchInterval: 10_000,
     refetchIntervalInBackground: false,
   });
 }
 
+// Tailwind's `lg`, written out because a media query string can't read the
+// breakpoint. Change both or neither.
+const DESKTOP = "(min-width: 64rem)";
+
+/**
+ * `false` on the server and on the first client render, so the corner is gated
+ * in JS rather than by a `hidden lg:flex` that would leave the poll running
+ * behind it.
+ */
+function useIsDesktop() {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const query = window.matchMedia(DESKTOP);
+      query.addEventListener("change", onStoreChange);
+      return () => query.removeEventListener("change", onStoreChange);
+    },
+    () => window.matchMedia(DESKTOP).matches,
+    () => false
+  );
+}
+
 function NowPlaying() {
-  const { data: live } = useLive();
+  const isDesktop = useIsDesktop();
+  const { data: live } = useLive({ enabled: isDesktop });
   const track = live?.nowPlaying.isPlaying ? live.nowPlaying.track : null;
 
-  if (!track) {
+  if (!(isDesktop && track)) {
     return null;
   }
 
