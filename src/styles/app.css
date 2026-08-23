@@ -64,7 +64,6 @@
   --radius-sm: 0.375rem; /* 6px  buttons, fields, covers, skeletons */
   --radius-md: 0.5rem; /*   8px  rows, panels, media, tooltips */
 
-  /* Still wider than prose wants; see TODO.md. */
   --container-content: 644px;
 
   --text-base: 15px;

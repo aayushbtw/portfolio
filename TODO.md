@@ -9,78 +9,29 @@ with what it would cost rather than applied.
 ### ProgressiveBlur's anchor coupling
 
 The blur is down to 3 layers from 5, which was the compositing cost. What's
-left is that its 48px height is why headings need a 64px
+left is that its 48px height (`h-12`) is why headings need a 64px
 `scroll-margin-block-start` ([typeset.css](src/styles/typeset.css#L461)):
 without a fixed strip over the top of the page, typeset's own step would do. A
 decorative element generating a compensating rule elsewhere. Only worth undoing
 if the blur goes entirely.
 
-### The 404 page
-
-Two deviations, both on
-[__root.tsx](src/routes/__root.tsx#L118-L122), each deferred because the fix
-changes how the page looks:
-
-- A bare `outline`, which resolves to `currentColor`. DESIGN.md assigns the
-  `border` token to all borders and outlines. Fix is `outline-border`; it
-  changes the outline's colour.
-- `h-[calc(100vh-12rem)]`, where `12rem` is not a step on the spacing scale.
-  The on-system spelling is `calc(100vh-var(--spacing-2xl)*2)`, which is both
-  uglier and a different height. May be better as a documented exception.
-
-### Decorative gradient
-
-`indicator-brand` is `bg-linear-to-b from-brand to-brand/60`
-([app.css](src/styles/app.css)). This was logged against a rule reading "a
-gradient is acceptable only when it is a labelled continuous data scale", which
-is **not in DESIGN.md** and may never have been; treat the objection as
-unsourced until someone restates it. If it does hold, both users are ornament:
-the nav indicator, and the meters on `/usage`, which since the one-row rebuild
-are a single full-width segment rather than a scale. ~15 min to flatten.
-
-### Dark mode
-
-The token layer is ready for it. Two blockers now:
-
-- `--color-graph-0` through `-4`: five raw GitHub hexes wrapped in a no-op
-  `oklch(from #hex l c h)`, the only raw hex left in the theme, with no dark
-  variant.
-- The phone bar is inverted onto `bg-contrast`, which is the whole point of it
-  on a light page. In dark mode a near-black capsule on a near-black page has
-  nothing to separate it, so it needs a rule of its own rather than following
-  the ramp.
-
-Everything else derives from the gray ramp and would follow a
-`prefers-color-scheme` block. A day, most of it picking a dark contribution
-scale.
-
-### Measure
-
-The content column is 644px, which at 15px Inter is **~86 characters** against
-design.md's 60–68. Computed from Inter's ~0.5em average advance, which puts the
-old 740px column at ~99 and matches the "~95" it was described as at the time.
-So the narrowing helped and did not go far enough.
-
-The prescribed shape is a narrower prose column with the graph, code blocks and
-`Showcase` breaking out wider. That changes the proportions of every page, so it
-wants looking at rather than landing blind. Half a day.
-
 ## Unverified
 
 Landed without ever being seen in a browser, because the work was done against
-the source. Each falls back to the behaviour it replaced if it doesn't hold, so
-none is urgent, but none is confirmed either.
+the source.
 
 - **`scroll-fade-end`** ([app.css](src/styles/app.css)) leans on a scroll-driven
   animation with an inactive timeline to detect overflow. What to check: a
   *short* install command must have **no** fade. If it has one, the timeline
   isn't going inactive and the fix is a `ResizeObserver` on `InstallCommand`
   instead. Also worth confirming the `@apply` of it inside `typeset.css`, since
-  the utility wraps an `@supports`.
+  the utility wraps an `@supports`. This one degrades safely: browsers without
+  scroll timelines fall back to the hard edge that was there before.
 - **The code frame** ([typeset.css](src/styles/typeset.css)): caption margin,
-  gutter alignment and `block` lines were all changed together.
-- **The phone bar** at 320px. Six 44px targets plus padding was budgeted at
-  272px on paper.
+  gutter alignment and `block` lines were changed together, and unlike the fade
+  they are unconditional. If the frame looks wrong, it looks wrong everywhere.
+- **The phone bar** at 320px. Six 44px targets plus the capsule's `p-xs` comes
+  to 272px against 288px of usable width, budgeted on paper.
 
 ## Small and cheap
 
@@ -89,15 +40,21 @@ none is urgent, but none is confirmed either.
   malformed XML and breaks the sitemap for every crawler, not just that URL.
   3 lines.
 
+- **`12rem` on the 404 page.** [__root.tsx](src/routes/__root.tsx#L118) uses
+  `h-[calc(100vh-12rem)]`, and `12rem` is not a step on the spacing scale. The
+  on-system spelling is `calc(100vh-var(--spacing-2xl)*2)`, and since
+  `--spacing-2xl` is 6rem, that is **the same height to the pixel**. A rename
+  with no visual change. 1 line.
+
 - **Secondary-text contrast.** Body copy is fine: `body` and `p` sit at `fg-4`,
   a solid `gray-600` measuring 7.56:1 on `bg-1`. The failures are the two alpha
   tokens, `fg-2` (black/45) at 3.36:1 and `fg-3` (black/40) at 2.85:1, both under
   WCAG AA's 4.5:1, which applies to labels and metadata at these sizes as much as
-  to prose. `fg-3` has 23 call sites. Deliberate for now: the palette is set by
-  eye. If AA has to hold, black/54 is the first alpha that clears 4.5:1, and both
-  tokens move without anything at a call site changing. `fg-contrast-2`
-  (white/50 on `bg-contrast`) is the newest of these and has not been measured
-  at all.
+  to prose. 18 `text-fg-3` call sites and 13 `text-fg-2`. Deliberate for now: the
+  palette is set by eye. If AA has to hold, black/54 is the first alpha that
+  clears 4.5:1, and both tokens move without anything at a call site changing.
+  `fg-contrast-2` (white/50 on `bg-contrast`) is the newest of these and has not
+  been measured at all.
 
 - **The `lg` breakpoint is written twice.** `(min-width: 64rem)` in
   [now-playing.tsx](src/components/now-playing.tsx) has to track Tailwind's `lg`

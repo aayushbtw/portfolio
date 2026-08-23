@@ -84,7 +84,9 @@ Three steps, and which one you want follows from what the thing is.
 
 ## Layout
 
-The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). About 86 characters at 15px, which is wider than the 60-68 prose wants; see TODO.md. 520 was tried first and read as too narrow next to the code blocks in a post; 740 ran long enough that the eye hunted for the start of the next line.
+The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). That is about 86 characters at 15px, against the 60-68 prose conventionally wants, and it is the settled answer rather than a target missed. Three widths were tried. 740 (~99 characters) ran long enough that the eye hunted for the start of the next line. 520 (~69, essentially the conventional target) read as too narrow next to the code blocks in a post, and that is the useful finding: nothing can escape this column, so the contribution graph and every code fence share the prose measure with the prose. 644 is where those two pressures balance.
+
+Narrowing it again means first giving wide content a way to break out of the column, and that has not earned its cost. The graph is the one that pays for it today: its viewBox is 740 units wide, so at 644px its cells draw at 10.4px against the 12px they are specified at.
 
 List rows are `py-sm`, negatively inset by `-mx-md` so the hover surface bleeds past the text, with no divider between them. A post row is three parts — year left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
 
@@ -182,11 +184,16 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
 | `page-inline`      | The page's inline margin, floored by the display cutout. `md`, `lg` from `sm` up |
 | `scroll-fade-end`  | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
-| `indicator-brand`  | Brand gradient fill for the nav indicator and meter segments      |
+| `indicator-brand`  | Brand fill for the nav indicator and meter segments, softened toward its bottom edge |
 
 `scroll-fade-end` is the odd one: it declares a scroll-driven animation whose keyframes hold a single value at both ends. The animation isn't an effect, it's the only way CSS can ask whether an element overflows, since a scroller with nothing to scroll has an inactive timeline and keeps its base style. A line that fits is never faded, and holding one value also makes it immune to the reduced-motion block, which forces `animation-duration` to `0.01ms` site-wide. Browsers without scroll timelines fall back to the hard edge that was there before.
 
 There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing at rest what hover would otherwise reveal. See the list-row model under **Interaction**.
+
+`indicator-brand`'s `to-brand/60` is deliberate and is not a data scale. It runs
+across the 6px of a meter track and the 8px of the nav indicator, which is too
+short a run to read as a gradient: it softens the bottom edge and nothing more.
+Flattening it to `bg-brand` was considered and rejected.
 
 **A `@utility` earns its place two ways: it lands on tags the caller chooses, or
 it needs selectors a `className` can't express.** `row-link` sits on a `Link`, an
