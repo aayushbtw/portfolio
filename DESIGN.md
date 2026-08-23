@@ -51,7 +51,11 @@ Six steps: **4, 8, 16, 24, 48, 96**. Doubling from `xs` up to `md`, 1.5× to `lg
 
 Used as `mt-lg`, `gap-md`, `px-md`, `py-sm`. Nothing exists between the steps, so a gap that feels wrong is the wrong step, not a missing value. Reaching for `mt-7` means one of these is what you meant.
 
-**Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with its own `h2` is a new section and takes `mt-xl`; a block that continues the one above it takes `mt-lg`. So on the home page the contribution graph sits `lg` under the hero it belongs to, while Projects and Writings each open `xl` below. The rule is checkable: if it has its own label, it gets the bigger step.
+**Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with its own `h2` is a new section and takes the `xl` step; a block that continues the one above it takes `mt-lg`. The rule is checkable: if it has its own label, it gets the bigger step.
+
+**`Page` owns the bigger step, so no route writes it.** It is a `flex flex-col gap-xl` around a page's top-level blocks, and a route that spells `mt-xl` between two sections is doing by hand what drifts. The smaller step stays a class, because it means something different: a continuing block is not a sibling of the section above it, it lives *inside* that section. So on the home page the contribution graph sits in the hero's own `<section>` with `mt-lg`, because it illustrates the copy above it, while Projects and Writings are siblings and get `xl` from the container. The rule stops being a number to remember and becomes where you put the markup.
+
+Two things follow from that. A page with one section still gets a `Page`, so the second one lands right instead of arriving with a hand-written margin. And a page-level block with no heading of its own, like the usage page's "last updated" line, is still a sibling: it is a separate block, not a continuation of the section above it.
 
 Note these read next to Tailwind's responsive prefixes, so `sm:mt-sm` is "8px top margin from the `sm` breakpoint up". The prefix is before the colon, the scale after it.
 
@@ -238,9 +242,11 @@ Every page but home opens with `<PageHeader title={title} />`, which owns the `h
 
 ## Components
 
-`ui/` holds the primitives: `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ContributionGraph`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
+`ui/` holds the primitives: `Page`, `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ContributionGraph`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
 
 Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it doesn't reach into `usage.json` to work out a percentage. When a figure needs page-specific arithmetic, do it in the route and pass the result down.
+
+**A skeleton shares the container, it doesn't copy it.** The music page's top lists and their skeleton each wrote their own grid, and the two had already drifted a step apart on the gap before anyone noticed, because you only ever see one of them at a time. They now both render `TopsGrid`. Anything a skeleton and its real content both need is a component, not a repeated class string.
 
 A skeleton has to be the same shape as the thing it replaces. `ListSkeleton` uses `ListItem`'s box without its hover, and `ContributionGraphSkeleton` reserves the graph's exact height, so nothing shifts when data lands.
 
