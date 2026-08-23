@@ -39,6 +39,9 @@
      doesn't reinvent it out of `bg-fg-1 text-bg-1`. */
   --color-bg-contrast: oklch(from var(--color-gray-900) l c h);
   --color-fg-contrast: oklch(from var(--color-white) l c h);
+  /* Its quiet step, the light-on-dark answer to `fg-3`. Alpha in the token for
+     the same reason: it composites onto whatever dark surface carries it. */
+  --color-fg-contrast-2: oklch(from var(--color-white) l c h / 0.5);
 
   --color-border: oklch(from var(--color-gray-200) l c h);
   /* For a boundary that has to read as a line rather than a hairline. */
@@ -168,7 +171,7 @@
 }
 
 @utility nav-link {
-  @apply block text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active] lg:ps-md;
+  @apply block ps-md text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
 @utility animated-link {
