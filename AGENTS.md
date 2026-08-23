@@ -8,3 +8,27 @@ Before editing files for a substantial task:
 - Monorepos: when working across packages, run the skill check from the workspace root and prefer the local skill for the package being changed.
 - Multiple matches: prefer the most specific local skill for the package or concern you are changing; load additional skills only when the task spans multiple packages or concerns.
 <!-- intent-skills:end -->
+
+## Comments
+
+`DESIGN.md` is where the *why* lives. A code comment is not, and duplicating one
+there is how it goes stale.
+
+Before writing a comment, apply one test: **would someone who has read
+`DESIGN.md` delete this line, thinking it is wrong or redundant?** If no, the
+code says it already. Write nothing.
+
+That leaves comments for lines that look deletable and are not: a `display:
+contents`, a `margin-block-start: 0` undoing a vendored rule, keyframes that
+hold one value, a constant duplicated from a token Tailwind won't expose.
+
+Never write history. "Was sized for English", "had drifted", "zeroed for the
+same reason": how the code got here belongs in the commit message, and what it
+means for the system belongs in `DESIGN.md`.
+
+**Do not match this repo's comment density.** `app.css` and `typeset.css` read
+like essays because every one of those comments is load-bearing: a token reset
+that breaks if reordered, a fork that a registry re-pull would silently undo.
+That is not licence for a docstring on each new function.
+
+One line by default. If it needs a paragraph, it is a `DESIGN.md` edit.
