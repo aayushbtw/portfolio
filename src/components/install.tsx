@@ -68,11 +68,28 @@ function InstallCommand({
         onClick={copy}
         type="button"
       >
-        {copied ? (
-          <IconCheck aria-hidden="true" className="size-4 text-brand" />
-        ) : (
-          <IconCopy aria-hidden="true" className="size-4" />
-        )}
+        {/* Both icons stay mounted so the swap cross-fades in and out; the
+            copy icon is the one in flow, so it sets the button's size. */}
+        <span className="relative block">
+          <IconCheck
+            aria-hidden="true"
+            className={cn(
+              "absolute inset-0 size-4 text-brand transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+              copied
+                ? "scale-100 opacity-100 blur-0"
+                : "scale-[0.25] opacity-0 blur-[4px]"
+            )}
+          />
+          <IconCopy
+            aria-hidden="true"
+            className={cn(
+              "size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+              copied
+                ? "scale-[0.25] opacity-0 blur-[4px]"
+                : "scale-100 opacity-100 blur-0"
+            )}
+          />
+        </span>
       </button>
     </div>
   );
