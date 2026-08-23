@@ -4,6 +4,7 @@ import { Meter } from "~/components/ui/meter";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import {
+  cn,
   formatCompact,
   formatDate,
   formatNumber,
@@ -32,7 +33,7 @@ function UsagePage() {
 
       <section className="mt-xl">
         <h2>Where the tokens go</h2>
-        <div className="mt-sm flex flex-col gap-sm">
+        <BarGroup>
           {usage.tokenTypes.map((part) => (
             <BarRow
               key={part.label}
@@ -42,12 +43,12 @@ function UsagePage() {
               value={formatCompact(part.tokens)}
             />
           ))}
-        </div>
+        </BarGroup>
       </section>
 
       <section className="mt-xl">
         <h2>Models</h2>
-        <div className="mt-sm flex flex-col gap-sm">
+        <BarGroup>
           {usage.models.map((model) => (
             <BarRow
               key={model.name}
@@ -57,13 +58,13 @@ function UsagePage() {
               value={formatCompact(model.tokens)}
             />
           ))}
-        </div>
+        </BarGroup>
       </section>
 
       <section className="mt-xl">
         <h2>Last {usage.days.length} active days</h2>
         {/* Each bar is a share of the busiest day, not of the year. */}
-        <div className="mt-sm flex flex-col gap-sm">
+        <BarGroup className="grid-cols-[auto_minmax(0,1fr)_auto]">
           {usage.days.map((day) => (
             <BarRow
               key={day.date}
@@ -72,7 +73,7 @@ function UsagePage() {
               value={formatCompact(day.tokens)}
             />
           ))}
-        </div>
+        </BarGroup>
       </section>
 
       <p className="mt-xl text-fg-3 text-sm">
@@ -103,6 +104,25 @@ function Figure({ children }: { children: React.ReactNode }) {
   return <span className="text-fg-1 tabular-nums">{children}</span>;
 }
 
+/**
+ * One grid for the whole group rather than a flex row each: the label and value
+ * columns size to the longest entry in the group and every bar still starts on
+ * the same line. A fixed `w-20` was sized for English and "Cache write" already
+ * filled it.
+ */
+function BarGroup({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn(
+        "not-typeset mt-sm grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-x-md gap-y-sm text-fg-3",
+        className
+      )}
+      data-slot="bar-group"
+      {...props}
+    />
+  );
+}
+
 /** Every bar is full `brand`: a faded accent reads as disabled, not smaller. */
 function BarRow({
   label,
@@ -116,17 +136,17 @@ function BarRow({
   value: string;
 }) {
   return (
-    <div className="not-typeset flex items-center gap-md text-fg-3">
-      <span className="w-20 shrink-0 whitespace-nowrap">{label}</span>
+    // `contents` so the cells below join the group's grid and its columns line
+    // up across rows.
+    <div className="contents">
+      <span className="whitespace-nowrap">{label}</span>
       <Meter
-        className="min-w-0 flex-1"
+        className="min-w-0"
         segments={[{ className: "indicator-brand", label, share: 100 }]}
         value={Math.max(percent, 0.5)}
       />
-      <span className="w-20 shrink-0 text-right tabular-nums">{value}</span>
-      {share ? (
-        <span className="w-10 shrink-0 text-right tabular-nums">{share}</span>
-      ) : null}
+      <span className="text-right tabular-nums">{value}</span>
+      {share ? <span className="text-right tabular-nums">{share}</span> : null}
     </div>
   );
 }
