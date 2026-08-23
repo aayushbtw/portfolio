@@ -13,19 +13,16 @@
     --typeset-font-mono: var(--font-mono);
     --typeset-flow: 1.25em;
   }
-}
 
-@layer components {
   .typeset {
     font-family: var(--typeset-font-body);
     color: var(--color-foreground, currentColor);
     overflow-wrap: break-word;
     margin-trim: block-start;
 
-    --typeset-muted: var(
-      --color-muted-foreground,
-      color-mix(in oklab, currentColor 60%, transparent)
-    );
+    /* Every muted thing typeset paints is chrome, not copy: markers, captions,
+       footnotes, the strikethrough. One step off the body. */
+    --typeset-muted: var(--color-fg-2);
     --typeset-rule: var(
       --color-border,
       color-mix(in oklab, currentColor 20%, transparent)
@@ -108,8 +105,8 @@
       color: var(--typeset-muted);
       text-decoration-line: line-through;
     }
-    /* The only surviving `font-size`: `line-height: 0` keeps the raised glyph
-       from opening up the line box it sits in. */
+    /* The only `font-size` kept from upstream: `line-height: 0` keeps the
+       raised glyph from opening up the line box it sits in. */
     &:where(sup, sub) {
       font-size: 0.75em;
       line-height: 0;
@@ -412,13 +409,11 @@
     ) {
     margin-block-start: 0;
   }
-}
 
-/* The site's own prose rules. Same layer as the block above and later in the
-   file, so these win the tie against it while a utility still beats these. */
-@layer components {
+  /* The site's own prose rules. Later in the file than the block above, so
+     these win the tie against it while a utility still beats these. */
   .typeset {
-    color: var(--color-fg-3);
+    color: var(--color-fg-4);
   }
 
   /* Colour is the whole hierarchy: with one size and one weight, it is all
@@ -429,18 +424,31 @@
      default leading: the looser box makes the next line findable from the end
      of the last. */
   .typeset :where(p) {
-    @apply text-fg-4 leading-relaxed;
+    @apply leading-relaxed;
   }
 
-  /* The only place on the site that departs from the two defaults: a title
-     shares a size and a family with the copy under it. */
+  /* No leading opt-up below h1: a prose heading is one line either way, and
+     h1 is the only place on the site that departs from the two defaults. */
+  .typeset :where(h1, h2, h3, h4, h5, h6) {
+    @apply text-fg-1 tracking-tight;
+  }
+
   .typeset :where(h1) {
-    @apply text-fg-1 font-bold leading-tight tracking-tight;
+    @apply font-bold leading-tight;
   }
 
-  /* No leading opt-up: a prose heading is one line. */
-  .typeset :where(h2, h3, h4, h5, h6) {
-    @apply text-fg-2 tracking-tight;
+  /* The browser default is 700; the site's scale tops out at 450, which is
+     what `font-bold` is here. */
+  .typeset :where(strong, b) {
+    @apply font-bold;
+  }
+
+  /* The one deliberate break from the site's single size: a mono face runs
+     visually larger than the sans it sits in, so code needs a step down to
+     match the copy around it. The frame is the selector for a titled fence so
+     its caption steps down with the lines it labels. */
+  .typeset :where(code, pre, figure.tm-code-frame) {
+    @apply text-sm leading-tight tracking-tight;
   }
 
   .typeset :where(a) {
@@ -466,7 +474,7 @@
      heading away from the body copy. `top-0` pins it to the first line, which
      its static position would not do for a heading that wraps. */
   .typeset .heading-anchor {
-    @apply absolute top-0 right-full pr-xs text-fg-3 no-underline opacity-0 transition-opacity duration-200;
+    @apply absolute top-0 right-full pr-xs text-fg-2 no-underline opacity-0 transition-opacity duration-200;
   }
 
   .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
@@ -479,13 +487,11 @@
   .typeset :where([data-slot="skill-body"]) > h1:first-child {
     display: none;
   }
-}
 
-/* TanStack Markdown emits a title bar and per-line spans that typeset has no
-   concept of: it reads the title as a photo caption and centers it. A titled
-   fence gets a figure that owns the frame, so the pre sits flush inside it; an
-   untitled one is a bare pre and has to carry the frame itself. */
-@layer components {
+  /* TanStack Markdown emits a title bar and per-line spans that typeset has no
+     concept of: it reads the title as a photo caption and centers it. A titled
+     fence gets a figure that owns the frame, so the pre sits flush inside it;
+     an untitled one is a bare pre and has to carry the frame itself. */
   .typeset :where(figure.tm-code-frame) {
     @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono;
   }
@@ -515,14 +521,14 @@
   /* The palette is the site's, not the theme package's: code is prose here, so
      it reads on the same greys plus one accent. */
   .typeset :where(.th-comment, .th-meta) {
-    @apply text-fg-3;
+    @apply text-fg-2;
   }
 
   .typeset :where(.th-command, .th-function, .th-keyword) {
     @apply text-fg-1;
   }
 
-  .typeset :where(.th-string, .th-number, .th-literal) {
+  .typeset :where(.th-string, .th-number, .th-literal, .th-variable) {
     @apply text-brand;
   }
 }

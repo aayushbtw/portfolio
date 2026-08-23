@@ -78,7 +78,7 @@
      the opt-up for text that wraps, and typeset gives it to `p`. */
   --leading-normal: 18px;
   --leading-relaxed: 24px;
-  --leading-tight: 13.5px;
+  --leading-tight: 14.1px;
 
   /* A tracking curve corrects for size, and with one size there is nothing to
      correct against. `tight` belongs to the title block alone: tracking a
