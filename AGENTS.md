@@ -26,9 +26,8 @@ Never write history. "Was sized for English", "had drifted", "zeroed for the
 same reason": how the code got here belongs in the commit message, and what it
 means for the system belongs in `DESIGN.md`.
 
-**Do not match this repo's comment density.** `app.css` and `typeset.css` read
-like essays because every one of those comments is load-bearing: a token reset
-that breaks if reordered, a fork that a registry re-pull would silently undo.
-That is not licence for a docstring on each new function.
+**Do not read density as licence.** Parts of `app.css` and `typeset.css` are
+already over-commented, restating what `DESIGN.md` covers. Those paragraphs are
+a bug to fix when you next touch the block, not a house style to match.
 
 One line by default. If it needs a paragraph, it is a `DESIGN.md` edit.
