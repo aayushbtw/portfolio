@@ -1,6 +1,4 @@
 import "@tanstack/react-start/server-only";
-import { createHighlighter } from "@tanstack/highlight/core";
-import { shell } from "@tanstack/highlight/languages/shell";
 import { createTanStackMarkdownHighlighter } from "@tanstack/highlight/markdown";
 import type { ComponentNode, MarkdownDocument } from "@tanstack/markdown";
 import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
@@ -13,11 +11,7 @@ import {
   ShowcaseCaption,
   ShowcaseImage,
 } from "~/components/showcase";
-
-// `shell` already answers to bash, sh, zsh, cmd and console. Register another
-// only once a fence in content/ uses it: each adds a tokenizer to the server
-// bundle. Built once, because `createHighlighter` compiles a registry.
-const highlighter = createHighlighter({ languages: [shell] });
+import { highlighter } from "~/lib/highlight";
 
 const highlightCode = createTanStackMarkdownHighlighter(highlighter);
 
