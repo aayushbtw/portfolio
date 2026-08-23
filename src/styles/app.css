@@ -126,6 +126,19 @@
    there instead of going missing. */
 @custom-variant can-hover (@media (hover: hover));
 
+/* The page's inline margin, floored by the display cutout. `env()` is physical
+   on purpose: the notch sits where it sits whatever the writing direction, and
+   `max()` keeps the ordinary margin on every device that has no inset. */
+@utility page-inline {
+  padding-inline-start: max(var(--spacing-md), env(safe-area-inset-left));
+  padding-inline-end: max(var(--spacing-md), env(safe-area-inset-right));
+
+  @variant sm {
+    padding-inline-start: max(var(--spacing-lg), env(safe-area-inset-left));
+    padding-inline-end: max(var(--spacing-lg), env(safe-area-inset-right));
+  }
+}
+
 @utility indicator-brand {
   @apply bg-linear-to-b from-brand to-brand/60;
 }

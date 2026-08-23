@@ -17,7 +17,7 @@ function AppLayout() {
           outside `_app` and have no business advertising a song. */}
       <NowPlaying />
 
-      <div className="typeset mx-auto max-w-7xl px-md py-xl sm:px-lg lg:grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-lg lg:pt-2xl">
+      <div className="page-inline typeset mx-auto max-w-7xl py-xl lg:grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-lg lg:pt-2xl">
         <div>{left ?? <Navbar />}</div>
 
         <main className="mx-auto w-full min-w-0 max-w-content" id="main">
