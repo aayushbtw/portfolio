@@ -125,7 +125,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
         {cover ? (
           <Image
             alt={track.name}
-            className="size-10 shrink-0 rounded-sm"
+            className="size-10 shrink-0 rounded-sm ring-1 ring-fg-1/10"
             height={40}
             src={cover}
             width={40}
@@ -156,7 +156,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
         {photo ? (
           <Image
             alt=""
-            className="size-10 shrink-0 rounded-full"
+            className="size-10 shrink-0 rounded-full ring-1 ring-fg-1/10"
             height={40}
             src={photo}
             width={40}

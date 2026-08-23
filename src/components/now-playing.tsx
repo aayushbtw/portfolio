@@ -86,7 +86,7 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
         {src ? (
           <Image
             alt=""
-            className="size-10 shrink-0 rounded-sm"
+            className="size-10 shrink-0 rounded-sm ring-1 ring-fg-1/10"
             height={40}
             src={src}
             width={40}
