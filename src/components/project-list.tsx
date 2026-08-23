@@ -39,7 +39,7 @@ function ProjectList({ projects }: { projects: PinnedRepo[] }) {
                 <IconStarFilled aria-hidden="true" className="size-2.5" />
                 {item.stars}
               </div>
-              <IconArrowUpRight aria-hidden="true" />
+              <IconArrowUpRight aria-hidden="true" stroke={1.5} />
             </ListItemHover>
           </a>
         </ListItem>

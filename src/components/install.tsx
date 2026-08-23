@@ -79,6 +79,7 @@ function InstallCommand({
                 ? "scale-100 opacity-100 blur-0"
                 : "scale-[0.25] opacity-0 blur-[4px]"
             )}
+            stroke={1.5}
           />
           <IconCopy
             aria-hidden="true"
@@ -88,6 +89,7 @@ function InstallCommand({
                 ? "scale-[0.25] opacity-0 blur-[4px]"
                 : "scale-100 opacity-100 blur-0"
             )}
+            stroke={1.5}
           />
         </span>
       </button>
