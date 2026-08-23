@@ -474,7 +474,7 @@
      heading away from the body copy. `top-0` pins it to the first line, which
      its static position would not do for a heading that wraps. */
   .typeset .heading-anchor {
-    @apply absolute top-0 right-full pr-xs text-fg-2 no-underline opacity-0 transition-opacity duration-200;
+    @apply absolute top-0 right-full pr-xs text-fg-2 no-underline opacity-0 transition-opacity duration-150;
   }
 
   .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {

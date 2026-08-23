@@ -126,11 +126,11 @@
 }
 
 @utility nav-link {
-  @apply block pl-md text-fg-3 transition-[color,scale] duration-200 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
+  @apply block pl-md text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
 }
 
 @utility animated-link {
-  @apply text-fg-1 underline decoration-border-strong underline-offset-3 transition-colors duration-200 ease-out hover:decoration-brand;
+  @apply text-fg-1 underline decoration-border-strong underline-offset-3 transition-colors duration-150 ease-out hover:decoration-brand;
 }
 
 /* Stays in CSS despite the single call site: descendant rules are what a
