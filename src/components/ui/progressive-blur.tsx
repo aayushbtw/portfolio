@@ -1,11 +1,9 @@
 import { cn } from "~/lib/utils";
 
 const LAYERS = [
-  { blur: 0.5, transparent: 0, black: 100 },
-  { blur: 1, transparent: 20, black: 100 },
-  { blur: 2, transparent: 40, black: 100 },
-  { blur: 4, transparent: 60, black: 100 },
-  { blur: 8, transparent: 80, black: 100 },
+  { blur: 1, transparent: 0 },
+  { blur: 3, transparent: 33 },
+  { blur: 8, transparent: 66 },
 ];
 
 interface ProgressiveBlurProps {
@@ -28,8 +26,8 @@ function ProgressiveBlur({
       )}
       data-slot="progressive-blur"
     >
-      {LAYERS.map(({ blur, transparent, black }, i) => {
-        const maskImage = `linear-gradient(${direction}, transparent ${transparent}%, black ${black}%)`;
+      {LAYERS.map(({ blur, transparent }, i) => {
+        const maskImage = `linear-gradient(${direction}, transparent ${transparent}%, black 100%)`;
         return (
           <div
             className="absolute inset-0"

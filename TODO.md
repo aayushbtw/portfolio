@@ -4,26 +4,16 @@ Tracked against [DESIGN.md](DESIGN.md). Everything below is deliberate, not
 forgotten: a deviation that can only be fixed by moving pixels is logged here
 with what it would cost rather than applied.
 
-## Needs a decision
-
-### ProgressiveBlur
-
-Three separate objections, and you may only care about some:
-
-1. design.md hard-rejects "glass effects" by name. Same family as the gradient
-   below, so probably decide them together.
-2. 5 `backdrop-filter` layers × 2 instances = 10 live compositing layers,
-   re-sampling on every scroll frame, over a 365-node SVG on the home page.
-   Reasoned, not profiled.
-3. It's why anchors need a 64px `scroll-margin-block-start`
-   ([typeset.css](src/styles/typeset.css)). Without the 48px fixed blur,
-   typeset's own step would do. One decorative element generating
-   compensating rules.
-
-Middle path: drop 5 layers to 3. Halves the cost, near-invisible difference,
-since the 0.5px and 1px layers contribute least. ~10 min.
-
 ## Deferred, with context
+
+### ProgressiveBlur's anchor coupling
+
+The blur is down to 3 layers from 5, which was the compositing cost. What's
+left is that its 48px height is why headings need a 64px
+`scroll-margin-block-start` ([typeset.css](src/styles/typeset.css#L461)):
+without a fixed strip over the top of the page, typeset's own step would do. A
+decorative element generating a compensating rule elsewhere. Only worth undoing
+if the blur goes entirely.
 
 ### The 404 page
 
@@ -41,10 +31,12 @@ changes how the page looks:
 ### Decorative gradient
 
 `indicator-brand` is `bg-linear-to-b from-brand to-brand/60`
-([app.css](src/styles/app.css)). design.md: "A gradient is acceptable only when
-it is a labelled continuous data scale." Both its users are ornament: the nav
-indicator, and the meters on `/usage`, which since the one-row rebuild are a
-single full-width segment rather than a scale. ~15 min to flatten.
+([app.css](src/styles/app.css)). This was logged against a rule reading "a
+gradient is acceptable only when it is a labelled continuous data scale", which
+is **not in DESIGN.md** and may never have been; treat the objection as
+unsourced until someone restates it. If it does hold, both users are ornament:
+the nav indicator, and the meters on `/usage`, which since the one-row rebuild
+are a single full-width segment rather than a scale. ~15 min to flatten.
 
 ### Dark mode
 
