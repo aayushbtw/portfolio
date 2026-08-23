@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "~/components/page-header";
 import { PostList } from "~/components/post-list";
+import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
 import { getPostList } from "~/server/posts";
 
@@ -17,9 +18,11 @@ function WritingsPage() {
   const posts = Route.useLoaderData();
 
   return (
-    <section>
-      <PageHeader title={title} />
-      <PostList posts={posts} />
-    </section>
+    <Page>
+      <section>
+        <PageHeader title={title} />
+        <PostList posts={posts} />
+      </section>
+    </Page>
   );
 }

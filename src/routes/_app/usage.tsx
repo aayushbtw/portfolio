@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "~/components/page-header";
 import { Meter } from "~/components/ui/meter";
+import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import {
@@ -26,12 +27,13 @@ function formatShare(share: number) {
 
 function UsagePage() {
   return (
-    <section>
-      <PageHeader title={title} />
+    <Page>
+      <section>
+        <PageHeader title={title} />
+        <Lead />
+      </section>
 
-      <Lead />
-
-      <section className="mt-xl">
+      <section>
         <h2>Where the tokens go</h2>
         <BarGroup>
           {usage.tokenTypes.map((part) => (
@@ -46,7 +48,7 @@ function UsagePage() {
         </BarGroup>
       </section>
 
-      <section className="mt-xl">
+      <section>
         <h2>Models</h2>
         <BarGroup>
           {usage.models.map((model) => (
@@ -61,7 +63,7 @@ function UsagePage() {
         </BarGroup>
       </section>
 
-      <section className="mt-xl">
+      <section>
         <h2>Last {usage.days.length} active days</h2>
         {/* Each bar is a share of the busiest day, not of the year. */}
         <BarGroup className="grid-cols-[auto_minmax(0,1fr)_auto]">
@@ -76,14 +78,14 @@ function UsagePage() {
         </BarGroup>
       </section>
 
-      <p className="mt-xl text-fg-3 text-sm">
+      <p className="text-fg-3 text-sm">
         Last updated{" "}
         <time dateTime={usage.generatedAt}>
           {formatDate(usage.generatedAt)}
         </time>
         .
       </p>
-    </section>
+    </Page>
   );
 }
 

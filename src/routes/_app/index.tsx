@@ -12,6 +12,7 @@ import {
 import { PostList } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
 import { ListSkeleton } from "~/components/ui/list";
+import { Page } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { seo } from "~/lib/seo";
@@ -39,7 +40,7 @@ function HomePage() {
   const haptic = () => trigger("tick");
 
   return (
-    <>
+    <Page>
       <section>
         <h1 className="mb-md">{config.name}</h1>
 
@@ -93,23 +94,31 @@ function HomePage() {
             .
           </p>
         </div>
+
+        {/* Inside the hero rather than beside it: it illustrates the copy above
+            it, so it takes the smaller step and moves with it. */}
+        <div className="mt-lg">
+          <Await
+            fallback={<ContributionGraphSkeleton />}
+            promise={contributions}
+          >
+            {(data) =>
+              data ? (
+                <ContributionGraph
+                  data={data.contributions}
+                  total={data.total}
+                />
+              ) : (
+                <p className="text-fg-3">
+                  Contributions are unavailable right now.
+                </p>
+              )
+            }
+          </Await>
+        </div>
       </section>
 
-      <section className="mt-lg">
-        <Await fallback={<ContributionGraphSkeleton />} promise={contributions}>
-          {(data) =>
-            data ? (
-              <ContributionGraph data={data.contributions} total={data.total} />
-            ) : (
-              <p className="text-fg-3">
-                Contributions are unavailable right now.
-              </p>
-            )
-          }
-        </Await>
-      </section>
-
-      <section className="mt-xl">
+      <section>
         <h2>Projects</h2>
         <Await
           fallback={<ListSkeleton rowClassName="h-10" rows={4} />}
@@ -125,11 +134,11 @@ function HomePage() {
         </Await>
       </section>
 
-      <section className="mt-xl">
+      <section>
         <h2>Writings</h2>
         <PostList posts={posts} />
       </section>
-    </>
+    </Page>
   );
 }
 

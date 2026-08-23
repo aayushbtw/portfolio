@@ -4,6 +4,7 @@ import { Image } from "@unpic/react";
 import { Suspense } from "react";
 import { PageHeader } from "~/components/page-header";
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
+import { Page } from "~/components/ui/page";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import { useLive } from "~/lib/spotify";
@@ -33,40 +34,40 @@ function MusicPage() {
   const { data: live } = useLive();
 
   return (
-    <>
+    <Page>
       <PageHeader title={title} />
 
       <Suspense fallback={<TopsSkeleton />}>
         <Await promise={tops}>
           {({ topArtists, topTracks }) => (
-            <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
+            <TopsGrid>
               {topTracks.length > 0 ? (
-                <div>
+                <section>
                   <h2>Top Tracks</h2>
                   <List>
                     {topTracks.map((track) => (
                       <TrackItem key={track.id} track={track} />
                     ))}
                   </List>
-                </div>
+                </section>
               ) : null}
 
               {topArtists.length > 0 ? (
-                <div>
+                <section>
                   <h2>Top Artists</h2>
                   <List>
                     {topArtists.map((artist) => (
                       <ArtistItem artist={artist} key={artist.id} />
                     ))}
                   </List>
-                </div>
+                </section>
               ) : null}
-            </div>
+            </TopsGrid>
           )}
         </Await>
       </Suspense>
 
-      <div className="mt-xl">
+      <section>
         <h2>Recently Played</h2>
         <List>
           {live
@@ -80,25 +81,34 @@ function MusicPage() {
                 (key) => <TrackSkeleton key={key} />
               )}
         </List>
-      </div>
-    </>
+      </section>
+    </Page>
+  );
+}
+
+/* Shared by the real grid and its skeleton, which had drifted to a different
+   gap. The two columns are peer sections, so they sit `xl` apart like sections
+   anywhere else. */
+function TopsGrid({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-1 gap-xl md:grid-cols-2">{children}</div>
   );
 }
 
 function TopsSkeleton() {
   return (
-    <div className="mt-lg grid grid-cols-1 gap-lg md:grid-cols-2">
+    <TopsGrid>
       {["tracks", "artists"].map((key) => (
-        <div key={key}>
+        <section key={key}>
           <h2>{key === "tracks" ? "Top Tracks" : "Top Artists"}</h2>
           <List>
             {Array.from({ length: 5 }, (_, i) => `${key}-${i}`).map((k) => (
               <TrackSkeleton key={k} />
             ))}
           </List>
-        </div>
+        </section>
       ))}
-    </div>
+    </TopsGrid>
   );
 }
 
