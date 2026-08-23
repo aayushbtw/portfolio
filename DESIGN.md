@@ -208,6 +208,15 @@ indicator were utilities once, each with exactly one consumer that was already a
 component — so the utility was a second name for the same thing in a different
 file, and the class list moved to where the markup lives.
 
+**The top blur costs one rule elsewhere.** `ProgressiveBlur` is 48px tall and
+`fixed`, so a heading jumped to from the table of contents would land underneath
+it. Headings with an `id` carry a 64px `scroll-margin-block-start` to clear it
+([typeset.css](src/styles/typeset.css#L461)). That is a decorative element
+generating a compensating rule in another file, and it is accepted: the blur
+stays, so the rule stays with it. It is down to 3 layers from 5, since each is a
+live `backdrop-filter` re-sampling on every scroll frame and the shallowest two
+contributed least.
+
 ## Page shape
 
 `_app/route.tsx` owns the frame: centered, `max-w-7xl`, `page-inline` for the margin, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
