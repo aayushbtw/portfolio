@@ -139,6 +139,30 @@
   }
 }
 
+/* Fades the trailing edge of a horizontal scroller, so a clipped line reads as
+   scrollable rather than as a rendering fault. The keyframes hold one value at
+   both ends: the animation is not an effect, it is the only way CSS can ask
+   whether an element overflows. A scroller with nothing to scroll has an
+   inactive timeline, so a line that fits is never faded. Browsers without
+   scroll timelines get the plain hard edge. */
+@utility scroll-fade-end {
+  @supports (animation-timeline: scroll(self inline)) {
+    animation: scroll-fade-end linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
+
+@keyframes scroll-fade-end {
+  from,
+  to {
+    mask-image: linear-gradient(
+      to right,
+      black calc(100% - var(--spacing-lg)),
+      transparent
+    );
+  }
+}
+
 @utility indicator-brand {
   @apply bg-linear-to-b from-brand to-brand/60;
 }

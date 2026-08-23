@@ -50,7 +50,7 @@ function InstallCommand({
       {...props}
     >
       <code
-        className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-fg-4"
+        className="scroll-fade-end min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-fg-4"
         translate="no"
       >
         <span className="select-none text-fg-2">$ </span>

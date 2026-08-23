@@ -506,7 +506,7 @@
   }
 
   .typeset :where(pre.tm-code) {
-    @apply overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono;
+    @apply scroll-fade-end overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono;
   }
 
   .typeset :where(figure.tm-code-frame > pre.tm-code) {
