@@ -1,5 +1,5 @@
 import { Await, createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "~/components/page-header";
+import { PageHeader, PageTitle } from "~/components/page-header";
 import { ProjectList } from "~/components/project-list";
 import { ListSkeleton } from "~/components/ui/list";
 import { Page } from "~/components/ui/page";
@@ -23,7 +23,9 @@ function ProjectsPage() {
   return (
     <Page>
       <section>
-        <PageHeader title={title} />
+        <PageHeader>
+          <PageTitle>{title}</PageTitle>
+        </PageHeader>
         <Await
           fallback={<ListSkeleton rowClassName="h-10" rows={4} />}
           promise={projects}

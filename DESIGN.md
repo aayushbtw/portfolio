@@ -236,7 +236,9 @@ It passes `alignOffset={0}`, against `HoverCardContent`'s default of 4: the defa
 
 ```tsx
 <section>
-  <PageHeader title={title} />
+  <PageHeader>
+    <PageTitle>{title}</PageTitle>
+  </PageHeader>
   <List>...</List>
 </section>
 
@@ -246,7 +248,7 @@ It passes `alignOffset={0}`, against `HoverCardContent`'s default of 4: the defa
 </section>
 ```
 
-Every page but home opens with `<PageHeader title={title} />`, which owns the `h1` and an optional right-aligned piece of metadata. The home page is the exception: its `h1` is the display name, same treatment, but it's the only page with a hero. Its paragraph stack also tightens `--typeset-flow` to `sm` inline, so the hero reads as one block rather than separated copy. Both are home-only. Don't carry either to another page.
+Every page opens with `PageHeader`, and it is three parts rather than one prop: `PageTitle` renders the bare `h1`, and `PageDescription` wraps the copy under it. A page with nothing to say after its title renders no second element at all, and the header's `mb-md` is conditioned on one existing through `has-data-[slot=page-description]:`, so no route ever passes `mb-0` to cancel a margin the component shouldn't have had. `PageDescription` tightens `--typeset-flow` to `sm`, so a title and its copy read as one block instead of separated paragraphs. That was home-only prose once and is now the component's job.
 
 ## Interaction
 
@@ -300,6 +302,6 @@ app.css holds no `.typeset` selector at all. It is tokens, the shadcn `:root` al
 
 ### Opting out
 
-UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `PageHeader`, `List`, `NavList`, `Install`, and `StatStrip`.
+UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `List`, `NavList`, `Install`, and `StatStrip`.
 
-The rule that catches people out is [typeset.css:105](src/styles/typeset.css#L105), `h1 + *, h2 + *, …`: **anything following a heading gets a 1em top margin**, whatever tag it is. A `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a primitive puts a heading beside something else, it needs `not-typeset`, not an `mt-0` patch on the sibling. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.
+The rule that catches people out is [typeset.css:105](src/styles/typeset.css#L105), `h1 + *, h2 + *, …`: **anything following a heading gets a 1em top margin**, whatever tag it is. A `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a primitive puts a heading beside something else, it needs `not-typeset`, not an `mt-0` patch on the sibling. `PageHeader` is the one that wants the rule rather than an exemption: `PageDescription` is the `h1 +` sibling, and that 1em is the gap between a page title and its copy. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.

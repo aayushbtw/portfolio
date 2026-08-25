@@ -5,6 +5,11 @@ import {
   NetisionIcon,
   TwitterIcon,
 } from "~/components/icons";
+import {
+  PageDescription,
+  PageHeader,
+  PageTitle,
+} from "~/components/page-header";
 import { PostList } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
 import { ListSkeleton } from "~/components/ui/list";
@@ -37,58 +42,56 @@ function HomePage() {
   return (
     <Page>
       <section>
-        <h1 className="mb-md">{config.name}</h1>
+        <PageHeader>
+          <PageTitle>{config.name}</PageTitle>
 
-        <div
-          style={
-            { "--typeset-flow": "var(--spacing-sm)" } as React.CSSProperties
-          }
-        >
-          <p>{config.description}</p>
+          <PageDescription>
+            <p>{config.description}</p>
 
-          <p>
-            Currently a full-stack engineer at{" "}
-            <HeaderLink
-              external
-              href="https://www.netision.com"
-              onMouseEnter={haptic}
-            >
-              <NetisionIcon />
-              Netision
-            </HeaderLink>
-            , building a multi-agent platform that turns complex data into
-            clear, intuitive insights.
-          </p>
+            <p>
+              Currently a full-stack engineer at{" "}
+              <HeaderLink
+                external
+                href="https://www.netision.com"
+                onMouseEnter={haptic}
+              >
+                <NetisionIcon />
+                Netision
+              </HeaderLink>
+              , building a multi-agent platform that turns complex data into
+              clear, intuitive insights.
+            </p>
 
-          <p>
-            Reach me via{" "}
-            <HeaderLink
-              href={`mailto:${config.socials.mail}`}
-              onMouseEnter={haptic}
-            >
-              <MailIcon />
-              Mail
-            </HeaderLink>{" "}
-            /{" "}
-            <HeaderLink
-              external
-              href={`https://www.x.com/${config.socials.twitter}`}
-              onMouseEnter={haptic}
-            >
-              <TwitterIcon />X
-            </HeaderLink>
-            , or find my work on{" "}
-            <HeaderLink
-              external
-              href={`https://github.com/${config.socials.github}`}
-              onMouseEnter={haptic}
-            >
-              <GithubIcon />
-              Github
-            </HeaderLink>
-            .
-          </p>
-        </div>
+            <p>
+              Reach me via{" "}
+              <HeaderLink
+                href={`mailto:${config.socials.mail}`}
+                onMouseEnter={haptic}
+              >
+                <MailIcon />
+                Mail
+              </HeaderLink>{" "}
+              /{" "}
+              <HeaderLink
+                external
+                href={`https://www.x.com/${config.socials.twitter}`}
+                onMouseEnter={haptic}
+              >
+                <TwitterIcon />X
+              </HeaderLink>
+              , or find my work on{" "}
+              <HeaderLink
+                external
+                href={`https://github.com/${config.socials.github}`}
+                onMouseEnter={haptic}
+              >
+                <GithubIcon />
+                Github
+              </HeaderLink>
+              .
+            </p>
+          </PageDescription>
+        </PageHeader>
       </section>
 
       <section>

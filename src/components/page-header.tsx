@@ -1,28 +1,21 @@
-/**
- * The `h1` row every page but home opens with: the title, and optionally one
- * piece of metadata pushed to the far right.
- */
-function PageHeader({
-  title,
-  children,
-}: {
-  title: string;
-  children?: React.ReactNode;
-}) {
+import { cn } from "~/lib/utils";
+
+function PageHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={className} data-slot="page-header" {...props} />;
+}
+
+function PageTitle({ className, ...props }: React.ComponentProps<"h1">) {
+  return <h1 className={className} data-slot="page-title" {...props} />;
+}
+
+function PageDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className="not-typeset flex items-center gap-sm"
-      data-slot="page-header"
-    >
-      {/* No size class: typeset's `h1` rules reach into `not-typeset` subtrees
-          on purpose, so this is the same title the home page's `h1` gets. */}
-      <h1>{title}</h1>
-
-      {children ? (
-        <div className="ms-auto flex items-center gap-sm">{children}</div>
-      ) : null}
-    </div>
+      className={cn("[--typeset-flow:var(--spacing-sm)]", className)}
+      data-slot="page-description"
+      {...props}
+    />
   );
 }
 
-export { PageHeader };
+export { PageDescription, PageHeader, PageTitle };

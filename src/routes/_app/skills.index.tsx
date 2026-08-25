@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "~/components/page-header";
+import { PageHeader, PageTitle } from "~/components/page-header";
 import { SkillList } from "~/components/skill-list";
 import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
@@ -21,7 +21,9 @@ function SkillsPage() {
   return (
     <Page>
       <section>
-        <PageHeader title={title} />
+        <PageHeader>
+          <PageTitle>{title}</PageTitle>
+        </PageHeader>
         <SkillList skills={skills} />
       </section>
     </Page>

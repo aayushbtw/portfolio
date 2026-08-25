@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "~/components/page-header";
+import {
+  PageDescription,
+  PageHeader,
+  PageTitle,
+} from "~/components/page-header";
 import { Meter } from "~/components/ui/meter";
 import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
@@ -29,8 +33,18 @@ function UsagePage() {
   return (
     <Page>
       <section>
-        <PageHeader title={title} />
-        <Lead />
+        <PageHeader>
+          <PageTitle>{title}</PageTitle>
+          <PageDescription>
+            <p>
+              <Figure>{usage.sessions}</Figure> sessions with Claude Code in{" "}
+              {usage.year}, and <Figure>{formatCompact(usage.total)}</Figure>{" "}
+              tokens through it. That is roughly{" "}
+              <Figure>{formatCompact(usage.words)}</Figure> words, or about{" "}
+              <Figure>{formatNumber(usage.novels)}</Figure> novels’ worth.
+            </p>
+          </PageDescription>
+        </PageHeader>
       </section>
 
       <section>
@@ -86,18 +100,6 @@ function UsagePage() {
         .
       </p>
     </Page>
-  );
-}
-
-function Lead() {
-  return (
-    <p className="mt-lg">
-      <Figure>{usage.sessions}</Figure> sessions with Claude Code in{" "}
-      {usage.year}, and <Figure>{formatCompact(usage.total)}</Figure> tokens
-      through it. That is roughly <Figure>{formatCompact(usage.words)}</Figure>{" "}
-      words, or about <Figure>{formatNumber(usage.novels)}</Figure> novels’
-      worth.
-    </p>
   );
 }
 
