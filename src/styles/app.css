@@ -46,12 +46,6 @@
   --color-border-strong: oklch(from var(--color-gray-300) l c h);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */
 
-  --color-graph-0: oklch(from #ebedf0 l c h);
-  --color-graph-1: oklch(from #9be9a8 l c h);
-  --color-graph-2: oklch(from #40c463 l c h);
-  --color-graph-3: oklch(from #30a14e l c h);
-  --color-graph-4: oklch(from #216e39 l c h);
-
   /* The only gaps, pads and margins there are. */
   --spacing-xs: calc(var(--spacing) * 1); /*  4px */
   --spacing-sm: calc(var(--spacing) * 2); /*  8px */

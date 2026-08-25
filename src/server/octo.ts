@@ -1,19 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
-import type { Activity } from "~/components/contribution-graph";
 import type { PinnedRepo } from "~/components/project-list";
 import { config } from "~/lib/config";
 
-// octo is a separate service that proxies GitHub. Both endpoints degrade to
+// octo is a separate service that proxies GitHub. The endpoint degrades to
 // `null` rather than throwing, so a rejected loader can't take a route down
 // when the service is.
 const USERNAME = config.socials.github;
 const BASE = "https://octo.aayush.cv";
-
-interface ContributionsResponse {
-  contributions: Activity[];
-  total: number;
-  year: number;
-}
 
 async function fetcher<T>(url: string): Promise<T | null> {
   try {
@@ -27,12 +20,8 @@ async function fetcher<T>(url: string): Promise<T | null> {
   }
 }
 
-const getContributions = createServerFn({ method: "GET" }).handler(() =>
-  fetcher<ContributionsResponse>(`${BASE}/contributions/${USERNAME}`)
-);
-
 const getProjectList = createServerFn({ method: "GET" }).handler(() =>
   fetcher<PinnedRepo[]>(`${BASE}/pinned/${USERNAME}`)
 );
 
-export { getContributions, getProjectList };
+export { getProjectList };

@@ -1,9 +1,5 @@
 import { Await, createFileRoute } from "@tanstack/react-router";
 import {
-  ContributionGraph,
-  ContributionGraphSkeleton,
-} from "~/components/contribution-graph";
-import {
   GithubIcon,
   MailIcon,
   NetisionIcon,
@@ -16,14 +12,13 @@ import { Page } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { seo } from "~/lib/seo";
-import { getContributions, getProjectList } from "~/server/octo";
+import { getProjectList } from "~/server/octo";
 import { getPostList } from "~/server/posts";
 
 export const Route = createFileRoute("/_app/")({
-  // Only the post list is awaited: it reads local content. The octo calls are
-  // handed over as promises and stream in behind skeletons.
+  // Only the post list is awaited: it reads local content. The octo call is
+  // handed over as a promise and streams in behind a skeleton.
   loader: async () => ({
-    contributions: getContributions(),
     projects: getProjectList(),
     posts: await getPostList(5),
   }),
@@ -35,7 +30,7 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function HomePage() {
-  const { contributions, projects, posts } = Route.useLoaderData();
+  const { projects, posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
   const haptic = () => trigger("tick");
 
@@ -93,26 +88,6 @@ function HomePage() {
             </HeaderLink>
             .
           </p>
-        </div>
-
-        <div className="mt-lg">
-          <Await
-            fallback={<ContributionGraphSkeleton />}
-            promise={contributions}
-          >
-            {(data) =>
-              data ? (
-                <ContributionGraph
-                  data={data.contributions}
-                  total={data.total}
-                />
-              ) : (
-                <p className="text-fg-3">
-                  Contributions are unavailable right now.
-                </p>
-              )
-            }
-          </Await>
         </div>
       </section>
 

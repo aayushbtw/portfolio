@@ -30,7 +30,6 @@ Defined in `@theme`, all in oklch.
 | `border-strong` | One step darker, for a boundary that must read as a line: the prose link underline |
 | `ring`        | Focus ring. Points at `brand`, and is also typeset's variable name |
 | `brand`       | Orange. Accent only: link underline hover, meters, eq bars |
-| `graph-0`–`graph-4` | Contribution levels, empty to busiest      |
 
 The light-on-dark pair is the same idea one surface up: `fg-contrast` is white, `fg-contrast-2` is white at 50%, and both composite onto whatever dark thing carries them. `fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%; `fg-4` is a solid `gray-900` and is what `body` sits at. The alpha is *in the token*, so text composites onto whatever it sits on and a row reads the same over `bg-1` and over its `bg-2` hover. Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it's an unreadable one. Opacity on a *background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
 
@@ -53,7 +52,7 @@ Used as `mt-lg`, `gap-md`, `px-md`, `py-sm`. Nothing exists between the steps, s
 
 **Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with its own `h2` is a new section and takes the `xl` step; a block that continues the one above it takes `mt-lg`. The rule is checkable: if it has its own label, it gets the bigger step.
 
-**`Page` owns the bigger step, so no route writes it.** It is a `flex flex-col gap-xl` around a page's top-level blocks, and a route that spells `mt-xl` between two sections is doing by hand what drifts. The smaller step stays a class, because it means something different: a continuing block is not a sibling of the section above it, it lives *inside* that section. So on the home page the contribution graph sits in the hero's own `<section>` with `mt-lg`, because it illustrates the copy above it, while Projects and Writings are siblings and get `xl` from the container. The rule stops being a number to remember and becomes where you put the markup.
+**`Page` owns the bigger step, so no route writes it.** It is a `flex flex-col gap-xl` around a page's top-level blocks, and a route that spells `mt-xl` between two sections is doing by hand what drifts. The smaller step stays a class, because it means something different: a continuing block is not a sibling of the section above it, it lives *inside* that section. So a block that continues a section sits inside that section's own `<section>` with `mt-lg`, while Projects and Writings are siblings and get `xl` from the container. The rule stops being a number to remember and becomes where you put the markup.
 
 Two things follow from that. A page with one section still gets a `Page`, so the second one lands right instead of arriving with a hand-written margin. And a page-level block with no heading of its own, like the usage page's "last updated" line, is still a sibling: it is a separate block, not a continuation of the section above it.
 
@@ -84,7 +83,7 @@ Three steps, and which one you want follows from what the thing is.
 
 ## Layout
 
-The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). That is about 86 characters at 15px, against the 60-68 prose conventionally wants, and it is the settled answer rather than a target missed. Three widths were tried. 740 (~99 characters) ran long enough that the eye hunted for the start of the next line. 520 (~69, essentially the conventional target) read as too narrow next to the code blocks in a post, and that is the useful finding: nothing can escape this column, so the contribution graph and every code fence share the prose measure with the prose. 644 is where those two pressures balance.
+The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). That is about 86 characters at 15px, against the 60-68 prose conventionally wants, and it is the settled answer rather than a target missed. Three widths were tried. 740 (~99 characters) ran long enough that the eye hunted for the start of the next line. 520 (~69, essentially the conventional target) read as too narrow next to the code blocks in a post, and that is the useful finding: nothing can escape this column, so every code fence shares the prose measure with the prose. 644 is where those two pressures balance.
 
 Narrowing it again means first giving wide content a way to break out of the column, and that has not earned its cost. The graph is the one that pays for it today: its viewBox is 740 units wide, so at 644px its cells draw at 10.4px against the 12px they are specified at.
 
@@ -264,13 +263,13 @@ Every page but home opens with `<PageHeader title={title} />`, which owns the `h
 
 ## Components
 
-`ui/` holds the primitives: `Page`, `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ContributionGraph`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
+`ui/` holds the primitives: `Page`, `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
 
 Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it doesn't reach into `usage.json` to work out a percentage. When a figure needs page-specific arithmetic, do it in the route and pass the result down.
 
 **A skeleton shares the container, it doesn't copy it.** The music page's top lists and their skeleton each wrote their own grid, and the two had already drifted a step apart on the gap before anyone noticed, because you only ever see one of them at a time. They now both render `TopsGrid`. Anything a skeleton and its real content both need is a component, not a repeated class string.
 
-A skeleton has to be the same shape as the thing it replaces. `ListSkeleton` uses `ListItem`'s box without its hover, and `ContributionGraphSkeleton` reserves the graph's exact height, so nothing shifts when data lands.
+A skeleton has to be the same shape as the thing it replaces. `ListSkeleton` uses `ListItem`'s box without its hover, so nothing shifts when data lands.
 
 ### Dates
 
@@ -301,6 +300,6 @@ app.css holds no `.typeset` selector at all. It is tokens, the shadcn `:root` al
 
 ### Opting out
 
-UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `PageHeader`, `List`, `NavList`, `ContributionGraph`, `Install`, and `StatStrip`.
+UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `PageHeader`, `List`, `NavList`, `Install`, and `StatStrip`.
 
 The rule that catches people out is [typeset.css:105](src/styles/typeset.css#L105), `h1 + *, h2 + *, …`: **anything following a heading gets a 1em top margin**, whatever tag it is. A `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a primitive puts a heading beside something else, it needs `not-typeset`, not an `mt-0` patch on the sibling. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.
