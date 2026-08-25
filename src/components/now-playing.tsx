@@ -6,6 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
+import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { useLive } from "~/lib/spotify";
 import type { SpotifyTrack } from "~/server/spotify";
 
@@ -57,7 +58,12 @@ function NowPlaying() {
         </span>
       </HoverCardTrigger>
 
-      <HoverCardContent align="end" className="w-64 p-sm" side="bottom">
+      <HoverCardContent
+        align="end"
+        alignOffset={0}
+        className="w-64 overflow-hidden p-0"
+        side="bottom"
+      >
         <TrackCard track={track} />
       </HoverCardContent>
     </HoverCard>
@@ -84,26 +90,27 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
   const src = track.album.images[0]?.url ?? track.album.images.at(-1)?.url;
 
   return (
-    <div className="not-typeset flex flex-col gap-sm">
-      <span className="text-fg-3 text-xs">Now playing on Spotify</span>
+    <div className="not-typeset relative h-44 bg-black">
+      {src ? (
+        <Image
+          alt=""
+          className="size-full object-cover"
+          height={352}
+          src={src}
+          width={256}
+        />
+      ) : null}
 
-      <div className="flex items-center gap-sm">
-        {src ? (
-          <Image
-            alt=""
-            className="size-10 shrink-0 rounded-sm ring-1 ring-fg-1/10"
-            height={40}
-            src={src}
-            width={40}
-          />
-        ) : null}
+      {/* Blurs the cover under the text, so line art can't cut through it. */}
+      <ProgressiveBlur className="h-24" position="bottom" />
 
-        <div className="flex min-w-0 flex-col">
-          <span className="truncate text-fg-1 text-sm">{track.name}</span>
-          <p className="truncate text-sm">
-            {track.artists.map((a) => a.name).join(", ")}
-          </p>
-        </div>
+      <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-0.5 bg-linear-to-t from-black/70 to-transparent px-md pt-xl pb-md">
+        <span className="truncate font-medium text-sm text-white">
+          {track.name}
+        </span>
+        <p className="truncate text-sm text-white/60">
+          {track.artists.map((a) => a.name).join(", ")}
+        </p>
       </div>
     </div>
   );
