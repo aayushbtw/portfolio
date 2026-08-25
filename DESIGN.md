@@ -231,6 +231,10 @@ The capsule is icon-only, and that follows from the type scale rather than from 
 
 **The now-playing corner hangs off the viewport, not the frame.** On a wide screen it sits at the window's edge rather than the content column's, and that is the decision rather than an oversight: it is chrome about the window, like the scrollbar, not part of the page. Aligning it was tried and reverted, because the only way to do it from a `fixed` element is `max(margin, (100vw - frame) / 2 + margin)`, and `100vw` counts the stable scrollbar gutter that the centred layout does not.
 
+**Its hover card is a cover, not a panel.** The card is the album art at full bleed with the track over it, and it stays dark in both themes: the surface being read against is a photograph, not the page. Contrast comes from two things that each fail alone. A `from-black/70` scrim carries it, and a `ProgressiveBlur` band under the text destroys the detail the scrim leaves, which is what a white line-art cover needs. Sampling the cover for a matched tint was built and removed. Once the blur landed the colour only chose the scrim's hue, and it cost a CORS dependency, a second decode, a visible pop-in, and an ink flip that picks wrong in the middle of the luminance range.
+
+The card passes `alignOffset={0}`, against `HoverCardContent`'s default of 4. The default suits a card anchored to inline text mid-page. This one is pinned to the window edge and has to line up with its trigger exactly.
+
 ```tsx
 <section>
   <PageHeader title={title} />
