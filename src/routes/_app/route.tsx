@@ -16,17 +16,19 @@ function AppLayout() {
     <>
       <NavHotkeys />
 
-      <div className="typeset grid gap-x-lg px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]">
-        <div className="lg:sticky lg:top-md lg:self-start">
+      <div className="typeset grid gap-x-xl px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]">
+        <div className="pt-md lg:sticky lg:top-md lg:self-start lg:pt-0">
           <Breadcrumbs />
         </div>
 
         <main className="mx-auto w-full min-w-0 max-w-content" id="main">
           {/* Sized by the column it sits in, so the trail and the table of
               contents in the gutters are never under it. `-mb` because it
-              stands in front of the page rather than above it. */}
+              stands in front of the page rather than above it, and `-mx`
+              because a `backdrop-filter` has nothing to sample past its own
+              edge: level with the page it flattens out at both sides. */}
           <ProgressiveBlur
-            className="sticky top-0 z-30 -mb-12"
+            className="sticky top-0 z-30 -mx-md -mb-12 lg:-mx-xl"
             position="top"
           />
 
@@ -34,7 +36,7 @@ function AppLayout() {
             <Outlet />
           </div>
 
-          <ProgressiveBlur className="sticky bottom-0 z-30 -mt-12" />
+          <ProgressiveBlur className="sticky bottom-0 z-30 -mx-md -mt-12 lg:-mx-xl" />
         </main>
 
         {/* Scoped to this layout, not the root: the 404 and error pages render

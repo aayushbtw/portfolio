@@ -211,9 +211,14 @@ file, and the class list moved to where the markup lives.
 makes each exactly as wide as the page is, so the trail and the table of
 contents in the gutters are never under one. Each carries a negative margin
 against its own height, because a blur stands in front of the column rather than
-above or below it. `main` owns the page's bottom padding for the same reason, so
-that the column it is sticky inside runs to the end of the page and the bottom
-one does not come unstuck early.
+above or below it, and a second one inline, because a `backdrop-filter` samples
+only what is behind its own box: level with the page it has nothing to reach for
+at either edge and the blur flattens out there instead of spreading. The inline
+bleed is `md`, which is the page margin, so below `lg` it lands on the window's
+edge rather than past it; from `lg` there are gutters to spend and it is `xl`.
+`main` owns the page's bottom padding for the same reason, so that the column it
+is sticky inside runs to the end of the page and the bottom one does not come
+unstuck early.
 
 **And it costs one rule elsewhere.** `ProgressiveBlur` is 48px tall, so a heading
 jumped to from the table of contents would land underneath it. Headings with an `id` carry a 64px `scroll-margin-block-start` to clear it
