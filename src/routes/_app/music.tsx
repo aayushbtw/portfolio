@@ -29,8 +29,7 @@ export const Route = createFileRoute("/_app/music")({
 function MusicPage() {
   const { tops } = Route.useLoaderData();
 
-  // Same query key the shell's `NowPlaying` uses, so this reads the cache
-  // rather than opening a second poll against the service.
+  // `NowPlaying`'s key, so this reads the cache instead of polling twice.
   const { data: live } = useLive();
 
   return (

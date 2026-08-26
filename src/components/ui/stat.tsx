@@ -1,10 +1,5 @@
 import { cn } from "~/lib/utils";
 
-/**
- * A row of peer figures, all sharing one treatment: a longer value or label
- * must not buy a `Stat` bigger type. Pass `className` for a shape the default
- * column counts don't cover, rather than adding a prop.
- */
 function StatStrip({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -18,10 +13,6 @@ function StatStrip({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-/**
- * The value sits at `md` rather than a display size: several of these on one
- * page are secondary to whatever single figure the page is about.
- */
 function Stat({
   label,
   value,

@@ -62,9 +62,8 @@ export const Route = createFileRoute("/api/og")({
                   fontSize: "62px",
                   color: OG_COLORS.fg1,
                   lineHeight: "1.1",
-                  // -0.0223em, same Inter curve as the text scale. Satori takes
-                  // px, so these are the em values resolved at each size.
-                  letterSpacing: "-1.38px",
+                  // Satori takes px, so the scale's em values are resolved here.
+                  letterSpacing: "-1.38px", // -0.0223em
                 }}
               >
                 {title}

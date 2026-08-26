@@ -5,8 +5,7 @@ export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
       GET: () => {
-        // `api/og` renders images for crawlers to fetch by URL, never a page to
-        // index. Everything else is fair game.
+        // `api/og` is an image to fetch by URL, never a page to index.
         const robots = [
           "User-agent: *",
           "Allow: /",

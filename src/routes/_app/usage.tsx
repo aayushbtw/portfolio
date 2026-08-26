@@ -103,12 +103,10 @@ function UsagePage() {
   );
 }
 
-/** A number inside a sentence: one colour step up, and never wobbling. */
 function Figure({ children }: { children: React.ReactNode }) {
   return <span className="text-fg-1 tabular-nums">{children}</span>;
 }
 
-/** One grid, not a row each, so the columns size to the group's longest entry. */
 function BarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -122,7 +120,6 @@ function BarGroup({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-/** Every bar is full `brand`: a faded accent reads as disabled, not smaller. */
 function BarRow({
   label,
   percent,

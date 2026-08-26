@@ -17,20 +17,11 @@ function AppLayout() {
       <NavHotkeys />
 
       <div className="typeset grid gap-lg px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
-        {/* `min-h` so the box is `xl` whatever it holds: below `lg` the page
-            clears it with its own `xl`, and the two have to come to the `2xl`
-            the page uses from `lg`, where this sits in the gutter and clears
-            nothing. Empty on the home page, and still `xl`. */}
         <div className="min-h-xl pt-md lg:sticky lg:top-md lg:min-h-0 lg:self-start lg:pt-0">
           <Breadcrumbs />
         </div>
 
         <main className="mx-auto w-full min-w-0 max-w-content" id="main">
-          {/* Sized by the column it sits in, so the trail and the table of
-              contents in the gutters are never under it. `-mb` because it
-              stands in front of the page rather than above it, and `-mx`
-              because a `backdrop-filter` has nothing to sample past its own
-              edge: level with the page it flattens out at both sides. */}
           <ProgressiveBlur
             className="sticky top-0 z-30 -mx-md -mb-12 lg:-mx-xl"
             position="top"
@@ -43,9 +34,6 @@ function AppLayout() {
           <ProgressiveBlur className="sticky bottom-0 z-30 -mx-md -mt-12 lg:-mx-xl" />
         </main>
 
-        {/* Scoped to this layout, not the root: the 404 and error pages render
-            outside `_app` and have no business advertising a song. Hidden
-            below `lg` so an empty column can't open a row of its own. */}
         <div className="hidden lg:block">
           <div className="sticky top-md flex justify-end">
             <NowPlaying />

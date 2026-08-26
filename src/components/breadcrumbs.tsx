@@ -29,8 +29,6 @@ function trail(pathname: string, leaf: string | null): Crumb[] {
       continue;
     }
 
-    // A `$slug` segment. The page names itself through `Crumb`; the slug is
-    // what's left if it hasn't rendered yet.
     crumbs.push({ label: leaf ?? segment.replace(/-/g, " ") });
   }
 

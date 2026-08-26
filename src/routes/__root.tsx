@@ -27,9 +27,8 @@ export const Route = createRootRouteWithContext<{
       { name: "twitter:creator", content: config.socials.twitter },
     ],
     links: [
-      // The stylesheet @imports the font, so the browser can't discover the
-      // woff2 until the CSS has parsed. Preloading the latin subset overlaps
-      // those two round trips instead of running them back to back.
+      // The stylesheet `@import`s the font, so nothing discovers the woff2
+      // until the CSS has parsed. This overlaps the two round trips.
       {
         rel: "preload",
         as: "font",

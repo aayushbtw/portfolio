@@ -12,8 +12,7 @@ function PostList({ posts }: { posts: PostListItem[] }) {
   return (
     <List>
       {posts.map((post, i) => {
-        // The year prints once per run, so a list spanning two years reads as
-        // two groups without a heading between them.
+        // Once per run, so a span of two years reads as two groups.
         const showYear = i === 0 || posts[i - 1].year !== post.year;
         return (
           <ListItem key={post.slug}>

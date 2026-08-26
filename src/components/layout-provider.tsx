@@ -38,7 +38,6 @@ function useRightColumn() {
   return useContext(LayoutContext).right;
 }
 
-/** Names a `$slug` page in the breadcrumb, which can't read a route's title. */
 function Crumb({ children }: { children: string }) {
   const { setCrumb } = useContext(LayoutContext);
   useEffect(() => {

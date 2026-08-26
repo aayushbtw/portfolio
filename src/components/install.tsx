@@ -121,8 +121,7 @@ function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
   );
 }
 
-/* The tokens are the highlighter's; only the React key is ours, and it has to
-   be the offset rather than the index so two identical words never collide. */
+/* Keyed by offset, not index: two identical words would collide. */
 function highlightShell(command: string) {
   let offset = 0;
 

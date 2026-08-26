@@ -7,8 +7,7 @@ interface Entry {
   path: string;
 }
 
-// Only pages worth landing on. `/writings` and `/skills` list their children,
-// so the children are here too; `api/og` and `robots.txt` are not pages.
+// Only pages worth landing on, children of a list page included.
 function entries(): Entry[] {
   const staticPaths: Entry[] = [
     { path: "/" },

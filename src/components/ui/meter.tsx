@@ -7,12 +7,7 @@ interface MeterSegment {
   share: number;
 }
 
-/**
- * One horizontal bar, filled to `value` percent of the track and split into
- * segments dividing that fill. Every bar in a group must take its `value` on
- * one shared scale, or the lengths compare things that aren't comparable.
- * `aria-hidden` because `MeterLegend` states the same numbers in words.
- */
+/** `value` is a percent of the track; a group must take it on one scale. */
 function Meter({
   className,
   segments,
@@ -28,8 +23,7 @@ function Meter({
       className={cn("h-1.5 overflow-hidden rounded-full bg-bg-2", className)}
       data-slot="meter"
     >
-      {/* `gap-px` is off the spacing scale: a hairline tuned to the bar, so
-          two adjacent shades don't read as one segment. */}
+      {/* Off the spacing scale: a hairline, so two shades stay two. */}
       <div
         className="flex h-full gap-px overflow-hidden rounded-full"
         style={{ width: `${value}%` }}
@@ -46,7 +40,6 @@ function Meter({
   );
 }
 
-/** Direct labels for a `Meter`, which is why the bar itself needs no legend. */
 function MeterLegend({
   className,
   segments,

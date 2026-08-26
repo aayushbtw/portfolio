@@ -336,7 +336,7 @@ Every page opens with `PageHeader`, and it is three parts rather than one prop: 
 
 ## Components
 
-`ui/` holds the primitives: `Page`, `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
+`ui/` holds the primitives: `Page`, `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`, which is the way to ask for a shape a primitive's defaults don't cover: reach for it before adding a prop. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
 
 Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it doesn't reach into `usage.json` to work out a percentage. When a figure needs page-specific arithmetic, do it in the route and pass the result down.
 
