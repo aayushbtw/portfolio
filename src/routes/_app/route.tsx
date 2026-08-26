@@ -17,7 +17,11 @@ function AppLayout() {
       <NavHotkeys />
 
       <div className="typeset grid gap-lg px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
-        <div className="pt-md lg:sticky lg:top-md lg:self-start lg:pt-0">
+        {/* `min-h` so the box is `xl` whatever it holds: below `lg` the page
+            clears it with its own `xl`, and the two have to come to the `2xl`
+            the page uses from `lg`, where this sits in the gutter and clears
+            nothing. Empty on the home page, and still `xl`. */}
+        <div className="min-h-xl pt-md lg:sticky lg:top-md lg:min-h-0 lg:self-start lg:pt-0">
           <Breadcrumbs />
         </div>
 

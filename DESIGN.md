@@ -276,6 +276,15 @@ There is no `max-w` on the grid, so the gutters open all the way to the window
 and the trail sits a page margin from its edge however wide the screen gets,
 while the middle column stays 644px in the centre of it.
 
+**Nothing moves when the breakpoint flips.** Below `lg` the trail is in the flow
+above the page and its box is what the page clears; from `lg` it is in the
+gutter and clears nothing, so the page carries the whole offset itself. Those
+have to come to the same number or the first line of every page jumps sideways
+in time as the window crosses 1280. It did, by 14px. The trail's box is `min-h`
+`xl` whatever it holds, the page's own top padding is `xl` below `lg` and `2xl`
+from `lg`, and both readings come to `2xl`. The `min-h` is also what keeps the
+home page, where the trail renders nothing, from starting higher than a post.
+
 **The trail is `sticky` from `lg`, which is what the single row buys.** A grid
 item can only stick inside its own area, so a trail in a 24px header row of its
 own would come unstuck after 24px of scroll. One row means its area is as tall
