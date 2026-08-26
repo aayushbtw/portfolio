@@ -39,7 +39,11 @@ function AppLayout() {
   useHotkeys();
 
   return (
+    // Every item names its row and column: auto placement refuses a taken cell
+    // and opens an implicit column instead.
     <div className="typeset grid grid-rows-[var(--spacing-lg)_auto] gap-x-lg gap-y-xl px-md pt-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
+      {/* `z` keeps it out of the blur's backdrop, which is what the blur
+          samples. `self-start`, or it stretches and has nowhere to stick. */}
       <div className="z-40 col-start-1 row-start-1 lg:sticky lg:top-md lg:row-span-2 lg:self-start">
         <Breadcrumbs />
       </div>
@@ -49,6 +53,7 @@ function AppLayout() {
       </div>
 
       <main
+        // Owns the bottom padding so the sticky blur below has it to travel.
         className="col-start-1 row-start-2 mx-auto w-full min-w-0 max-w-content pb-2xl lg:col-start-2 lg:pb-xl"
         id="main"
       >
@@ -59,8 +64,10 @@ function AppLayout() {
         {right}
       </div>
 
-      {/* Over the page column across both rows, not inside it: `main` starts at
-          the second row, which is the page's first line. */}
+      {/* Spanning both rows, so neither starts on the page's first line.
+          `inset-x-auto` undoes the component's `inset-x-0`, which on a sticky
+          box is a threshold, not an offset. `-mx` gives the filter something
+          to sample past the column's edge. */}
       <ProgressiveBlur
         className="sticky inset-x-auto top-0 z-30 col-start-1 row-span-2 row-start-1 -mx-md self-start lg:col-start-2 lg:-mx-xl"
         position="top"

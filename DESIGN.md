@@ -1,251 +1,265 @@
 # Design
 
-How this site is styled. The home page ([src/routes/\_app/index.tsx](src/routes/_app/index.tsx)) is the reference implementation. If a new page needs styling that isn't described here, add it to [src/styles/app.css](src/styles/app.css) as a token or `@utility`, then use it here.
+How this site is styled, and why it is styled that way.
+
+The code is the source of truth for values: [src/styles/app.css](src/styles/app.css)
+declares every token, [src/styles/typeset.css](src/styles/typeset.css) owns prose,
+and [src/routes/_app/route.tsx](src/routes/_app/route.tsx) owns the page frame.
+This file exists for the decisions those files cannot state: what a token is for,
+which of two plausible options was taken, and what was rejected so it does not
+get retried. When a number here disagrees with the CSS, the CSS is right.
+
+**It is not a component reference.** How a component works is the component's
+job, and a paragraph here restating it is a second copy to keep in step. A class
+that looks deletable and is not gets a one-line comment at its call site, where
+someone about to delete it will actually see it. Neither belongs here.
+
+If a new page needs styling that is not described here, add a token or a
+`@utility` to app.css first, then use it.
 
 ## Rules
 
-1. Tokens over values. No raw hex, no `text-gray-600`, no arbitrary spacing. Use `bg-1`, `fg-3`, `border`, `brand`, `mt-lg`.
+1. Tokens over values. No raw hex, no `text-gray-600`, no arbitrary spacing.
 2. Repeated class strings become a `@utility`. Second time you write the same combo, define it.
-3. Components own their own spacing. `List` ships with `mt-sm`; callers don't pass it.
+3. Components own their own spacing. `List` ships with its own `mt`; callers do not pass one.
 4. `cn()` is for merging a `className` prop, not for stacking string literals. A single static string means no `cn()`.
 5. Semantic HTML first: `section`, `h1`/`h2`, `time`, `ul`/`li`. Styling hangs off the utility, not the tag.
-6. No fixed width or height on a box holding text. Where a column has to line up across rows, one grid owns the rows and the rows render as `contents`.
+6. No fixed width or height on a box holding text. Where a column repeats down a list, one grid owns it and the rows render as `display: contents`.
+7. Inline sides are logical: `ps-`/`pe-`, `ms-`/`me-`, `start-`/`end-`, `text-end`. Physical `left`/`right` only for geometry that really is physical.
 
-## Tokens
+Rule 7 buys nothing today — the site is `lang="en"` with no i18n. It costs
+nothing either, and it is the kind of thing that is free now and a sweep later.
+The exceptions are the code block's line-number gutter and title bar, which read
+left to right whatever the page around them does, and the hover card's
+`data-[side]` slide, which is relative to its anchor.
 
-Defined in `@theme`, all in oklch.
+## Colour
 
-| Token         | Use                                              |
-| ------------- | ------------------------------------------------ |
-| `bg-1`        | Page background                                  |
-| `bg-2`        | Raised surface: hovered list item, inline code   |
-| `fg-1`        | `h1`, active nav. Solid black                    |
-| `fg-2`        | `h2`–`h6`, link text, list item titles           |
-| `fg-3`        | `p`, labels, metadata                            |
-| `fg-4`        | What `body` sits at. Out of numeric order: it is darker than `fg-2` and `fg-3`, not lighter |
-| `bg-contrast` | Inverted surface: the graph tooltip               |
-| `fg-contrast` | Text on `bg-contrast`: the graph tooltip, the active tab   |
-| `fg-contrast-2` | Its quiet step, the light-on-dark answer to `fg-3`: the inactive tabs |
-| `border`      | All borders and outlines                         |
+Every token is oklch, declared in `@theme`.
+
+| Token           | Use                                                                        |
+| --------------- | -------------------------------------------------------------------------- |
+| `bg-1`          | Page background                                                             |
+| `bg-2`          | Raised surface: hovered list item, inline code, code block                  |
+| `fg-1`          | Every heading, the current crumb, a list item's title, a hover target. Solid black |
+| `fg-2`          | typeset's muted role — markers, captions, footnotes, strikethrough — and the same role in UI |
+| `fg-3`          | Labels and metadata                                                         |
+| `fg-4`          | What `body` sits at, and where copy lands                                   |
+| `border`        | All borders and outlines                                                    |
 | `border-strong` | One step darker, for a boundary that must read as a line: the prose link underline |
-| `ring`        | Focus ring. Points at `brand`, and is also typeset's variable name |
-| `brand`       | Orange. Accent only: link underline hover, meters, eq bars |
+| `ring`          | Focus ring. Points at `brand`, and is also typeset's variable name          |
+| `brand`         | Orange. Accent only: link underline on hover, meter fills, eq bars          |
 
-The light-on-dark pair is the same idea one surface up: `fg-contrast` is white, `fg-contrast-2` is white at 50%, and both composite onto whatever dark thing carries them. `fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%; `fg-4` is a solid `gray-900` and is what `body` sits at. The alpha is *in the token*, so text composites onto whatever it sits on and a row reads the same over `bg-1` and over its `bg-2` hover. Text sits at `fg-3` by default and steps *up* to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it's an unreadable one. Opacity on a *background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
+**The alpha is in the token.** `fg-1`, `fg-2` and `fg-3` are black at 100%, 45%
+and 40%, so text composites onto whatever it sits on and a row reads the same
+over `bg-1` as over its `bg-2` hover. `fg-4` is the one solid grey, and it is out
+of numeric order on purpose: it is *darker* than `fg-2` and `fg-3`, not lighter,
+because it is body copy and they are the quiet marks beside it.
 
-The mapping is attached to the tags themselves in [src/styles/app.css](src/styles/app.css), not to a prose class, so `<p>` and `<h2>` are already the right color with no utility on them. Those rules deliberately reach into `not-typeset` subtrees as well: UI opts out of prose *layout*, never out of the color guide. Only write `text-fg-*` when a tag needs to depart from its default.
+Text sits at `fg-3` by default and steps **up** to `fg-2`/`fg-1` for emphasis. It
+never steps down, and never takes a second opacity on top of the token:
+`text-fg-3/60` is not a lighter grey, it is an unreadable one. Opacity on a
+*background* (`bg-bg-2/50`, `bg-brand/20`) is fine.
+
+**The mapping is attached to the tags.** typeset.css colours `p`, `h1`–`h6` and
+the rest directly, so a bare `<p>` or `<h2>` is already right with no utility on
+it. Only write `text-fg-*` when a tag has to depart from its default.
+
+There is also a light-on-dark set — `bg-contrast`, `fg-contrast`,
+`fg-contrast-2` — declared and currently unused. They were the mobile nav
+capsule and a tooltip, both since removed. Delete them or find them a home; do
+not invent a use for them to justify keeping them.
 
 ## Spacing
 
-Six steps: **4, 8, 16, 24, 48, 96**. Doubling from `xs` up to `md`, 1.5× to `lg`, doubling from there.
+Six steps: **4, 8, 16, 24, 48, 96**. Doubling from `xs` to `md`, 1.5× to `lg`,
+doubling from there.
 
-| Token | Value | Typically                                           |
-| ----- | ----- | --------------------------------------------------- |
-| `xs`  | 4px   | Parts of one thing: icon and its label, stacked meta |
+| Token | Value | Typically                                            |
+| ----- | ----- | ---------------------------------------------------- |
+| `xs`  | 4px   | Parts of one thing: an icon and its label            |
 | `sm`  | 8px   | A label and the content it labels, rows in a list    |
-| `md`  | 16px  | Sibling items, padding inside a container            |
-| `lg`  | 24px  | Sections of a page (`mt-lg`)                         |
-| `xl`  | 48px  | Major blocks of a page                               |
-| `2xl` | 96px  | The page frame: top padding at every width, sticky offset |
+| `md`  | 16px  | Sibling items, padding inside a container, the page margin |
+| `lg`  | 24px  | Sections of a page, the chrome row                   |
+| `xl`  | 48px  | Major blocks of a page, the gap under the chrome row |
+| `2xl` | 96px  | The page's bottom padding, the table of contents' sticky offset |
 
-Used as `mt-lg`, `gap-md`, `px-md`, `py-sm`. Nothing exists between the steps, so a gap that feels wrong is the wrong step, not a missing value. Reaching for `mt-7` means one of these is what you meant.
+Nothing exists between the steps, so a gap that feels wrong is the wrong step,
+not a missing value. Reaching for `mt-7` means one of these is what you meant.
 
-**Vertical rhythm comes from the relationship, not from one default gap.** A block that introduces itself with its own `h2` is a new section and takes the `xl` step; a block that continues the one above it takes `mt-lg`. The rule is checkable: if it has its own label, it gets the bigger step.
+Two things sit outside the scale. **Zero** — `my-0`, `p-0` — because zero is not
+a step. And **optical nudges**, like the half-pixel lift on an inline icon in
+`icon-link`, which is alignment tuned to a glyph rather than spacing.
 
-**`Page` owns the bigger step, so no route writes it.** It is a `flex flex-col gap-xl` around a page's top-level blocks, and a route that spells `mt-xl` between two sections is doing by hand what drifts. The smaller step stays a class, because it means something different: a continuing block is not a sibling of the section above it, it lives *inside* that section. So a block that continues a section sits inside that section's own `<section>` with `mt-lg`, while Projects and Writings are siblings and get `xl` from the container. The rule stops being a number to remember and becomes where you put the markup.
+**Vertical rhythm comes from the relationship, not from one default gap.** A
+block that introduces itself with its own `h2` is a new section and takes the
+`xl` step; a block that continues the one above it takes `mt-lg`. The rule is
+checkable: if it has its own label, it gets the bigger step.
 
-Two things follow from that. A page with one section still gets a `Page`, so the second one lands right instead of arriving with a hand-written margin. And a page-level block with no heading of its own, like the usage page's "last updated" line, is still a sibling: it is a separate block, not a continuation of the section above it.
+**`Page` owns the bigger step, so no route writes it.** It is a
+`flex flex-col gap-xl` around a page's top-level blocks, and a route that spells
+`mt-xl` between two sections is doing by hand what drifts. The smaller step stays
+a class, because it means something different: a continuing block is not a
+sibling of the section above it, it lives *inside* that section. So a block that
+continues a section sits inside that section's own `<section>` with `mt-lg`,
+while two `<section>`s are siblings and get `xl` from the container. The rule
+stops being a number to remember and becomes where you put the markup.
 
-Note these read next to Tailwind's responsive prefixes, so `sm:mt-sm` is "8px top margin from the `sm` breakpoint up". The prefix is before the colon, the scale after it.
+Two things follow. A page with one section still gets a `Page`, so the second one
+lands right instead of arriving with a hand-written margin. And a page-level
+block with no heading of its own, like the usage page's "last updated" line, is
+still a sibling: a separate block, not a continuation.
 
-The scale is deliberately *narrower* than the spacing it replaced, which came from having no system. The old values were folded in by nearest step, ties rounding up: 12px and 20px went up to `md` and `lg`, 32px came down to `lg`, 40px went up to `xl`.
+```tsx
+<Page>
+  <section>
+    <PageHeader>
+      <PageTitle>{title}</PageTitle>
+    </PageHeader>
+    <List>…</List>
+  </section>
 
-Two things sit outside the scale:
-
-- **Zero.** `my-0`, `p-0` stay as they are. Zero isn't a step.
-- **Optical nudges.** `[&_svg]:mb-0.5` in `icon-link` lifts an inline icon onto the text baseline. That's alignment, not spacing, and it's tuned to the glyph rather than to a scale.
-
-Anything else in a `m-`, `p-`, or `gap-` slot comes from the table above.
-
-Fonts: `font-sans` (Inter Variable) everywhere, `font-mono` (JetBrains Mono Variable) for code. Body sets the `cv01`/`ss03` features, and the size, leading and weight described under **Type** below.
+  <section>
+    <h2>Writings</h2>
+    <PostList posts={posts} />
+  </section>
+</Page>
+```
 
 ## Radius
 
 Three steps, and which one you want follows from what the thing is.
 
-| Token | Value | For                                        |
-| ----- | ----- | ------------------------------------------ |
-| `xs`  | 4px   | A box inset in an `md` frame: the install command, the install links, the skill body |
+| Token | Value | For                                                                  |
+| ----- | ----- | -------------------------------------------------------------------- |
+| `xs`  | 4px   | A box inset in an `md` frame: the install command, the skill body    |
 | `sm`  | 6px   | A control you press or type into: buttons, fields, covers, skeletons |
-| `md`  | 8px   | A box that holds other things: rows, panels, media, tooltips |
+| `md`  | 8px   | A box that holds other things: rows, panels, media, tooltips         |
 
-**Nested radii are concentric: outer = inner + padding.** `xs` is derived from that, not a step for smaller controls. An `md` box padded by `xs` is 8px of radius around 4px of pad, which leaves its child 4px. Reach for `xs` only inside that frame; a control that happens to be small is still `sm`.
+**Nested radii are concentric: outer = inner + padding.** `xs` is derived from
+that, not a step for smaller controls. An `md` box padded by `xs` is 8px of
+radius around 4px of pad, which leaves its child 4px. Reach for `xs` only inside
+that frame; a control that happens to be small is still `sm`.
 
-## Layout
+`rounded-full` is a shape and `rounded-none` is a reset, so neither is a step.
+The one true exception is the now-playing eq bars, which are 2px wide and would
+render as lozenges at any real radius.
 
-The content column is `--container-content`, 644px, used as `max-w-content` on `main` and as the middle track of the three-column grid in [src/routes/_app/route.tsx](src/routes/_app/route.tsx). That is about 86 characters at 15px, against the 60-68 prose conventionally wants, and it is the settled answer rather than a target missed. Three widths were tried. 740 (~99 characters) ran long enough that the eye hunted for the start of the next line. 520 (~69, essentially the conventional target) read as too narrow next to the code blocks in a post, and that is the useful finding: nothing can escape this column, so every code fence shares the prose measure with the prose. 644 is where those two pressures balance.
-
-Narrowing it again means first giving wide content a way to break out of the column, and that has not earned its cost. The graph is the one that pays for it today: its viewBox is 740 units wide, so at 644px its cells draw at 10.4px against the 12px they are specified at.
-
-List rows are `py-sm`, negatively inset by `-mx-md` so the hover surface bleeds past the text, with no divider between them. A post row is three parts — year left in `fg-3`, title in `fg-1`, category right in `fg-3` — so the column scans down the black titles with the metadata staying out of the way.
-
-Nested boxes step down by their padding, so an `md` panel padded by `xs` holds `xs` children. Three things sit outside the scale: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on the now-playing eq bars, which are 2px wide and would otherwise render as lozenges.
-
-**Inline sides are logical.** `ps-`/`pe-`, `ms-`/`me-`, `start-`/`end-`, `text-end`. Physical `left` and `right` are reserved for geometry that really is physical: the code block's line-number gutter and its title bar, which read left to right whatever the page around them does; the hover card's `data-[side]` slide, which is relative to its anchor. The site is `lang="en"` with no i18n, so this buys nothing today. It costs nothing either, and it is the kind of thing that is free now and a sweep later.
-
-**A column that repeats down a list belongs to a grid, not to a width on each row.** The usage bars were a flex row each with a `w-20` label, which is a width guessed for one language: `Cache write` already filled all 80px of it, and since the width was fixed rather than a floor, anything longer overflowed into the meter instead of pushing it. `BarGroup` is now one grid per group with each `BarRow` as `display: contents`, so the label and value columns size to the longest entry and every bar still starts on the same line.
-
-`--radius` in `:root` points at `md` and is what typeset reads for code blocks and tables.
+`--radius` in `:root` points at `md`, and is what typeset reads for code blocks
+and tables.
 
 ## Type
 
-**Four axes, two or three tokens each, and one default that everything inherits.** The default sits on `body` and is the only place any axis is set globally:
+**Four axes, two or three tokens each, and one default that everything
+inherits.** The default sits on `body` and is the only place any axis is set
+globally: `text-base font-normal leading-normal tracking-normal`.
 
-```css
-@apply text-base font-normal leading-normal tracking-normal;
-```
+| Axis     | Tokens                                                    |
+| -------- | --------------------------------------------------------- |
+| Size     | `text-base` · `text-sm`                                   |
+| Leading  | `leading-normal` · `leading-relaxed` · `leading-tight`    |
+| Tracking | `tracking-normal` · `tracking-tight`                      |
+| Weight   | `font-normal` · `font-bold`, `h1` only                    |
 
-| Axis     | Tokens                                                        |
-| -------- | ------------------------------------------------------------- |
-| Size     | `text-base` 15px · `text-sm` 14px                             |
-| Leading  | `leading-normal` 18px · `leading-relaxed` 24px · `leading-tight` 13.5px |
-| Tracking | `tracking-normal` · `tracking-tight` -0.1px                   |
-| Weight   | `font-normal` 400 · `font-bold` 450, `h1` only                |
+Fonts are `font-sans` (Inter Variable) everywhere and `font-mono` (JetBrains Mono
+Variable) for code, with `body` setting the `cv01`/`ss03` features.
 
-Every one of those reuses a stock Tailwind name, with the site's value behind
-it. That is deliberate: tailwind-merge groups a class by guessing from its name,
-so a bespoke name like `text-compact` was read as a *colour* and silently
-deleted by the `text-fg-4` beside it in `cn()`. Stock names group correctly for
-free. The spacing scale is the one exception, and it pays for it with an entry
-in `extendTailwindMerge` at [lib/utils.ts](src/lib/utils.ts).
+**Every one of those reuses a stock Tailwind name with the site's value behind
+it,** and that is deliberate. tailwind-merge groups a class by guessing from its
+name, so a bespoke `text-compact` was read as a *colour* and silently deleted by
+the `text-fg-4` beside it in `cn()`. Stock names group correctly for free. The
+spacing scale is the one exception, and it pays for that with an entry in
+`extendTailwindMerge` at [src/lib/utils.ts](src/lib/utils.ts).
 
-**Leading defaults tight, not loose.** `leading-normal` is 18px because almost everything here is one line long: a nav item, a list row, a stat, a label, a heading. A 24px line box around a single line is 24px of nothing, and it makes a column of rows read as loose rather than as a set. `leading-relaxed` (24px) is the opt-up, and typeset gives it to `p` — the one element that reliably wraps, where the extra leading is what makes the next line findable from the end of the last. `leading-tight` (13.5px) goes on `h1`, so a page title that wraps reads as one object rather than two lines.
+**Leading defaults tight, not loose.** Almost everything here is one line long: a
+crumb, a list row, a stat, a label, a heading. A 24px line box around a single
+line is 24px of nothing, and it makes a column of rows read as loose rather than
+as a set. `leading-relaxed` is the opt-up, and typeset gives it to `p` — the one
+element that reliably wraps, where the extra leading is what makes the next line
+findable from the end of the last. `leading-tight` goes on `h1`, so a page title
+that wraps reads as one object rather than two lines.
 
-**Weight is not a hierarchy tool.** `font-medium` doesn't compile, typeset's entire 600/500 ladder was deleted rather than remapped, and `<strong>` carries no visual change at all. Hierarchy is colour: a title is black, the copy under it is `fg-4`, a label beside it is `fg-3`.
+Because those two differ, **anything that has to share a baseline with the title
+shares its leading.** A single-line label left as a `<p>` takes typeset's
+`leading-relaxed` and sits several pixels low.
 
-`font-bold` (450) has exactly one user, the `h1`. Four steps is less a weight change than an optical correction, and it's what stops a page title from disappearing into copy it shares a size and a family with. Reaching for it anywhere else is the signal that the colour step above it isn't doing its job.
+**Leading is not bundled into the size tokens.** Either leading can sit on either
+size, so pairing them would have made the choice for you. A departure names the
+single axis it changes.
 
-**`tracking-tight` belongs to the title block** — the `h1` and the date directly under it, and nothing else. Those two lines are read as a unit rather than as running copy, and pulling them in is what makes them read as one object. Body copy stays `tracking-normal`: tracking a wrapping paragraph fights the reading it's meant to help.
+**Weight is not a hierarchy tool.** `font-medium` does not compile, typeset's
+600/500 ladder was deleted rather than remapped, and `<strong>` carries no visual
+change at all. `font-bold` has exactly one user, the `h1`, and it is four steps —
+less a weight change than an optical correction, and what stops a page title from
+disappearing into copy it shares a size and a family with. Reaching for it
+anywhere else is the signal that a colour step is not doing its job.
 
-Each axis is cleared with a `--<axis>-*: initial` reset before it's redeclared, so Tailwind's own steps don't survive: `text-3xl`, `tracking-wide`, `font-medium` and `rounded-3xl` don't compile. The names the site *does* declare keep working, and only those. `rounded-full` and `rounded-none` survive the radius reset, being static utilities rather than steps on a scale. The resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears and Biome's property sorter moves those lines to the end of whatever block they're in.
+**`tracking-tight` belongs to lines that are read as objects, not as prose.**
+typeset puts it on every heading and on code; the one place it is written by hand
+is the date under a post's title, so those two lines read as one block. Body copy
+stays `tracking-normal`: tracking a wrapping paragraph fights the reading it is
+meant to help. A tracking curve corrects for size, and with one size there is
+nothing to correct.
 
-**The one hole is `leading-<number>`.** It reads `--spacing`, not `--leading-*`, so `leading-6` compiles regardless, and clearing `--spacing` would take the spacing scale with it. That one is convention.
+The OG image at [src/routes/api/og.tsx](src/routes/api/og.tsx) renders at display
+sizes outside this system and keeps its own tracking, because Satori draws
+outside the token scale entirely and cannot read `@theme` at all.
 
-**Leading is not bundled into the size tokens.** Either leading can sit on either size, so pairing them would have made the choice for you. A departure names the single axis it changes.
+`text-sm` is the secondary line: a list item's description, a meter legend, a
+post's date, the now-playing card, the trail. In every case it sits directly
+under or beside the thing it belongs to and is read *with* it, never instead of
+it. Anything read on its own is `text-base`. The one element that sets its own
+size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full
+size stops reading as a marker.
 
-`text-sm` is the secondary line: a list item's description, a meter legend, a post's date, the now-playing card. In every case it sits directly under the thing it belongs to and is read with it, never instead of it. Anything read on its own is `text-base`.
+### The scales are closed
 
-The one element that sets its own size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full size stops reading as a marker.
+Each axis is cleared with a `--<axis>-*: initial` reset before it is redeclared,
+so Tailwind's own steps do not survive: `text-3xl`, `tracking-wide`,
+`font-medium`, `rounded-3xl` and `xl:`/`2xl:` do not compile. The names the site
+*does* declare keep working, and only those. Those resets live in a `@theme`
+block of their own, because a `*` reset has to come before what it clears and
+Biome's property sorter moves those lines to the end of whatever block they are
+in.
 
-**`tracking-normal` is the default on purpose.** A tracking curve corrects for size, and with one size there is nothing to correct: Inter at 15px wants no adjustment. `tracking-tight` (-0.1px) is the single hand-picked departure. The OG image in [src/routes/api/og.tsx](src/routes/api/og.tsx) renders at display sizes outside this system and keeps its own tracking, because Satori draws outside the token scale entirely.
+**The one hole is `leading-<number>`.** It reads `--spacing`, not `--leading-*`,
+so `leading-6` compiles regardless, and clearing `--spacing` would take the
+spacing scale with it. That one is convention.
 
 ### What carries hierarchy instead
 
-Colour and weight, and nothing else:
+Colour, and one weight step that is really an optical correction.
 
-| Role            | Treatment                                       |
-| --------------- | ----------------------------------------------- |
-| Page title      | `h1` as typeset styles it: `fg-1`, `font-bold`, `leading-tight`, `tracking-tight`. No class |
-| Section label   | a bare `<h2>`: `fg-2` from the colour guide      |
-| Field label     | `text-fg-3` written directly                    |
-| Everything else | body: `fg-4`                                    |
+| Role            | Treatment                                                    |
+| --------------- | ------------------------------------------------------------ |
+| Page title      | `h1` as typeset styles it. No class                          |
+| Section label   | a bare `<h2>`. No class                                      |
+| Field label     | `text-fg-3` written directly                                 |
+| Everything else | body: `fg-4`                                                 |
 
-Headings below `h1` are body size at body weight and separate from copy by colour alone, `h1` at `fg-1` and `h2`–`h6` at `fg-2`. To signal importance mid-text, step the colour up.
+Every heading is `fg-1` at body size and body weight, and separates from copy by
+colour alone: black against `fg-4`. The `h1` alone adds `font-bold`. To signal
+importance mid-text, step the colour up.
 
-**The page title carries no class.** Typeset gives `h1` `fg-1`, `font-bold`, `leading-tight` and `tracking-tight`, which is exactly the treatment a page title wants, and Tailwind's preflight already sets `h1`–`h6` to `font-size: inherit`. `PageHeader` renders a bare `<h1>` and gets it for free.
+**Headings carry no class.** typeset gives them their colour and tracking, gives
+`h1` its weight and leading, and Tailwind's preflight already sets `h1`–`h6` to
+`font-size: inherit`. `PageTitle` renders a bare `<h1>` and a section heading is
+a bare `<h2>`, and both get it for free. A section heading is not uppercase and
+not tracked out — a label that shouts competes with the thing it labels, and the
+tag already carries the structure.
 
-A section heading is a bare `<h2>` and carries no class at all: the colour guide gives it `fg-2`, one step quieter than the `h1` above it and one louder than the copy below. It isn't uppercase and isn't tracked out — a label that shouts competes with the thing it's labelling, and the tag already carries the structure.
+**There are no label utilities.** `text-section-label` and `text-label` both
+existed and both are gone. Once size, weight and tracking left the label
+treatment, each was a second name for `text-fg-3`, and a utility that expands to
+one declaration you could have written is indirection with nothing on the other
+end. Bring a name back when it earns more than one declaration.
 
-**There are no label utilities.** `text-section-label` and `text-label` both existed and both are gone. Once size, weight and tracking left the label treatment, each was a second name for `text-fg-3`, and a utility that expands to one declaration you could have written is indirection with nothing on the other end. A field label writes `text-fg-3`; a section heading writes nothing at all. Bring a name back when it earns more than one declaration.
-
-### Prose
-
-[src/styles/typeset.css](src/styles/typeset.css) is a vendored `shadcn/typeset` copy, and it has been forked rather than overridden. Every `font-size`, `line-height` and `letter-spacing` it set is stripped out at the source, and its 600/500 weight ladder is deleted outright. Each removal is commented in place, so the file reads as its own history. **Re-pulling the component from the registry undoes all of it.**
-
-That file now owns rendered markdown end to end: prose structure (flow margins, rules, lists, tables, code frames) *and* the site's rules on top of it (the colour guide, heading anchors, the TanStack Markdown frames). app.css is tokens, base and utilities, and holds no `.typeset` selector at all.
-
-### What this cost
-
-The 404 title, the four usage stat values and every caption, code block and footnote used to differ in size and no longer do. Captions and code separate by family (`font-mono`), colour and rule instead.
-
-Pages here are short enough to take in at once, which is the bet the whole thing rests on. A page long enough to need scanning would need a second size in the copy itself, and that's the signal to add one rather than to work around its absence.
-
-## Utilities
-
-Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they compose with variants (`hover:`, `sm:`) and get merged correctly.
-
-| Utility            | What it is                                                     |
-| ------------------ | -------------------------------------------------------------- |
-| `skip-link`        | Off-screen until focused, then a real target top-left. One per document |
-| `animated-link`    | Inline prose link: `fg-1`, underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
-| `icon-link`        | `animated-link` + inline 16px icon before the label              |
-| `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
-| `nav-link`         | Sidebar / TOC link with active state and press scale             |
-| `scroll-fade-end`  | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
-| `indicator-brand`  | Brand fill for the nav indicator and meter segments, softened toward its bottom edge |
-
-`scroll-fade-end` is the odd one: it declares a scroll-driven animation whose keyframes hold a single value at both ends. The animation isn't an effect, it's the only way CSS can ask whether an element overflows, since a scroller with nothing to scroll has an inactive timeline and keeps its base style. A line that fits is never faded, and holding one value also makes it immune to the reduced-motion block, which forces `animation-duration` to `0.01ms` site-wide. Browsers without scroll timelines fall back to the hard edge that was there before.
-
-There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing at rest what hover would otherwise reveal. See the list-row model under **Interaction**.
-
-`indicator-brand`'s `to-brand/60` is deliberate and is not a data scale. It runs
-across the 6px of a meter track and the 8px of the nav indicator, which is too
-short a run to read as a gradient: it softens the bottom edge and nothing more.
-Flattening it to `bg-brand` was considered and rejected.
-
-**A `@utility` earns its place two ways: it lands on tags the caller chooses, or
-it needs selectors a `className` can't express.** `row-link` sits on a `Link`, an
-`a` and a `div`; `nav-link` on a `Link` and an `a`; `indicator-brand` on a nav
-span and a meter segment. That is the first kind. `icon-link` and `skip-link`
-each have a single call site and stay anyway: one needs descendant rules for its
-`svg`, the other a twelve-variant `focus-visible:` chain, and a stylesheet says
-both better than JSX can.
-
-Anything else belongs in the component that renders it. The eq bars and the nav
-indicator were utilities once, each with exactly one consumer that was already a
-component — so the utility was a second name for the same thing in a different
-file, and the class list moved to where the markup lives.
-
-**Both blurs belong to the middle column.** They are grid items placed over that
-column rather than `fixed` bands across the window, which makes each exactly as
-wide as the page is, so the trail and the table of contents in the gutters are
-never under one. They span both rows and `main` does not: `main` starts at the
-second row, which is the page's first line, and a blur that started there would
-be sitting on the title at rest rather than waiting above it. This is why every item in the
-grid names its own row and column at every width, not only at `lg`: auto
-placement refuses to put an item where another already sits, so one item left to
-it is enough to open an implicit column and squeeze the page into a track it
-never asked for. Overlap has to be spelled out to be allowed.
-
-Below `lg` there is one column, so the blurs' area is the trail's area too, and
-the trail carries a `z` above them. A `backdrop-filter` samples what is painted
-under it, so this is the same rule twice: the trail is not behind the blur, so
-the blur has nothing of it to smear, and at rest the band is invisible over the
-page's own white. Spanning also
-gives the bottom one the height of the page to stay stuck against, which is why
-`main` owns the page's bottom padding.
-
-Each carries a negative inline margin, because a `backdrop-filter` samples only
-what is behind its own box: level with the page it has nothing to reach for at
-either edge and flattens out there instead of spreading. The bleed is `md`,
-which is the page margin, so below `lg` it lands on the window's edge rather
-than past it; from `lg` there are gutters to spend and it is `xl`.
-
-**And it costs one rule elsewhere.** `ProgressiveBlur` is 48px tall, so a heading
-jumped to from the table of contents would land underneath it. Headings with an `id` carry a 64px `scroll-margin-block-start` to clear it
-([typeset.css](src/styles/typeset.css#L461)). That is a decorative element
-generating a compensating rule in another file, and it is accepted: the blur
-stays, so the rule stays with it. It is down to 3 layers from 5, since each is a
-live `backdrop-filter` re-sampling on every scroll frame and the shallowest two
-contributed least.
-
-**Nothing is read against it, so it can stay a blur.** A scrim was tried, when
-the breadcrumb was `fixed` in the corner and content scrolled under it: blur
-smears text passing beneath a pinned element rather than hiding it, so the band
-had to paint `bg-1` solid behind the crumb. That works on a page of prose and
-fails on the first post with a screenshot in it, where a white stripe cuts
-across a dark image. Putting the crumb in the flow removed the requirement
-instead of dressing it, and the band went back to being decoration.
+**What this cost.** The 404 title, the usage stat values, and every caption, code
+block and footnote used to differ in size and no longer do; captions and code
+separate by family, colour and rule instead. Pages here are short enough to take
+in at once, which is the bet the whole thing rests on. A page long enough to need
+scanning would need a second size in the copy itself, and that is the signal to
+add one rather than to work around its absence.
 
 ## Breakpoints
 
@@ -253,136 +267,227 @@ Three: `sm` 640, `md` 768, `lg` 1280. Tailwind's `xl` and `2xl` are cleared with
 everything else the theme closes, because a fourth width was only ever used to
 undo what a wrong third one did.
 
-`lg` is the only one that is measured rather than inherited. It is where the
-page becomes three columns, and three columns need 644 for the middle, two `xl`
-gaps, and two gutters wide enough to hold what goes in them. The binding one is
-the table of contents, which needs about 230px before its headings start
-wrapping; the trail can overflow into the empty cell beside it and does not
-count. That comes to 1232, and `lg` is 1280 rather than Tailwind's 1024. At 1024
-the layout switched on with 151px of gutter, which wraps every heading in the
-table of contents to two lines. The column gap and the blurs' inline bleed were
-both being bumped at `xl` to paper over that; with `lg` set where the shape
-actually works they are `lg` like everything else about it.
+`lg` is the only one measured rather than inherited. It is where the page becomes
+three columns, and three columns need the content measure, two `xl` gaps, and two
+gutters wide enough to hold what goes in them. The binding one is the table of
+contents, which needs about 230px before its headings wrap; the trail can
+overflow into the empty cell beside it and does not count. That is why `lg` is
+1280 and not Tailwind's 1024, where the layout switched on with 151px of gutter
+and wrapped every heading in the table of contents to two lines.
 
 ## Page shape
 
-`_app/route.tsx` owns the frame: one grid, `px-md` for the margin, two rows (`lg / auto`) at every width, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below it. Pages render only their sections.
+The content column is `--container-content`, **644px**, used as `max-w-content`
+on `main` and as the middle track of the grid. That is about 86 characters at the
+body size, against the 60–68 prose conventionally wants, and it is the settled
+answer rather than a target missed. Three widths were tried: 740 ran long enough
+that the eye hunted for the start of the next line, and 520 — essentially the
+conventional target — read as too narrow next to the code blocks in a post. That
+last one is the useful finding: nothing can escape this column, so every code
+fence shares the prose measure with the prose. 644 is where those two pressures
+balance. Narrowing it again means first giving wide content a way to break out,
+and that has not earned its cost.
 
-**One grid: a row for the chrome, a row for the page.** The trail is column one,
-the page is column two, the track and the table of contents are column three,
-and the first row holds only the trail and the track while the second holds only
-the page and the table of contents. Nothing is `fixed`, and the middle column is
-`minmax(0, 644px)` between two `1fr` gutters, so the page is centred by the grid
-rather than by a wrapper.
+**One grid, and nothing in it is `fixed`.**
+[src/routes/_app/route.tsx](src/routes/_app/route.tsx) owns the frame: two rows
+at every width, three columns from `lg` collapsing to one below it. The trail is
+column one, the page is column two, the track and the table of contents are
+column three. The page is centred by the middle track sitting between two `1fr`
+gutters, not by a wrapper, and pages render only their sections.
 
-**The empty cell is the point.** Column two of the first row holds nothing but
-the blurs, so a trail longer than its gutter runs into it instead of onto the
-page. That is what
-the second row buys over placing everything in one: at 1280 the gutter is 254px
-and a full trail is about 250, which is a fit with nothing to spare, and a
-longer title used to eat its own crumb to a `…`. Grid areas do not clip, and
-there is nothing in the cell beside it to hit.
+Two rows rather than one because the first row's middle cell is empty: a trail
+longer than its gutter runs into it rather than onto the page. At `lg` the gutter
+and a full trail are within a few pixels of each other, so without somewhere to
+overflow a long title ate its own last crumb to a `…`.
 
-**And the offset above the page is a row, not a padding.** The page starts a
-fixed `lg` row plus an `xl` row gap below the top, and that is the same
-arithmetic at every width: below `lg` the rows stack in one column and the trail
-is the whole of the first, from `lg` the trail spans both rows and the first is
-still `lg` tall. It used to be per-column padding on either side of the
-breakpoint, and the two readings differed by 14px, so the first line of every
-page moved as the window crossed 1280. A fixed row is also what keeps the home
-page, where the trail renders nothing, from starting higher than a post.
+Nothing being `fixed` is the rule the rest follows from. Chrome pinned to the
+window has the page scrolling under it, and a screenshot passing beneath a line
+of dark text is unreadable however the band over it is drawn — a scrim was tried,
+and it cut a white stripe across the first post with an image in it. Chrome in a
+gutter cannot be scrolled under, so nothing has to be hidden and the blur at each
+end of the page column stays decoration.
 
-**Both gutter items span both rows, which is what makes them `sticky`.** A grid
-item can only stick inside its own area, so anything pinned to the first row
-alone would come unstuck after `lg` of scroll. Spanning gives the trail and the
-track the height of the page to travel, and `self-start` is what keeps them
-drawn at the top of that instead of stretched down it. The track shares column
-three with the table of contents and overlaps its area on purpose: one sits at
-`md` from the top and the other at `2xl`, so the areas overlap and the boxes
-never do.
+**The one thing that reaches outside the frame** is the anchor offset. The blur
+band is 48px tall, so a heading jumped to from the table of contents would land
+underneath it, and headings with an `id` carry a `scroll-margin-block-start` in
+typeset.css to clear it. A decorative element generating a compensating rule in
+another file is accepted here: the band stays, so the rule stays with it.
 
-The margin was a `page-inline` utility that floored itself with `env(safe-area-inset-*)`, against a notched phone in landscape putting the leading edge of every line under the cutout. Those insets only report anything when the viewport meta carries `viewport-fit=cover`, which this site's never has, so every one of them resolved to `0px` and the `max()` picked the token every time. A rule that has never once fired is not insurance, it is a comment that looks like code.
+**The nav is a trail, not a menu.** There was a sticky text rail on the left and
+an icon capsule on mobile, both rendering one link list. Both are gone. A site
+this small does not have sections to browse between — it has a home page that
+links to everything and pages that hang off it — so a persistent list of five
+destinations was answering a question nobody asked. The trail answers the one
+people do ask, which is where am I and how do I get back. The home page renders
+no trail at all: a single `Home` crumb pointing at the page you are on is a
+label, not navigation.
 
-**The nav is a trail, not a menu.** There was a sticky text rail on the left and an icon capsule on mobile, both rendering one link list. Both are gone. What is left is a breadcrumb at the start of the header row: `Home › Writings › Post`, one line, at every width. A site this small does not have sections to browse between, it has a home page that links to everything and pages that hang off it, so a persistent list of five destinations was answering a question nobody asked. The trail answers the one they do ask, which is where am I and how do I get back.
+Nothing links across any more, so `G`+key is the only way from `/writings` to
+`/usage` without going home first. It is a keyboard affordance rather than the
+navigation: on a phone the way across is the home page.
 
-It builds itself from `location.pathname`. Static segments come from a map in `breadcrumbs.tsx`; a `$slug` page has a title the path does not know, so it pushes one up through the `Crumb` slot the way a post pushes its table of contents through `RightColumn`. Until that lands the slug stands in with its hyphens spaced out, which is what shows for the frame of a page whose loader has not resolved. The home page renders no trail: a single `Home` crumb pointing at the page you are on is a label, not navigation.
-
-Nothing links across any more, so `G`+key is the only way from `/writings` to `/usage` without going home first. That is `useHotkeys`, which the layout route calls and which renders nothing, and it is a keyboard affordance rather than the navigation: on a phone the way across is the home page.
-
-**The now-playing card is the trail's mirror.** Same `sticky top-md`, same span, same `self-start`, `justify-self-end` instead of the start edge. It was `fixed right-lg` once, and the margin it wanted then took `max(margin, (100vw - frame) / 2 + margin)` to express, with `100vw` counting the stable scrollbar gutter that the layout does not. A grid item is placed against the end of its own column, so the edge it sits against is the real one. Its wrapper is `hidden lg:block` because the card is desktop-only: an empty box below `lg` would still take a row and a `gap` under it.
-
-**Its hover card is a cover, not a panel.** The card is the album art at full bleed with the track over it, and it stays dark in both themes: the surface being read against is a photograph, not the page. A `from-black/70` scrim and a `ProgressiveBlur` band both sit under the text, because a scrim alone still leaves a light cover's detail cutting through the words. Sampling the cover for a matched tint does not help once the blur is there, and costs a CORS dependency and an ink flip that picks wrong mid-luminance.
-
-It passes `alignOffset={0}`, against `HoverCardContent`'s default of 4: the default suits a card anchored to inline text, this one sits at the window's edge and has to line up with its trigger.
-
-```tsx
-<section>
-  <PageHeader>
-    <PageTitle>{title}</PageTitle>
-  </PageHeader>
-  <List>...</List>
-</section>
-
-<section className="mt-lg">
-  <h2>Writings</h2>
-  <ListPosts posts={posts} />
-</section>
-```
-
-Every page opens with `PageHeader`, and it is three parts rather than one prop: `PageTitle` renders the bare `h1`, and `PageDescription` wraps the copy under it. A page with nothing to say after its title renders no second element at all, and the header's `mb-md` is conditioned on one existing through `has-data-[slot=page-description]:`, so no route ever passes `mb-0` to cancel a margin the component shouldn't have had. `PageDescription` tightens `--typeset-flow` to `sm`, so a title and its copy read as one block instead of separated paragraphs. That was home-only prose once and is now the component's job.
-
-## Interaction
-
-- Hover is a color or background change, at most 150ms, `ease-out`. Never a layout shift. It fires on every pass of the pointer, so anything slower reads as lag rather than as feedback.
-- Press is `active:scale-[0.96]`. One departure: `ListItem` sits at `0.98`, because a row spanning the whole column reads as a lurch at 0.96.
-- Icons carry the optical weight of the text beside them. `stroke={1.5}` against 400 copy, one library (`@tabler/icons-react`), 16px unless the row says otherwise, and `currentColor` so hover and state come from CSS rather than a second asset.
-- An icon that swaps by state cross-fades instead of popping: `scale` 0.25 to 1, `opacity` 0 to 1, `blur` 4px to 0, 300ms on `cubic-bezier(0.2, 0, 0, 1)`, with both icons mounted so the exit animates too. The copy button in `Install` is the reference. Motion is never the only channel, which is why the check mark also turns `brand`.
-- Remote artwork carries `ring-1 ring-fg-1/10`: pure black at 10%, never a tinted neutral, which picks up the surface underneath and reads as dirt on the image edge. Album covers, artist photos, the `Showcase` screenshot.
-- **One list-row hover model.** Every list row is a `ListItem`: the row lifts to `bg-2` on hover. A surface has to be earned by communicating interaction, and a divider between rows isn't earned when spacing already separates them. Secondary metadata (arrows) fades in on row hover via `ListItemHover`, and shows at rest wherever there is no hover to fade it in: the `can-hover` variant (`@media (hover: hover)`) gates the `opacity-0`. Tailwind already wraps `hover:` in that query, so a hover-only affordance is not subtle on touch, it is absent, and the arrow is the only signal a project row leaves the site.
-- Focus is a 2px `ring` outline at 2px offset, from a bare `:focus-visible` rule in `@layer base`. It hangs off the pseudo-class, not a utility, so nothing opts in and nothing can forget.
-- Haptics (`useHaptics`) fire on nav clicks and on hover of the home page links. `tick` for hover, `click` for navigation.
-- Numbers are always `tabular-nums`.
-- All of the above is decoration. `prefers-reduced-motion: reduce` switches every animation and transition off outright rather than shortening it. Nothing sets `animation-fill-mode`, so each element settles on its base style.
-
-## Components
-
-`ui/` holds the primitives: `Page`, `PageHeader`, `List`, `ListItem`, `ListItemTitle`, `ListItemDescription`, `ListItemHover`, `ListSkeleton`, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`, `ProgressiveBlur`, `Install`, `Showcase`, `HoverCard`. They carry `data-slot` attributes and accept `className` merged through `cn()`, which is the way to ask for a shape a primitive's defaults don't cover: reach for it before adding a prop. Everything above `ui/` composes them and shouldn't reach for raw layout classes that a primitive already provides.
-
-Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it doesn't reach into `usage.json` to work out a percentage. When a figure needs page-specific arithmetic, do it in the route and pass the result down.
-
-**A skeleton shares the container, it doesn't copy it.** The music page's top lists and their skeleton each wrote their own grid, and the two had already drifted a step apart on the gap before anyone noticed, because you only ever see one of them at a time. They now both render `TopsGrid`. Anything a skeleton and its real content both need is a component, not a repeated class string.
-
-A skeleton has to be the same shape as the thing it replaces. `ListSkeleton` uses `ListItem`'s box without its hover, so nothing shifts when data lands.
-
-### Dates
-
-Every date is either a calendar day (`2026-03-27`) or a UTC instant. `lib/utils.ts` parses **and** formats both in UTC through shared `Intl.DateTimeFormat` instances (`formatDate`, `formatShortDate`, `formatNumericDate`). Never call `toLocaleString` at a call site and never build a date string by hand: the server and the browser sit in different timezones, and a date-only string parsed locally drifts a day west of Greenwich.
+**The now-playing card is the trail's mirror**, opposite gutter, same treatment.
+Its hover card is a cover, not a panel: the album art at full bleed with the
+track over it, dark in both themes because the surface being read against is a
+photograph, not the page. A scrim and a blur band both sit under the text,
+because a scrim alone still leaves a light cover's detail cutting through the
+words. Sampling the cover for a matched tint does not help once the blur is
+there, and costs a CORS dependency and an ink flip that picks wrong
+mid-luminance.
 
 ## Prose
 
-There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so every page is prose by default: write plain `<p>`, `<h2>`, `<ul>`, `<table>` with no classes and they're styled. A paragraph on the home page and a paragraph in a blog post are the same paragraph.
+There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so
+every page is prose by default: write plain `<p>`, `<h2>`, `<ul>`, `<table>` with
+no classes and they are styled. A paragraph on the home page and a paragraph in a
+blog post are the same paragraph.
 
-```tsx
-<section>
-  <h1 className="text-balance">{post.title}</h1>
-  <article>{post.body}</article>
-</section>
-```
+[src/styles/typeset.css](src/styles/typeset.css) is vendored from
+[shadcn/typeset](https://ui.shadcn.com/docs/typeset) and **has been forked, not
+configured.** It owns rendered markdown end to end:
 
-[src/styles/typeset.css](src/styles/typeset.css) is vendored from [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and **has been forked**, not configured. It owns rendered markdown end to end:
+- Upstream's type declarations are stripped at the source — every `font-size`,
+  `line-height`, `letter-spacing` and `font-weight` — each removal commented in
+  place so the file reads as its own history.
+- It sets its own `--typeset-*` vars, pointed at the site's fonts.
+- A block at the bottom holds what the site adds: the colour guide per tag, the
+  `h1` treatment, `p` at `leading-relaxed`, links as `animated-link`, heading
+  anchors, and the frame for TanStack Markdown's code title bar, line numbers and
+  token colours.
 
-- Upstream's type declarations are stripped at the source — every `font-size`, `line-height`, `letter-spacing` and `font-weight` — each removal commented in place so the file reads as its own history.
-- It sets its own `--typeset-*` vars, pointed straight at the site's fonts.
-- A block at the bottom holds what the site adds on top: the colour guide per tag, the `h1` treatment, `p` at `leading-relaxed`, links as `animated-link`, heading anchors, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
+That bottom block **must** stay in `@layer components` and after the vendored
+rules in source order. Same layer and later means it beats them, while a utility
+on the element still beats it; unlayered, it would outrank utilities instead.
 
-That bottom block **must** stay in `@layer components` and after the vendored rules in source order. Same layer and later means it beats them, while a utility on the element still beats it; unlayered, it would outrank utilities instead.
-
-app.css holds no `.typeset` selector at all. It is tokens, the shadcn `:root` aliases, `@utility` definitions and `@layer base`.
+app.css holds no `.typeset` selector at all. It is tokens, the shadcn `:root`
+aliases, `@utility` definitions and `@layer base`.
 
 **Re-pulling the component from the registry undoes every change above.**
 
 ### Opting out
 
-UI is not prose. Any primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, which excludes its whole subtree, so callers never think about it: `List`, `NavList`, `Install`, and `StatStrip`.
+UI is not prose. A primitive that renders semantic tags for structure rather than
+reading carries `not-typeset` on its outermost node, so callers never think about
+it: `List`, `NavList`, `Install`, `StatStrip`.
 
-The rule that catches people out is [typeset.css:105](src/styles/typeset.css#L105), `h1 + *, h2 + *, …`: **anything following a heading gets a 1em top margin**, whatever tag it is. A `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a primitive puts a heading beside something else, it needs `not-typeset`, not an `mt-0` patch on the sibling. `PageHeader` is the one that wants the rule rather than an exemption: `PageDescription` is the `h1 +` sibling, and that 1em is the gap between a page title and its copy. Add it to any new primitive built from bare `ul`/`li`/`p`/`h*`, otherwise it inherits bullets, indents and flow margins.
+**`not-typeset` is narrower than its name.** Only the vendored block honours it —
+the exclusion is written into those selectors. The site's own block at the bottom
+of the file has no such guard, so its colour guide, `p` leading, link treatment
+and code sizing still reach into a `not-typeset` subtree. For the colour guide
+that is wanted: UI opts out of prose *layout*, never out of the colour guide. For
+`p` at `leading-relaxed` it is a trap, and it is the one that put the table of
+contents' heading out of line with the page title. Widening the guard would
+change every UI primitive at once and needs looking at surface by surface, not a
+blind sweep.
+
+The other rule that catches people out is typeset's `h1 + *, h2 + *, …`:
+**anything following a heading gets a 1em top margin**, whatever tag it is. A
+`div` next to an `h1` is not exempt just because typeset has no `div` rule. If a
+primitive puts a heading beside something else, it needs `not-typeset`, not an
+`mt-0` patch on the sibling. `PageHeader` is the one that wants the rule rather
+than an exemption: `PageDescription` is the `h1 +` sibling, and that 1em is the
+gap between a page title and its copy. `PageDescription` also tightens
+`--typeset-flow` to `sm`, so a title and its copy read as one block rather than
+as separated paragraphs.
+
+## Utilities
+
+Defined with `@utility` in app.css so they compose with variants and merge
+correctly.
+
+| Utility           | What it is                                                             |
+| ----------------- | ---------------------------------------------------------------------- |
+| `skip-link`       | Off-screen until focused, then a real target top-left. One per document |
+| `animated-link`   | Inline prose link: underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
+| `icon-link`       | `animated-link` plus an inline icon before the label                    |
+| `row-link`        | Row layout inside a list item                                           |
+| `nav-link`        | Table-of-contents link with active state and press scale                |
+| `scroll-fade-end` | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
+| `indicator-brand` | Brand fill for the table-of-contents indicator and meter segments, softened toward its bottom edge |
+
+**A `@utility` earns its place two ways: it lands on tags the caller chooses, or
+it needs selectors a `className` cannot express.** `row-link` sits on a `Link`, an
+`a` and a `div`; `nav-link` on a `Link` and an `a`; `indicator-brand` on a nav
+span and a meter segment. That is the first kind. `icon-link` and `skip-link`
+each have a single call site and stay anyway: one needs descendant rules for its
+`svg`, the other a long `focus-visible:` chain, and a stylesheet says both better
+than JSX can.
+
+Anything else belongs in the component that renders it. The eq bars and the
+table-of-contents indicator were utilities once, each with exactly one consumer
+that was already a component — so the utility was a second name for the same
+thing in a different file, and the class list moved to where the markup lives.
+
+`indicator-brand`'s fade toward the bottom softens an edge and is not a data
+scale; flattening it was considered and rejected.
+
+There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing
+at rest what hover would otherwise reveal. See the list-row model under
+**Interaction**.
+
+## Components
+
+`ui/` holds the primitives that carry no page knowledge: `Page`, `List` and its
+parts, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`,
+`ProgressiveBlur`, `HoverCard`. One level up, `components/` holds the composed
+pieces that know what they are for: `PageHeader`, `Breadcrumbs`, `NowPlaying`,
+`Install`, `Showcase`, the lists, the table of contents.
+
+Primitives carry `data-slot` attributes and accept `className` merged through
+`cn()`, which is how to ask for a shape their defaults do not cover — reach for
+it before adding a prop. Everything above `ui/` composes them and should not
+reach for raw layout classes a primitive already provides.
+
+Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it
+does not reach into `usage.json` to work out a percentage. When a figure needs
+page-specific arithmetic, do it in the route and pass the result down.
+
+**A skeleton shares its container, it does not copy it,** and it is the same
+shape as the thing it replaces. You only ever see one of the two at a time, so a
+duplicated class string drifts without anyone noticing. Anything both need is a
+component.
+
+### Dates
+
+Every date is either a calendar day (`2026-03-27`) or a UTC instant.
+[src/lib/utils.ts](src/lib/utils.ts) parses **and** formats both in UTC through
+shared `Intl.DateTimeFormat` instances. Never call `toLocaleString` at a call
+site and never build a date string by hand: the server and the browser sit in
+different timezones, and a date-only string parsed locally drifts a day west of
+Greenwich.
+
+## Interaction
+
+- Hover is a colour or background change, at most 150ms, `ease-out`. Never a
+  layout shift. It fires on every pass of the pointer, so anything slower reads
+  as lag rather than as feedback.
+- Press is `active:scale-[0.96]`. One departure: `ListItem` sits at `0.98`,
+  because a row spanning the whole column reads as a lurch at 0.96.
+- Icons carry the optical weight of the text beside them: `stroke={1.5}` against
+  400 copy, one library (`@tabler/icons-react`), 16px unless the row says
+  otherwise, and `currentColor` so hover and state come from CSS rather than a
+  second asset.
+- An icon that swaps by state cross-fades instead of popping, with both icons
+  mounted so the exit animates too. The copy button in `Install` is the
+  reference. Motion is never the only channel, which is why the check mark also
+  turns `brand`.
+- Remote artwork carries a hairline ring of pure black at low alpha, never a
+  tinted neutral, which picks up the surface underneath and reads as dirt on the
+  image edge. Album covers, artist photos, the `Showcase` screenshot.
+- **One list-row hover model.** Every list row is a `ListItem` and lifts to `bg-2`
+  on hover. A surface has to be earned by communicating interaction, and a
+  divider between rows is not earned when spacing already separates them.
+  Secondary metadata fades in on row hover via `ListItemHover`, and shows at rest
+  wherever there is no hover to fade it in: the `can-hover` variant gates the
+  `opacity-0`. Tailwind already wraps `hover:` in that query, so a hover-only
+  affordance is not subtle on touch, it is absent — and the arrow is the only
+  signal that a project row leaves the site.
+- Focus is a 2px `ring` outline at 2px offset, from a bare `:focus-visible` rule
+  in `@layer base`. It hangs off the pseudo-class, not a utility, so nothing opts
+  in and nothing can forget.
+- Haptics (`useHaptics`) fire on nav clicks and on hover of the home page links.
+  `tick` for hover, `click` for navigation.
+- Numbers are always `tabular-nums`.
+- All of the above is decoration. `prefers-reduced-motion: reduce` switches every
+  animation and transition off outright rather than shortening it. Nothing sets
+  `animation-fill-mode`, so each element settles on its base style.
