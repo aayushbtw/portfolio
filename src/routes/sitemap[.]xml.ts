@@ -12,7 +12,6 @@ interface Entry {
 function entries(): Entry[] {
   const staticPaths: Entry[] = [
     { path: "/" },
-    { path: "/projects" },
     { path: "/writings" },
     { path: "/skills" },
     { path: "/music" },

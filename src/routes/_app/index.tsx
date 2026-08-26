@@ -1,4 +1,4 @@
-import { Await, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   GithubIcon,
   MailIcon,
@@ -12,21 +12,15 @@ import {
 } from "~/components/page-header";
 import { PostList } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
-import { ListSkeleton } from "~/components/ui/list";
 import { Page } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
+import { projects } from "~/lib/projects";
 import { seo } from "~/lib/seo";
-import { getProjectList } from "~/server/octo";
 import { getPostList } from "~/server/posts";
 
 export const Route = createFileRoute("/_app/")({
-  // Only the post list is awaited: it reads local content. The octo call is
-  // handed over as a promise and streams in behind a skeleton.
-  loader: async () => ({
-    projects: getProjectList(),
-    posts: await getPostList(5),
-  }),
+  loader: async () => ({ posts: await getPostList(5) }),
   head: () => seo({ title: config.name, description: config.description }),
   headers: () => ({
     "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
@@ -35,7 +29,7 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function HomePage() {
-  const { projects, posts } = Route.useLoaderData();
+  const { posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
   const haptic = () => trigger("tick");
 
@@ -96,18 +90,7 @@ function HomePage() {
 
       <section>
         <h2>Projects</h2>
-        <Await
-          fallback={<ListSkeleton rowClassName="h-10" rows={4} />}
-          promise={projects}
-        >
-          {(list) =>
-            list ? (
-              <ProjectList projects={list} />
-            ) : (
-              <p className="text-fg-3">Projects are unavailable right now.</p>
-            )
-          }
-        </Await>
+        <ProjectList projects={projects} />
       </section>
 
       <section>

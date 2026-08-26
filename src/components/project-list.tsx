@@ -1,4 +1,5 @@
-import { IconArrowUpRight, IconStarFilled } from "@tabler/icons-react";
+import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import {
   List,
   ListItem,
@@ -6,46 +7,46 @@ import {
   ListItemHover,
   ListItemTitle,
 } from "~/components/ui/list";
+import type { Project } from "~/lib/projects";
 
-// The wire shape octo returns, declared here so a client component doesn't
-// import from a server-only module to name its own props.
-interface PinnedRepo {
-  description: string;
-  forks: number;
-  language: string;
-  repo: string;
-  stars: number;
-  url: string;
-}
-
-function ProjectList({ projects }: { projects: PinnedRepo[] }) {
+function ProjectList({ projects }: { projects: Project[] }) {
   return (
     <List>
       {projects.map((item) => (
-        <ListItem key={item.repo}>
-          <a
-            className="row-link"
-            href={item.url}
-            rel="noopener"
-            target="_blank"
-          >
-            <div className="flex min-w-0 flex-col">
-              <ListItemTitle className="capitalize">{item.repo}</ListItemTitle>
-              <ListItemDescription>{item.description}</ListItemDescription>
-            </div>
-
-            <ListItemHover>
-              <div className="inline-flex items-center gap-xs tabular-nums">
-                <IconStarFilled aria-hidden="true" className="size-2.5" />
-                {item.stars}
-              </div>
-              <IconArrowUpRight aria-hidden="true" stroke={1.5} />
-            </ListItemHover>
-          </a>
+        <ListItem key={item.name}>
+          {item.to ? (
+            <Link className="row-link" to={item.to}>
+              <ProjectRow project={item} />
+              <ListItemHover>
+                <IconArrowRight aria-hidden="true" stroke={1.5} />
+              </ListItemHover>
+            </Link>
+          ) : (
+            <a
+              className="row-link"
+              href={item.href}
+              rel="noopener"
+              target="_blank"
+            >
+              <ProjectRow project={item} />
+              <ListItemHover>
+                <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+              </ListItemHover>
+            </a>
+          )}
         </ListItem>
       ))}
     </List>
   );
 }
 
-export { type PinnedRepo, ProjectList };
+function ProjectRow({ project }: { project: Project }) {
+  return (
+    <div className="flex min-w-0 flex-col">
+      <ListItemTitle>{project.name}</ListItemTitle>
+      <ListItemDescription>{project.description}</ListItemDescription>
+    </div>
+  );
+}
+
+export { ProjectList };
