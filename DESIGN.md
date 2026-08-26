@@ -206,19 +206,30 @@ indicator were utilities once, each with exactly one consumer that was already a
 component — so the utility was a second name for the same thing in a different
 file, and the class list moved to where the markup lives.
 
-**Both blurs belong to the middle column.** They are `sticky` children of
-`main`, one at each end of it, rather than `fixed` bands across the window: that
-makes each exactly as wide as the page is, so the trail and the table of
-contents in the gutters are never under one. Each carries a negative margin
-against its own height, because a blur stands in front of the column rather than
-above or below it, and a second one inline, because a `backdrop-filter` samples
-only what is behind its own box: level with the page it has nothing to reach for
-at either edge and the blur flattens out there instead of spreading. The inline
-bleed is `md`, which is the page margin, so below `lg` it lands on the window's
-edge rather than past it; from `lg` there are gutters to spend and it is `xl`.
-`main` owns the page's bottom padding for the same reason, so that the column it
-is sticky inside runs to the end of the page and the bottom one does not come
-unstuck early.
+**Both blurs belong to the middle column.** They are grid items placed over that
+column rather than `fixed` bands across the window, which makes each exactly as
+wide as the page is, so the trail and the table of contents in the gutters are
+never under one. They span both rows and `main` does not: `main` starts at the
+second row, which is the page's first line, and a blur that started there would
+be sitting on the title at rest rather than waiting above it. This is why every item in the
+grid names its own row and column at every width, not only at `lg`: auto
+placement refuses to put an item where another already sits, so one item left to
+it is enough to open an implicit column and squeeze the page into a track it
+never asked for. Overlap has to be spelled out to be allowed.
+
+Below `lg` there is one column, so the blurs' area is the trail's area too, and
+the trail carries a `z` above them. A `backdrop-filter` samples what is painted
+under it, so this is the same rule twice: the trail is not behind the blur, so
+the blur has nothing of it to smear, and at rest the band is invisible over the
+page's own white. Spanning also
+gives the bottom one the height of the page to stay stuck against, which is why
+`main` owns the page's bottom padding.
+
+Each carries a negative inline margin, because a `backdrop-filter` samples only
+what is behind its own box: level with the page it has nothing to reach for at
+either edge and flattens out there instead of spreading. The bleed is `md`,
+which is the page margin, so below `lg` it lands on the window's edge rather
+than past it; from `lg` there are gutters to spend and it is `xl`.
 
 **And it costs one rule elsewhere.** `ProgressiveBlur` is 48px tall, so a heading
 jumped to from the table of contents would land underneath it. Headings with an `id` carry a 64px `scroll-margin-block-start` to clear it
@@ -244,52 +255,51 @@ undo what a wrong third one did.
 
 `lg` is the only one that is measured rather than inherited. It is where the
 page becomes three columns, and three columns need 644 for the middle, two `xl`
-gaps, and two gutters wide enough to hold what goes in them: a trail runs about
-250px and the table of contents about 230. That comes to 1272, so `lg` is 1280
-and not Tailwind's 1024. At 1024 the layout switched on with 151px of gutter,
-which is not enough for either, and the trail spilled across the column beside
-it. The column gap and the blurs' inline bleed were both being bumped at `xl` to
-paper over exactly that; with `lg` set where the shape actually works they are
-`lg` like everything else about it.
+gaps, and two gutters wide enough to hold what goes in them. The binding one is
+the table of contents, which needs about 230px before its headings start
+wrapping; the trail can overflow into the empty cell beside it and does not
+count. That comes to 1232, and `lg` is 1280 rather than Tailwind's 1024. At 1024
+the layout switched on with 151px of gutter, which wraps every heading in the
+table of contents to two lines. The column gap and the blurs' inline bleed were
+both being bumped at `xl` to paper over that; with `lg` set where the shape
+actually works they are `lg` like everything else about it.
 
 ## Page shape
 
-`_app/route.tsx` owns the frame: one grid, `px-md` for the margin, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
+`_app/route.tsx` owns the frame: one grid, `px-md` for the margin, two rows (`lg / auto`) at every width, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below it. Pages render only their sections.
 
-**One grid, three columns, and each one owns its spacing.** The trail is column
-one, the page is column two, the track and the table of contents share column
-three. The grid sets the tracks and the column gap and nothing else: no shared
-top padding, no row gap. Each column starts where it wants to start, which is
-why the trail sits at `lg` from the top and the page at `2xl`. Nothing is
-`fixed`, nothing is a band across the top, and the middle column is
+**One grid: a row for the chrome, a row for the page.** The trail is column one,
+the page is column two, the track and the table of contents are column three,
+and the first row holds only the trail and the track while the second holds only
+the page and the table of contents. Nothing is `fixed`, and the middle column is
 `minmax(0, 644px)` between two `1fr` gutters, so the page is centred by the grid
 rather than by a wrapper.
 
-That placement is what stops text landing on text, and it replaces measuring for
-it. The trail and the track used to be `fixed` in the window's corners, and then
-a full-bleed row above the page: both let the content column run underneath
-them, which is why the top blur had to become a scrim, and why the scrim then
-cut a white stripe across the first screenshot in a post. A gutter cannot
-overlap the column it is beside. The band went with the problem.
+**The empty cell is the point.** Column two of the first row holds nothing but
+the blurs, so a trail longer than its gutter runs into it instead of onto the
+page. That is what
+the second row buys over placing everything in one: at 1280 the gutter is 254px
+and a full trail is about 250, which is a fit with nothing to spare, and a
+longer title used to eat its own crumb to a `…`. Grid areas do not clip, and
+there is nothing in the cell beside it to hit.
 
-There is no `max-w` on the grid, so the gutters open all the way to the window
-and the trail sits a page margin from its edge however wide the screen gets,
-while the middle column stays 644px in the centre of it.
+**And the offset above the page is a row, not a padding.** The page starts a
+fixed `lg` row plus an `xl` row gap below the top, and that is the same
+arithmetic at every width: below `lg` the rows stack in one column and the trail
+is the whole of the first, from `lg` the trail spans both rows and the first is
+still `lg` tall. It used to be per-column padding on either side of the
+breakpoint, and the two readings differed by 14px, so the first line of every
+page moved as the window crossed 1280. A fixed row is also what keeps the home
+page, where the trail renders nothing, from starting higher than a post.
 
-**Nothing moves when the breakpoint flips.** Below `lg` the trail is in the flow
-above the page and its box is what the page clears; from `lg` it is in the
-gutter and clears nothing, so the page carries the whole offset itself. Those
-have to come to the same number or the first line of every page jumps sideways
-in time as the window crosses 1280. It did, by 14px. The trail's box is `min-h`
-`xl` whatever it holds, the page's own top padding is `xl` below `lg` and `2xl`
-from `lg`, and both readings come to `2xl`. The `min-h` is also what keeps the
-home page, where the trail renders nothing, from starting higher than a post.
-
-**The trail is `sticky` from `lg`, which is what the single row buys.** A grid
-item can only stick inside its own area, so a trail in a 24px header row of its
-own would come unstuck after 24px of scroll. One row means its area is as tall
-as the page, and `self-start` is what keeps it drawn at the top of that area
-instead of stretched down it.
+**Both gutter items span both rows, which is what makes them `sticky`.** A grid
+item can only stick inside its own area, so anything pinned to the first row
+alone would come unstuck after `lg` of scroll. Spanning gives the trail and the
+track the height of the page to travel, and `self-start` is what keeps them
+drawn at the top of that instead of stretched down it. The track shares column
+three with the table of contents and overlaps its area on purpose: one sits at
+`md` from the top and the other at `2xl`, so the areas overlap and the boxes
+never do.
 
 The margin was a `page-inline` utility that floored itself with `env(safe-area-inset-*)`, against a notched phone in landscape putting the leading edge of every line under the cutout. Those insets only report anything when the viewport meta carries `viewport-fit=cover`, which this site's never has, so every one of them resolved to `0px` and the `max()` picked the token every time. A rule that has never once fired is not insurance, it is a comment that looks like code.
 
@@ -299,7 +309,7 @@ It builds itself from `location.pathname`. Static segments come from a map in `b
 
 Nothing links across any more, so `G`+key is the only way from `/writings` to `/usage` without going home first. That is `useHotkeys`, which the layout route calls and which renders nothing, and it is a keyboard affordance rather than the navigation: on a phone the way across is the home page.
 
-**The now-playing card is the trail's mirror.** Same `sticky top-md`, same `self-start` read of where a thing in a gutter sits, `justify-end` instead of the start edge. It was `fixed right-lg` once, and the margin it wanted then took `max(margin, (100vw - frame) / 2 + margin)` to express, with `100vw` counting the stable scrollbar gutter that the layout does not. A box in its own column is placed against that column's end, so the edge it sits against is the real one. The column around it is `hidden lg:block` because the card is desktop-only: an empty slot below `lg` would still open a row of its own and a `gap` under it. That column is also the one thing in the grid that must not be `self-start`: the card and the table of contents are both `sticky` inside it, and a column shrunk to its content gives them nothing to travel.
+**The now-playing card is the trail's mirror.** Same `sticky top-md`, same span, same `self-start`, `justify-self-end` instead of the start edge. It was `fixed right-lg` once, and the margin it wanted then took `max(margin, (100vw - frame) / 2 + margin)` to express, with `100vw` counting the stable scrollbar gutter that the layout does not. A grid item is placed against the end of its own column, so the edge it sits against is the real one. Its wrapper is `hidden lg:block` because the card is desktop-only: an empty box below `lg` would still take a row and a `gap` under it.
 
 **Its hover card is a cover, not a panel.** The card is the album art at full bleed with the track over it, and it stays dark in both themes: the surface being read against is a photograph, not the page. A `from-black/70` scrim and a `ProgressiveBlur` band both sit under the text, because a scrim alone still leaves a light cover's detail cutting through the words. Sampling the cover for a matched tint does not help once the blur is there, and costs a CORS dependency and an ink flip that picks wrong mid-luminance.
 

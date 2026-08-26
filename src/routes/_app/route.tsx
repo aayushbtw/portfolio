@@ -39,31 +39,34 @@ function AppLayout() {
   useHotkeys();
 
   return (
-    <div className="typeset grid gap-lg px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
-      <div className="min-h-xl pt-md lg:sticky lg:top-md lg:min-h-0 lg:self-start lg:pt-0">
+    <div className="typeset grid grid-rows-[var(--spacing-lg)_auto] gap-x-lg gap-y-xl px-md pt-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
+      <div className="z-40 col-start-1 row-start-1 lg:sticky lg:top-md lg:row-span-2 lg:self-start">
         <Breadcrumbs />
       </div>
 
-      <main className="mx-auto w-full min-w-0 max-w-content" id="main">
-        <ProgressiveBlur
-          className="sticky top-0 z-30 -mx-md -mb-12 lg:-mx-xl"
-          position="top"
-        />
+      <div className="hidden lg:sticky lg:top-md lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:block lg:self-start lg:justify-self-end">
+        <NowPlaying />
+      </div>
 
-        <div className="pt-xl pb-2xl lg:pt-2xl lg:pb-xl">
-          <Outlet />
-        </div>
-
-        <ProgressiveBlur className="sticky bottom-0 z-30 -mx-md -mt-12 lg:-mx-xl" />
+      <main
+        className="col-start-1 row-start-2 mx-auto w-full min-w-0 max-w-content pb-2xl lg:col-start-2 lg:pb-xl"
+        id="main"
+      >
+        <Outlet />
       </main>
 
-      <div className="hidden lg:block">
-        <div className="sticky top-md flex justify-end">
-          <NowPlaying />
-        </div>
-
+      <div className="hidden lg:col-start-3 lg:row-start-2 lg:block">
         {right}
       </div>
+
+      {/* Over the page column across both rows, not inside it: `main` starts at
+          the second row, which is the page's first line. */}
+      <ProgressiveBlur
+        className="sticky inset-x-auto top-0 z-30 col-start-1 row-span-2 row-start-1 -mx-md self-start lg:col-start-2 lg:-mx-xl"
+        position="top"
+      />
+
+      <ProgressiveBlur className="sticky inset-x-auto bottom-0 z-30 col-start-1 row-span-2 row-start-1 -mx-md self-end lg:col-start-2 lg:-mx-xl" />
     </div>
   );
 }
