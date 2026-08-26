@@ -114,7 +114,7 @@ function Fallback({
   children: React.ReactNode;
 }) {
   return (
-    <div className="page-inline typeset mx-auto py-xl sm:py-2xl">
+    <div className="typeset mx-auto px-md py-xl sm:py-2xl">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
         <h1 className="mb-sm text-balance">{title}</h1>
         <p className="my-0">{children}</p>

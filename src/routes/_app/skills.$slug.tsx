@@ -6,6 +6,7 @@ import {
   InstallLink,
   InstallLinks,
 } from "~/components/install";
+import { Crumb } from "~/components/layout-provider";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { getSkillBySlug } from "~/server/skills";
@@ -29,6 +30,8 @@ function SkillPage() {
 
   return (
     <section>
+      <Crumb>{skill.title}</Crumb>
+
       <article>
         <h1 className="text-balance">{skill.title}</h1>
         <p>{skill.description}</p>

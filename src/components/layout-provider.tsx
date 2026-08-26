@@ -7,43 +7,44 @@ import {
 } from "react";
 
 interface LayoutContextValue {
-  left: ReactNode;
+  crumb: string | null;
   right: ReactNode;
-  setLeft: (node: ReactNode) => void;
+  setCrumb: (label: string | null) => void;
   setRight: (node: ReactNode) => void;
 }
 
 const LayoutContext = createContext<LayoutContextValue>({
-  left: null,
-  setLeft: () => undefined,
+  crumb: null,
+  setCrumb: () => undefined,
   right: null,
   setRight: () => undefined,
 });
 
 function LayoutProvider({ children }: { children: ReactNode }) {
-  const [left, setLeft] = useState<ReactNode>(null);
+  const [crumb, setCrumb] = useState<string | null>(null);
   const [right, setRight] = useState<ReactNode>(null);
   return (
-    <LayoutContext.Provider value={{ left, setLeft, right, setRight }}>
+    <LayoutContext.Provider value={{ crumb, setCrumb, right, setRight }}>
       {children}
     </LayoutContext.Provider>
   );
 }
 
-function useLeftColumn() {
-  return useContext(LayoutContext).left;
+function useCrumb() {
+  return useContext(LayoutContext).crumb;
 }
 
 function useRightColumn() {
   return useContext(LayoutContext).right;
 }
 
-function LeftColumn({ children }: { children: ReactNode }) {
-  const { setLeft } = useContext(LayoutContext);
+/** Names a `$slug` page in the breadcrumb, which can't read a route's title. */
+function Crumb({ children }: { children: string }) {
+  const { setCrumb } = useContext(LayoutContext);
   useEffect(() => {
-    setLeft(children);
-    return () => setLeft(null);
-  }, [children, setLeft]);
+    setCrumb(children);
+    return () => setCrumb(null);
+  }, [children, setCrumb]);
   return null;
 }
 
@@ -56,10 +57,4 @@ function RightColumn({ children }: { children: ReactNode }) {
   return null;
 }
 
-export {
-  LayoutProvider,
-  LeftColumn,
-  RightColumn,
-  useLeftColumn,
-  useRightColumn,
-};
+export { Crumb, LayoutProvider, RightColumn, useCrumb, useRightColumn };

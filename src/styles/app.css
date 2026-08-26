@@ -102,18 +102,6 @@
    absent on touch rather than subtle. Naming it lets one show at rest instead. */
 @custom-variant can-hover (@media (hover: hover));
 
-/* The page's inline margin, floored by the display cutout. `env()` stays
-   physical: the notch sits where it sits whatever the writing direction. */
-@utility page-inline {
-  padding-inline-start: max(var(--spacing-md), env(safe-area-inset-left));
-  padding-inline-end: max(var(--spacing-md), env(safe-area-inset-right));
-
-  @variant sm {
-    padding-inline-start: max(var(--spacing-lg), env(safe-area-inset-left));
-    padding-inline-end: max(var(--spacing-lg), env(safe-area-inset-right));
-  }
-}
-
 /* Fades the trailing edge of a horizontal scroller. The keyframes hold one
    value at both ends because the animation is not an effect: it is the only way
    CSS can ask whether an element overflows, since a scroller with nothing to
@@ -166,8 +154,8 @@
   @apply flex items-center gap-md;
 }
 
-/* The nav is a sticky sidebar, so keyboard users otherwise walk the whole
-   thing on every page. */
+/* The breadcrumb comes before the content in the DOM, so keyboard users
+   otherwise walk the trail on every page. */
 @utility skip-link {
   @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:start-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
 }

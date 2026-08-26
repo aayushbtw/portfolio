@@ -46,7 +46,7 @@ Six steps: **4, 8, 16, 24, 48, 96**. Doubling from `xs` up to `md`, 1.5× to `lg
 | `md`  | 16px  | Sibling items, padding inside a container            |
 | `lg`  | 24px  | Sections of a page (`mt-lg`)                         |
 | `xl`  | 48px  | Major blocks of a page                               |
-| `2xl` | 96px  | The page frame: desktop padding, sticky nav offset   |
+| `2xl` | 96px  | The page frame: top padding at every width, sticky offset |
 
 Used as `mt-lg`, `gap-md`, `px-md`, `py-sm`. Nothing exists between the steps, so a gap that feels wrong is the wrong step, not a missing value. Reaching for `mt-7` means one of these is what you meant.
 
@@ -91,7 +91,7 @@ List rows are `py-sm`, negatively inset by `-mx-md` so the hover surface bleeds 
 
 Nested boxes step down by their padding, so an `md` panel padded by `xs` holds `xs` children. Three things sit outside the scale: `rounded-full` (a shape, not a step), `rounded-none` (a reset, like zero spacing), and `rounded-[1px]` on the now-playing eq bars, which are 2px wide and would otherwise render as lozenges.
 
-**Inline sides are logical.** `ps-`/`pe-`, `ms-`/`me-`, `start-`/`end-`, `text-end`. Physical `left` and `right` are reserved for geometry that really is physical: the code block's line-number gutter and its title bar, which read left to right whatever the page around them does; the hover card's `data-[side]` slide, which is relative to its anchor; and `env(safe-area-inset-*)`. The site is `lang="en"` with no i18n, so this buys nothing today. It costs nothing either, and it is the kind of thing that is free now and a sweep later.
+**Inline sides are logical.** `ps-`/`pe-`, `ms-`/`me-`, `start-`/`end-`, `text-end`. Physical `left` and `right` are reserved for geometry that really is physical: the code block's line-number gutter and its title bar, which read left to right whatever the page around them does; the hover card's `data-[side]` slide, which is relative to its anchor. The site is `lang="en"` with no i18n, so this buys nothing today. It costs nothing either, and it is the kind of thing that is free now and a sweep later.
 
 **A column that repeats down a list belongs to a grid, not to a width on each row.** The usage bars were a flex row each with a `w-20` label, which is a width guessed for one language: `Cache write` already filled all 80px of it, and since the width was fixed rather than a floor, anything longer overflowed into the meter instead of pushing it. `BarGroup` is now one grid per group with each `BarRow` as `display: contents`, so the label and value columns size to the longest entry and every bar still starts on the same line.
 
@@ -181,7 +181,6 @@ Defined with `@utility` in [src/styles/app.css](src/styles/app.css) so they comp
 | `icon-link`        | `animated-link` + inline 16px icon before the label              |
 | `row-link`         | Row layout inside a list item: `flex items-center gap-md`         |
 | `nav-link`         | Sidebar / TOC link with active state and press scale             |
-| `page-inline`      | The page's inline margin, floored by the display cutout. `md`, `lg` from `sm` up |
 | `scroll-fade-end`  | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
 | `indicator-brand`  | Brand fill for the nav indicator and meter segments, softened toward its bottom edge |
 
@@ -216,23 +215,40 @@ stays, so the rule stays with it. It is down to 3 layers from 5, since each is a
 live `backdrop-filter` re-sampling on every scroll frame and the shallowest two
 contributed least.
 
+**Nothing is read against it, so it can stay a blur.** A scrim was tried, when
+the breadcrumb was `fixed` in the corner and content scrolled under it: blur
+smears text passing beneath a pinned element rather than hiding it, so the band
+had to paint `bg-1` solid behind the crumb. That works on a page of prose and
+fails on the first post with a screenshot in it, where a white stripe cuts
+across a dark image. Putting the crumb in the flow removed the requirement
+instead of dressing it, and the band went back to being decoration.
+
 ## Page shape
 
-`_app/route.tsx` owns the frame: centered, `max-w-7xl`, `page-inline` for the margin, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
+`_app/route.tsx` owns the frame: centered, `max-w-7xl`, `px-md` for the margin, a header row across the top, then three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
 
-The margin comes from `page-inline` rather than `px-md sm:px-lg` so it is floored by `env(safe-area-inset-*)`: in landscape on a notched phone the plain padding put the leading edge of every line under the cutout. `env()` stays physical there, unlike the rest of the site's inline sides, because the notch is where it is whatever the writing direction.
+**The header row is the whole of the site's chrome.** The trail at its start, the track at its end, the page under it. Both were `fixed` in the window's corners once, which is why the top blur had to turn into a scrim: anything pinned has the page scrolling under it, and a screenshot passing beneath a line of dark text is unreadable however the band is drawn. In a row they scroll away with everything else, so nothing has to be hidden and the band goes back to being decoration. One row also settles the placement question once instead of at each breakpoint, which is what two `fixed` corners and a `lg:` variant were failing to do. It sits outside the centred `max-w-7xl` frame, carrying only the page margin, so it stays at the window's edges however wide the window gets while the page under it stays centred.
 
-**Two navs, one link list.** From `lg` up it is the sticky text rail. Below `lg` it is `MobileNav`: a floating capsule pinned above the bottom inset, inverted onto `bg-contrast` so it reads as a control over the page rather than a second page edge. Both render the same array in `navbar.tsx`, and the hotkey sequences are registered from the rail, which stays mounted at every width because it hides in CSS.
+From `lg` the row is `sticky` and stops scrolling away. It paints nothing while
+it is stuck: the gutters either side of the content column are what the trail
+and the track sit in, so on a wide screen the page slides past them rather than
+under them, and a band would be covering nothing. That holds from about 1500px
+up. Between `lg` and there the gutters are too narrow to hold a long trail and
+the column does run beneath it.
 
-The rail was `hidden lg:block` with nothing behind it once, and since it is the only navigation the site has, that left every page but home unreachable on a phone: the home copy links out to profiles and down to posts, never across to `/skills` or `/usage`, and the `G`+key sequences need a keyboard.
+The margin was a `page-inline` utility that floored itself with `env(safe-area-inset-*)`, against a notched phone in landscape putting the leading edge of every line under the cutout. Those insets only report anything when the viewport meta carries `viewport-fit=cover`, which this site's never has, so every one of them resolved to `0px` and the `max()` picked the token every time. A rule that has never once fired is not insurance, it is a comment that looks like code.
 
-The capsule is icon-only, and that follows from the type scale rather than from taste: six labels at `text-sm` overflow a 320px screen, and there is nothing below `text-sm` on purpose. So each tab is a 44px target carrying a 20px icon and an `aria-label`, six of them plus the capsule's `xs` padding coming to 272px, which clears 320px minus the page margin. The row is gapless because of that budget, and it works because the active pill is what separates one tab from the next. Active is a filled icon on a `fg-contrast/10` pill: with no label underneath, a colour step alone is too thin a signal at icon size.
+**The nav is a trail, not a menu.** There was a sticky text rail on the left and an icon capsule on mobile, both rendering one link list. Both are gone. What is left is a breadcrumb at the start of the header row: `Home › Writings › Post`, one line, at every width. A site this small does not have sections to browse between, it has a home page that links to everything and pages that hang off it, so a persistent list of five destinations was answering a question nobody asked. The trail answers the one they do ask, which is where am I and how do I get back.
 
-**The now-playing corner hangs off the viewport, not the frame.** On a wide screen it sits at the window's edge rather than the content column's, and that is the decision rather than an oversight: it is chrome about the window, like the scrollbar, not part of the page. Aligning it was tried and reverted, because the only way to do it from a `fixed` element is `max(margin, (100vw - frame) / 2 + margin)`, and `100vw` counts the stable scrollbar gutter that the centred layout does not.
+It builds itself from `location.pathname`. Static segments come from a map in `breadcrumbs.tsx`; a `$slug` page has a title the path does not know, so it pushes one up through the `Crumb` slot the way a post pushes its table of contents through `RightColumn`. Until that lands the slug stands in with its hyphens spaced out, which is what shows for the frame of a page whose loader has not resolved. The home page renders no trail: a single `Home` crumb pointing at the page you are on is a label, not navigation.
+
+Nothing links across any more, so `G`+key is the only way from `/writings` to `/usage` without going home first. That is `NavHotkeys`, mounted from the layout and rendering nothing, and it is a keyboard affordance rather than the navigation: on a phone the way across is the home page.
+
+**The now-playing card is `ms-auto` and nothing else.** It was `fixed right-lg` once, and the margin it wanted then took `max(margin, (100vw - frame) / 2 + margin)` to express, with `100vw` counting the stable scrollbar gutter that the layout does not. A block in a full-bleed row is padded from its own width, so the edge it sits against is the real one and the rule is a single utility. It is also the only thing in the row on the home page, where the trail renders nothing, which is why the row carries a `min-h` rather than collapsing.
 
 **Its hover card is a cover, not a panel.** The card is the album art at full bleed with the track over it, and it stays dark in both themes: the surface being read against is a photograph, not the page. A `from-black/70` scrim and a `ProgressiveBlur` band both sit under the text, because a scrim alone still leaves a light cover's detail cutting through the words. Sampling the cover for a matched tint does not help once the blur is there, and costs a CORS dependency and an ink flip that picks wrong mid-luminance.
 
-It passes `alignOffset={0}`, against `HoverCardContent`'s default of 4: the default suits a card anchored to inline text, this one is pinned to the window edge and has to line up with its trigger.
+It passes `alignOffset={0}`, against `HoverCardContent`'s default of 4: the default suits a card anchored to inline text, this one sits at the window's edge and has to line up with its trigger.
 
 ```tsx
 <section>
@@ -257,7 +273,7 @@ Every page opens with `PageHeader`, and it is three parts rather than one prop: 
 - Icons carry the optical weight of the text beside them. `stroke={1.5}` against 400 copy, one library (`@tabler/icons-react`), 16px unless the row says otherwise, and `currentColor` so hover and state come from CSS rather than a second asset.
 - An icon that swaps by state cross-fades instead of popping: `scale` 0.25 to 1, `opacity` 0 to 1, `blur` 4px to 0, 300ms on `cubic-bezier(0.2, 0, 0, 1)`, with both icons mounted so the exit animates too. The copy button in `Install` is the reference. Motion is never the only channel, which is why the check mark also turns `brand`.
 - Remote artwork carries `ring-1 ring-fg-1/10`: pure black at 10%, never a tinted neutral, which picks up the surface underneath and reads as dirt on the image edge. Album covers, artist photos, the `Showcase` screenshot.
-- **One list-row hover model.** Every list row is a `ListItem`: the row lifts to `bg-2` on hover. A surface has to be earned by communicating interaction, and a divider between rows isn't earned when spacing already separates them. Secondary metadata (star counts, arrows) fades in on row hover via `ListItemHover`, and shows at rest wherever there is no hover to fade it in: the `can-hover` variant (`@media (hover: hover)`) gates the `opacity-0`. Tailwind already wraps `hover:` in that query, so a hover-only affordance is not subtle on touch, it is absent, and the arrow is the only signal a project row leaves the site.
+- **One list-row hover model.** Every list row is a `ListItem`: the row lifts to `bg-2` on hover. A surface has to be earned by communicating interaction, and a divider between rows isn't earned when spacing already separates them. Secondary metadata (arrows) fades in on row hover via `ListItemHover`, and shows at rest wherever there is no hover to fade it in: the `can-hover` variant (`@media (hover: hover)`) gates the `opacity-0`. Tailwind already wraps `hover:` in that query, so a hover-only affordance is not subtle on touch, it is absent, and the arrow is the only signal a project row leaves the site.
 - Focus is a 2px `ring` outline at 2px offset, from a bare `:focus-visible` rule in `@layer base`. It hangs off the pseudo-class, not a utility, so nothing opts in and nothing can forget.
 - Haptics (`useHaptics`) fire on nav clicks and on hover of the home page links. `tick` for hover, `click` for navigation.
 - Numbers are always `tabular-nums`.
