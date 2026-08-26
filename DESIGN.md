@@ -236,6 +236,22 @@ fails on the first post with a screenshot in it, where a white stripe cuts
 across a dark image. Putting the crumb in the flow removed the requirement
 instead of dressing it, and the band went back to being decoration.
 
+## Breakpoints
+
+Three: `sm` 640, `md` 768, `lg` 1280. Tailwind's `xl` and `2xl` are cleared with
+everything else the theme closes, because a fourth width was only ever used to
+undo what a wrong third one did.
+
+`lg` is the only one that is measured rather than inherited. It is where the
+page becomes three columns, and three columns need 644 for the middle, two `xl`
+gaps, and two gutters wide enough to hold what goes in them: a trail runs about
+250px and the table of contents about 230. That comes to 1272, so `lg` is 1280
+and not Tailwind's 1024. At 1024 the layout switched on with 151px of gutter,
+which is not enough for either, and the trail spilled across the column beside
+it. The column gap and the blurs' inline bleed were both being bumped at `xl` to
+paper over exactly that; with `lg` set where the shape actually works they are
+`lg` like everything else about it.
+
 ## Page shape
 
 `_app/route.tsx` owns the frame: one grid, `px-md` for the margin, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.

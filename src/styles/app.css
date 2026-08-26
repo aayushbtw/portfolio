@@ -21,6 +21,7 @@
   --tracking-*: initial;
   --font-weight-*: initial;
   --radius-*: initial;
+  --breakpoint-*: initial;
 }
 
 @theme {
@@ -59,6 +60,13 @@
   --radius-md: 0.5rem; /*   8px  rows, panels, media, tooltips */
 
   --container-content: 644px;
+
+  /* Three, and the last one is measured rather than inherited: below it the
+     gutters cannot hold a trail and a table of contents, so the page has no
+     business being three columns. */
+  --breakpoint-sm: 40rem; /*  640px  a stat strip goes 4-up      */
+  --breakpoint-md: 48rem; /*  768px  a pair of cards sits side by side */
+  --breakpoint-lg: 80rem; /* 1280px  the page becomes three columns   */
 
   --text-base: 15px;
   --text-sm: 14px;

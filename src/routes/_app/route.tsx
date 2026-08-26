@@ -16,7 +16,7 @@ function AppLayout() {
     <>
       <NavHotkeys />
 
-      <div className="typeset grid gap-x-xl px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]">
+      <div className="typeset grid gap-lg px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
         <div className="pt-md lg:sticky lg:top-md lg:self-start lg:pt-0">
           <Breadcrumbs />
         </div>
