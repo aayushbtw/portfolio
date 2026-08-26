@@ -3,6 +3,7 @@ import { Breadcrumbs } from "~/components/breadcrumbs";
 import { useRightColumn } from "~/components/layout-provider";
 import { NavHotkeys } from "~/components/nav-hotkeys";
 import { NowPlaying } from "~/components/now-playing";
+import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 
 export const Route = createFileRoute("/_app")({
   component: AppLayout,
@@ -15,25 +16,37 @@ function AppLayout() {
     <>
       <NavHotkeys />
 
-      {/* Outside the centred frame: this row belongs to the window's edges,
-          and it keeps its height on the home page where both slots are
-          empty. Stacks above the top blur, which otherwise smears it at
-          rest, and below the skip link. */}
-      <header className="relative z-40 mb-xl flex min-h-lg items-center gap-md px-md pt-lg lg:sticky lg:top-0">
-        <Breadcrumbs />
-        {/* Scoped to this layout, not the root: the 404 and error pages render
-            outside `_app` and have no business advertising a song. */}
-        <NowPlaying />
-      </header>
-
-      <div className="typeset mx-auto max-w-7xl px-md pb-2xl lg:grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-lg lg:pb-xl">
-        <div />
+      <div className="typeset grid gap-x-lg px-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]">
+        <div className="lg:sticky lg:top-md lg:self-start">
+          <Breadcrumbs />
+        </div>
 
         <main className="mx-auto w-full min-w-0 max-w-content" id="main">
-          <Outlet />
+          {/* Sized by the column it sits in, so the trail and the table of
+              contents in the gutters are never under it. `-mb` because it
+              stands in front of the page rather than above it. */}
+          <ProgressiveBlur
+            className="sticky top-0 z-30 -mb-12"
+            position="top"
+          />
+
+          <div className="pt-xl pb-2xl lg:pt-2xl lg:pb-xl">
+            <Outlet />
+          </div>
+
+          <ProgressiveBlur className="sticky bottom-0 z-30 -mt-12" />
         </main>
 
-        <div>{right}</div>
+        {/* Scoped to this layout, not the root: the 404 and error pages render
+            outside `_app` and have no business advertising a song. Hidden
+            below `lg` so an empty column can't open a row of its own. */}
+        <div className="hidden lg:block">
+          <div className="sticky top-md flex justify-end">
+            <NowPlaying />
+          </div>
+
+          {right}
+        </div>
       </div>
     </>
   );

@@ -206,9 +206,17 @@ indicator were utilities once, each with exactly one consumer that was already a
 component — so the utility was a second name for the same thing in a different
 file, and the class list moved to where the markup lives.
 
-**The top blur costs one rule elsewhere.** `ProgressiveBlur` is 48px tall and
-`fixed`, so a heading jumped to from the table of contents would land underneath
-it. Headings with an `id` carry a 64px `scroll-margin-block-start` to clear it
+**Both blurs belong to the middle column.** They are `sticky` children of
+`main`, one at each end of it, rather than `fixed` bands across the window: that
+makes each exactly as wide as the page is, so the trail and the table of
+contents in the gutters are never under one. Each carries a negative margin
+against its own height, because a blur stands in front of the column rather than
+above or below it. `main` owns the page's bottom padding for the same reason, so
+that the column it is sticky inside runs to the end of the page and the bottom
+one does not come unstuck early.
+
+**And it costs one rule elsewhere.** `ProgressiveBlur` is 48px tall, so a heading
+jumped to from the table of contents would land underneath it. Headings with an `id` carry a 64px `scroll-margin-block-start` to clear it
 ([typeset.css](src/styles/typeset.css#L461)). That is a decorative element
 generating a compensating rule in another file, and it is accepted: the blur
 stays, so the rule stays with it. It is down to 3 layers from 5, since each is a
@@ -225,16 +233,33 @@ instead of dressing it, and the band went back to being decoration.
 
 ## Page shape
 
-`_app/route.tsx` owns the frame: centered, `max-w-7xl`, `px-md` for the margin, a header row across the top, then three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
+`_app/route.tsx` owns the frame: one grid, `px-md` for the margin, three columns on `lg` (`1fr / minmax(0, var(--container-content)) / 1fr`) collapsing to a single column below `lg`. Pages render only their sections.
 
-**The header row is the whole of the site's chrome.** The trail at its start, the track at its end, the page under it. Both were `fixed` in the window's corners once, which is why the top blur had to turn into a scrim: anything pinned has the page scrolling under it, and a screenshot passing beneath a line of dark text is unreadable however the band is drawn. In a row they scroll away with everything else, so nothing has to be hidden and the band goes back to being decoration. One row also settles the placement question once instead of at each breakpoint, which is what two `fixed` corners and a `lg:` variant were failing to do. It sits outside the centred `max-w-7xl` frame, carrying only the page margin, so it stays at the window's edges however wide the window gets while the page under it stays centred.
+**One grid, three columns, and each one owns its spacing.** The trail is column
+one, the page is column two, the track and the table of contents share column
+three. The grid sets the tracks and the column gap and nothing else: no shared
+top padding, no row gap. Each column starts where it wants to start, which is
+why the trail sits at `lg` from the top and the page at `2xl`. Nothing is
+`fixed`, nothing is a band across the top, and the middle column is
+`minmax(0, 644px)` between two `1fr` gutters, so the page is centred by the grid
+rather than by a wrapper.
 
-From `lg` the row is `sticky` and stops scrolling away. It paints nothing while
-it is stuck: the gutters either side of the content column are what the trail
-and the track sit in, so on a wide screen the page slides past them rather than
-under them, and a band would be covering nothing. That holds from about 1500px
-up. Between `lg` and there the gutters are too narrow to hold a long trail and
-the column does run beneath it.
+That placement is what stops text landing on text, and it replaces measuring for
+it. The trail and the track used to be `fixed` in the window's corners, and then
+a full-bleed row above the page: both let the content column run underneath
+them, which is why the top blur had to become a scrim, and why the scrim then
+cut a white stripe across the first screenshot in a post. A gutter cannot
+overlap the column it is beside. The band went with the problem.
+
+There is no `max-w` on the grid, so the gutters open all the way to the window
+and the trail sits a page margin from its edge however wide the screen gets,
+while the middle column stays 644px in the centre of it.
+
+**The trail is `sticky` from `lg`, which is what the single row buys.** A grid
+item can only stick inside its own area, so a trail in a 24px header row of its
+own would come unstuck after 24px of scroll. One row means its area is as tall
+as the page, and `self-start` is what keeps it drawn at the top of that area
+instead of stretched down it.
 
 The margin was a `page-inline` utility that floored itself with `env(safe-area-inset-*)`, against a notched phone in landscape putting the leading edge of every line under the cutout. Those insets only report anything when the viewport meta carries `viewport-fit=cover`, which this site's never has, so every one of them resolved to `0px` and the `max()` picked the token every time. A rule that has never once fired is not insurance, it is a comment that looks like code.
 
@@ -244,7 +269,7 @@ It builds itself from `location.pathname`. Static segments come from a map in `b
 
 Nothing links across any more, so `G`+key is the only way from `/writings` to `/usage` without going home first. That is `NavHotkeys`, mounted from the layout and rendering nothing, and it is a keyboard affordance rather than the navigation: on a phone the way across is the home page.
 
-**The now-playing card is `ms-auto` and nothing else.** It was `fixed right-lg` once, and the margin it wanted then took `max(margin, (100vw - frame) / 2 + margin)` to express, with `100vw` counting the stable scrollbar gutter that the layout does not. A block in a full-bleed row is padded from its own width, so the edge it sits against is the real one and the rule is a single utility. It is also the only thing in the row on the home page, where the trail renders nothing, which is why the row carries a `min-h` rather than collapsing.
+**The now-playing card is the trail's mirror.** Same `sticky top-md`, same `self-start` read of where a thing in a gutter sits, `justify-end` instead of the start edge. It was `fixed right-lg` once, and the margin it wanted then took `max(margin, (100vw - frame) / 2 + margin)` to express, with `100vw` counting the stable scrollbar gutter that the layout does not. A box in its own column is placed against that column's end, so the edge it sits against is the real one. The column around it is `hidden lg:block` because the card is desktop-only: an empty slot below `lg` would still open a row of its own and a `gap` under it. That column is also the one thing in the grid that must not be `self-start`: the card and the table of contents are both `sticky` inside it, and a column shrunk to its content gives them nothing to travel.
 
 **Its hover card is a cover, not a panel.** The card is the album art at full bleed with the track over it, and it stays dark in both themes: the surface being read against is a photograph, not the page. A `from-black/70` scrim and a `ProgressiveBlur` band both sit under the text, because a scrim alone still leaves a light cover's detail cutting through the words. Sampling the cover for a matched tint does not help once the blur is there, and costs a CORS dependency and an ink flip that picks wrong mid-luminance.
 

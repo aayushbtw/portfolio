@@ -8,7 +8,6 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { LayoutProvider } from "~/components/layout-provider";
-import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { config } from "~/lib/config";
 import appCss from "~/styles/app.css?url";
 
@@ -79,11 +78,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        <LayoutProvider>
-          <ProgressiveBlur className="fixed z-30" position="top" />
-          {children}
-          <ProgressiveBlur className="fixed z-30" position="bottom" />
-        </LayoutProvider>
+        <LayoutProvider>{children}</LayoutProvider>
         <Scripts />
       </body>
     </html>

@@ -39,7 +39,7 @@ function NowPlaying() {
   return (
     <HoverCard>
       <HoverCardTrigger
-        className="ms-auto flex max-w-[min(20rem,50vw)] items-center gap-sm no-underline"
+        className="flex max-w-[min(20rem,50vw)] items-center gap-sm no-underline"
         // Labelled because the visible text is "artist — track": it names the
         // thing, not where the link goes.
         render={
