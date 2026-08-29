@@ -400,15 +400,12 @@ correctly.
 | `skip-link`       | Off-screen until focused, then a real target top-left. One per document |
 | `animated-link`   | Inline prose link: underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
 | `icon-link`       | `animated-link` plus an inline icon before the label                    |
-| `row-link`        | Row layout inside a list item                                           |
-| `nav-link`        | Table-of-contents link with active state and press scale                |
 | `scroll-fade-end` | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
 | `indicator-brand` | Brand fill for the table-of-contents indicator and meter segments, softened toward its bottom edge |
 
 **A `@utility` earns its place two ways: it lands on tags the caller chooses, or
-it needs selectors a `className` cannot express.** `row-link` sits on a `Link`, an
-`a` and a `div`; `nav-link` on a `Link` and an `a`; `indicator-brand` on a nav
-span and a meter segment. That is the first kind. `icon-link` and `skip-link`
+it needs selectors a `className` cannot express.** `indicator-brand` sits on a
+nav span and a meter segment. That is the first kind. `icon-link` and `skip-link`
 each have a single call site and stay anyway: one needs descendant rules for its
 `svg`, the other a long `focus-visible:` chain, and a stylesheet says both better
 than JSX can.
@@ -461,8 +458,9 @@ Greenwich.
 - Hover is a colour or background change, at most 150ms, `ease-out`. Never a
   layout shift. It fires on every pass of the pointer, so anything slower reads
   as lag rather than as feedback.
-- Press is `active:scale-[0.96]`. One departure: `ListItem` sits at `0.98`,
-  because a row spanning the whole column reads as a lurch at 0.96.
+- Press is `active:scale-[0.96]`, and only on a `button`. A link never scales:
+  the target is a box of text, and a box that lurches reads as a glitch rather
+  than as a press.
 - Icons carry the optical weight of the text beside them: `stroke={1.5}` against
   400 copy, one library (`@tabler/icons-react`), 16px unless the row says
   otherwise, and `currentColor` so hover and state come from CSS rather than a
@@ -475,7 +473,8 @@ Greenwich.
   tinted neutral, which picks up the surface underneath and reads as dirt on the
   image edge. Album covers, artist photos, the `Showcase` screenshot.
 - **One list-row hover model.** Every list row is a `ListItem` and lifts to `bg-2`
-  on hover. A surface has to be earned by communicating interaction, and a
+  on hover. `ListItem` is the anchor itself and `ListItemLink` its router twin,
+  so the whole hovered box is what clicks rather than a link nested inside it. A surface has to be earned by communicating interaction, and a
   divider between rows is not earned when spacing already separates them.
   Secondary metadata fades in on row hover via `ListItemHover`, and shows at rest
   wherever there is no hover to fade it in: the `can-hover` variant gates the

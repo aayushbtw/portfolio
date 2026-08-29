@@ -16,7 +16,7 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
         return (
           <li key={h.id}>
             <a
-              className="nav-link"
+              className="block ps-md text-fg-3 leading-tight tracking-normal transition-colors duration-150 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active]"
               data-status={isActive ? "active" : undefined}
               href={`#${h.id}`}
             >

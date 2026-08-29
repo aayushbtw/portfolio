@@ -136,10 +136,6 @@
   @apply bg-linear-to-b from-brand to-brand/60;
 }
 
-@utility nav-link {
-  @apply block ps-md text-fg-3 transition-[color,scale] duration-150 hover:text-fg-2 active:scale-[0.96] data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active];
-}
-
 @utility animated-link {
   @apply text-fg-1 underline decoration-border-strong underline-offset-3 transition-colors duration-150 ease-out hover:decoration-brand;
 }
@@ -156,10 +152,6 @@
   &:hover svg {
     @apply text-fg-2;
   }
-}
-
-@utility row-link {
-  @apply flex items-center gap-md;
 }
 
 /* The breadcrumb comes before the content in the DOM, so keyboard users

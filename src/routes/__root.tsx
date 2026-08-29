@@ -113,7 +113,7 @@ function Fallback({
         <h1 className="mb-sm text-balance">{title}</h1>
         <p className="my-0">{children}</p>
         <Link
-          className="mt-lg inline-flex min-h-9 items-center rounded-md px-md no-underline outline transition-[color,scale] duration-150 hover:text-fg-1 active:scale-[0.96]"
+          className="mt-lg inline-flex min-h-9 items-center rounded-md px-md no-underline outline transition-colors duration-150 hover:text-fg-1"
           to="/"
         >
           Go Home
