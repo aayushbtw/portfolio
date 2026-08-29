@@ -17,7 +17,7 @@ function NavList({
   return (
     <ul
       className={cn(
-        "not-typeset relative flex flex-col gap-xs [&_a]:no-underline",
+        "not-typeset relative flex flex-col gap-sm [&_a]:no-underline",
         className
       )}
       data-slot="nav-list"
