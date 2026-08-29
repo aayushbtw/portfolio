@@ -1,5 +1,4 @@
-import { Link } from "@tanstack/react-router";
-import { List, ListItem, ListItemTitle } from "~/components/ui/list";
+import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
 
 interface PostListItem {
   date: string;
@@ -15,19 +14,18 @@ function PostList({ posts }: { posts: PostListItem[] }) {
         // Once per run, so a span of two years reads as two groups.
         const showYear = i === 0 || posts[i - 1].year !== post.year;
         return (
-          <ListItem key={post.slug}>
-            <Link
-              className="grid grid-cols-[56px_minmax(0,1fr)_auto] items-center gap-md"
-              params={{ slug: post.slug }}
-              to="/writings/$slug"
-            >
-              <span className="text-fg-3 tabular-nums">
-                {showYear ? post.year : ""}
-              </span>
-              <ListItemTitle className="flex-1">{post.title}</ListItemTitle>
-              <time className="text-fg-3 tabular-nums">{post.date}</time>
-            </Link>
-          </ListItem>
+          <ListItemLink
+            className="grid grid-cols-[56px_minmax(0,1fr)_auto] items-center gap-md"
+            key={post.slug}
+            params={{ slug: post.slug }}
+            to="/writings/$slug"
+          >
+            <span className="text-fg-3 tabular-nums">
+              {showYear ? post.year : ""}
+            </span>
+            <ListItemTitle className="flex-1">{post.title}</ListItemTitle>
+            <time className="text-fg-3 tabular-nums">{post.date}</time>
+          </ListItemLink>
         );
       })}
     </List>

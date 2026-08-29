@@ -1,10 +1,10 @@
 import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
-import { Link } from "@tanstack/react-router";
 import {
   List,
   ListItem,
   ListItemDescription,
   ListItemHover,
+  ListItemLink,
   ListItemTitle,
 } from "~/components/ui/list";
 import type { Project } from "~/lib/projects";
@@ -12,30 +12,28 @@ import type { Project } from "~/lib/projects";
 function ProjectList({ projects }: { projects: Project[] }) {
   return (
     <List>
-      {projects.map((item) => (
-        <ListItem key={item.name}>
-          {item.to ? (
-            <Link className="row-link" to={item.to}>
-              <ProjectRow project={item} />
-              <ListItemHover>
-                <IconArrowRight aria-hidden="true" stroke={1.5} />
-              </ListItemHover>
-            </Link>
-          ) : (
-            <a
-              className="row-link"
-              href={item.href}
-              rel="noopener"
-              target="_blank"
-            >
-              <ProjectRow project={item} />
-              <ListItemHover>
-                <IconArrowUpRight aria-hidden="true" stroke={1.5} />
-              </ListItemHover>
-            </a>
-          )}
-        </ListItem>
-      ))}
+      {projects.map((item) =>
+        item.to ? (
+          <ListItemLink key={item.name} to={item.to}>
+            <ProjectRow project={item} />
+            <ListItemHover>
+              <IconArrowRight aria-hidden="true" stroke={1.5} />
+            </ListItemHover>
+          </ListItemLink>
+        ) : (
+          <ListItem
+            href={item.href}
+            key={item.name}
+            rel="noopener"
+            target="_blank"
+          >
+            <ProjectRow project={item} />
+            <ListItemHover>
+              <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+            </ListItemHover>
+          </ListItem>
+        )
+      )}
     </List>
   );
 }

@@ -114,15 +114,13 @@ function TopsSkeleton() {
 
 function TrackSkeleton() {
   return (
-    <ListItem>
-      <div className="row-link">
-        <Skeleton className="size-10 shrink-0 rounded-sm" />
-        <div className="flex min-w-0 flex-1 flex-col gap-sm">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-24" />
-        </div>
+    <div className="-mx-md flex items-center gap-md px-md py-sm">
+      <Skeleton className="size-10 shrink-0 rounded-sm" />
+      <div className="flex min-w-0 flex-1 flex-col gap-sm">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-4 w-24" />
       </div>
-    </ListItem>
+    </div>
   );
 }
 
@@ -130,29 +128,27 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
   const cover = track.album.images.at(-1)?.url ?? track.album.images[0]?.url;
 
   return (
-    <ListItem>
-      <a className="row-link" href={track.url} rel="noopener" target="_blank">
-        {cover ? (
-          <Image
-            alt={track.name}
-            className="size-10 shrink-0 rounded-sm ring-1 ring-fg-1/10"
-            height={40}
-            src={cover}
-            width={40}
-          />
-        ) : null}
+    <ListItem href={track.url} rel="noopener" target="_blank">
+      {cover ? (
+        <Image
+          alt={track.name}
+          className="size-10 shrink-0 rounded-sm ring-1 ring-fg-1/10"
+          height={40}
+          src={cover}
+          width={40}
+        />
+      ) : null}
 
-        <div className="flex min-w-0 flex-col">
-          <span className="truncate">{track.name}</span>
-          <p className="truncate text-fg-2">
-            {track.artists.map((a) => a.name).join(", ")}
-          </p>
-        </div>
+      <div className="flex min-w-0 flex-col">
+        <span className="truncate">{track.name}</span>
+        <p className="truncate text-fg-2">
+          {track.artists.map((a) => a.name).join(", ")}
+        </p>
+      </div>
 
-        <ListItemHover>
-          <IconArrowUpRight aria-hidden="true" stroke={1.5} />
-        </ListItemHover>
-      </a>
+      <ListItemHover>
+        <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+      </ListItemHover>
     </ListItem>
   );
 }
@@ -161,26 +157,24 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
   const photo = artist.images.at(-1)?.url ?? artist.images[0]?.url;
 
   return (
-    <ListItem>
-      <a className="row-link" href={artist.url} rel="noopener" target="_blank">
-        {photo ? (
-          <Image
-            alt=""
-            className="size-10 shrink-0 rounded-full ring-1 ring-fg-1/10"
-            height={40}
-            src={photo}
-            width={40}
-          />
-        ) : null}
+    <ListItem href={artist.url} rel="noopener" target="_blank">
+      {photo ? (
+        <Image
+          alt=""
+          className="size-10 shrink-0 rounded-full ring-1 ring-fg-1/10"
+          height={40}
+          src={photo}
+          width={40}
+        />
+      ) : null}
 
-        <div className="flex min-w-0 flex-col">
-          <span className="truncate">{artist.name}</span>
-        </div>
+      <div className="flex min-w-0 flex-col">
+        <span className="truncate">{artist.name}</span>
+      </div>
 
-        <ListItemHover>
-          <IconArrowUpRight aria-hidden="true" stroke={1.5} />
-        </ListItemHover>
-      </a>
+      <ListItemHover>
+        <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+      </ListItemHover>
     </ListItem>
   );
 }
