@@ -1,5 +1,4 @@
 import { createLink } from "@tanstack/react-router";
-import { Skeleton } from "~/components/ui/skeleton";
 import { cn } from "~/lib/utils";
 
 function List({ className, ...props }: React.ComponentProps<"div">) {
@@ -66,25 +65,6 @@ function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function ListSkeleton({
-  rows,
-  rowClassName,
-}: {
-  rows: number;
-  rowClassName?: string;
-}) {
-  return (
-    <List>
-      {/* `ListItem`'s box minus the hover, so nothing shifts on landing. */}
-      {Array.from({ length: rows }, (_, i) => `row-${i}`).map((key) => (
-        <div className="-mx-md px-md py-sm" key={key}>
-          <Skeleton className={cn("w-full", rowClassName ?? "h-5")} />
-        </div>
-      ))}
-    </List>
-  );
-}
-
 export {
   List,
   ListItem,
@@ -92,5 +72,4 @@ export {
   ListItemHover,
   ListItemLink,
   ListItemTitle,
-  ListSkeleton,
 };

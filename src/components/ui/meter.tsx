@@ -40,32 +40,4 @@ function Meter({
   );
 }
 
-function MeterLegend({
-  className,
-  segments,
-}: {
-  className?: string;
-  segments: MeterSegment[];
-}) {
-  return (
-    <div
-      className={cn(
-        "flex flex-wrap gap-x-md text-fg-3 text-sm tabular-nums",
-        className
-      )}
-      data-slot="meter-legend"
-    >
-      {segments.map((segment) => (
-        <span className="flex items-center gap-xs" key={segment.label}>
-          <span
-            aria-hidden="true"
-            className={cn("h-2 w-0.5 shrink-0 rounded-full", segment.className)}
-          />
-          {segment.label} {segment.share}%
-        </span>
-      ))}
-    </div>
-  );
-}
-
-export { Meter, MeterLegend, type MeterSegment };
+export { Meter, type MeterSegment };
