@@ -6,11 +6,7 @@ import { headingCollectionExtension } from "@tanstack/markdown/extensions/headin
 import { parseMarkdown } from "@tanstack/markdown/parser";
 import { Markdown, type MarkdownComponents } from "@tanstack/markdown/react";
 import type { ComponentPropsWithoutRef, ReactElement } from "react";
-import {
-  Showcase,
-  ShowcaseCaption,
-  ShowcaseImage,
-} from "~/components/showcase";
+import { ShowcaseImage } from "~/components/showcase";
 import { highlighter } from "~/lib/highlight";
 
 const highlightCode = createTanStackMarkdownHighlighter(highlighter);
@@ -55,9 +51,9 @@ function MarkdownShowcaseImage({
 
 const components = {
   a: MarkdownLink,
-  "md-showcase": Showcase,
+  "md-showcase": "figure",
   "md-showcase-image": MarkdownShowcaseImage,
-  "md-showcase-caption": ShowcaseCaption,
+  "md-showcase-caption": "figcaption",
 } satisfies MarkdownComponents;
 
 // Called once per file at module scope in `~/server/content`, never per render.

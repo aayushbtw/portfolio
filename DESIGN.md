@@ -113,9 +113,7 @@ still a sibling: a separate block, not a continuation.
 ```tsx
 <Page>
   <section>
-    <PageHeader>
-      <PageTitle>{title}</PageTitle>
-    </PageHeader>
+    <h1>{title}</h1>
     <List>…</List>
   </section>
 
@@ -243,8 +241,8 @@ importance mid-text, step the colour up.
 
 **Headings carry no class.** typeset gives them their colour and tracking, gives
 `h1` its weight and leading, and Tailwind's preflight already sets `h1`–`h6` to
-`font-size: inherit`. `PageTitle` renders a bare `<h1>` and a section heading is
-a bare `<h2>`, and both get it for free. A section heading is not uppercase and
+`font-size: inherit`. A page title is a bare `<h1>` and a section heading a bare
+`<h2>`, and both get it for free. A section heading is not uppercase and
 not tracked out — a label that shouts competes with the thing it labels, and the
 tag already carries the structure.
 
@@ -368,7 +366,7 @@ aliases, `@utility` definitions and `@layer base`.
 
 UI is not prose. A primitive that renders semantic tags for structure rather than
 reading carries `not-typeset` on its outermost node, so callers never think about
-it: `List`, `NavList`, `Install`, `StatStrip`.
+it: `List`, `Install`, the table of contents' `ul`.
 
 **`not-typeset` is narrower than its name.** Only the vendored block honours it —
 the exclusion is written into those selectors. The site's own block at the bottom
@@ -384,9 +382,9 @@ The other rule that catches people out is typeset's `h1 + *, h2 + *, …`:
 **anything following a heading gets a 1em top margin**, whatever tag it is. A
 `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a
 primitive puts a heading beside something else, it needs `not-typeset`, not an
-`mt-0` patch on the sibling. `PageHeader` is the one that wants the rule rather
-than an exemption: `PageDescription` is the `h1 +` sibling, and that 1em is the
-gap between a page title and its copy. `PageDescription` also tightens
+`mt-0` patch on the sibling. A page header is the one place that wants the rule
+rather than an exemption: `PageDescription` is the `h1 +` sibling, and that 1em
+is the gap between a page title and its copy. `PageDescription` also tightens
 `--typeset-flow` to `sm`, so a title and its copy read as one block rather than
 as separated paragraphs.
 
@@ -425,19 +423,25 @@ at rest what hover would otherwise reveal. See the list-row model under
 ## Components
 
 `ui/` holds the primitives that carry no page knowledge: `Page`, `List` and its
-parts, `NavList`, `Stat`, `StatStrip`, `Meter`, `MeterLegend`, `Skeleton`,
-`ProgressiveBlur`, `HoverCard`. One level up, `components/` holds the composed
-pieces that know what they are for: `PageHeader`, `Breadcrumbs`, `NowPlaying`,
-`Install`, `Showcase`, the lists, the table of contents.
+parts, `Meter`, `Skeleton`, `ProgressiveBlur`, `HoverCard`. One level up,
+`components/` holds the composed pieces that know what they are for:
+`Breadcrumbs`, `NowPlaying`, `Install`, `ShowcaseImage`, `PageDescription`, the
+lists, the table of contents.
+
+**A wrapper that only renames a tag is not a component.** A `PageHeader` that
+renders a bare `div`, a `Showcase` that renders a bare `figure`: the import costs
+more than the markup it hides, and the `data-slot` it adds is not read by
+anything. Write the tag. A primitive earns its file by carrying classes, state or
+a contract.
 
 Primitives carry `data-slot` attributes and accept `className` merged through
 `cn()`, which is how to ask for a shape their defaults do not cover — reach for
 it before adding a prop. Everything above `ui/` composes them and should not
 reach for raw layout classes a primitive already provides.
 
-Primitives stay presentational. `Stat` takes a formatted `value` and `detail`; it
-does not reach into `usage.json` to work out a percentage. When a figure needs
-page-specific arithmetic, do it in the route and pass the result down.
+Primitives stay presentational. `Meter` takes shares already worked out; it does
+not reach into `usage.json` to compute them. When a figure needs page-specific
+arithmetic, do it in the route and pass the result down.
 
 **A skeleton shares its container, it does not copy it,** and it is the same
 shape as the thing it replaces. You only ever see one of the two at a time, so a
@@ -471,7 +475,7 @@ Greenwich.
   turns `brand`.
 - Remote artwork carries a hairline ring of pure black at low alpha, never a
   tinted neutral, which picks up the surface underneath and reads as dirt on the
-  image edge. Album covers, artist photos, the `Showcase` screenshot.
+  image edge. Album covers, artist photos, the showcase screenshot.
 - **One list-row hover model.** Every list row is a `ListItem` and lifts to `bg-2`
   on hover. `ListItem` is the anchor itself and `ListItemLink` its router twin,
   so the whole hovered box is what clicks rather than a link nested inside it. A surface has to be earned by communicating interaction, and a

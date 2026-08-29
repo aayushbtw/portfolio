@@ -1,5 +1,4 @@
 import { useCallback, useRef, useSyncExternalStore } from "react";
-import { NavList } from "~/components/ui/nav-list";
 
 interface Heading {
   id: string;
@@ -10,7 +9,11 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
   const activeId = useActiveHeading(headings);
 
   return (
-    <NavList>
+    <ul className="not-typeset relative flex flex-col gap-sm [&_a]:no-underline">
+      <span
+        aria-hidden="true"
+        className="indicator-brand absolute start-0 top-[anchor(center)] h-2 w-0.5 -translate-y-1/2 rounded-full transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [position-anchor:--active]"
+      />
       {headings.map((h) => {
         const isActive = activeId === h.id;
         return (
@@ -25,7 +28,7 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
           </li>
         );
       })}
-    </NavList>
+    </ul>
   );
 }
 

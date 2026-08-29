@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader, PageTitle } from "~/components/page-header";
+
 import { PostList } from "~/components/post-list";
 import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
@@ -20,9 +20,7 @@ function WritingsPage() {
   return (
     <Page>
       <section>
-        <PageHeader>
-          <PageTitle>{title}</PageTitle>
-        </PageHeader>
+        <h1>{title}</h1>
         <PostList posts={posts} />
       </section>
     </Page>

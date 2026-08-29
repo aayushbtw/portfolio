@@ -2,7 +2,7 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 import { Await, createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
-import { PageHeader, PageTitle } from "~/components/page-header";
+
 import { List, ListItem, ListItemHover } from "~/components/ui/list";
 import { Page } from "~/components/ui/page";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -35,9 +35,7 @@ function MusicPage() {
   return (
     <Page>
       <section>
-        <PageHeader>
-          <PageTitle>{title}</PageTitle>
-        </PageHeader>
+        <h1>{title}</h1>
       </section>
 
       <Suspense fallback={<TopsSkeleton />}>

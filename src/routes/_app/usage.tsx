@@ -1,9 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  PageDescription,
-  PageHeader,
-  PageTitle,
-} from "~/components/page-header";
+import { PageDescription } from "~/components/page-description";
 import { Meter } from "~/components/ui/meter";
 import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
@@ -33,18 +29,16 @@ function UsagePage() {
   return (
     <Page>
       <section>
-        <PageHeader>
-          <PageTitle>{title}</PageTitle>
-          <PageDescription>
-            <p>
-              <Figure>{usage.sessions}</Figure> sessions with Claude Code in{" "}
-              {usage.year}, and <Figure>{formatCompact(usage.total)}</Figure>{" "}
-              tokens through it. That is roughly{" "}
-              <Figure>{formatCompact(usage.words)}</Figure> words, or about{" "}
-              <Figure>{formatNumber(usage.novels)}</Figure> novels’ worth.
-            </p>
-          </PageDescription>
-        </PageHeader>
+        <h1>{title}</h1>
+        <PageDescription>
+          <p>
+            <Figure>{usage.sessions}</Figure> sessions with Claude Code in{" "}
+            {usage.year}, and <Figure>{formatCompact(usage.total)}</Figure>{" "}
+            tokens through it. That is roughly{" "}
+            <Figure>{formatCompact(usage.words)}</Figure> words, or about{" "}
+            <Figure>{formatNumber(usage.novels)}</Figure> novels’ worth.
+          </p>
+        </PageDescription>
       </section>
 
       <section>
