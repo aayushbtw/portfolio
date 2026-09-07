@@ -37,7 +37,7 @@ interface NowPlaying {
 let cachedToken: { value: string; expiresAt: number } | null = null;
 let inflightToken: Promise<string> | null = null;
 
-const getAccessToken = async (): Promise<string> => {
+async function getAccessToken(): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
     return cachedToken.value;
   }
@@ -84,11 +84,13 @@ const getAccessToken = async (): Promise<string> => {
   } finally {
     inflightToken = null;
   }
-};
+}
 
-const json = async <T>(res: Response): Promise<T> => (await res.json()) as T;
+async function json<T>(res: Response): Promise<T> {
+  return (await res.json()) as T;
+}
 
-const spotifyFetch = async (path: string): Promise<Response> => {
+async function spotifyFetch(path: string): Promise<Response> {
   const token = await getAccessToken();
   const res = await fetch(`${API}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -100,7 +102,7 @@ const spotifyFetch = async (path: string): Promise<Response> => {
   }
 
   return res;
-};
+}
 
 interface RawArtist {
   external_urls: { spotify: string };
@@ -129,31 +131,35 @@ interface NowPlayingResponse {
   progress_ms: number | null;
 }
 
-const mapArtist = (a: RawArtist): SpotifyArtist => ({
-  id: a.id,
-  images: a.images ?? [],
-  name: a.name,
-  url: a.external_urls.spotify,
-});
+function mapArtist(a: RawArtist): SpotifyArtist {
+  return {
+    id: a.id,
+    images: a.images ?? [],
+    name: a.name,
+    url: a.external_urls.spotify,
+  };
+}
 
-const mapTrack = (t: RawTrack, playedAt?: string): SpotifyTrack => ({
-  album: {
-    images: t.album.images,
-    name: t.album.name,
-    url: t.album.external_urls.spotify,
-  },
-  artists: t.artists.map((ar) => ({
-    name: ar.name,
-    url: ar.external_urls.spotify,
-  })),
-  durationMs: t.duration_ms,
-  id: t.id,
-  name: t.name,
-  playedAt,
-  url: t.external_urls.spotify,
-});
+function mapTrack(t: RawTrack, playedAt?: string): SpotifyTrack {
+  return {
+    album: {
+      images: t.album.images,
+      name: t.album.name,
+      url: t.album.external_urls.spotify,
+    },
+    artists: t.artists.map((ar) => ({
+      name: ar.name,
+      url: ar.external_urls.spotify,
+    })),
+    durationMs: t.duration_ms,
+    id: t.id,
+    name: t.name,
+    playedAt,
+    url: t.external_urls.spotify,
+  };
+}
 
-const getNowPlaying = async (): Promise<NowPlaying> => {
+async function getNowPlaying(): Promise<NowPlaying> {
   const res = await spotifyFetch("/me/player/currently-playing");
 
   if (res.status === 204) {
@@ -171,31 +177,31 @@ const getNowPlaying = async (): Promise<NowPlaying> => {
     progressMs: data.progress_ms,
     track: mapTrack(data.item),
   };
-};
+}
 
-const getRecentlyPlayed = async (): Promise<SpotifyTrack[]> => {
+async function getRecentlyPlayed(): Promise<SpotifyTrack[]> {
   const res = await spotifyFetch("/me/player/recently-played?limit=10");
   const { items } = await json<{
     items: { track: RawTrack; played_at: string }[];
   }>(res);
   return items.map((i) => mapTrack(i.track, i.played_at));
-};
+}
 
-const getTopArtists = async (): Promise<SpotifyArtist[]> => {
+async function getTopArtists(): Promise<SpotifyArtist[]> {
   const res = await spotifyFetch(
     "/me/top/artists?time_range=short_term&limit=3"
   );
   const { items } = await json<{ items: RawArtist[] }>(res);
   return items.map(mapArtist);
-};
+}
 
-const getTopTracks = async (): Promise<SpotifyTrack[]> => {
+async function getTopTracks(): Promise<SpotifyTrack[]> {
   const res = await spotifyFetch(
     "/me/top/tracks?time_range=short_term&limit=3"
   );
   const { items } = await json<{ items: RawTrack[] }>(res);
   return items.map((t) => mapTrack(t));
-};
+}
 
 export const getTops = createServerOnlyFn(async () => {
   const [topArtists, topTracks] = await Promise.all([

@@ -14,7 +14,7 @@ const QUOTED_REGEX = /^(['"])(.*)\1$/;
 // `yaml` package out of the Worker. It does NOT handle nested maps,
 // lists, multi-line values, `#` comments, or typed scalars (`published: true`
 // arrives as "true"). A field needing any of those means a real parser.
-const parseFrontmatter = (text: string): Record<string, string> => {
+function parseFrontmatter(text: string): Record<string, string> {
   const fields: Record<string, string> = {};
   for (const line of text.split("\n")) {
     const colon = line.indexOf(":");
@@ -25,12 +25,12 @@ const parseFrontmatter = (text: string): Record<string, string> => {
     fields[line.slice(0, colon).trim()] = value.replace(QUOTED_REGEX, "$2");
   }
   return fields;
-};
+}
 
 // Zod names the offending field but not the file, and the prerender stack
 // points at the glob rather than the content, so the path has to be in the
 // message.
-const collect = <TFrontmatter, TEntry>(
+function collect<TFrontmatter, TEntry>(
   files: Record<string, string>,
   schema: z.ZodType<TFrontmatter>,
   build: (
@@ -38,8 +38,8 @@ const collect = <TFrontmatter, TEntry>(
     document: MarkdownDocument,
     path: string
   ) => TEntry
-): TEntry[] =>
-  Object.entries(files).map(([path, raw]) => {
+): TEntry[] {
+  return Object.entries(files).map(([path, raw]) => {
     const document = parseContent(raw);
     if (document.frontmatter === undefined) {
       throw new Error(`${path}: no frontmatter block`);
@@ -50,6 +50,7 @@ const collect = <TFrontmatter, TEntry>(
     }
     return build(result.data, document, path);
   });
+}
 
 // Vite inlines every match at build time, which is required: the Worker has no
 // filesystem at runtime. Both argument literals must stay inline, since Vite

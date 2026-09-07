@@ -6,7 +6,7 @@ interface PageOptions {
   title: string;
 }
 
-export const seo = ({ description, meta, title }: PageOptions) => {
+export function seo({ description, meta, title }: PageOptions) {
   const ogImage = `${config.siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
   return {
@@ -25,4 +25,4 @@ export const seo = ({ description, meta, title }: PageOptions) => {
       ...(meta ?? []),
     ],
   };
-};
+}

@@ -9,7 +9,7 @@ interface AudioNodes {
 
 const nodeCache = new WeakMap<AudioContext, AudioNodes>();
 
-const getNodes = (ctx: AudioContext): AudioNodes => {
+function getNodes(ctx: AudioContext): AudioNodes {
   let nodes = nodeCache.get(ctx);
   if (!nodes) {
     const clickBuffer = ctx.createBuffer(
@@ -34,9 +34,9 @@ const getNodes = (ctx: AudioContext): AudioNodes => {
     nodeCache.set(ctx, nodes);
   }
   return nodes;
-};
+}
 
-const click = (ctx: AudioContext): AudioScheduledSourceNode => {
+function click(ctx: AudioContext): AudioScheduledSourceNode {
   const t = ctx.currentTime;
   const { clickBuffer, clickFilter } = getNodes(ctx);
 
@@ -54,9 +54,9 @@ const click = (ctx: AudioContext): AudioScheduledSourceNode => {
   source.start(t);
 
   return source;
-};
+}
 
-const tick = (ctx: AudioContext): AudioScheduledSourceNode => {
+function tick(ctx: AudioContext): AudioScheduledSourceNode {
   const t = ctx.currentTime;
   const { tickGain } = getNodes(ctx);
 
@@ -75,27 +75,27 @@ const tick = (ctx: AudioContext): AudioScheduledSourceNode => {
   osc.stop(t + 0.02);
 
   return osc;
-};
+}
 
 const sounds = { click, tick } as const;
 
 type Sound = keyof typeof sounds;
 
-export const useHaptics = () => {
+export function useHaptics() {
   const ctx = useRef<AudioContext | null>(null);
   const activeSource = useRef<AudioScheduledSourceNode | null>(null);
 
   const trigger = useCallback((sound: Sound) => {
     ctx.current ??= new AudioContext();
     const audioCtx = ctx.current;
-    const play = () => {
+    function play() {
       try {
         activeSource.current?.stop();
       } catch {
         // already stopped
       }
       activeSource.current = sounds[sound](audioCtx);
-    };
+    }
     if (audioCtx.state === "suspended") {
       audioCtx.resume().then(play);
     } else {
@@ -104,4 +104,4 @@ export const useHaptics = () => {
   }, []);
 
   return { trigger };
-};
+}

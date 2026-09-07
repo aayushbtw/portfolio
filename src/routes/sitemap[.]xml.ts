@@ -9,7 +9,7 @@ interface Entry {
 }
 
 // Only pages worth landing on, children of a list page included.
-const entries = (): Entry[] => {
+function entries(): Entry[] {
   const staticPaths: Entry[] = [
     { path: "/" },
     { path: "/writings" },
@@ -28,9 +28,9 @@ const entries = (): Entry[] => {
   }));
 
   return [...staticPaths, ...posts, ...skills];
-};
+}
 
-const toXml = (list: Entry[]) => {
+function toXml(list: Entry[]) {
   const urls = list
     .map(({ path, lastmod }) => {
       const loc = `<loc>${config.siteUrl}${path}</loc>`;
@@ -41,7 +41,7 @@ const toXml = (list: Entry[]) => {
     .join("");
 
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`;
-};
+}
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
