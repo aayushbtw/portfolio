@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useSyncExternalStore } from "react";
+
 import {
   HoverCard,
   HoverCardContent,
@@ -38,7 +39,7 @@ function NowPlaying() {
   return (
     <HoverCard>
       <HoverCardTrigger
-        className="flex max-w-[min(20rem,50vw)] items-center gap-sm no-underline"
+        className="gap-sm flex max-w-[min(20rem,50vw)] items-center no-underline"
         // The visible text names the track, not where the link goes.
         render={
           <Link
@@ -71,10 +72,10 @@ const BAR_DELAYS = ["0s", "0.15s", "0.3s"];
 
 function Bars() {
   return (
-    <span aria-hidden className="flex h-2.5 shrink-0 items-end gap-xs">
+    <span aria-hidden className="gap-xs flex h-2.5 shrink-0 items-end">
       {BAR_DELAYS.map((delay) => (
         <span
-          className="inline-block h-3 w-0.5 origin-bottom animate-eq-bar rounded-[1px] bg-brand"
+          className="animate-eq-bar bg-brand inline-block h-3 w-0.5 origin-bottom rounded-[1px]"
           key={delay}
           style={{ animationDelay: delay }}
         />
@@ -100,8 +101,8 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
 
       <ProgressiveBlur className="h-24" position="bottom" />
 
-      <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-0.5 bg-linear-to-t from-black/70 to-transparent px-md pt-xl pb-md">
-        <span className="truncate font-medium text-sm text-white">
+      <div className="px-md pt-xl pb-md absolute inset-x-0 bottom-0 z-20 flex flex-col gap-0.5 bg-linear-to-t from-black/70 to-transparent">
+        <span className="truncate text-sm font-medium text-white">
           {track.name}
         </span>
         <p className="truncate text-sm text-white/60">

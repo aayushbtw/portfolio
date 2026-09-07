@@ -7,8 +7,10 @@ import {
   Scripts,
   useRouterState,
 } from "@tanstack/react-router";
+
 import { LayoutProvider } from "~/components/layout-provider";
 import { config } from "~/lib/config";
+
 import appCss from "~/styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -73,7 +75,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <meta content={pageUrl} property="og:url" />
         <HeadContent />
       </head>
-      <body className="min-h-screen bg-bg-1 font-features-['cv01','ss03'] font-normal font-sans text-base text-fg-4 leading-normal tracking-normal antialiased selection:bg-brand/20">
+      <body className="bg-bg-1 text-fg-4 selection:bg-brand/20 min-h-screen font-sans font-features-['cv01','ss03'] text-base leading-normal font-normal tracking-normal antialiased">
         <a className="skip-link" href="#main">
           Skip to content
         </a>
@@ -108,12 +110,12 @@ function Fallback({
   children: React.ReactNode;
 }) {
   return (
-    <div className="typeset mx-auto px-md py-xl sm:py-2xl">
+    <div className="typeset px-md py-xl sm:py-2xl mx-auto">
       <div className="flex h-[calc(100vh-12rem)] w-full flex-col items-center justify-center">
         <h1 className="mb-sm text-balance">{title}</h1>
         <p className="my-0">{children}</p>
         <Link
-          className="mt-lg inline-flex min-h-9 items-center rounded-md px-md no-underline outline transition-colors duration-150 hover:text-fg-1"
+          className="mt-lg px-md hover:text-fg-1 inline-flex min-h-9 items-center rounded-md no-underline outline transition-colors duration-150"
           to="/"
         >
           Go Home

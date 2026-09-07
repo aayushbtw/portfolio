@@ -23,7 +23,7 @@ function getNodes(ctx: AudioContext): AudioNodes {
     clickFilter.Q.value = 8;
 
     const clickGain = ctx.createGain();
-    clickGain.gain.value = 1.0;
+    clickGain.gain.value = 1;
     clickFilter.connect(clickGain);
     clickGain.connect(ctx.destination);
 

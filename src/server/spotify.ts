@@ -1,6 +1,6 @@
-import { env } from "cloudflare:workers";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { setResponseHeader } from "@tanstack/react-start/server";
+import { env } from "cloudflare:workers";
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const API = "https://api.spotify.com/v1";
@@ -51,15 +51,15 @@ async function getAccessToken(): Promise<string> {
 
     const basic = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
     const res = await fetch(TOKEN_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${basic}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
       body: new URLSearchParams({
         grant_type: "refresh_token",
         refresh_token: SPOTIFY_REFRESH_TOKEN,
       }),
+      headers: {
+        Authorization: `Basic ${basic}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
     });
 
     if (!res.ok) {
@@ -73,8 +73,8 @@ async function getAccessToken(): Promise<string> {
     }>(res);
 
     cachedToken = {
-      value: access_token,
       expiresAt: Date.now() + (expires_in - 60) * 1000,
+      value: access_token,
     };
     return access_token;
   })();
@@ -134,28 +134,28 @@ interface NowPlayingResponse {
 function mapArtist(a: RawArtist): SpotifyArtist {
   return {
     id: a.id,
+    images: a.images ?? [],
     name: a.name,
     url: a.external_urls.spotify,
-    images: a.images ?? [],
   };
 }
 
 function mapTrack(t: RawTrack, playedAt?: string): SpotifyTrack {
   return {
-    id: t.id,
-    name: t.name,
-    url: t.external_urls.spotify,
-    durationMs: t.duration_ms,
+    album: {
+      images: t.album.images,
+      name: t.album.name,
+      url: t.album.external_urls.spotify,
+    },
     artists: t.artists.map((ar) => ({
       name: ar.name,
       url: ar.external_urls.spotify,
     })),
-    album: {
-      name: t.album.name,
-      url: t.album.external_urls.spotify,
-      images: t.album.images,
-    },
+    durationMs: t.duration_ms,
+    id: t.id,
+    name: t.name,
     playedAt,
+    url: t.external_urls.spotify,
   };
 }
 
@@ -163,13 +163,13 @@ async function getNowPlaying(): Promise<NowPlaying> {
   const res = await spotifyFetch("/me/player/currently-playing");
 
   if (res.status === 204) {
-    return { isPlaying: false, track: null, progressMs: null };
+    return { isPlaying: false, progressMs: null, track: null };
   }
 
   const data = await json<NowPlayingResponse | null>(res);
 
   if (!data?.item || data.currently_playing_type !== "track") {
-    return { isPlaying: false, track: null, progressMs: null };
+    return { isPlaying: false, progressMs: null, track: null };
   }
 
   return {

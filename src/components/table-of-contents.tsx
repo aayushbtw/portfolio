@@ -9,7 +9,7 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
   const activeId = useActiveHeading(headings);
 
   return (
-    <ul className="not-typeset relative flex flex-col gap-sm [&_a]:no-underline">
+    <ul className="not-typeset gap-sm relative flex flex-col [&_a]:no-underline">
       <span
         aria-hidden="true"
         className="indicator-brand absolute start-0 top-[anchor(center)] h-2 w-0.5 -translate-y-1/2 rounded-full transition-[top] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [position-anchor:--active]"
@@ -19,7 +19,7 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
         return (
           <li key={h.id}>
             <a
-              className="block ps-md text-fg-3 leading-tight tracking-normal transition-colors duration-150 hover:text-fg-2 data-[status=active]:text-fg-1 data-[status=active]:[anchor-name:--active]"
+              className="ps-md text-fg-3 hover:text-fg-2 data-[status=active]:text-fg-1 block leading-tight tracking-normal transition-colors duration-150 data-[status=active]:[anchor-name:--active]"
               data-status={isActive ? "active" : undefined}
               href={`#${h.id}`}
             >

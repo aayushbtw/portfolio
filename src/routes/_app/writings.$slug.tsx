@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { Crumb, RightColumn } from "~/components/layout-provider";
 import { TableOfContents } from "~/components/table-of-contents";
 import { config } from "~/lib/config";
@@ -65,7 +66,7 @@ function WritingPage() {
 
       {post.headings.length > 0 && (
         <RightColumn>
-          <aside className="sticky top-xl hidden lg:block">
+          <aside className="top-xl sticky hidden lg:block">
             <nav>
               <TableOfContents headings={post.headings} />
             </nav>

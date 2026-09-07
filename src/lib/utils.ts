@@ -1,4 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx } from "clsx";
+import type { ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 /**
@@ -17,8 +18,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const compact = new Intl.NumberFormat("en", {
-  notation: "compact",
   maximumFractionDigits: 2,
+  notation: "compact",
 });
 const exact = new Intl.NumberFormat("en");
 

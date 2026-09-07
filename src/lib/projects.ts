@@ -9,18 +9,18 @@ type Project = {
 
 const projects: Project[] = [
   {
-    name: "Type",
     description: "A minimal typing test built for feel over features.",
     href: "https://type.aayush.cv",
+    name: "Type",
   },
   {
-    name: "Octo",
     description: "A small service that proxies the GitHub API.",
     href: "https://github.com/aayushbtw/octo",
+    name: "Octo",
   },
   {
-    name: "Skills",
     description: "Instructions I hand to coding agents, kept in the open.",
+    name: "Skills",
     to: "/skills",
   },
 ];

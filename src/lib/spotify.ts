@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { getLiveFn } from "~/server/spotify";
 
 /**
@@ -7,12 +8,12 @@ import { getLiveFn } from "~/server/spotify";
  */
 function useLive({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
-    queryKey: ["spotify", "live"],
-    queryFn: () => getLiveFn(),
     enabled,
-    staleTime: 10_000,
+    queryFn: () => getLiveFn(),
+    queryKey: ["spotify", "live"],
     refetchInterval: 10_000,
     refetchIntervalInBackground: false,
+    staleTime: 10_000,
   });
 }
 

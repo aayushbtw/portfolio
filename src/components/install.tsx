@@ -1,5 +1,6 @@
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
+
 import { useHaptics } from "~/lib/haptics";
 import { highlighter, SHELL_LANG } from "~/lib/highlight";
 import { cn } from "~/lib/utils";
@@ -10,7 +11,7 @@ function Install({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "not-typeset flex flex-col gap-xs rounded-md border bg-bg-3 p-xs",
+        "not-typeset gap-xs bg-bg-3 p-xs flex flex-col rounded-md border",
         className
       )}
       data-slot="install"
@@ -41,17 +42,17 @@ function InstallCommand({
   return (
     <div
       className={cn(
-        "flex items-center gap-md rounded-xs border bg-bg-1 py-sm ps-md pe-sm font-mono",
+        "gap-md bg-bg-1 py-sm ps-md pe-sm flex items-center rounded-xs border font-mono",
         className
       )}
       data-slot="install-command"
       {...props}
     >
       <code
-        className="scroll-fade-end min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-fg-4"
+        className="scroll-fade-end text-fg-4 min-w-0 flex-1 overflow-x-auto whitespace-nowrap"
         translate="no"
       >
-        <span className="select-none text-fg-2">$ </span>
+        <span className="text-fg-2 select-none">$ </span>
         {highlightShell(command).map((token) => (
           <span
             className={token.className && `th-token th-${token.className}`}
@@ -64,7 +65,7 @@ function InstallCommand({
 
       <button
         aria-label={copied ? "Copied" : "Copy command"}
-        className="rounded-sm p-xs text-fg-2 transition-[color,scale] duration-150 hover:text-fg-1 active:scale-[0.96]"
+        className="p-xs text-fg-2 hover:text-fg-1 rounded-sm transition-[color,scale] duration-150 active:scale-[0.96]"
         onClick={copy}
         type="button"
       >
@@ -73,9 +74,9 @@ function InstallCommand({
           <IconCheck
             aria-hidden="true"
             className={cn(
-              "absolute inset-0 size-4 text-brand transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
+              "text-brand absolute inset-0 size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
               copied
-                ? "scale-100 opacity-100 blur-0"
+                ? "blur-0 scale-100 opacity-100"
                 : "scale-[0.25] opacity-0 blur-[4px]"
             )}
             stroke={1.5}
@@ -86,7 +87,7 @@ function InstallCommand({
               "size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
               copied
                 ? "scale-[0.25] opacity-0 blur-[4px]"
-                : "scale-100 opacity-100 blur-0"
+                : "blur-0 scale-100 opacity-100"
             )}
             stroke={1.5}
           />
@@ -99,7 +100,7 @@ function InstallCommand({
 function InstallLinks({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex gap-xs", className)}
+      className={cn("gap-xs flex", className)}
       data-slot="install-links"
       {...props}
     />
@@ -110,7 +111,7 @@ function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       className={cn(
-        "flex flex-1 items-center justify-center gap-xs rounded-xs border bg-bg-1 py-sm text-fg-2 no-underline transition-colors duration-150 hover:bg-bg-2 *:[svg:not([class*='size-'])]:size-4",
+        "gap-xs bg-bg-1 py-sm text-fg-2 hover:bg-bg-2 flex flex-1 items-center justify-center rounded-xs border no-underline transition-colors duration-150 *:[svg:not([class*='size-'])]:size-4",
         className
       )}
       data-slot="install-link"

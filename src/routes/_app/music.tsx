@@ -8,11 +8,8 @@ import { Page } from "~/components/ui/page";
 import { Skeleton } from "~/components/ui/skeleton";
 import { seo } from "~/lib/seo";
 import { useLive } from "~/lib/spotify";
-import {
-  getTopsFn,
-  type SpotifyArtist,
-  type SpotifyTrack,
-} from "~/server/spotify";
+import { getTopsFn } from "~/server/spotify";
+import type { SpotifyArtist, SpotifyTrack } from "~/server/spotify";
 
 const title = "Music";
 const description = "What I’m listening to on Spotify.";
@@ -89,7 +86,7 @@ function MusicPage() {
 
 function TopsGrid({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-1 gap-xl md:grid-cols-2">{children}</div>
+    <div className="gap-xl grid grid-cols-1 md:grid-cols-2">{children}</div>
   );
 }
 
@@ -112,9 +109,9 @@ function TopsSkeleton() {
 
 function TrackSkeleton() {
   return (
-    <div className="-mx-md flex items-center gap-md px-md py-sm">
+    <div className="-mx-md gap-md px-md py-sm flex items-center">
       <Skeleton className="size-10 shrink-0 rounded-sm" />
-      <div className="flex min-w-0 flex-1 flex-col gap-sm">
+      <div className="gap-sm flex min-w-0 flex-1 flex-col">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-4 w-24" />
       </div>
@@ -130,7 +127,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
       {cover ? (
         <Image
           alt={track.name}
-          className="size-10 shrink-0 rounded-sm ring-1 ring-fg-1/10"
+          className="ring-fg-1/10 size-10 shrink-0 rounded-sm ring-1"
           height={40}
           src={cover}
           width={40}
@@ -139,7 +136,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
 
       <div className="flex min-w-0 flex-col">
         <span className="truncate">{track.name}</span>
-        <p className="truncate text-fg-2">
+        <p className="text-fg-2 truncate">
           {track.artists.map((a) => a.name).join(", ")}
         </p>
       </div>
@@ -159,7 +156,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
       {photo ? (
         <Image
           alt=""
-          className="size-10 shrink-0 rounded-full ring-1 ring-fg-1/10"
+          className="ring-fg-1/10 size-10 shrink-0 rounded-full ring-1"
           height={40}
           src={photo}
           width={40}

@@ -14,17 +14,17 @@ function ShowcaseImage({
       <Image
         alt=""
         aria-hidden={true}
-        className="pointer-events-none absolute inset-0 hidden h-full w-full select-none object-cover md:block"
+        className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover select-none md:block"
         draggable={false}
         height={1084}
         src="/showcase-background.png"
         width={1920}
       />
-      <div className="absolute inset-0 hidden bg-bg-1/20 md:block" />
-      <div className="relative flex justify-center md:p-md">
+      <div className="bg-bg-1/20 absolute inset-0 hidden md:block" />
+      <div className="md:p-md relative flex justify-center">
         <Image
           alt={alt}
-          className="w-full shadow-2xl ring-1 ring-fg-1/10"
+          className="ring-fg-1/10 w-full shadow-2xl ring-1"
           height={height}
           layout="fullWidth"
           src={src}

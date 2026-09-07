@@ -6,16 +6,6 @@ import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  resolve: {
-    tsconfigPaths: true,
-    alias: {
-      // The package entry builds its `icons` and `iconsList` exports with
-      // `import * as` over all 6093 icons, and a namespace import can't be
-      // pruned. This deep entry is the same barrel without those two.
-      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
-    },
-  },
-  server: { port: 3000 },
   plugins: [
     tailwindcss(),
     tanstackStart({
@@ -42,4 +32,14 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: {
+      // The package entry builds its `icons` and `iconsList` exports with
+      // `import * as` over all 6093 icons, and a namespace import can't be
+      // pruned. This deep entry is the same barrel without those two.
+      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
+    },
+    tsconfigPaths: true,
+  },
+  server: { port: 3000 },
 });

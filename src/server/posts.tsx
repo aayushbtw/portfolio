@@ -1,6 +1,7 @@
 import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
+
 import type { PostListItem } from "~/components/post-list";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
 import { allPosts } from "~/server/content";
@@ -21,10 +22,10 @@ const postListFn = createServerFn({ method: "GET" })
     sortedPosts()
       .slice(0, limit)
       .map((post) => ({
-        year: toUtcDate(post.publishedAt).getUTCFullYear(),
+        date: formatNumericDate(post.publishedAt),
         slug: post.slug,
         title: post.title,
-        date: formatNumericDate(post.publishedAt),
+        year: toUtcDate(post.publishedAt).getUTCFullYear(),
       }))
   );
 
@@ -40,8 +41,8 @@ const postBySlugFn = createServerFn({ method: "GET" })
 
     return {
       ...meta,
-      headings: (document.headings ?? []).filter((h) => h.level === 2),
       body: await renderServerComponent(renderMarkdown(document)),
+      headings: (document.headings ?? []).filter((h) => h.level === 2),
     };
   });
 

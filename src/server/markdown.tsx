@@ -4,8 +4,10 @@ import type { ComponentNode, MarkdownDocument } from "@tanstack/markdown";
 import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
 import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
-import { Markdown, type MarkdownComponents } from "@tanstack/markdown/react";
+import { Markdown } from "@tanstack/markdown/react";
+import type { MarkdownComponents } from "@tanstack/markdown/react";
 import type { ComponentPropsWithoutRef, ReactElement } from "react";
+
 import { ShowcaseImage } from "~/components/showcase";
 import { highlighter } from "~/lib/highlight";
 
@@ -15,7 +17,7 @@ const highlightCode = createTanStackMarkdownHighlighter(highlighter);
 // name, so the components map cannot tell `showcase` from `showcase-image`.
 // Naming the tag is what makes it addressable.
 function transformComponent(node: ComponentNode): ComponentNode {
-  return { ...node, tagName: `md-${node.name}`, properties: node.attributes };
+  return { ...node, properties: node.attributes, tagName: `md-${node.name}` };
 }
 
 // The renderer has to be handed the same extensions the document was parsed
@@ -52,8 +54,8 @@ function MarkdownShowcaseImage({
 const components = {
   a: MarkdownLink,
   "md-showcase": "figure",
-  "md-showcase-image": MarkdownShowcaseImage,
   "md-showcase-caption": "figcaption",
+  "md-showcase-image": MarkdownShowcaseImage,
 } satisfies MarkdownComponents;
 
 // Called once per file at module scope in `~/server/content`, never per render.

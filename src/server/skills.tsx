@@ -1,6 +1,7 @@
 import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
+
 import type { SkillListItem } from "~/components/skill-list";
 import { allSkills } from "~/server/content";
 import { renderMarkdown } from "~/server/markdown";
@@ -14,8 +15,8 @@ const getSkillList = createServerFn({ method: "GET" }).handler(
   (): SkillListItem[] =>
     sortedSkills().map((skill) => ({
       slug: skill.slug,
-      title: skill.title,
       summary: skill.summary,
+      title: skill.title,
     }))
 );
 

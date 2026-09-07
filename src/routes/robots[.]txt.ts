@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { config } from "~/lib/config";
 
 export const Route = createFileRoute("/robots.txt")({

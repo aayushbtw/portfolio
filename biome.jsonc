@@ -1,8 +1,0 @@
-{
-  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "extends": ["ultracite/biome/core", "ultracite/biome/remix"],
-  "files": {
-    // typeset.css is vendored from shadcn/typeset, kept byte-for-byte.
-    "includes": ["**", "!worker-configuration.d.ts", "!src/styles/typeset.css"]
-  }
-}

@@ -33,11 +33,11 @@ function ProgressiveBlur({
             className="absolute inset-0"
             key={blur}
             style={{
-              zIndex: i + 1,
-              backdropFilter: `blur(${blur}px)`,
               WebkitBackdropFilter: `blur(${blur}px)`,
-              maskImage,
               WebkitMaskImage: maskImage,
+              backdropFilter: `blur(${blur}px)`,
+              maskImage,
+              zIndex: i + 1,
             }}
           />
         );

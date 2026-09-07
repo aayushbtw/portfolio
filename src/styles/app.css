@@ -134,11 +134,11 @@
 }
 
 @utility indicator-brand {
-  @apply bg-linear-to-b from-brand to-brand/60;
+  @apply from-brand to-brand/60 bg-linear-to-b;
 }
 
 @utility animated-link {
-  @apply text-fg-1 underline decoration-border-strong underline-offset-3 transition-colors duration-150 ease-out hover:decoration-brand;
+  @apply text-fg-1 decoration-border-strong hover:decoration-brand underline underline-offset-3 transition-colors duration-150 ease-out;
 }
 
 /* Stays in CSS despite the single call site: descendant rules are what a
@@ -147,7 +147,7 @@
   @apply animated-link;
 
   & svg {
-    @apply me-xs mb-0.5 inline-block size-4 text-fg-3;
+    @apply me-xs text-fg-3 mb-0.5 inline-block size-4;
   }
 
   &:hover svg {
@@ -158,7 +158,7 @@
 /* The breadcrumb comes before the content in the DOM, so keyboard users
    otherwise walk the trail on every page. */
 @utility skip-link {
-  @apply sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-md focus-visible:start-md focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 focus-visible:no-underline;
+  @apply focus-visible:top-md focus-visible:start-md focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:no-underline;
 }
 
 @layer base {

@@ -1,10 +1,5 @@
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 interface LayoutContextValue {
   crumb: string | null;
@@ -15,8 +10,8 @@ interface LayoutContextValue {
 
 const LayoutContext = createContext<LayoutContextValue>({
   crumb: null,
-  setCrumb: () => undefined,
   right: null,
+  setCrumb: () => undefined,
   setRight: () => undefined,
 });
 
@@ -24,7 +19,7 @@ function LayoutProvider({ children }: { children: ReactNode }) {
   const [crumb, setCrumb] = useState<string | null>(null);
   const [right, setRight] = useState<ReactNode>(null);
   return (
-    <LayoutContext.Provider value={{ crumb, setCrumb, right, setRight }}>
+    <LayoutContext.Provider value={{ crumb, right, setCrumb, setRight }}>
       {children}
     </LayoutContext.Provider>
   );

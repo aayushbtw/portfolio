@@ -1,6 +1,8 @@
-import { type Hotkey, useHotkeySequences } from "@tanstack/react-hotkeys";
+import { useHotkeySequences } from "@tanstack/react-hotkeys";
+import type { Hotkey } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+
 import { Breadcrumbs } from "~/components/breadcrumbs";
 import { useRightColumn } from "~/components/layout-provider";
 import { NowPlaying } from "~/components/now-playing";
@@ -41,20 +43,20 @@ function AppLayout() {
   return (
     // Every item names its row and column: auto placement refuses a taken cell
     // and opens an implicit column instead.
-    <div className="typeset grid grid-rows-[var(--spacing-lg)_auto] gap-x-lg gap-y-xl px-md pt-md lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr] lg:gap-x-xl">
+    <div className="typeset gap-x-lg gap-y-xl px-md pt-md lg:gap-x-xl grid grid-rows-[var(--spacing-lg)_auto] lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]">
       {/* `z` keeps it out of the blur's backdrop, which is what the blur
           samples. `self-start`, or it stretches and has nowhere to stick. */}
-      <div className="z-40 col-start-1 row-start-1 lg:sticky lg:top-md lg:row-span-2 lg:self-start">
+      <div className="lg:top-md z-40 col-start-1 row-start-1 lg:sticky lg:row-span-2 lg:self-start">
         <Breadcrumbs />
       </div>
 
-      <div className="hidden lg:sticky lg:top-md lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:block lg:self-start lg:justify-self-end">
+      <div className="lg:top-md hidden lg:sticky lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:block lg:self-start lg:justify-self-end">
         <NowPlaying />
       </div>
 
       <main
         // Owns the bottom padding so the sticky blur below has it to travel.
-        className="col-start-1 row-start-2 mx-auto w-full min-w-0 max-w-content pb-2xl lg:col-start-2 lg:pb-xl"
+        className="max-w-content pb-2xl lg:pb-xl col-start-1 row-start-2 mx-auto w-full min-w-0 lg:col-start-2"
         id="main"
       >
         <Outlet />
@@ -69,11 +71,11 @@ function AppLayout() {
           box is a threshold, not an offset. `-mx` gives the filter something
           to sample past the column's edge. */}
       <ProgressiveBlur
-        className="sticky inset-x-auto top-0 z-30 col-start-1 row-span-2 row-start-1 -mx-md self-start lg:col-start-2 lg:-mx-xl"
+        className="-mx-md lg:-mx-xl sticky inset-x-auto top-0 z-30 col-start-1 row-span-2 row-start-1 self-start lg:col-start-2"
         position="top"
       />
 
-      <ProgressiveBlur className="sticky inset-x-auto bottom-0 z-30 col-start-1 row-span-2 row-start-1 -mx-md self-end lg:col-start-2 lg:-mx-xl" />
+      <ProgressiveBlur className="-mx-md lg:-mx-xl sticky inset-x-auto bottom-0 z-30 col-start-1 row-span-2 row-start-1 self-end lg:col-start-2" />
     </div>
   );
 }

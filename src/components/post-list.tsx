@@ -15,7 +15,7 @@ function PostList({ posts }: { posts: PostListItem[] }) {
         const showYear = i === 0 || posts[i - 1].year !== post.year;
         return (
           <ListItemLink
-            className="grid grid-cols-[56px_minmax(0,1fr)_auto] items-center gap-md"
+            className="gap-md grid grid-cols-[56px_minmax(0,1fr)_auto] items-center"
             key={post.slug}
             params={{ slug: post.slug }}
             to="/writings/$slug"

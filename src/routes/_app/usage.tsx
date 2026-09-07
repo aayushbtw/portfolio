@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { PageDescription } from "~/components/page-description";
 import { Meter } from "~/components/ui/meter";
 import { Page } from "~/components/ui/page";
@@ -105,7 +106,7 @@ function BarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "not-typeset mt-sm grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-x-md gap-y-sm text-fg-3",
+        "not-typeset mt-sm gap-x-md gap-y-sm text-fg-3 grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center",
         className
       )}
       data-slot="bar-group"

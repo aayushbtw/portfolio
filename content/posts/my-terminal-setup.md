@@ -72,5 +72,4 @@ alias cat='bat'
 
 [fd](https://github.com/sharkdp/fd) is `find` but I can actually remember how to use it. With `find` I was Googling the syntax every time. With `fd` I just type what I want. It also respects `.gitignore` by default, so searching a project doesn't mean wading through `node_modules`.
 
-
 None of these tools are revolutionary on their own. But stacked together, they turn the terminal from something I tolerate into something I actually prefer over any GUI.

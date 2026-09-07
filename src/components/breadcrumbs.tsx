@@ -1,14 +1,15 @@
 import { IconChevronRight } from "@tabler/icons-react";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useRouterState } from "@tanstack/react-router";
+
 import { useCrumb } from "~/components/layout-provider";
 import { useHaptics } from "~/lib/haptics";
 
 const sections: Record<string, { label: string; to: LinkProps["to"] }> = {
-  writings: { label: "Writings", to: "/writings" },
-  skills: { label: "Skills", to: "/skills" },
   music: { label: "Music", to: "/music" },
+  skills: { label: "Skills", to: "/skills" },
   usage: { label: "Usage", to: "/usage" },
+  writings: { label: "Writings", to: "/writings" },
 };
 
 interface Crumb {
@@ -29,7 +30,7 @@ function trail(pathname: string, leaf: string | null): Crumb[] {
       continue;
     }
 
-    crumbs.push({ label: leaf ?? segment.replace(/-/g, " ") });
+    crumbs.push({ label: leaf ?? segment.replaceAll("-", " ") });
   }
 
   return crumbs;
@@ -48,27 +49,27 @@ function Breadcrumbs() {
 
   return (
     <nav aria-label="Breadcrumb" className="not-typeset min-w-0">
-      <ol className="flex items-center gap-xs text-sm [&_a]:no-underline">
+      <ol className="gap-xs flex items-center text-sm [&_a]:no-underline">
         {crumbs.map((crumb, index) => (
-          <li className="flex min-w-0 items-center gap-xs" key={crumb.label}>
+          <li className="gap-xs flex min-w-0 items-center" key={crumb.label}>
             {index > 0 && (
               <IconChevronRight
                 aria-hidden="true"
-                className="size-3.5 shrink-0 text-fg-4"
+                className="text-fg-4 size-3.5 shrink-0"
                 stroke={1.5}
               />
             )}
 
             {crumb.to ? (
               <Link
-                className="shrink-0 text-fg-3 transition-colors duration-150 hover:text-fg-1"
+                className="text-fg-3 hover:text-fg-1 shrink-0 transition-colors duration-150"
                 onClick={() => trigger("click")}
                 to={crumb.to}
               >
                 {crumb.label}
               </Link>
             ) : (
-              <span aria-current="page" className="truncate text-fg-1">
+              <span aria-current="page" className="text-fg-1 truncate">
                 {crumb.label}
               </span>
             )}

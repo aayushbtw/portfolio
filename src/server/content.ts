@@ -1,6 +1,7 @@
 import "@tanstack/react-start/server-only";
 import type { MarkdownDocument } from "@tanstack/markdown";
 import { z } from "zod";
+
 import { parseContent } from "~/server/markdown";
 
 // A skill's `description` is written for an agent and runs long. Its first
@@ -69,28 +70,28 @@ const skillFiles = import.meta.glob<string>("/content/skills/*/SKILL.md", {
 const allPosts = collect(
   postFiles,
   z.object({
-    title: z.string(),
-    publishedAt: z.string(),
-    modifiedAt: z.string().optional(),
     description: z.string(),
     image: z.string().optional(),
+    modifiedAt: z.string().optional(),
+    publishedAt: z.string(),
+    title: z.string(),
   }),
   (frontmatter, document, path) => ({
     ...frontmatter,
-    slug: path.replace(POST_SLUG_REGEX, "$1"),
     document,
+    slug: path.replace(POST_SLUG_REGEX, "$1"),
   })
 );
 
 const allSkills = collect(
   skillFiles,
-  z.object({ name: z.string(), description: z.string() }),
+  z.object({ description: z.string(), name: z.string() }),
   ({ name, description }, document) => ({
-    slug: name,
-    title: document.headings?.find((h) => h.level === 1)?.text ?? name,
     description,
-    summary: FIRST_SENTENCE_REGEX.exec(description)?.[0] ?? description,
     document,
+    slug: name,
+    summary: FIRST_SENTENCE_REGEX.exec(description)?.[0] ?? description,
+    title: document.headings?.find((h) => h.level === 1)?.text ?? name,
   })
 );
 

@@ -20,7 +20,7 @@ function Meter({
   return (
     <div
       aria-hidden="true"
-      className={cn("h-1.5 overflow-hidden rounded-full bg-bg-2", className)}
+      className={cn("bg-bg-2 h-1.5 overflow-hidden rounded-full", className)}
       data-slot="meter"
     >
       {/* Off the spacing scale: a hairline, so two shades stay two. */}

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { GithubIcon, VercelIcon } from "~/components/icons";
 import {
   Install,
@@ -57,10 +58,10 @@ function SkillPage() {
         </Install>
 
         <div
-          className="mt-lg rounded-md border bg-bg-3 p-xs"
+          className="mt-lg bg-bg-3 p-xs rounded-md border"
           data-slot="skill-body"
         >
-          <div className="rounded-xs border bg-bg-1 p-md">{skill.body}</div>
+          <div className="bg-bg-1 p-md rounded-xs border">{skill.body}</div>
         </div>
       </article>
     </section>
