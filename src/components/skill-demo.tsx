@@ -1,5 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
+import { useHaptics } from "~/lib/haptics";
 import type {
   SkillDemo as SkillDemoData,
   SkillExample,
@@ -19,7 +20,7 @@ function SkillDemo({ covers, examples }: SkillDemoData) {
             <span className="text-fg-1">{topic}</span>
           </Fragment>
         ))}
-        . Each pair is one passage, before the skill ran and after.
+        . Each card holds one passage. Switch it to see what the skill did.
       </p>
 
       {examples.map((example) => (
@@ -32,51 +33,78 @@ function SkillDemo({ covers, examples }: SkillDemoData) {
   );
 }
 
-/* One surface, not two: a comparison sitting still has not earned a second.
-   The rewrite steps up to `fg-1` and the passage it replaces stays at body
-   colour, which is the only channel carrying the difference. */
 function ExampleCard({ after, before, label, mono }: SkillExample) {
+  const [showAfter, setShowAfter] = useState(true);
+  const { trigger } = useHaptics();
+
+  function select(next: boolean) {
+    return () => {
+      trigger("tick");
+      setShowAfter(next);
+    };
+  }
+
+  const passage = cn(
+    "col-start-1 row-start-1 transition-opacity duration-150 ease-out",
+    mono && "font-mono whitespace-pre-line"
+  );
+
   return (
     <div
-      className="not-typeset bg-bg-3 mt-sm overflow-hidden rounded-md border"
+      className="not-typeset bg-bg-1 mt-sm overflow-hidden rounded-md border"
       data-label={label}
       data-slot="skill-example"
     >
-      <ExampleRow mono={mono} name="before" tone="text-fg-4">
-        {before}
-      </ExampleRow>
-      <ExampleRow divided mono={mono} name="after" tone="text-fg-1">
-        {after}
-      </ExampleRow>
+      {/* Both stay mounted in one grid cell, so the card keeps the height of
+          the longer passage and swapping never moves the page. */}
+      <div className="p-md grid">
+        <p
+          aria-hidden={showAfter}
+          className={cn(passage, "text-fg-4", showAfter && "opacity-0")}
+        >
+          {before}
+        </p>
+        <p
+          aria-hidden={!showAfter}
+          className={cn(passage, "text-fg-1", !showAfter && "opacity-0")}
+        >
+          {after}
+        </p>
+      </div>
+
+      <div className="gap-xs px-md py-sm bg-bg-3 flex items-center border-t">
+        <Segment active={!showAfter} onClick={select(false)}>
+          before
+        </Segment>
+        <Segment active={showAfter} onClick={select(true)}>
+          after
+        </Segment>
+      </div>
     </div>
   );
 }
 
-function ExampleRow({
+function Segment({
+  active,
   children,
-  divided,
-  mono,
-  name,
-  tone,
+  onClick,
 }: {
+  active: boolean;
   children: string;
-  divided?: boolean;
-  mono?: boolean;
-  name: string;
-  tone: string;
+  onClick: () => void;
 }) {
   return (
-    <div
+    <button
+      aria-pressed={active}
       className={cn(
-        "gap-md px-md py-sm grid grid-cols-[52px_minmax(0,1fr)] items-baseline",
-        divided && "border-t"
+        "px-sm rounded-sm py-0.5 transition-colors duration-150 ease-out active:scale-[0.96]",
+        active ? "bg-bg-1 text-fg-1 border" : "text-fg-3 hover:text-fg-1"
       )}
+      onClick={onClick}
+      type="button"
     >
-      <span className="text-fg-3">{name}</span>
-      <p className={cn(tone, mono && "font-mono whitespace-pre-line")}>
-        {children}
-      </p>
-    </div>
+      {children}
+    </button>
   );
 }
 
