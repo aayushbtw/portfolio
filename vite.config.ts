@@ -6,6 +6,13 @@ import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  // The alias below only pays off at build, where rollup can prune a re-export
+  // barrel. Dev serves modules unbundled, so without prebundling here the SSR
+  // and RSC environments transform all 6093 icons on the first request.
+  environments: {
+    rsc: { optimizeDeps: { include: ["@tabler/icons-react"] } },
+    ssr: { optimizeDeps: { include: ["@tabler/icons-react"] } },
+  },
   plugins: [
     tailwindcss(),
     tanstackStart({
@@ -42,11 +49,4 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   server: { port: 3000 },
-  // The alias above only pays off at build, where rollup can prune a re-export
-  // barrel. Dev serves modules unbundled, so without prebundling here the SSR
-  // and RSC environments transform all 6093 icons on the first request.
-  environments: {
-    ssr: { optimizeDeps: { include: ["@tabler/icons-react"] } },
-    rsc: { optimizeDeps: { include: ["@tabler/icons-react"] } },
-  },
 });
