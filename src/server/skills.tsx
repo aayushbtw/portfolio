@@ -29,7 +29,6 @@ const skillBySlugFn = createServerFn({ method: "GET" })
     // The skill's text is on GitHub and skills.sh. This page argues for it
     // instead of reprinting it, so the rendered markdown never ships.
     return {
-      description: skill.description,
       slug: skill.slug,
       summary: skill.summary,
       title: skill.title,

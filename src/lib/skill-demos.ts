@@ -3,11 +3,16 @@
 // see what it does to their work, not read its rules. The prose lives here
 // rather than in the skills submodule, which is written for agents.
 //
+// Both panels must say the same thing. If the subject changes between them the
+// reader cannot tell craft from content, and the pair proves nothing.
+//
 // `mono` is for a demo made of lines rather than sentences.
 interface SkillDemo {
   after: string;
   before: string;
+  heading: string;
   mono?: boolean;
+  note: string;
 }
 
 const skillDemos: Record<string, SkillDemo> = {
@@ -15,13 +20,17 @@ const skillDemos: Record<string, SkillDemo> = {
     after:
       "fix(api): handle null response from payment gateway\nrefactor(db): extract query builder into a module\nperf(search): add index on users.email",
     before: "update code\nfixed some stuff\nwip",
+    heading: "What it does to a commit message",
     mono: true,
+    note: "The same three commits. Type and scope in front, so the log reads as a list of changes rather than a list of days.",
   },
   "writing-guide": {
     after:
-      "Our dev server took 16 seconds to answer its first request. One import was the whole problem: pulling a single icon from the package entry dragged in all 6093 of them, and dev serves modules unbundled, so nothing is tree-shaken away. Per-icon imports cut it to 4 seconds. A barrel import costs nothing in a production build and everything in development.",
+      "I replaced five parts of my terminal last year and three were worth keeping. Ghostty renders fast enough that I stopped noticing the terminal was there. Starship costs about 40ms on every prompt and I keep it anyway. The other two are gone.",
     before:
-      "We're excited to announce some robust improvements to our development experience. It's worth noting that our tooling was basically leveraging a suboptimal module resolution strategy, which significantly impacted cold start times. By seamlessly migrating to a best-in-class icon solution, we were able to streamline the workflow and unlock substantial gains for developers.",
+      "We're excited to share some thoughts on our development environment. It's worth noting that choosing the right terminal setup can significantly improve your workflow. In this blog post, we will explore some best-in-class tools that help streamline your daily tasks and empower you to be more productive.",
+    heading: "What it does to an opening",
+    note: "The same post, opened twice. Nine filler phrases gone, and what is left carries a number and takes a position.",
   },
 };
 

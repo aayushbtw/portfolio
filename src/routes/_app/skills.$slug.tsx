@@ -38,7 +38,7 @@ function SkillPage() {
 
       <article>
         <h1 className="text-balance">{skill.title}</h1>
-        <p>{skill.description}</p>
+        <p>{skill.summary}</p>
 
         <Install className="mt-lg">
           <InstallCommand
