@@ -22,30 +22,33 @@ function SkillDemo({ covers, examples }: SkillDemoData) {
         . Each pair below is the same thing written twice.
       </p>
 
-      <div
-        className="not-typeset gap-xs bg-bg-3 p-xs mt-sm flex flex-col rounded-md border"
-        data-slot="skill-demo"
-      >
-        {examples.map((example) => (
-          <ExampleRow key={example.label} {...example} />
-        ))}
-      </div>
+      {examples.map((example) => (
+        <Fragment key={example.label}>
+          <h3>{example.label}</h3>
+          <ExampleCard {...example} />
+        </Fragment>
+      ))}
     </>
   );
 }
 
-/* Each side separates by colour, like everything else here: the weak version
-   sits at body colour and the rewrite steps up to `fg-1`. */
-function ExampleRow({ after, before, label, mono }: SkillExample) {
+/* The rewrite sits on page colour and steps up to `fg-1`; the version it
+   replaces stays recessed on `bg-3` at body colour. */
+function ExampleCard({ after, before, label, mono }: SkillExample) {
   const text = mono ? "font-mono whitespace-pre-line" : "";
+  const row = "gap-md p-md grid grid-cols-[52px_minmax(0,1fr)]";
 
   return (
-    <div className="bg-bg-1 p-md rounded-xs border">
-      <p className="text-fg-1 mb-sm">{label}</p>
-
-      <div className="gap-x-md gap-y-xs grid grid-cols-[52px_minmax(0,1fr)]">
+    <div
+      className="not-typeset mt-sm overflow-hidden rounded-md border"
+      data-slot="skill-example"
+      data-label={label}
+    >
+      <div className={cn(row, "bg-bg-3")}>
         <span className="text-fg-3">before</span>
         <p className={cn("text-fg-4", text)}>{before}</p>
+      </div>
+      <div className={cn(row, "bg-bg-1 border-t")}>
         <span className="text-fg-3">after</span>
         <p className={cn("text-fg-1", text)}>{after}</p>
       </div>
