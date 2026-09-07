@@ -8,8 +8,10 @@ import {
   InstallLinks,
 } from "~/components/install";
 import { Crumb } from "~/components/layout-provider";
+import { SkillDemo } from "~/components/skill-demo";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
+import { skillDemos } from "~/lib/skill-demos";
 import { getSkillBySlug } from "~/server/skills";
 
 export const Route = createFileRoute("/_app/skills/$slug")({
@@ -28,6 +30,7 @@ export const Route = createFileRoute("/_app/skills/$slug")({
 
 function SkillPage() {
   const skill = Route.useLoaderData();
+  const demo = skillDemos[skill.slug];
 
   return (
     <section>
@@ -57,12 +60,7 @@ function SkillPage() {
           </InstallLinks>
         </Install>
 
-        <div
-          className="mt-lg bg-bg-3 p-xs rounded-md border"
-          data-slot="skill-body"
-        >
-          <div className="bg-bg-1 p-md rounded-xs border">{skill.body}</div>
-        </div>
+        {demo ? <SkillDemo {...demo} /> : null}
       </article>
     </section>
   );
