@@ -19,7 +19,7 @@ function SkillDemo({ covers, examples }: SkillDemoData) {
             <span className="text-fg-1">{topic}</span>
           </Fragment>
         ))}
-        . Each pair below is the same thing written twice.
+        . Each pair is one passage, before the skill ran and after.
       </p>
 
       {examples.map((example) => (
@@ -32,26 +32,50 @@ function SkillDemo({ covers, examples }: SkillDemoData) {
   );
 }
 
-/* The rewrite sits on page colour and steps up to `fg-1`; the version it
-   replaces stays recessed on `bg-3` at body colour. */
+/* One surface, not two: a comparison sitting still has not earned a second.
+   The rewrite steps up to `fg-1` and the passage it replaces stays at body
+   colour, which is the only channel carrying the difference. */
 function ExampleCard({ after, before, label, mono }: SkillExample) {
-  const text = mono ? "font-mono whitespace-pre-line" : "";
-  const row = "gap-md p-md grid grid-cols-[52px_minmax(0,1fr)]";
-
   return (
     <div
-      className="not-typeset mt-sm overflow-hidden rounded-md border"
-      data-slot="skill-example"
+      className="not-typeset bg-bg-3 mt-sm overflow-hidden rounded-md border"
       data-label={label}
+      data-slot="skill-example"
     >
-      <div className={cn(row, "bg-bg-3")}>
-        <span className="text-fg-3">before</span>
-        <p className={cn("text-fg-4", text)}>{before}</p>
-      </div>
-      <div className={cn(row, "bg-bg-1 border-t")}>
-        <span className="text-fg-3">after</span>
-        <p className={cn("text-fg-1", text)}>{after}</p>
-      </div>
+      <ExampleRow mono={mono} name="before" tone="text-fg-4">
+        {before}
+      </ExampleRow>
+      <ExampleRow divided mono={mono} name="after" tone="text-fg-1">
+        {after}
+      </ExampleRow>
+    </div>
+  );
+}
+
+function ExampleRow({
+  children,
+  divided,
+  mono,
+  name,
+  tone,
+}: {
+  children: string;
+  divided?: boolean;
+  mono?: boolean;
+  name: string;
+  tone: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "gap-md px-md py-sm grid grid-cols-[52px_minmax(0,1fr)] items-baseline",
+        divided && "border-t"
+      )}
+    >
+      <span className="text-fg-3">{name}</span>
+      <p className={cn(tone, mono && "font-mono whitespace-pre-line")}>
+        {children}
+      </p>
     </div>
   );
 }
