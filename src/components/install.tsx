@@ -1,4 +1,5 @@
-import { IconCheck, IconCopy } from "@tabler/icons-react";
+import { Check } from "@phosphor-icons/react/Check";
+import { Copy } from "@phosphor-icons/react/Copy";
 import { useEffect, useRef, useState } from "react";
 
 import { useHaptics } from "~/lib/haptics";
@@ -71,7 +72,7 @@ function InstallCommand({
       >
         {/* Both stay mounted so the swap animates out as well as in. */}
         <span className="relative block">
-          <IconCheck
+          <Check
             aria-hidden="true"
             className={cn(
               "text-brand absolute inset-0 size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
@@ -79,9 +80,9 @@ function InstallCommand({
                 ? "blur-0 scale-100 opacity-100"
                 : "scale-[0.25] opacity-0 blur-[4px]"
             )}
-            stroke={1.5}
+            weight="light"
           />
-          <IconCopy
+          <Copy
             aria-hidden="true"
             className={cn(
               "size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
@@ -89,7 +90,7 @@ function InstallCommand({
                 ? "scale-[0.25] opacity-0 blur-[4px]"
                 : "blur-0 scale-100 opacity-100"
             )}
-            stroke={1.5}
+            weight="light"
           />
         </span>
       </button>

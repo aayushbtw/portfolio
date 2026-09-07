@@ -1,4 +1,5 @@
-import { IconArrowRight, IconArrowUpRight } from "@tabler/icons-react";
+import { ArrowRight } from "@phosphor-icons/react/ArrowRight";
+import { ArrowUpRight } from "@phosphor-icons/react/ArrowUpRight";
 
 import {
   List,
@@ -18,7 +19,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
           <ListItemLink key={item.name} to={item.to}>
             <ProjectRow project={item} />
             <ListItemHover>
-              <IconArrowRight aria-hidden="true" stroke={1.5} />
+              <ArrowRight aria-hidden="true" weight="light" />
             </ListItemHover>
           </ListItemLink>
         ) : (
@@ -30,7 +31,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
           >
             <ProjectRow project={item} />
             <ListItemHover>
-              <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+              <ArrowUpRight aria-hidden="true" weight="light" />
             </ListItemHover>
           </ListItem>
         )

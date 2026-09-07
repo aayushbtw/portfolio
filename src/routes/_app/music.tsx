@@ -1,4 +1,4 @@
-import { IconArrowUpRight } from "@tabler/icons-react";
+import { ArrowUpRight } from "@phosphor-icons/react/ArrowUpRight";
 import { Await, createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { Suspense } from "react";
@@ -142,7 +142,7 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
       </div>
 
       <ListItemHover>
-        <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+        <ArrowUpRight aria-hidden="true" weight="light" />
       </ListItemHover>
     </ListItem>
   );
@@ -168,7 +168,7 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
       </div>
 
       <ListItemHover>
-        <IconArrowUpRight aria-hidden="true" stroke={1.5} />
+        <ArrowUpRight aria-hidden="true" weight="light" />
       </ListItemHover>
     </ListItem>
   );

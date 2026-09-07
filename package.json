@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
-    "@tabler/icons-react": "^3.46.0",
+    "@phosphor-icons/react": "^2.1.10",
     "@tanstack/highlight": "^0.0.10",
     "@tanstack/markdown": "^0.0.13",
     "@tanstack/react-hotkeys": "^0.10.0",

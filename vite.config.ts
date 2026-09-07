@@ -6,13 +6,6 @@ import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  // The alias below only pays off at build, where rollup can prune a re-export
-  // barrel. Dev serves modules unbundled, so without prebundling here the SSR
-  // and RSC environments transform all 6093 icons on the first request.
-  environments: {
-    rsc: { optimizeDeps: { include: ["@tabler/icons-react"] } },
-    ssr: { optimizeDeps: { include: ["@tabler/icons-react"] } },
-  },
   plugins: [
     tailwindcss(),
     tanstackStart({
@@ -39,14 +32,6 @@ export default defineConfig({
       },
     }),
   ],
-  resolve: {
-    alias: {
-      // The package entry builds its `icons` and `iconsList` exports with
-      // `import * as` over all 6093 icons, and a namespace import can't be
-      // pruned. This deep entry is the same barrel without those two.
-      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
-    },
-    tsconfigPaths: true,
-  },
+  resolve: { tsconfigPaths: true },
   server: { port: 3000 },
 });

@@ -1,4 +1,4 @@
-import { IconChevronRight } from "@tabler/icons-react";
+import { CaretRight } from "@phosphor-icons/react/CaretRight";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useRouterState } from "@tanstack/react-router";
 
@@ -53,10 +53,10 @@ function Breadcrumbs() {
         {crumbs.map((crumb, index) => (
           <li className="gap-xs flex min-w-0 items-center" key={crumb.label}>
             {index > 0 && (
-              <IconChevronRight
+              <CaretRight
                 aria-hidden="true"
                 className="text-fg-4 size-3.5 shrink-0"
-                stroke={1.5}
+                weight="light"
               />
             )}
 
