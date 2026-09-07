@@ -42,4 +42,11 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   server: { port: 3000 },
+  // The alias above only pays off at build, where rollup can prune a re-export
+  // barrel. Dev serves modules unbundled, so without prebundling here the SSR
+  // and RSC environments transform all 6093 icons on the first request.
+  environments: {
+    ssr: { optimizeDeps: { include: ["@tabler/icons-react"] } },
+    rsc: { optimizeDeps: { include: ["@tabler/icons-react"] } },
+  },
 });
