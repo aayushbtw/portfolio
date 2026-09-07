@@ -30,6 +30,7 @@
 
   --color-bg-1: oklch(from var(--color-white) l c h);
   --color-bg-2: oklch(from var(--color-gray-100) l c h);
+  --color-bg-3: oklch(from var(--color-gray-50) l c h);
 
   --color-fg-1: var(--color-black);
   --color-fg-2: oklch(from var(--color-black) l c h / 0.45);

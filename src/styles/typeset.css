@@ -486,7 +486,7 @@
      fence gets a figure that owns the frame, so the pre sits flush inside it;
      an untitled one is a bare pre and has to carry the frame itself. */
   .typeset :where(figure.tm-code-frame) {
-    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-2 font-mono;
+    @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-3 font-mono;
   }
 
   /* Typeset reads this as a photo caption and gives it `0.75em` above, which
@@ -498,7 +498,7 @@
   }
 
   .typeset :where(pre.tm-code) {
-    @apply scroll-fade-end overflow-x-auto whitespace-nowrap rounded-md border bg-bg-2 px-0 py-sm font-mono;
+    @apply scroll-fade-end overflow-x-auto whitespace-nowrap rounded-md border bg-bg-3 px-0 py-sm font-mono;
   }
 
   .typeset :where(figure.tm-code-frame > pre.tm-code) {

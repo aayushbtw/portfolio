@@ -10,7 +10,7 @@ function Install({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "not-typeset flex flex-col gap-xs rounded-md border bg-bg-2/50 p-xs",
+        "not-typeset flex flex-col gap-xs rounded-md border bg-bg-3 p-xs",
         className
       )}
       data-slot="install"

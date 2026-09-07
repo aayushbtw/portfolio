@@ -57,7 +57,7 @@ function SkillPage() {
         </Install>
 
         <div
-          className="mt-lg rounded-md border bg-bg-2/50 p-xs"
+          className="mt-lg rounded-md border bg-bg-3 p-xs"
           data-slot="skill-body"
         >
           <div className="rounded-xs border bg-bg-1 p-md">{skill.body}</div>
