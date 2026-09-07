@@ -17,7 +17,7 @@ function sortedPosts() {
 // Plain data, not a rendered element: `allPosts` is local content with no
 // latency to stream around and no heavy renderer to keep off the client.
 const postListFn = createServerFn({ method: "GET" })
-  .inputValidator((limit?: number) => limit)
+  .validator((limit?: number) => limit)
   .handler(({ data: limit }): PostListItem[] =>
     sortedPosts()
       .slice(0, limit)
@@ -30,7 +30,7 @@ const postListFn = createServerFn({ method: "GET" })
   );
 
 const postBySlugFn = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
+  .validator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const post = allPosts.find((p) => p.slug === slug);
     if (!post) {

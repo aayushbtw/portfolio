@@ -21,7 +21,7 @@ const getSkillList = createServerFn({ method: "GET" }).handler(
 );
 
 const skillBySlugFn = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
+  .validator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const skill = allSkills.find((s) => s.slug === slug);
     if (!skill) {
