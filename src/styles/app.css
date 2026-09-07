@@ -13,8 +13,7 @@
    it. `rounded-full` and `rounded-none` survive, being static utilities rather
    than steps on the scale.
 
-   Its own block because a `*` reset has to come before what it clears, and
-   Biome's property sorter moves those lines to the end of their block. */
+   Its own block because a `*` reset has to come before what it clears. */
 @theme {
   --text-*: initial;
   --leading-*: initial;

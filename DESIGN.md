@@ -27,7 +27,8 @@ Every token is oklch, declared in `@theme`.
 | Token | Use |
 | --- | --- |
 | `bg-1` | Page background |
-| `bg-2` | Raised surface: hovered list item, inline code, code block |
+| `bg-2` | Raised surface: hovered list item, inline code, meter track, skeleton |
+| `bg-3` | Framed surface at rest: code block, the install block, a skill's body |
 | `fg-1` | Every heading, the current crumb, a list item's title, a hover target. Solid black |
 | `fg-2` | typeset's muted role — markers, captions, footnotes, strikethrough — and the same role in UI |
 | `fg-3` | Labels and metadata |
@@ -37,9 +38,9 @@ Every token is oklch, declared in `@theme`.
 | `ring` | Focus ring. Points at `brand`, and is also typeset's variable name |
 | `brand` | Orange. Accent only: link underline on hover, meter fills, eq bars |
 
-**The alpha is in the token.** `fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%, so text composites onto whatever it sits on and a row reads the same over `bg-1` as over its `bg-2` hover. `fg-4` is the one solid grey, and it is out of numeric order on purpose: it is _darker_ than `fg-2` and `fg-3`, not lighter, because it is body copy and they are the quiet marks beside it.
+**The alpha is in the token.** `fg-1`, `fg-2` and `fg-3` are black at 100%, 45% and 40%, so text composites onto whatever it sits on and a row reads the same over `bg-1` as over its `bg-2` hover. `fg-4` is the one solid grey, and it is out of numeric order on purpose: it is _darker_ than `fg-2` and `fg-3`, not lighter, because it is body copy and they are the quiet marks beside it. `bg-3` is the same trap on the other side: it is `gray-50` against `bg-2`'s `gray-100`, so it sits _between_ `bg-1` and `bg-2` and the number is not a position on a ramp. `bg-2` is what a surface lifts to under the pointer; `bg-3` is what a block sits at when nothing is happening.
 
-Text sits at `fg-3` by default and steps **up** to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it is an unreadable one. Opacity on a _background_ (`bg-bg-2/50`, `bg-brand/20`) is fine.
+Text sits at `fg-3` by default and steps **up** to `fg-2`/`fg-1` for emphasis. It never steps down, and never takes a second opacity on top of the token: `text-fg-3/60` is not a lighter grey, it is an unreadable one. Opacity on a _background_ (`bg-brand/20` on selection, `bg-bg-1/20` over the showcase) is fine.
 
 **The mapping is attached to the tags.** typeset.css colours `p`, `h1`–`h6` and the rest directly, so a bare `<p>` or `<h2>` is already right with no utility on it. Only write `text-fg-*` when a tag has to depart from its default.
 
@@ -129,7 +130,7 @@ The OG image at [src/routes/api/og.tsx](src/routes/api/og.tsx) renders at displa
 
 ### The scales are closed
 
-Each axis is cleared with a `--<axis>-*: initial` reset before it is redeclared, so Tailwind's own steps do not survive: `text-3xl`, `tracking-wide`, `font-medium`, `rounded-3xl` and `xl:`/`2xl:` do not compile. The names the site _does_ declare keep working, and only those. Those resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears and Biome's property sorter moves those lines to the end of whatever block they are in.
+Each axis is cleared with a `--<axis>-*: initial` reset before it is redeclared, so Tailwind's own steps do not survive: `text-3xl`, `tracking-wide`, `font-medium`, `rounded-3xl` and `xl:`/`2xl:` do not compile. The names the site _does_ declare keep working, and only those. Those resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears. Biome's property sorter moved those lines to the end of whatever block they were in, which is what forced the split; oxfmt sorts `@apply` lists but leaves custom properties where they are, so the separate block is convention now rather than compulsion.
 
 **The one hole is `leading-<number>`.** It reads `--spacing`, not `--leading-*`, so `leading-6` compiles regardless, and clearing `--spacing` would take the spacing scale with it. That one is convention.
 
@@ -240,7 +241,7 @@ Every date is either a calendar day (`2026-03-27`) or a UTC instant. [src/lib/ut
 
 - Hover is a colour or background change, at most 150ms, `ease-out`. Never a layout shift. It fires on every pass of the pointer, so anything slower reads as lag rather than as feedback.
 - Press is `active:scale-[0.96]`, and only on a `button`. A link never scales: the target is a box of text, and a box that lurches reads as a glitch rather than as a press.
-- Icons carry the optical weight of the text beside them: `stroke={1.5}` against 400 copy, one library (`@tabler/icons-react`), 16px unless the row says otherwise, and `currentColor` so hover and state come from CSS rather than a second asset.
+- Icons carry the optical weight of the text beside them: `weight="light"` against 400 copy, one library (`@phosphor-icons/react`), 16px unless the row says otherwise, and `currentColor` so hover and state come from CSS rather than a second asset. Phosphor draws filled paths rather than strokes, so weight selects a different path set instead of thinning one. **Import one icon per path**, `@phosphor-icons/react/CaretRight`: the package entry statically pulls all 1512, and dev serves modules unbundled with nothing tree-shaken, so the barrel is the difference between a 4s and a 16s first request. The five brand marks in [src/components/icons.tsx](src/components/icons.tsx) are hand-rolled SVGs and are not part of that library.
 - An icon that swaps by state cross-fades instead of popping, with both icons mounted so the exit animates too. The copy button in `Install` is the reference. Motion is never the only channel, which is why the check mark also turns `brand`.
 - Remote artwork carries a hairline ring of pure black at low alpha, never a tinted neutral, which picks up the surface underneath and reads as dirt on the image edge. Album covers, artist photos, the showcase screenshot.
 - **One list-row hover model.** Every list row is a `ListItem` and lifts to `bg-2` on hover. `ListItem` is the anchor itself and `ListItemLink` its router twin, so the whole hovered box is what clicks rather than a link nested inside it. A surface has to be earned by communicating interaction, and a divider between rows is not earned when spacing already separates them. Secondary metadata fades in on row hover via `ListItemHover`, and shows at rest wherever there is no hover to fade it in: the `can-hover` variant gates the `opacity-0`. Tailwind already wraps `hover:` in that query, so a hover-only affordance is not subtle on touch, it is absent — and the arrow is the only signal that a project row leaves the site.
