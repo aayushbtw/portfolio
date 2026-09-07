@@ -28,7 +28,9 @@ export const Route = createFileRoute("/_app/")({
 function HomePage() {
   const { posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
-  const haptic = () => trigger("tick");
+  function haptic() {
+    trigger("tick");
+  }
 
   return (
     <Page>

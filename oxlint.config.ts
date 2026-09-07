@@ -10,7 +10,9 @@ export default defineConfig({
       files: ["**/*.tsx"],
       // Components stay declarations: hoisting is what lets a route's
       // `component:` sit above the component it names.
-      rules: { "func-style": "off" },
+      rules: {
+        "func-style": ["error", "declaration", { allowArrowFunctions: false }],
+      },
     },
   ],
 });

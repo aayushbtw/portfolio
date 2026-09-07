@@ -47,7 +47,7 @@ function useActiveHeading(headings: Heading[]) {
       const ids = new Set(headings.map((h) => h.id));
       let hashOverride = "";
 
-      const compute = () => {
+      function compute() {
         if (hashOverride) {
           const id = hashOverride;
           hashOverride = "";
@@ -60,30 +60,30 @@ function useActiveHeading(headings: Heading[]) {
           }
         }
         return active;
-      };
+      }
 
-      const flush = () => {
+      function flush() {
         rafRef.current = 0;
         const active = compute();
         if (active !== stateRef.current) {
           stateRef.current = active;
           onStoreChange();
         }
-      };
+      }
 
-      const onScroll = () => {
+      function onScroll() {
         if (!rafRef.current) {
           rafRef.current = requestAnimationFrame(flush);
         }
-      };
+      }
 
-      const onHashChange = () => {
+      function onHashChange() {
         const hash = window.location.hash.slice(1);
         if (ids.has(hash)) {
           hashOverride = hash;
           flush();
         }
-      };
+      }
 
       flush();
       onHashChange();
