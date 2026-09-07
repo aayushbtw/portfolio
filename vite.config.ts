@@ -6,16 +6,16 @@ import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  resolve: { tsconfigPaths: true },
-  server: { port: 3000 },
-  // The client scanner finds this one; the server scanners don't, and the
-  // Worker environments can't externalise it, so each cold start crawls all
-  // 6093 icon modules behind the barrel. Every other runtime dep prebundles
-  // on its own.
-  environments: {
-    ssr: { optimizeDeps: { include: ["@tabler/icons-react"] } },
-    rsc: { optimizeDeps: { include: ["@tabler/icons-react"] } },
+  resolve: {
+    tsconfigPaths: true,
+    alias: {
+      // The package entry builds its `icons` and `iconsList` exports with
+      // `import * as` over all 6093 icons, and a namespace import can't be
+      // pruned. This deep entry is the same barrel without those two.
+      "@tabler/icons-react": "@tabler/icons-react/dist/esm/icons/index.mjs",
+    },
   },
+  server: { port: 3000 },
   plugins: [
     tailwindcss(),
     tanstackStart({
