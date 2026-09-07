@@ -41,7 +41,7 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   const { clickBuffer, clickFilter } = getNodes(ctx);
 
   const data = clickBuffer.getChannelData(0);
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i += 1) {
     data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 25);
   }
 
