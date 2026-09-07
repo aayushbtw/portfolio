@@ -9,26 +9,26 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     tanstackStart({
-      rsc: { enabled: true },
-      prerender: {
-        enabled: true,
-        crawlLinks: true,
-      },
-      sitemap: {
-        enabled: true,
-        host: "https://aayush.cv",
-      },
       pages: [
         { path: "/", prerender: { enabled: false } },
         { path: "/music", prerender: { enabled: false } },
       ],
+      prerender: {
+        crawlLinks: true,
+        enabled: true,
+      },
+      rsc: { enabled: true },
+      sitemap: {
+        enabled: true,
+        host: "https://aayush.cv",
+      },
     }),
     rsc(),
     viteReact(),
     cloudflare({
       viteEnvironment: {
-        name: "ssr",
         childEnvironments: ["rsc"],
+        name: "ssr",
       },
     }),
   ],

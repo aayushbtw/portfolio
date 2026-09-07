@@ -11,8 +11,8 @@ interface LayoutContextValue {
 const LayoutContext = createContext<LayoutContextValue>({
   crumb: null,
   right: null,
-  setCrumb: () => undefined,
-  setRight: () => undefined,
+  setCrumb: () => {},
+  setRight: () => {},
 });
 
 function LayoutProvider({ children }: { children: ReactNode }) {

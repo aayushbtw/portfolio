@@ -13,9 +13,7 @@ const twMerge = extendTailwindMerge({
   extend: { theme: { spacing: ["xs", "sm", "md", "lg", "xl", "2xl"] } },
 });
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 const compact = new Intl.NumberFormat("en", {
   maximumFractionDigits: 2,
@@ -23,22 +21,17 @@ const compact = new Intl.NumberFormat("en", {
 });
 const exact = new Intl.NumberFormat("en");
 
-export function formatCompact(value: number) {
-  return compact.format(value);
-}
+export const formatCompact = (value: number) => compact.format(value);
 
-export function formatNumber(value: number) {
-  return exact.format(value);
-}
+export const formatNumber = (value: number) => exact.format(value);
 
 /**
  * Dates are parsed *and* formatted in UTC, so the server and the browser agree
  * whatever timezone either sits in. Parsing a bare "2026-03-27" as local time
  * is what makes a post drift a day either way.
  */
-export function toUtcDate(date: string) {
-  return new Date(date.includes("T") ? date : `${date}T00:00:00Z`);
-}
+export const toUtcDate = (date: string) =>
+  new Date(date.includes("T") ? date : `${date}T00:00:00Z`);
 
 const longDate = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
@@ -60,16 +53,12 @@ const shortDate = new Intl.DateTimeFormat("en-US", {
 });
 
 /** "March 27, 2026" */
-export function formatDate(date: string) {
-  return longDate.format(toUtcDate(date));
-}
+export const formatDate = (date: string) => longDate.format(toUtcDate(date));
 
 /** "03/27" */
-export function formatNumericDate(date: string) {
-  return numericDate.format(toUtcDate(date));
-}
+export const formatNumericDate = (date: string) =>
+  numericDate.format(toUtcDate(date));
 
 /** "Mar 27" */
-export function formatShortDate(date: string) {
-  return shortDate.format(toUtcDate(date));
-}
+export const formatShortDate = (date: string) =>
+  shortDate.format(toUtcDate(date));

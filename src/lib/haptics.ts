@@ -9,7 +9,7 @@ interface AudioNodes {
 
 const nodeCache = new WeakMap<AudioContext, AudioNodes>();
 
-function getNodes(ctx: AudioContext): AudioNodes {
+const getNodes = (ctx: AudioContext): AudioNodes => {
   let nodes = nodeCache.get(ctx);
   if (!nodes) {
     const clickBuffer = ctx.createBuffer(
@@ -34,9 +34,9 @@ function getNodes(ctx: AudioContext): AudioNodes {
     nodeCache.set(ctx, nodes);
   }
   return nodes;
-}
+};
 
-function click(ctx: AudioContext): AudioScheduledSourceNode {
+const click = (ctx: AudioContext): AudioScheduledSourceNode => {
   const t = ctx.currentTime;
   const { clickBuffer, clickFilter } = getNodes(ctx);
 
@@ -54,9 +54,9 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   source.start(t);
 
   return source;
-}
+};
 
-function tick(ctx: AudioContext): AudioScheduledSourceNode {
+const tick = (ctx: AudioContext): AudioScheduledSourceNode => {
   const t = ctx.currentTime;
   const { tickGain } = getNodes(ctx);
 
@@ -75,13 +75,13 @@ function tick(ctx: AudioContext): AudioScheduledSourceNode {
   osc.stop(t + 0.02);
 
   return osc;
-}
+};
 
 const sounds = { click, tick } as const;
 
 type Sound = keyof typeof sounds;
 
-export function useHaptics() {
+export const useHaptics = () => {
   const ctx = useRef<AudioContext | null>(null);
   const activeSource = useRef<AudioScheduledSourceNode | null>(null);
 
@@ -104,4 +104,4 @@ export function useHaptics() {
   }, []);
 
   return { trigger };
-}
+};
