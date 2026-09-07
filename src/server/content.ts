@@ -6,9 +6,9 @@ import { parseContent } from "~/server/markdown";
 
 // A skill's `description` is written for an agent and runs long. Its first
 // sentence is the part addressed to a human.
-const FIRST_SENTENCE_REGEX = /^.*?\.(?=\s|$)/s;
-const POST_SLUG_REGEX = /^.*\/(.+)\.md$/;
-const QUOTED_REGEX = /^(['"])(.*)\1$/;
+const FIRST_SENTENCE_REGEX = /^.*?\.(?=\s|$)/su;
+const POST_SLUG_REGEX = /^.*\/(?<slug>.+)\.md$/u;
+const QUOTED_REGEX = /^(?<quote>['"])(?<value>.*)\k<quote>$/u;
 
 // Splitting on the first colon covers every field this site uses and keeps the
 // `yaml` package out of the Worker. It does NOT handle nested maps,
@@ -22,7 +22,10 @@ function parseFrontmatter(text: string): Record<string, string> {
       continue;
     }
     const value = line.slice(colon + 1).trim();
-    fields[line.slice(0, colon).trim()] = value.replace(QUOTED_REGEX, "$2");
+    fields[line.slice(0, colon).trim()] = value.replace(
+      QUOTED_REGEX,
+      "$<value>"
+    );
   }
   return fields;
 }
@@ -79,7 +82,7 @@ const allPosts = collect(
   (frontmatter, document, path) => ({
     ...frontmatter,
     document,
-    slug: path.replace(POST_SLUG_REGEX, "$1"),
+    slug: path.replace(POST_SLUG_REGEX, "$<slug>"),
   })
 );
 

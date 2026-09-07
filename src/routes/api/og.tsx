@@ -63,8 +63,9 @@ export const Route = createFileRoute("/api/og")({
                   fontSize: "62px",
                   color: OG_COLORS.fg1,
                   lineHeight: "1.1",
-                  // Satori takes px, so the scale's em values are resolved here.
-                  letterSpacing: "-1.38px", // -0.0223em
+                  // Satori takes px, so the scale's em values are resolved
+                  // here. -1.38px is -0.0223em.
+                  letterSpacing: "-1.38px",
                 }}
               >
                 {title}
@@ -75,7 +76,8 @@ export const Route = createFileRoute("/api/og")({
                   fontSize: "34px",
                   color: OG_COLORS.fg2,
                   lineHeight: "1.35",
-                  letterSpacing: "-0.74px", // -0.0218em
+                  // -0.74px is -0.0218em.
+                  letterSpacing: "-0.74px",
                   maxWidth: "75%",
                   textWrap: "pretty",
                 }}

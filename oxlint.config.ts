@@ -10,5 +10,8 @@ export default defineConfig({
     // names. Callbacks and cleanups stay arrows: this rule only governs named
     // functions bound to a variable.
     "func-style": ["error", "declaration", { allowArrowFunctions: false }],
+    // Paired with the rule above: declarations hoist, so naming one further
+    // up the file than its definition is the point, not a mistake.
+    "no-use-before-define": ["error", { functions: false }],
   },
 });

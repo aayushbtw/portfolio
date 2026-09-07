@@ -11,8 +11,12 @@ interface LayoutContextValue {
 const LayoutContext = createContext<LayoutContextValue>({
   crumb: null,
   right: null,
-  setCrumb: () => {},
-  setRight: () => {},
+  setCrumb: () => {
+    // stands in until a provider mounts
+  },
+  setRight: () => {
+    // stands in until a provider mounts
+  },
 });
 
 function LayoutProvider({ children }: { children: ReactNode }) {

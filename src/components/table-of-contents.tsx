@@ -41,7 +41,7 @@ function useActiveHeading(headings: Heading[]) {
   const subscribe = useCallback(
     (onStoreChange: () => void) => {
       const elements = headings
-        .map((h) => document.getElementById(h.id))
+        .map((h) => document.querySelector(`#${CSS.escape(h.id)}`))
         .filter(Boolean) as HTMLElement[];
 
       const ids = new Set(headings.map((h) => h.id));

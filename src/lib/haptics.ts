@@ -50,7 +50,7 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   const source = ctx.createBufferSource();
   source.buffer = clickBuffer;
   source.connect(clickFilter);
-  source.onended = () => source.disconnect();
+  source.addEventListener("ended", () => source.disconnect());
   source.start(t);
 
   return source;
@@ -70,7 +70,7 @@ function tick(ctx: AudioContext): AudioScheduledSourceNode {
   tickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.018);
 
   osc.connect(tickGain);
-  osc.onended = () => osc.disconnect();
+  osc.addEventListener("ended", () => osc.disconnect());
   osc.start(t);
   osc.stop(t + 0.02);
 
@@ -85,7 +85,7 @@ export function useHaptics() {
   const ctx = useRef<AudioContext | null>(null);
   const activeSource = useRef<AudioScheduledSourceNode | null>(null);
 
-  const trigger = useCallback((sound: Sound) => {
+  const trigger = useCallback(async (sound: Sound) => {
     ctx.current ??= new AudioContext();
     const audioCtx = ctx.current;
     function play() {
@@ -97,10 +97,9 @@ export function useHaptics() {
       activeSource.current = sounds[sound](audioCtx);
     }
     if (audioCtx.state === "suspended") {
-      audioCtx.resume().then(play);
-    } else {
-      play();
+      await audioCtx.resume();
     }
+    play();
   }, []);
 
   return { trigger };
