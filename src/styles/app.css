@@ -29,10 +29,6 @@
   --color-fg-3: oklch(from var(--color-black) l c h / 0.4);
   --color-fg-4: oklch(from var(--color-gray-600) l c h);
 
-  --color-bg-contrast: oklch(from var(--color-gray-900) l c h);
-  --color-fg-contrast: oklch(from var(--color-white) l c h);
-  --color-fg-contrast-2: oklch(from var(--color-white) l c h / 0.5);
-
   --color-border: oklch(from var(--color-gray-200) l c h);
   --color-border-strong: oklch(from var(--color-gray-300) l c h);
   --color-brand: oklch(0.6658 0.2247 36.3); /* Orange */

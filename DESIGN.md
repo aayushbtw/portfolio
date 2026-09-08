@@ -44,7 +44,7 @@ Text sits at `fg-3` by default and steps **up** to `fg-2`/`fg-1` for emphasis. I
 
 **The mapping is attached to the tags.** typeset.css colours `p`, `h1`–`h6` and the rest directly, so a bare `<p>` or `<h2>` is already right with no utility on it. Only write `text-fg-*` when a tag has to depart from its default.
 
-There is also a light-on-dark set — `bg-contrast`, `fg-contrast`, `fg-contrast-2` — declared and unused. Delete them or find them a home; do not invent a use for them to justify keeping them.
+**The palette has no light-on-dark set.** The one surface that reads that way is the now-playing hover card, which writes `bg-black` and `text-white` literally: its colours answer to the cover art under them rather than to the page, for the reason under Page shape. A token would put them in the scale and invite a second user with no business being dark.
 
 ## Spacing
 
