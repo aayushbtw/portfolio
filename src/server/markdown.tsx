@@ -52,8 +52,38 @@ function MarkdownShowcaseImage({
   return <ShowcaseImage height={Number(height)} {...props} />;
 }
 
+// The renderer's own `headingAnchors` hangs a separate `#` link off the
+// heading; the whole title is the target here instead, so the link takes the
+// heading's children and the `#` is drawn in CSS.
+function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
+  const Tag = `h${level}` as const;
+  return function MarkdownHeading({
+    children,
+    id,
+    ...props
+  }: ComponentPropsWithoutRef<"h2">) {
+    return (
+      <Tag id={id} {...props}>
+        {id ? (
+          <a className="heading-anchor" href={`#${id}`}>
+            {children}
+          </a>
+        ) : (
+          children
+        )}
+      </Tag>
+    );
+  };
+}
+
 const components = {
   a: MarkdownLink,
+  h1: createHeading(1),
+  h2: createHeading(2),
+  h3: createHeading(3),
+  h4: createHeading(4),
+  h5: createHeading(5),
+  h6: createHeading(6),
   "md-after": After,
   "md-before": Before,
   "md-compare": Compare,
@@ -76,7 +106,6 @@ function renderMarkdown(document: MarkdownDocument): ReactElement {
     <Markdown
       codeLineNumbers
       components={components}
-      headingAnchors={{ className: "heading-anchor" }}
       highlighter={highlightCode}
     >
       {document}

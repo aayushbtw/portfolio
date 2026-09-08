@@ -444,13 +444,20 @@
   }
 
   /* Class selector, not `:where`, so it outranks the `animated-link` every
-     prose anchor gets. Out of flow, or it indents the heading; `top-0` so it
-     stays on the first line of one that wraps. */
+     prose anchor gets. The link wraps the whole title, so it takes the
+     heading's own type rather than a link's. */
   .typeset .heading-anchor {
-    @apply absolute top-0 end-full pe-xs text-fg-2 no-underline opacity-0 transition-opacity duration-150;
+    @apply text-inherit no-underline;
   }
 
-  .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
+  /* Out of flow, or it indents the heading; `top-0` so it stays on the first
+     line of one that wraps. */
+  .typeset .heading-anchor::before {
+    @apply absolute top-0 end-full pe-xs font-normal text-fg-2 opacity-0 transition-opacity duration-150;
+    content: "#";
+  }
+
+  .typeset :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor::before {
     @apply opacity-100;
   }
 
