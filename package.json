@@ -28,7 +28,6 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "tailwind-merge": "^3.6.0",
-    "torph": "^0.1.2",
     "workers-og": "^0.0.27"
   },
   "devDependencies": {
