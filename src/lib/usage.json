@@ -1,89 +1,89 @@
 {
   "year": 2026,
-  "total": 3435244933,
-  "sessions": 209,
+  "total": 4445879182,
+  "sessions": 260,
   "tokenTypes": [
     {
       "label": "Cache read",
-      "share": 97.6479,
-      "tokens": 3354444021
+      "share": 97.8662,
+      "tokens": 4351011231
     },
     {
       "label": "Cache write",
-      "share": 2.0019,
-      "tokens": 68769566
+      "share": 1.7914,
+      "tokens": 79642091
     },
     {
       "label": "Output",
-      "share": 0.3454,
-      "tokens": 11864379
+      "share": 0.3385,
+      "tokens": 15047473
     },
     {
       "label": "Input",
-      "share": 0.0049,
-      "tokens": 166967
+      "share": 0.004,
+      "tokens": 178387
     }
   ],
   "models": [
     {
       "name": "Opus 5",
-      "share": 78.2507,
-      "tokens": 2688102758
+      "share": 83.1947,
+      "tokens": 3698737007
     },
     {
       "name": "Opus 4.8",
-      "share": 17.1133,
+      "share": 13.2231,
       "tokens": 587882138
     },
     {
       "name": "Fable 5",
-      "share": 2.3185,
+      "share": 1.7915,
       "tokens": 79645923
     },
     {
       "name": "Sonnet 5",
-      "share": 2.3176,
+      "share": 1.7907,
       "tokens": 79614114
     }
   ],
   "days": [
     {
-      "date": "2026-08-23",
-      "tokens": 40488011,
-      "barWidth": 37
+      "date": "2026-09-08",
+      "tokens": 65605407,
+      "barWidth": 47
     },
     {
-      "date": "2026-08-22",
-      "tokens": 110864361,
+      "date": "2026-09-07",
+      "tokens": 82994828,
+      "barWidth": 59
+    },
+    {
+      "date": "2026-09-06",
+      "tokens": 140104224,
       "barWidth": 100
     },
     {
-      "date": "2026-08-21",
-      "tokens": 38248684,
-      "barWidth": 35
+      "date": "2026-09-05",
+      "tokens": 103062891,
+      "barWidth": 74
     },
     {
-      "date": "2026-08-20",
-      "tokens": 66652956,
-      "barWidth": 60
+      "date": "2026-09-04",
+      "tokens": 42936007,
+      "barWidth": 31
     },
     {
-      "date": "2026-08-19",
-      "tokens": 62242182,
-      "barWidth": 56
+      "date": "2026-09-03",
+      "tokens": 36474922,
+      "barWidth": 26
     },
     {
-      "date": "2026-08-18",
-      "tokens": 89384690,
-      "barWidth": 81
-    },
-    {
-      "date": "2026-08-17",
-      "tokens": 100293004,
-      "barWidth": 90
+      "date": "2026-09-02",
+      "tokens": 58588713,
+      "barWidth": 42
     }
   ],
-  "words": 2576433700,
-  "novels": 32000,
-  "generatedAt": "2026-08-24T06:09:28.313Z"
+  "words": 3334409387,
+  "novels": 42000,
+  "generatedAt": "2026-09-08T10:06:38.112Z"
 }
