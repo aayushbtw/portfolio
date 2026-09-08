@@ -3,9 +3,13 @@ title: Writing Guide
 description: Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.
 ---
 
-Every pair below is one passage written twice: once the way it usually comes out, and once after the skill has been over it. The subject never changes between the two sides, so the only thing left to compare is the writing.
+Drafts fail in the same few places. The voice goes corporate, the opening clears its throat, the claims hide behind adjectives, and the punctuation gives away which model wrote it. The guide covers voice, titles, openings, endings, banned language and those tells, and it rewrites rather than annotates.
 
-## Voice
+Four of them are below. Each is one passage written twice, same subject on both sides, so the only thing that changed is the writing.
+
+## "It could be argued" is not a position
+
+The guide's voice rules ask for a stance and a number. The draft has neither: it evaluates, it qualifies, and it arrives at an implementation without ever saying what was chosen or why. Watch the passive voice go with it.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
@@ -20,7 +24,9 @@ We tried three retry strategies and exponential backoff won. It is not close: co
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-## Opening
+## An opening is not a warm-up
+
+The guide gives an opening one job: state the problem, state the conclusion, or set up a contradiction. Thirty-two words go by in the draft before anything happens, and "in this blog post, we will explore" is on the banned list for exactly that reason.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
@@ -35,7 +41,9 @@ Our queue drained 40,000 jobs in four minutes and every one of them was the same
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-## Corporate fluff
+## Adjectives are where claims go to hide
+
+Eight banned words in one sentence, and not one of them says how much faster anything got. That is the tell: "best-in-class" and "significant" survive precisely because they cannot be checked. The rewrite trades all eight for two numbers, and gets shorter.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
@@ -50,7 +58,9 @@ The job runner has a new scheduler. Median queue wait went from 8 seconds to und
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-## AI tells
+## Punctuation is a fingerprint
+
+Nothing in the draft is wrong. It reads as generated, and the reasons are mechanical: em dashes, curly quotes, and the stilted "you'll" and "you'd" that models reach for and people do not. All three are on the list, so all three come out.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
