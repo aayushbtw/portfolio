@@ -28,35 +28,6 @@ interface SkillDemo {
 }
 
 const skillDemos: Record<string, SkillDemo> = {
-  "git-commit": {
-    covers: [
-      "conventional commits",
-      "scopes",
-      "imperative subjects",
-      "atomic commits",
-      "breaking changes",
-    ],
-    examples: [
-      {
-        after: "fix(queue): stop retries re-enqueuing themselves",
-        before: "fixed the thing",
-        label: "Format",
-      },
-      {
-        after:
-          "fix(queue): stop retries re-enqueuing themselves\nfeat(queue): add jitter to the backoff window\ndocs(queue): document the retry window\nchore(deps): bump bullmq to v5",
-        before:
-          "update queue stuff\n\n- fix retry loop\n- add jitter\n- readme\n- bump deps",
-        label: "Splitting commits",
-        mono: true,
-      },
-      {
-        after: "feat(api)!: return 409 instead of 200 on conflict",
-        before: "changed the api response",
-        label: "Breaking changes",
-      },
-    ],
-  },
   "writing-guide": {
     covers: [
       "voice",

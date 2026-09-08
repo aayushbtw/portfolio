@@ -2,6 +2,7 @@ import "@tanstack/react-start/server-only";
 import type { MarkdownDocument } from "@tanstack/markdown";
 import { z } from "zod";
 
+import { skillDemos } from "~/lib/skill-demos";
 import { parseContent } from "~/server/markdown";
 
 // A skill's `description` is written for an agent and runs long. Its first
@@ -98,4 +99,11 @@ const allSkills = collect(
   })
 );
 
-export { allPosts, allSkills };
+// A skill reaches the site only if it has a showcase. The registry is the
+// allowlist: git-commit ships in the repo and on skills.sh, but a conventional
+// commit demonstrates itself and does not need a page arguing for it.
+const showcasedSkills = allSkills
+  .filter((skill) => Object.hasOwn(skillDemos, skill.slug))
+  .toSorted((a, b) => a.title.localeCompare(b.title));
+
+export { allPosts, allSkills, showcasedSkills };
