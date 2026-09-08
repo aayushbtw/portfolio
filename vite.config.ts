@@ -6,6 +6,10 @@ import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  // Content is read through `import.meta.glob(..., { query: "?raw" })`, and an
+  // HMR update re-transforms the changed file without that query. Without this
+  // Vite parses the markdown as JS and the dev server 500s until it restarts.
+  assetsInclude: ["**/*.md"],
   plugins: [
     tailwindcss(),
     tanstackStart({
