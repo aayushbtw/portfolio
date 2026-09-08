@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-import { cn } from "~/lib/utils";
-
 function Compare({ children }: { children?: ReactNode }) {
   return (
     <div
@@ -14,39 +12,17 @@ function Compare({ children }: { children?: ReactNode }) {
 }
 
 function Before({ children }: { children?: ReactNode }) {
-  return <Side name="before">{children}</Side>;
+  return <Side name="Before">{children}</Side>;
 }
 
-/* The rewrite is the one that won, so its label takes `brand`. That is the
-   same job the check mark does in `Install`, not a new meaning for the colour. */
 function After({ children }: { children?: ReactNode }) {
-  return (
-    <Side accent name="after">
-      {children}
-    </Side>
-  );
+  return <Side name="After">{children}</Side>;
 }
 
-function Side({
-  accent,
-  children,
-  name,
-}: {
-  accent?: boolean;
-  children?: ReactNode;
-  name: string;
-}) {
+function Side({ children, name }: { children?: ReactNode; name: string }) {
   return (
     <div className="bg-bg-1 flex flex-col rounded-xs border">
-      <p
-        className={cn(
-          "not-typeset px-md py-sm border-b",
-          accent ? "text-brand" : "text-fg-3"
-        )}
-      >
-        {name}
-      </p>
-
+      <p className="not-typeset px-md py-sm text-fg-2 border-b">{name}</p>
       <div className="p-md *:first:mt-0">{children}</div>
     </div>
   );
