@@ -1,7 +1,11 @@
-// The page sells a skill rather than reprinting it: the text is on GitHub and
-// skills.sh, and a visitor deciding whether to install one wants to see what it
-// does to their work. This file is the whole of what the site says about a
-// skill, so it stays readable without the skills repo checked out.
+// Every skill the site shows, and everything it says about one. The skills
+// themselves live in their own repo and on skills.sh; this page argues for
+// them rather than reprinting them, so there is nothing here to keep in sync
+// with a SKILL.md and no reason to vendor one.
+//
+// A skill absent from this list is absent from the site. git-commit ships in
+// the repo and is left out here on purpose: a conventional commit demonstrates
+// itself and does not need a page arguing for it.
 //
 // Two rules for an example, both learned the hard way:
 //
@@ -21,14 +25,20 @@ interface SkillExample {
   mono?: boolean;
 }
 
-interface SkillDemo {
+interface Skill {
   // Topics the skill covers, rendered into the sentence above the examples.
   covers: string[];
   examples: SkillExample[];
+  // Matches the directory in the skills repo; it is the install argument.
+  slug: string;
+  // One human sentence. The skill's own frontmatter runs long and is addressed
+  // to an agent, so it is not reused here.
+  summary: string;
+  title: string;
 }
 
-const skillDemos: Record<string, SkillDemo> = {
-  "writing-guide": {
+const skills: Skill[] = [
+  {
     covers: [
       "voice",
       "titles",
@@ -68,7 +78,15 @@ const skillDemos: Record<string, SkillDemo> = {
         label: "AI tells",
       },
     ],
+    slug: "writing-guide",
+    summary:
+      "Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.",
+    title: "Writing Guide",
   },
-};
+];
 
-export { type SkillDemo, type SkillExample, skillDemos };
+function getSkill(slug: string) {
+  return skills.find((skill) => skill.slug === slug);
+}
+
+export { getSkill, type Skill, type SkillExample, skills };

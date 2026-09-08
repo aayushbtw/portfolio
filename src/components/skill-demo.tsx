@@ -1,12 +1,9 @@
 import { Fragment } from "react";
 
-import type {
-  SkillDemo as SkillDemoData,
-  SkillExample,
-} from "~/lib/skill-demos";
+import type { Skill, SkillExample } from "~/lib/skills";
 import { cn } from "~/lib/utils";
 
-function SkillDemo({ covers, examples }: SkillDemoData) {
+function SkillDemo({ covers, examples }: Skill) {
   return (
     <>
       <h2>What it changes</h2>

@@ -2,12 +2,8 @@ import "@tanstack/react-start/server-only";
 import type { MarkdownDocument } from "@tanstack/markdown";
 import { z } from "zod";
 
-import { skillDemos } from "~/lib/skill-demos";
 import { parseContent } from "~/server/markdown";
 
-// A skill's `description` is written for an agent and runs long. Its first
-// sentence is the part addressed to a human.
-const FIRST_SENTENCE_REGEX = /^.*?\.(?=\s|$)/su;
 const POST_SLUG_REGEX = /^.*\/(?<slug>.+)\.md$/u;
 const QUOTED_REGEX = /^(?<quote>['"])(?<value>.*)\k<quote>$/u;
 
@@ -65,12 +61,6 @@ const postFiles = import.meta.glob<string>("/content/posts/*.md", {
   query: "?raw",
 });
 
-const skillFiles = import.meta.glob<string>("/content/skills/*/SKILL.md", {
-  eager: true,
-  import: "default",
-  query: "?raw",
-});
-
 const allPosts = collect(
   postFiles,
   z.object({
@@ -87,23 +77,4 @@ const allPosts = collect(
   })
 );
 
-const allSkills = collect(
-  skillFiles,
-  z.object({ description: z.string(), name: z.string() }),
-  ({ name, description }, document) => ({
-    description,
-    document,
-    slug: name,
-    summary: FIRST_SENTENCE_REGEX.exec(description)?.[0] ?? description,
-    title: document.headings?.find((h) => h.level === 1)?.text ?? name,
-  })
-);
-
-// A skill reaches the site only if it has a showcase. The registry is the
-// allowlist: git-commit ships in the repo and on skills.sh, but a conventional
-// commit demonstrates itself and does not need a page arguing for it.
-const showcasedSkills = allSkills
-  .filter((skill) => Object.hasOwn(skillDemos, skill.slug))
-  .toSorted((a, b) => a.title.localeCompare(b.title));
-
-export { allPosts, allSkills, showcasedSkills };
+export { allPosts };
