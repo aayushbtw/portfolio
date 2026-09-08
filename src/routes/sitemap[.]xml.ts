@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { config } from "~/lib/config";
-import { skills } from "~/lib/skills";
-import { allPosts } from "~/server/content";
+import { allPosts, allSkills } from "~/server/content";
 
 interface Entry {
   lastmod?: string;
@@ -24,7 +23,7 @@ function entries(): Entry[] {
     path: `/writings/${post.slug}`,
   }));
 
-  const skillEntries: Entry[] = skills.map((skill) => ({
+  const skillEntries: Entry[] = allSkills.map((skill) => ({
     path: `/skills/${skill.slug}`,
   }));
 

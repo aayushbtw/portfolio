@@ -8,6 +8,7 @@ import { Markdown } from "@tanstack/markdown/react";
 import type { MarkdownComponents } from "@tanstack/markdown/react";
 import type { ComponentPropsWithoutRef, ReactElement } from "react";
 
+import { After, Before, Compare } from "~/components/compare";
 import { ShowcaseImage } from "~/components/showcase";
 import { highlighter } from "~/lib/highlight";
 
@@ -53,6 +54,9 @@ function MarkdownShowcaseImage({
 
 const components = {
   a: MarkdownLink,
+  "md-after": After,
+  "md-before": Before,
+  "md-compare": Compare,
   "md-showcase": "figure",
   "md-showcase-caption": "figcaption",
   "md-showcase-image": MarkdownShowcaseImage,

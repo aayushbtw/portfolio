@@ -1,11 +1,8 @@
-import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { renderServerComponent } from "@tanstack/react-start/rsc";
 
 import type { PostListItem } from "~/components/post-list";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
-import { allPosts } from "~/server/content";
-import { renderMarkdown } from "~/server/markdown";
+import { allPosts, loadEntry } from "~/server/content";
 
 function sortedPosts() {
   return allPosts.toSorted(
@@ -31,20 +28,7 @@ const postListFn = createServerFn({ method: "GET" })
 
 const postBySlugFn = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
-    const post = allPosts.find((p) => p.slug === slug);
-    if (!post) {
-      throw notFound();
-    }
-
-    const { document, ...meta } = post;
-
-    return {
-      ...meta,
-      body: await renderServerComponent(renderMarkdown(document)),
-      headings: (document.headings ?? []).filter((h) => h.level === 2),
-    };
-  });
+  .handler(({ data: slug }) => loadEntry(allPosts, slug));
 
 function getPostList(limit?: number) {
   return postListFn({ data: limit });

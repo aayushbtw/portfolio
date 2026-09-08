@@ -1,10 +1,12 @@
 import "@tanstack/react-start/server-only";
 import type { MarkdownDocument } from "@tanstack/markdown";
+import { notFound } from "@tanstack/react-router";
+import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { z } from "zod";
 
-import { parseContent } from "~/server/markdown";
+import { parseContent, renderMarkdown } from "~/server/markdown";
 
-const POST_SLUG_REGEX = /^.*\/(?<slug>.+)\.md$/u;
+const SLUG_REGEX = /^.*\/(?<slug>.+)\.md$/u;
 const QUOTED_REGEX = /^(?<quote>['"])(?<value>.*)\k<quote>$/u;
 
 // Splitting on the first colon covers every field this site uses and keeps the
@@ -61,6 +63,25 @@ const postFiles = import.meta.glob<string>("/content/posts/*.md", {
   query: "?raw",
 });
 
+const skillFiles = import.meta.glob<string>("/content/skills/*.md", {
+  eager: true,
+  import: "default",
+  query: "?raw",
+});
+
+const allSkills = collect(
+  skillFiles,
+  z.object({
+    summary: z.string(),
+    title: z.string(),
+  }),
+  (frontmatter, document, path) => ({
+    ...frontmatter,
+    document,
+    slug: path.replace(SLUG_REGEX, "$<slug>"),
+  })
+);
+
 const allPosts = collect(
   postFiles,
   z.object({
@@ -73,8 +94,28 @@ const allPosts = collect(
   (frontmatter, document, path) => ({
     ...frontmatter,
     document,
-    slug: path.replace(POST_SLUG_REGEX, "$<slug>"),
+    slug: path.replace(SLUG_REGEX, "$<slug>"),
   })
 );
 
-export { allPosts };
+// Posts and skills are both markdown with frontmatter, so reading one is the
+// same job either way: find it or 404, then hand back its metadata with the
+// body already rendered. The document itself never leaves the server.
+async function loadEntry<
+  TEntry extends { document: MarkdownDocument; slug: string },
+>(entries: TEntry[], slug: string) {
+  const entry = entries.find((candidate) => candidate.slug === slug);
+  if (!entry) {
+    throw notFound();
+  }
+
+  const { document, ...meta } = entry;
+
+  return {
+    ...meta,
+    body: await renderServerComponent(renderMarkdown(document)),
+    headings: (document.headings ?? []).filter((h) => h.level === 2),
+  };
+}
+
+export { allPosts, allSkills, loadEntry };

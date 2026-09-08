@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { GithubIcon, VercelIcon } from "~/components/icons";
 import {
@@ -8,19 +8,12 @@ import {
   InstallLinks,
 } from "~/components/install";
 import { Crumb } from "~/components/layout-provider";
-import { SkillDemo } from "~/components/skill-demo";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
-import { getSkill } from "~/lib/skills";
+import { getSkillBySlug } from "~/server/skills";
 
 export const Route = createFileRoute("/_app/skills/$slug")({
-  loader: ({ params: { slug } }) => {
-    const skill = getSkill(slug);
-    if (!skill) {
-      throw notFound();
-    }
-    return skill;
-  },
+  loader: ({ params: { slug } }) => getSkillBySlug(slug),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};
@@ -64,7 +57,7 @@ function SkillPage() {
           </InstallLinks>
         </Install>
 
-        <SkillDemo {...skill} />
+        {skill.body}
       </article>
     </section>
   );
