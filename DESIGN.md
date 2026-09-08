@@ -2,7 +2,7 @@
 
 How this site is styled, and why it is styled that way.
 
-The code is the source of truth for values: [src/styles/app.css](src/styles/app.css) declares every token, [src/styles/typeset.css](src/styles/typeset.css) owns prose, and [src/routes/_app/route.tsx](src/routes/_app/route.tsx) owns the page frame. This file exists for the decisions those files cannot state: what a token is for, which of two plausible options was taken, and what was rejected so it does not get retried. When a number here disagrees with the CSS, the CSS is right.
+The code is the source of truth for values: [src/styles/app.css](src/styles/app.css) declares every token, [src/styles/typeset.css](src/styles/typeset.css) owns prose, and [src/routes/_app/route.tsx](src/routes/_app/route.tsx) owns the page frame. This file exists for the decisions those files cannot state: what a token is for, which of two plausible options was taken, and what was rejected so it does not get retried. When a number here disagrees with the CSS, the CSS is right. It carries no history: what changed, and when, is the commit log's job.
 
 **It is not a component reference.** How a component works is the component's job, and a paragraph here restating it is a second copy to keep in step. A class that looks deletable and is not gets a one-line comment at its call site, where someone about to delete it will actually see it. Neither belongs here.
 
@@ -44,7 +44,7 @@ Text sits at `fg-3` by default and steps **up** to `fg-2`/`fg-1` for emphasis. I
 
 **The mapping is attached to the tags.** typeset.css colours `p`, `h1`–`h6` and the rest directly, so a bare `<p>` or `<h2>` is already right with no utility on it. Only write `text-fg-*` when a tag has to depart from its default.
 
-There is also a light-on-dark set — `bg-contrast`, `fg-contrast`, `fg-contrast-2` — declared and currently unused. They were the mobile nav capsule and a tooltip, both since removed. Delete them or find them a home; do not invent a use for them to justify keeping them.
+There is also a light-on-dark set — `bg-contrast`, `fg-contrast`, `fg-contrast-2` — declared and unused. Delete them or find them a home; do not invent a use for them to justify keeping them.
 
 ## Spacing
 
@@ -108,11 +108,11 @@ Three steps, and which one you want follows from what the thing is.
 | Size     | `text-base` · `text-sm`                                |
 | Leading  | `leading-normal` · `leading-relaxed` · `leading-tight` |
 | Tracking | `tracking-normal` · `tracking-tight`                   |
-| Weight   | `font-normal` · `font-bold`, `h1` only                 |
+| Weight   | `font-normal` · `font-bold`, on `h1` and `strong`      |
 
 Fonts are `font-sans` (Inter Variable) everywhere and `font-mono` (JetBrains Mono Variable) for code, with `body` setting the `cv01`/`ss03` features.
 
-**Every one of those reuses a stock Tailwind name with the site's value behind it,** and that is deliberate. tailwind-merge groups a class by guessing from its name, so a bespoke `text-compact` was read as a _colour_ and silently deleted by the `text-fg-4` beside it in `cn()`. Stock names group correctly for free. The spacing scale is the one exception, and it pays for that with an entry in `extendTailwindMerge` at [src/lib/utils.ts](src/lib/utils.ts).
+**Every one of those reuses a stock Tailwind name with the site's value behind it,** and that is deliberate. tailwind-merge groups a class by guessing from its name, so a bespoke `text-compact` reads as a _colour_ and is silently deleted by a `text-fg-4` beside it in `cn()`. Stock names group correctly for free. The spacing scale is the one exception, and it pays for that with an entry in `extendTailwindMerge` at [src/lib/utils.ts](src/lib/utils.ts).
 
 **Leading defaults tight, not loose.** Almost everything here is one line long: a crumb, a list row, a stat, a label, a heading. A 24px line box around a single line is 24px of nothing, and it makes a column of rows read as loose rather than as a set. `leading-relaxed` is the opt-up, and typeset gives it to `p` — the one element that reliably wraps, where the extra leading is what makes the next line findable from the end of the last. `leading-tight` goes on `h1`, so a page title that wraps reads as one object rather than two lines.
 
@@ -120,7 +120,7 @@ Because those two differ, **anything that has to share a baseline with the title
 
 **Leading is not bundled into the size tokens.** Either leading can sit on either size, so pairing them would have made the choice for you. A departure names the single axis it changes.
 
-**Weight is not a hierarchy tool.** `font-medium` does not compile, typeset's 600/500 ladder was deleted rather than remapped, and `<strong>` carries no visual change at all. `font-bold` has exactly one user, the `h1`, and it is four steps — less a weight change than an optical correction, and what stops a page title from disappearing into copy it shares a size and a family with. Reaching for it anywhere else is the signal that a colour step is not doing its job.
+**Weight is not a hierarchy tool.** The scale has two weights and no more: `font-medium` does not compile, and neither does typeset's own 600/500 ladder. `font-bold` is 450, fifty units above `normal`, and that half-step is an optical correction rather than a step in a hierarchy. It has two users. On the `h1` it is what stops a page title from disappearing into copy it shares a size and a family with. On `<strong>` it is simply the only bold the scale has, the browser's 700 having been cleared with everything else. Reaching for it anywhere else is the signal that a colour step is not doing its job.
 
 **`tracking-tight` belongs to lines that are read as objects, not as prose.** typeset puts it on every heading and on code; the one place it is written by hand is the date under a post's title, so those two lines read as one block. Body copy stays `tracking-normal`: tracking a wrapping paragraph fights the reading it is meant to help. A tracking curve corrects for size, and with one size there is nothing to correct.
 
@@ -130,7 +130,7 @@ The OG image at [src/routes/api/og.tsx](src/routes/api/og.tsx) renders at displa
 
 ### The scales are closed
 
-Each axis is cleared with a `--<axis>-*: initial` reset before it is redeclared, so Tailwind's own steps do not survive: `text-3xl`, `tracking-wide`, `font-medium`, `rounded-3xl` and `xl:`/`2xl:` do not compile. The names the site _does_ declare keep working, and only those. Those resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears. Biome's property sorter moved those lines to the end of whatever block they were in, which is what forced the split; oxfmt sorts `@apply` lists but leaves custom properties where they are, so the separate block is convention now rather than compulsion.
+Each axis is cleared with a `--<axis>-*: initial` reset before it is redeclared, so Tailwind's own steps do not survive: `text-3xl`, `tracking-wide`, `font-medium`, `rounded-3xl` and `xl:`/`2xl:` do not compile. The names the site _does_ declare keep working, and only those. Those resets live in a `@theme` block of their own, because a `*` reset has to come before what it clears. oxfmt leaves custom properties where they are, so the split is convention rather than compulsion.
 
 **The one hole is `leading-<number>`.** It reads `--spacing`, not `--leading-*`, so `leading-6` compiles regardless, and clearing `--spacing` would take the spacing scale with it. That one is convention.
 
@@ -149,31 +149,31 @@ Every heading is `fg-1` at body size and body weight, and separates from copy by
 
 **Headings carry no class.** typeset gives them their colour and tracking, gives `h1` its weight and leading, and Tailwind's preflight already sets `h1`–`h6` to `font-size: inherit`. A page title is a bare `<h1>` and a section heading a bare `<h2>`, and both get it for free. A section heading is not uppercase and not tracked out — a label that shouts competes with the thing it labels, and the tag already carries the structure.
 
-**There are no label utilities.** `text-section-label` and `text-label` both existed and both are gone. Once size, weight and tracking left the label treatment, each was a second name for `text-fg-3`, and a utility that expands to one declaration you could have written is indirection with nothing on the other end. Bring a name back when it earns more than one declaration.
+**There are no label utilities.** With size, weight and tracking out of the label treatment, any such name is a second name for `text-fg-3`, and a utility that expands to one declaration you could have written is indirection with nothing on the other end. Bring a name back when it earns more than one declaration.
 
-**What this cost.** The 404 title, the usage stat values, and every caption, code block and footnote used to differ in size and no longer do; captions and code separate by family, colour and rule instead. Pages here are short enough to take in at once, which is the bet the whole thing rests on. A page long enough to need scanning would need a second size in the copy itself, and that is the signal to add one rather than to work around its absence.
+**What this costs.** The 404 title, the usage stat values, and every caption, code block and footnote all sit at one size; captions and code separate by family, colour and rule instead. Pages here are short enough to take in at once, which is the bet the whole thing rests on. A page long enough to need scanning would need a second size in the copy itself, and that is the signal to add one rather than to work around its absence.
 
 ## Breakpoints
 
-Three: `sm` 640, `md` 768, `lg` 1280. Tailwind's `xl` and `2xl` are cleared with everything else the theme closes, because a fourth width was only ever used to undo what a wrong third one did.
+Three: `sm` 640, `md` 768, `lg` 1280. Tailwind's `xl` and `2xl` are cleared with everything else the theme closes, because a fourth width only ever undoes what a wrong third one did.
 
-`lg` is the only one measured rather than inherited. It is where the page becomes three columns, and three columns need the content measure, two `xl` gaps, and two gutters wide enough to hold what goes in them. The binding one is the table of contents, which needs about 230px before its headings wrap; the trail can overflow into the empty cell beside it and does not count. That is why `lg` is 1280 and not Tailwind's 1024, where the layout switched on with 151px of gutter and wrapped every heading in the table of contents to two lines.
+`lg` is the only one measured rather than inherited. It is where the page becomes three columns, and three columns need the content measure, two `xl` gaps, and two gutters wide enough to hold what goes in them. The binding one is the table of contents, which needs about 230px before its headings wrap; the trail can overflow into the empty cell beside it and does not count. That is why `lg` is 1280 and not Tailwind's 1024, where the layout switches on with 151px of gutter and wraps every heading in the table of contents to two lines.
 
 ## Page shape
 
-The content column is `--container-content`, **644px**, used as `max-w-content` on `main` and as the middle track of the grid. That is about 86 characters at the body size, against the 60–68 prose conventionally wants, and it is the settled answer rather than a target missed. Three widths were tried: 740 ran long enough that the eye hunted for the start of the next line, and 520 — essentially the conventional target — read as too narrow next to the code blocks in a post. That last one is the useful finding: nothing can escape this column, so every code fence shares the prose measure with the prose. 644 is where those two pressures balance. Narrowing it again means first giving wide content a way to break out, and that has not earned its cost.
+The content column is `--container-content`, **644px**, used as `max-w-content` on `main` and as the middle track of the grid. That is about 86 characters at the body size, against the 60–68 prose conventionally wants, and it is deliberate. At 740 the eye hunts for the start of the next line; at 520, essentially the conventional target, the column reads too narrow next to the code blocks in a post. That second one is the binding constraint: nothing can escape this column, so every code fence shares the prose measure with the prose. 644 is where those two pressures balance. Narrowing it means first giving wide content a way to break out, and that has not earned its cost.
 
 **One grid, and nothing in it is `fixed`.** [src/routes/_app/route.tsx](src/routes/_app/route.tsx) owns the frame: two rows at every width, three columns from `lg` collapsing to one below it. The trail is column one, the page is column two, the track and the table of contents are column three. The page is centred by the middle track sitting between two `1fr` gutters, not by a wrapper, and pages render only their sections.
 
-Two rows rather than one because the first row's middle cell is empty: a trail longer than its gutter runs into it rather than onto the page. At `lg` the gutter and a full trail are within a few pixels of each other, so without somewhere to overflow a long title ate its own last crumb to a `…`.
+Two rows rather than one because the first row's middle cell is empty: a trail longer than its gutter runs into it rather than onto the page. At `lg` the gutter and a full trail are within a few pixels of each other, so without somewhere to overflow, a long title eats its own last crumb to a `…`.
 
-Nothing being `fixed` is the rule the rest follows from. Chrome pinned to the window has the page scrolling under it, and a screenshot passing beneath a line of dark text is unreadable however the band over it is drawn — a scrim was tried, and it cut a white stripe across the first post with an image in it. Chrome in a gutter cannot be scrolled under, so nothing has to be hidden and the blur at each end of the page column stays decoration.
+Nothing being `fixed` is the rule the rest follows from. Chrome pinned to the window has the page scrolling under it, and a screenshot passing beneath a line of dark text is unreadable however the band over it is drawn: a scrim cuts a white stripe across a post with an image in it. Chrome in a gutter cannot be scrolled under, so nothing has to be hidden and the blur at each end of the page column stays decoration.
 
 **The one thing that reaches outside the frame** is the anchor offset. The blur band is 48px tall, so a heading jumped to from the table of contents would land underneath it, and headings with an `id` carry a `scroll-margin-block-start` in typeset.css to clear it. A decorative element generating a compensating rule in another file is accepted here: the band stays, so the rule stays with it.
 
-**The nav is a trail, not a menu.** There was a sticky text rail on the left and an icon capsule on mobile, both rendering one link list. Both are gone. A site this small does not have sections to browse between — it has a home page that links to everything and pages that hang off it — so a persistent list of five destinations was answering a question nobody asked. The trail answers the one people do ask, which is where am I and how do I get back. The home page renders no trail at all: a single `Home` crumb pointing at the page you are on is a label, not navigation.
+**The nav is a trail, not a menu.** A site this small does not have sections to browse between — it has a home page that links to everything and pages that hang off it — so a persistent list of five destinations answers a question nobody asks. That rules out a sticky text rail down the side, and an icon capsule on mobile. The trail answers the one people do ask, which is where am I and how do I get back. The home page renders no trail at all: a single `Home` crumb pointing at the page you are on is a label, not navigation.
 
-Nothing links across any more, so `G`+key is the only way from `/writings` to `/usage` without going home first. It is a keyboard affordance rather than the navigation: on a phone the way across is the home page.
+Nothing links across, so `G`+key is the only way from `/writings` to `/usage` without going home first. It is a keyboard affordance rather than the navigation: on a phone the way across is the home page.
 
 **The now-playing card is the trail's mirror**, opposite gutter, same treatment. Its hover card is a cover, not a panel: the album art at full bleed with the track over it, dark in both themes because the surface being read against is a photograph, not the page. A scrim and a blur band both sit under the text, because a scrim alone still leaves a light cover's detail cutting through the words. Sampling the cover for a matched tint does not help once the blur is there, and costs a CORS dependency and an ink flip that picks wrong mid-luminance.
 
@@ -183,7 +183,7 @@ There is no prose class. `typeset` sits on the shell in `_app/route.tsx`, so eve
 
 [src/styles/typeset.css](src/styles/typeset.css) is vendored from [shadcn/typeset](https://ui.shadcn.com/docs/typeset) and **has been forked, not configured.** It owns rendered markdown end to end:
 
-- Upstream's type declarations are stripped at the source — every `font-size`, `line-height`, `letter-spacing` and `font-weight` — each removal commented in place so the file reads as its own history.
+- Upstream's type declarations are stripped at the source — every `font-size`, `line-height`, `letter-spacing` and `font-weight` — with one survivor: `sup`/`sub` keeps its `0.75em`, and the `line-height: 0` that stops the raised glyph opening up its line box.
 - It sets its own `--typeset-*` vars, pointed at the site's fonts.
 - A block at the bottom holds what the site adds: the colour guide per tag, the `h1` treatment, `p` at `leading-relaxed`, links as `animated-link`, heading anchors, and the frame for TanStack Markdown's code title bar, line numbers and token colours.
 
@@ -197,7 +197,7 @@ app.css holds no `.typeset` selector at all. It is tokens, the shadcn `:root` al
 
 UI is not prose. A primitive that renders semantic tags for structure rather than reading carries `not-typeset` on its outermost node, so callers never think about it: `List`, `Install`, the table of contents' `ul`.
 
-**`not-typeset` is narrower than its name.** Only the vendored block honours it — the exclusion is written into those selectors. The site's own block at the bottom of the file has no such guard, so its colour guide, `p` leading, link treatment and code sizing still reach into a `not-typeset` subtree. For the colour guide that is wanted: UI opts out of prose _layout_, never out of the colour guide. For `p` at `leading-relaxed` it is a trap, and it is the one that put the table of contents' heading out of line with the page title. Widening the guard would change every UI primitive at once and needs looking at surface by surface, not a blind sweep.
+**`not-typeset` is narrower than its name.** Only the vendored block honours it — the exclusion is written into those selectors. The site's own block at the bottom of the file has no such guard, so its colour guide, `p` leading, link treatment and code sizing still reach into a `not-typeset` subtree. For the colour guide that is wanted: UI opts out of prose _layout_, never out of the colour guide. For `p` at `leading-relaxed` it is a trap: it is what puts the table of contents' heading out of line with the page title. Widening the guard would change every UI primitive at once and needs looking at surface by surface, not a blind sweep.
 
 The other rule that catches people out is typeset's `h1 + *, h2 + *, …`: **anything following a heading gets a 1em top margin**, whatever tag it is. A `div` next to an `h1` is not exempt just because typeset has no `div` rule. If a primitive puts a heading beside something else, it needs `not-typeset`, not an `mt-0` patch on the sibling. A page header is the one place that wants the rule rather than an exemption: `PageDescription` is the `h1 +` sibling, and that 1em is the gap between a page title and its copy. `PageDescription` also tightens `--typeset-flow` to `sm`, so a title and its copy read as one block rather than as separated paragraphs.
 
@@ -215,9 +215,9 @@ Defined with `@utility` in app.css so they compose with variants and merge corre
 
 **A `@utility` earns its place two ways: it lands on tags the caller chooses, or it needs selectors a `className` cannot express.** `indicator-brand` sits on a nav span and a meter segment. That is the first kind. `icon-link` and `skip-link` each have a single call site and stay anyway: one needs descendant rules for its `svg`, the other a long `focus-visible:` chain, and a stylesheet says both better than JSX can.
 
-Anything else belongs in the component that renders it. The eq bars and the table-of-contents indicator were utilities once, each with exactly one consumer that was already a component — so the utility was a second name for the same thing in a different file, and the class list moved to where the markup lives.
+Anything else belongs in the component that renders it. A utility whose only consumer is already a component — the eq bars, the table-of-contents indicator — is a second name for the same thing in a different file. The class list goes where the markup lives.
 
-`indicator-brand`'s fade toward the bottom softens an edge and is not a data scale; flattening it was considered and rejected.
+`indicator-brand`'s fade toward the bottom softens an edge and is not a data scale; do not flatten it.
 
 There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing at rest what hover would otherwise reveal. See the list-row model under **Interaction**.
 
