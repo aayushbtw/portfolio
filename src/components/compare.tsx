@@ -22,7 +22,9 @@ function After({ children }: { children?: ReactNode }) {
 function Side({ children, name }: { children?: ReactNode; name: string }) {
   return (
     <div className="bg-bg-1 flex flex-col rounded-xs border">
-      <p className="not-typeset px-md py-sm text-fg-2 border-b">{name}</p>
+      <p className="not-typeset px-md py-xs text-fg-2 border-b text-xs">
+        {name}
+      </p>
       <div className="p-md *:first:mt-0">{children}</div>
     </div>
   );

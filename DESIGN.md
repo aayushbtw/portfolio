@@ -105,7 +105,7 @@ Three steps, and which one you want follows from what the thing is.
 
 | Axis     | Tokens                                                 |
 | -------- | ------------------------------------------------------ |
-| Size     | `text-base` · `text-sm`                                |
+| Size     | `text-base` · `text-sm` · `text-xs`                    |
 | Leading  | `leading-normal` · `leading-relaxed` · `leading-tight` |
 | Tracking | `tracking-normal` · `tracking-tight`                   |
 | Weight   | `font-normal` · `font-bold`, on `h1` and `strong`      |
@@ -126,7 +126,7 @@ Because those two differ, **anything that has to share a baseline with the title
 
 The OG image at [src/routes/api/og.tsx](src/routes/api/og.tsx) renders at display sizes outside this system and keeps its own tracking, because Satori draws outside the token scale entirely and cannot read `@theme` at all.
 
-`text-sm` is the secondary line: a list item's description, a meter legend, a post's date, the now-playing card, the trail. In every case it sits directly under or beside the thing it belongs to and is read _with_ it, never instead of it. Anything read on its own is `text-base`. The one element that sets its own size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full size stops reading as a marker.
+`text-sm` is the secondary line: a list item's description, a meter legend, a post's date, the now-playing card, the trail. In every case it sits directly under or beside the thing it belongs to and is read _with_ it, never instead of it. `text-xs` steps down once more, and only for a label on a bar rather than a line in a column: the name on a compare panel names the box under it and is not read as part of it. Anything read on its own is `text-base`. The one element that sets its own size is `sup`/`sub`, which typeset keeps at `0.75em`: a footnote marker at full size stops reading as a marker.
 
 ### The scales are closed
 
