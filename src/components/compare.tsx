@@ -17,15 +17,21 @@ function Compare({ children }: { children?: ReactNode }) {
 }
 
 function Before({ children }: { children?: ReactNode }) {
-  return <Side name="before">{children}</Side>;
+  return (
+    <Side name="before" tone="[&_p]:text-fg-3">
+      {children}
+    </Side>
+  );
 }
 
 /* The rewrite is the one that won, so its label takes `brand`. That is the
    same job the check mark does in `Install`, not a new meaning for the colour.
-   typeset paints `p` directly, so the body colour has to come off the tag. */
+   The passages themselves both sit at body colour: the label bar already says
+   which is which, and two text colours side by side read as one being
+   disabled. */
 function After({ children }: { children?: ReactNode }) {
   return (
-    <Side accent divider name="after" tone="[&_p]:text-fg-1">
+    <Side accent divider name="after">
       {children}
     </Side>
   );
