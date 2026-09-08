@@ -3,9 +3,9 @@ title: Writing Guide
 description: Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.
 ---
 
-Every first draft comes out wrong in the same handful of ways. The voice goes corporate, the title says nothing, the opening clears its throat, the claims hide behind adjectives, and the punctuation gives away which model wrote it.
+Every first draft comes out wrong in the same few ways, and I stopped trusting myself to catch them. This is the guide I hand an agent before it writes anything, modified from Sentry's [blog-writing-guide](https://github.com/getsentry/skills/blob/main/skills/blog-writing-guide/SKILL.md).
 
-This is the guide I hand an agent before it writes anything. Each rule below is quoted from it, then run on a passage I wrote badly on purpose. Same subject on both sides, so the only thing that changed is the writing.
+Each rule below is quoted from it, then run on a passage I wrote badly on purpose, same subject on both sides.
 
 ## "It could be argued" is not a position
 
