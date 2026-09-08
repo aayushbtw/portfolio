@@ -5,7 +5,7 @@ export default defineConfig({
   ...ultracite,
   ignorePatterns: [
     ...(ultracite.ignorePatterns ?? []),
-    // Vendored from shadcn/typeset, kept byte-for-byte.
+    // Keeps oxfmt off the hand-ordered `@apply` lists in the site's own block.
     "src/styles/typeset.css",
     "worker-configuration.d.ts",
   ],

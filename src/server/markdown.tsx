@@ -63,8 +63,6 @@ const components = {
 } satisfies MarkdownComponents;
 
 // Called once per file at module scope in `~/server/content`, never per render.
-// The document carries its own frontmatter and headings, so nothing downstream
-// reads the source text again.
 function parseContent(source: string): MarkdownDocument {
   return parseMarkdown(source, {
     extensions,

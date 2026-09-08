@@ -1,13 +1,8 @@
-/*
- * shadcn/typeset (https://ui.shadcn.com/docs/typeset), diverged: the site has
- * one size and one weight, so every `font-size`, `line-height`,
- * `letter-spacing` and `font-weight` is stripped out. Defaults live on `<body>`
- * in __root.tsx. Re-pulling from the registry will undo all of it.
- */
+/* Forked from shadcn/typeset. Re-pulling from the registry undoes every
+   divergence; see DESIGN.md, Prose. */
 
 @layer components {
   .typeset {
-    /* Upstream's defaults pointed at names this project doesn't define. */
     --typeset-font-body: var(--font-sans);
     --typeset-font-heading: var(--font-sans);
     --typeset-font-mono: var(--font-mono);
@@ -20,8 +15,6 @@
     overflow-wrap: break-word;
     margin-trim: block-start;
 
-    /* Every muted thing typeset paints is chrome, not copy: markers, captions,
-       footnotes, the strikethrough. One step off the body. */
     --typeset-muted: var(--color-fg-2);
     --typeset-rule: var(
       --color-border,
@@ -67,7 +60,6 @@
       scroll-margin-block-start: var(--typeset-flow);
     }
 
-    /* Headings own the space below them. */
     &:where(h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + *) {
       margin-block-start: 1em;
     }
@@ -105,8 +97,7 @@
       color: var(--typeset-muted);
       text-decoration-line: line-through;
     }
-    /* The only `font-size` kept from upstream: `line-height: 0` keeps the
-       raised glyph from opening up the line box it sits in. */
+    /* `line-height: 0` keeps the raised glyph from opening up its line box. */
     &:where(sup, sub) {
       font-size: 0.75em;
       line-height: 0;
@@ -345,7 +336,6 @@
       text-align: end;
     }
 
-    /* Blocks inside list items keep the list's tighter rhythm. */
     &:where(li > blockquote, li > table, li > figure) {
       margin-block-start: 0.5em;
     }
@@ -370,7 +360,7 @@
     }
   }
 
-  /* First child adds no space above. Last so it wins ties. */
+  /* Last in the vendored block so it wins ties. */
   .typeset
     > :where(:first-child):not(
       :where(
@@ -410,20 +400,14 @@
     margin-block-start: 0;
   }
 
-  /* The site's own prose rules. Later in the file than the block above, so
-     these win the tie against it while a utility still beats these. */
   .typeset {
     color: var(--color-fg-4);
   }
 
-  /* `p` is the only thing that reliably wraps, so it is the one opt-up off the
-     default leading. */
   .typeset :where(p) {
     @apply leading-relaxed;
   }
 
-  /* No leading opt-up below h1: a prose heading is one line either way, and
-     h1 is the only place on the site that departs from the two defaults. */
   .typeset :where(h1, h2, h3, h4, h5, h6) {
     @apply text-fg-1 tracking-tight;
   }
@@ -453,19 +437,15 @@
     margin-block-start: 0;
   }
 
-  /* Typeset clears only `--typeset-flow` above an anchor target, but the fixed
-     top blur is 48px tall, so a heading jumped to from the table of contents
-     landed underneath it. One `md` step of air on top of that. */
+  /* Clears the top blur band; see DESIGN.md, Page shape. */
   .typeset :where(h1, h2, h3, h4, h5, h6)[id] {
     position: relative;
     scroll-margin-block-start: calc(var(--spacing-xl) + var(--spacing-md));
   }
 
   /* Class selector, not `:where`, so it outranks the `animated-link` every
-     prose anchor gets. The renderer emits it as the heading's last child, so it
-     is hung out of flow rather than reordered; in flow it would indent every
-     heading away from the body copy. `top-0` pins it to the first line, which
-     its static position would not do for a heading that wraps. */
+     prose anchor gets. Out of flow, or it indents the heading; `top-0` so it
+     stays on the first line of one that wraps. */
   .typeset .heading-anchor {
     @apply absolute top-0 end-full pe-xs text-fg-2 no-underline opacity-0 transition-opacity duration-150;
   }
@@ -474,10 +454,8 @@
     @apply opacity-100;
   }
 
-  /* TanStack Markdown emits a title bar and per-line spans that typeset has no
-     concept of: it reads the title as a photo caption and centers it. A titled
-     fence gets a figure that owns the frame, so the pre sits flush inside it;
-     an untitled one is a bare pre and has to carry the frame itself. */
+  /* A titled fence gets a figure that owns the frame and the pre sits flush
+     inside it; an untitled one is a bare pre and carries the frame itself. */
   .typeset :where(figure.tm-code-frame) {
     @apply overflow-hidden whitespace-nowrap rounded-md border bg-bg-3 font-mono;
   }

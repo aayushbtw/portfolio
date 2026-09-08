@@ -72,8 +72,6 @@ const skillFiles = import.meta.glob<string>("/content/skills/*.md", {
   query: "?raw",
 });
 
-// One sentence about the thing, and what to call it. Everything a collection
-// adds on top of these is its own.
 const baseFrontmatter = z.object({
   description: z.string(),
   title: z.string(),
@@ -90,9 +88,7 @@ const allPosts = collection(
   })
 );
 
-// Posts and skills are both markdown with frontmatter, so reading one is the
-// same job either way: find it or 404, then hand back its metadata with the
-// body already rendered. The document itself never leaves the server.
+// The document itself never leaves the server: callers get the rendered body.
 async function loadEntry<
   TEntry extends { document: MarkdownDocument; slug: string },
 >(entries: TEntry[], slug: string) {
