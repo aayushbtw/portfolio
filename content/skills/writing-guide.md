@@ -1,6 +1,6 @@
 ---
 title: Writing Guide
-summary: Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.
+description: Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.
 ---
 
 Every pair below is one passage written twice: once the way it usually comes out, and once after the skill has been over it. The subject never changes between the two sides, so the only thing left to compare is the writing.

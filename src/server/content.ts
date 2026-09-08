@@ -29,18 +29,17 @@ function parseFrontmatter(text: string): Record<string, string> {
   return fields;
 }
 
+// Every collection on this site is the same shape: markdown files with
+// frontmatter, keyed by filename. Only the frontmatter differs, so that is the
+// only thing a caller passes.
+//
 // Zod names the offending field but not the file, and the prerender stack
 // points at the glob rather than the content, so the path has to be in the
 // message.
-function collect<TFrontmatter, TEntry>(
+function collection<TFrontmatter>(
   files: Record<string, string>,
-  schema: z.ZodType<TFrontmatter>,
-  build: (
-    frontmatter: TFrontmatter,
-    document: MarkdownDocument,
-    path: string
-  ) => TEntry
-): TEntry[] {
+  schema: z.ZodType<TFrontmatter>
+) {
   return Object.entries(files).map(([path, raw]) => {
     const document = parseContent(raw);
     if (document.frontmatter === undefined) {
@@ -50,7 +49,11 @@ function collect<TFrontmatter, TEntry>(
     if (!result.success) {
       throw new Error(`${path}: ${z.prettifyError(result.error)}`);
     }
-    return build(result.data, document, path);
+    return {
+      ...result.data,
+      document,
+      slug: path.replace(SLUG_REGEX, "$<slug>"),
+    };
   });
 }
 
@@ -69,32 +72,21 @@ const skillFiles = import.meta.glob<string>("/content/skills/*.md", {
   query: "?raw",
 });
 
-const allSkills = collect(
-  skillFiles,
-  z.object({
-    summary: z.string(),
-    title: z.string(),
-  }),
-  (frontmatter, document, path) => ({
-    ...frontmatter,
-    document,
-    slug: path.replace(SLUG_REGEX, "$<slug>"),
-  })
-);
+// One sentence about the thing, and what to call it. Everything a collection
+// adds on top of these is its own.
+const baseFrontmatter = z.object({
+  description: z.string(),
+  title: z.string(),
+});
 
-const allPosts = collect(
+const allSkills = collection(skillFiles, baseFrontmatter);
+
+const allPosts = collection(
   postFiles,
-  z.object({
-    description: z.string(),
+  baseFrontmatter.extend({
     image: z.string().optional(),
     modifiedAt: z.string().optional(),
     publishedAt: z.string(),
-    title: z.string(),
-  }),
-  (frontmatter, document, path) => ({
-    ...frontmatter,
-    document,
-    slug: path.replace(SLUG_REGEX, "$<slug>"),
   })
 );
 

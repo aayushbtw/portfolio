@@ -7,7 +7,7 @@ import {
 
 interface SkillListItem {
   slug: string;
-  summary: string;
+  description: string;
   title: string;
 }
 
@@ -22,7 +22,7 @@ function SkillList({ skills }: { skills: SkillListItem[] }) {
         >
           <div className="flex min-w-0 flex-col">
             <ListItemTitle>{skill.title}</ListItemTitle>
-            <ListItemDescription>{skill.summary}</ListItemDescription>
+            <ListItemDescription>{skill.description}</ListItemDescription>
           </div>
         </ListItemLink>
       ))}

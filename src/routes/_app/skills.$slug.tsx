@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_app/skills/$slug")({
     }
     return seo({
       title: loaderData.title,
-      description: loaderData.summary,
+      description: loaderData.description,
     });
   },
   component: SkillPage,
@@ -35,7 +35,7 @@ function SkillPage() {
 
       <article>
         <h1 className="text-balance">{skill.title}</h1>
-        <p>{skill.summary}</p>
+        <p>{skill.description}</p>
 
         <Install className="mt-lg">
           <InstallCommand
