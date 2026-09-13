@@ -56,7 +56,7 @@ function GithubIcon(props: IconProps) {
     <svg
       aria-hidden="true"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="2 1.74 20 20"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -73,7 +73,7 @@ function TwitterIcon(props: IconProps) {
     <svg
       aria-hidden="true"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="0.59 0.75 22.57 22.57"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -90,7 +90,7 @@ function MailIcon(props: IconProps) {
     <svg
       aria-hidden="true"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="2 2 20 20"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -111,7 +111,7 @@ function VercelIcon(props: IconProps) {
     <svg
       aria-hidden="true"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="1 0.72 21.73 21.73"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
