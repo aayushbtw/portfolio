@@ -222,7 +222,9 @@ There is one custom variant, `can-hover` (`@media (hover: hover)`), for showing 
 
 ## Components
 
-`ui/` holds the primitives that carry no page knowledge: `Page`, `IconLink`, `List` and its parts, `Meter`, `Skeleton`, `ProgressiveBlur`, `HoverCard`. One level up, `components/` holds the composed pieces that know what they are for: `BackLink`, `NowPlaying`, `Install`, `ShowcaseImage`, `PageDescription`, the lists, the table of contents.
+`ui/` holds the primitives that carry no page knowledge: `Page`, `IconLink`, `List` and its parts, `Meter`, `Skeleton`, `ProgressiveBlur`, `HoverCard`. One level up, `components/` holds the composed pieces that know what they are for: `BackLink`, `NowPlaying`, `Install`, `ShowcaseImage`, `Compare`, `Demo`, `PageDescription`, the lists, the table of contents.
+
+**An exploration's component lives in `components/explorations/` and is registered by name** in its `index.ts`, which is what a `<!-- ::demo name="…" -->` tag in markdown looks up. Markdown renders on the server, so the component needs `"use client"` to be interactive. An exploration is a standalone piece, not part of the site, so it uses standard UI sizes (16px text) rather than this type scale.
 
 **A wrapper that only renames a tag is not a component.** A `PageHeader` that renders a bare `div`, a `Showcase` that renders a bare `figure`: the import costs more than the markup it hides, and the `data-slot` it adds is not read by anything. Write the tag. A primitive earns its file by carrying classes, state or a contract.
 

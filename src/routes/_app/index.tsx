@@ -16,10 +16,17 @@ import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { projects } from "~/lib/projects";
 import { seo } from "~/lib/seo";
+import { getExplorationList } from "~/server/explorations";
 import { getPostList } from "~/server/posts";
 
 export const Route = createFileRoute("/_app/")({
-  loader: async () => ({ posts: await getPostList(5) }),
+  loader: async () => {
+    const [posts, explorations] = await Promise.all([
+      getPostList(5),
+      getExplorationList(5),
+    ]);
+    return { explorations, posts };
+  },
   head: () => seo({ title: config.name, description: config.description }),
   headers: () => ({
     "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
@@ -28,7 +35,7 @@ export const Route = createFileRoute("/_app/")({
 });
 
 function HomePage() {
-  const { posts } = Route.useLoaderData();
+  const { explorations, posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
   function haptic() {
     trigger("tick");
@@ -100,6 +107,11 @@ function HomePage() {
       <section>
         <h2>Writings</h2>
         <PostList posts={posts} />
+      </section>
+
+      <section>
+        <h2>Explorations</h2>
+        <PostList posts={explorations} to="/explorations/$slug" />
       </section>
     </Page>
   );

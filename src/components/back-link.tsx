@@ -5,6 +5,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useHaptics } from "~/lib/haptics";
 
 const sections: Record<string, { label: string; to: LinkProps["to"] }> = {
+  explorations: { label: "Explorations", to: "/explorations" },
   skills: { label: "Skills", to: "/skills" },
   writings: { label: "Writings", to: "/writings" },
 };

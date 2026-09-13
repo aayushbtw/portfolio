@@ -21,6 +21,7 @@ const destinations: { key: Hotkey; to: LinkProps["to"] }[] = [
   { key: "H", to: "/" },
   { key: "W", to: "/writings" },
   { key: "S", to: "/skills" },
+  { key: "E", to: "/explorations" },
   { key: "M", to: "/music" },
   { key: "U", to: "/usage" },
 ];

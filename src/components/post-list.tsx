@@ -7,7 +7,13 @@ interface PostListItem {
   year: number;
 }
 
-function PostList({ posts }: { posts: PostListItem[] }) {
+function PostList({
+  posts,
+  to = "/writings/$slug",
+}: {
+  posts: PostListItem[];
+  to?: "/writings/$slug" | "/explorations/$slug";
+}) {
   return (
     <List>
       {posts.map((post, i) => {
@@ -18,7 +24,7 @@ function PostList({ posts }: { posts: PostListItem[] }) {
             className="gap-md grid grid-cols-[56px_minmax(0,1fr)_auto] items-center rounded-full"
             key={post.slug}
             params={{ slug: post.slug }}
-            to="/writings/$slug"
+            to={to}
           >
             <span className="text-fg-3 tabular-nums">
               {showYear ? post.year : ""}
