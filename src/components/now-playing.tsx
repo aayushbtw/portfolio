@@ -75,9 +75,7 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
       <ProgressiveBlur className="h-24" position="bottom" />
 
       <div className="px-md pt-xl pb-md absolute inset-x-0 bottom-0 z-20 flex flex-col gap-0.5 bg-linear-to-t from-black/70 to-transparent">
-        <span className="truncate text-sm font-medium text-white">
-          {track.name}
-        </span>
+        <span className="truncate text-sm text-white">{track.name}</span>
         <p className="truncate text-sm text-white/60">
           {track.artists.map((a) => a.name).join(", ")}
         </p>
