@@ -6,7 +6,7 @@ function List({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "not-typeset mt-sm text-fg-3 [&_a]:no-underline",
+        "not-typeset -mx-md mt-sm text-fg-3 [&_a]:no-underline",
         className
       )}
       data-slot="list"
@@ -19,7 +19,7 @@ function ListItem({ className, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       className={cn(
-        "group/list-item -mx-md gap-md px-md py-sm hover:bg-bg-2 flex items-center rounded-md transition-colors duration-150",
+        "group/list-item gap-md px-md py-sm hover:bg-bg-2 flex items-center rounded-md transition-colors duration-150",
         className
       )}
       data-slot="list-item"

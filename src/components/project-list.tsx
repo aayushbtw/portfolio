@@ -4,8 +4,6 @@ import { ArrowUpRight } from "@phosphor-icons/react/ArrowUpRight";
 import {
   List,
   ListItem,
-  ListItemDescription,
-  ListItemHover,
   ListItemLink,
   ListItemTitle,
 } from "~/components/ui/list";
@@ -16,23 +14,26 @@ function ProjectList({ projects }: { projects: Project[] }) {
     <List>
       {projects.map((item) =>
         item.to ? (
-          <ListItemLink key={item.name} to={item.to}>
-            <ProjectRow project={item} />
-            <ListItemHover>
+          <ListItemLink
+            className="gap-sm rounded-full"
+            key={item.name}
+            to={item.to}
+          >
+            <ProjectRow project={item}>
               <ArrowRight aria-hidden="true" weight="light" />
-            </ListItemHover>
+            </ProjectRow>
           </ListItemLink>
         ) : (
           <ListItem
+            className="gap-sm rounded-full"
             href={item.href}
             key={item.name}
             rel="noopener"
             target="_blank"
           >
-            <ProjectRow project={item} />
-            <ListItemHover>
+            <ProjectRow project={item}>
               <ArrowUpRight aria-hidden="true" weight="light" />
-            </ListItemHover>
+            </ProjectRow>
           </ListItem>
         )
       )}
@@ -40,12 +41,25 @@ function ProjectList({ projects }: { projects: Project[] }) {
   );
 }
 
-function ProjectRow({ project }: { project: Project }) {
+function ProjectRow({
+  children,
+  project,
+}: {
+  children: React.ReactNode;
+  project: Project;
+}) {
   return (
-    <div className="flex min-w-0 flex-col">
-      <ListItemTitle>{project.name}</ListItemTitle>
-      <ListItemDescription>{project.description}</ListItemDescription>
-    </div>
+    <>
+      <ListItemTitle className="truncate">{project.name}</ListItemTitle>
+      <span
+        aria-hidden="true"
+        className="bg-bg-2 group-hover/list-item:bg-border h-px min-w-md flex-1 transition-colors duration-150 ease-out"
+      />
+      <span className="gap-xs text-fg-3 flex shrink-0 items-center text-sm [&_svg]:size-[0.9em]">
+        {project.tag}
+        {children}
+      </span>
+    </>
   );
 }
 
