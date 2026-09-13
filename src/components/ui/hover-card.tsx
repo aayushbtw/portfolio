@@ -10,7 +10,11 @@ function HoverCard({ ...props }: PreviewCardPrimitive.Root.Props) {
 
 function HoverCardTrigger({ ...props }: PreviewCardPrimitive.Trigger.Props) {
   return (
-    <PreviewCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+    <PreviewCardPrimitive.Trigger
+      delay={100}
+      data-slot="hover-card-trigger"
+      {...props}
+    />
   );
 }
 
