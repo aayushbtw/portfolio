@@ -8,7 +8,7 @@ Ask an agent to write a post and you get the same draft every time. It hedges ev
 
 You could fix those by hand on every draft. Or you can give the agent a set of writing rules before it starts, and it avoids them on its own.
 
-This guide is that set of rules. Below are seven of them. Each one explains why the rule matters, then shows the same prompt run twice: "Before" is what an agent writes without the guide, "After" is what it writes with it. The rules work just as well as a checklist when you review a draft yourself.
+Each example below is the same prompt run twice: "Before" without the guide, "After" with it. The rules work as well as a checklist when you review a draft yourself.
 
 ## Pick a side instead of hedging
 
@@ -29,7 +29,7 @@ We tried three retry strategies and exponential backoff won. It is not close: co
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-The before draft sounds like it reaches a conclusion. "Generally regarded" and "balanced reliability with simplicity" sound like answers, but neither one says which strategy they picked. The after draft names the winner in its first sentence and then explains why.
+Read the before draft quickly and it seems to reach a conclusion. "Generally regarded" and "balanced reliability with simplicity" sound like answers, but neither one says which strategy they picked. The after draft names the winner in its first sentence and then explains why.
 
 When you catch yourself writing "it depends", finish the sentence: depends on what, and which would you pick?
 
@@ -37,7 +37,7 @@ When you catch yourself writing "it depends", finish the sentence: depends on wh
 
 > The title is the highest-leverage sentence in the post. It must stop someone mid-scroll.
 
-Most people who see your post only ever read the title. If it just names a topic, they have no reason to click.
+Most people who see your post only ever read the title. If it only names a topic, they have no reason to click.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
@@ -52,7 +52,7 @@ A retry loop cost us six hours of silence. The fix was four lines.
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-The before title follows a common pattern: a topic, a colon, and a promise of "lessons". It would fit a thousand different posts. The after title tells you what went wrong and how small the fix was. Six hours of damage from a four line bug is surprising, and that makes you want to read on.
+A topic, a colon, and a promise of "lessons": that pattern would fit a thousand different posts. The after title tells you what went wrong and how small the fix was. Six hours of damage undone by four lines is surprising, and that makes you want to read on.
 
 Try writing your title as the one sentence you would say to a friend about the post.
 
@@ -75,7 +75,7 @@ Our queue drained 40,000 jobs in four minutes and every one of them was the same
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-The before opening is 47 words of background and "in this post we will", and nothing has happened yet. The after opening starts with the incident itself. It also sets up a contradiction: the same job was running thousands of times, yet every dashboard said things were fine.
+By the end of the before opening, you have read 47 words of background and "in this post we will", and nothing has happened yet. The after opening starts with the incident itself. It also sets up a contradiction: the same job was running thousands of times, yet every dashboard said things were fine.
 
 Delete your first paragraph and see if the post still makes sense. It usually does.
 
@@ -112,7 +112,7 @@ A good test: someone who reads only your headings should be able to tell you wha
 
 > Numbers over adjectives. "Significantly faster" means nothing. "p99 dropped from 340ms to 45ms" means something.
 
-An adjective asks the reader to trust you. A number lets them check for themselves.
+When you write an adjective, the reader has to take your word for it, but a number is something they can check.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
@@ -127,7 +127,7 @@ The job runner has a new scheduler. Median queue wait went from 8 seconds to und
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-The before draft makes five claims with "significantly", "faster", "more reliable", "substantial" and "noticeable", and none of them can be checked. The after draft replaces all five with two measurements and ends up shorter.
+None of the five claims in the before draft can be checked: "significantly", "faster", "more reliable", "substantial" and "noticeable". The after draft replaces all five with two measurements and ends up shorter.
 
 When you write "faster" or "better", ask yourself: by how much, and measured how?
 
@@ -135,7 +135,7 @@ When you write "faster" or "better", ask yourself: by how much, and measured how
 
 > Em dashes: use commas, periods, or parentheses instead. Smart quotes: use straight quotes only. "You'd" and "you'll" sound robotic.
 
-Readers have learned to spot machine-written text, and once they do, they stop trusting the rest of it. A few small habits give it away before anyone reads what you are actually saying.
+Readers have learned to spot machine-written text, and once they do, they stop trusting the rest of it. A few small habits give it away before anyone reads what you are saying.
 
 <!-- ::start:compare -->
 <!-- ::start:before -->
@@ -150,7 +150,7 @@ The scheduler is fast, and you will notice it on the first deploy. If you want t
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-Nothing in the before draft is grammatically wrong. It just has three giveaways: em dashes (—), curly apostrophes (’ instead of '), and contractions like "you'd" and "there's" that models use far more than people do. The after draft says the same thing without any of them.
+Nothing in the before draft is grammatically wrong, but it has three giveaways: em dashes (—), curly apostrophes (’ instead of '), and contractions like "you'd" and "there's" that models use far more than people do. The after draft says the same thing without any of them.
 
 Search your draft for these before you publish. It takes a minute.
 
@@ -173,16 +173,14 @@ We still cannot explain why every dashboard stayed green for six hours. If your 
 <!-- ::end:after -->
 <!-- ::end:compare -->
 
-The before ending sums up the post and hopes it was useful. The after ending admits what is still unexplained and asks readers for something specific, which gives them a reason to reply.
+A summary that hopes the post was useful is the most common way to end, and the easiest to skip. The after ending admits what is still unexplained and asks readers for something specific, which gives them a reason to reply.
 
 End with what you would say if someone asked "so what now?"
-
-## Why hand the rules to an agent
-
-All seven rules ask for the same thing: say something specific, even when something vague would be easier to write. Hedges, topic titles, background openings and adjectives all let you publish without committing to anything.
-
-That is hard to keep up on your own, especially by the fifth draft. An agent with the guide loaded checks every rule on every paragraph, including the ones you would have skimmed past. Load it before you write, or give it a finished draft and ask for a review.
 
 ## Where the rules come from
 
 The guide is adapted from Sentry's [blog-writing-guide](https://github.com/getsentry/skills/blob/main/skills/blog-writing-guide/SKILL.md), which they use for their engineering blog. Every rule quoted above comes from it.
+
+## Why hand the rules to an agent
+
+Every rule here is easy to agree with and hard to follow by the fifth draft. An agent with the guide loaded checks every paragraph, including the ones you would have skimmed past. Load it before you write, or give it a finished draft and ask for a review.
