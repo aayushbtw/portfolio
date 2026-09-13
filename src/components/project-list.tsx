@@ -4,7 +4,9 @@ import { ArrowUpRight } from "@phosphor-icons/react/ArrowUpRight";
 import {
   List,
   ListItem,
+  ListItemLeader,
   ListItemLink,
+  ListItemMeta,
   ListItemTitle,
 } from "~/components/ui/list";
 import type { Project } from "~/lib/projects";
@@ -51,14 +53,11 @@ function ProjectRow({
   return (
     <>
       <ListItemTitle className="truncate">{project.name}</ListItemTitle>
-      <span
-        aria-hidden="true"
-        className="bg-bg-2 group-hover/list-item:bg-border h-px min-w-md flex-1 transition-colors duration-150 ease-out"
-      />
-      <span className="gap-xs text-fg-3 flex shrink-0 items-center text-sm [&_svg]:size-[0.9em]">
+      <ListItemLeader />
+      <ListItemMeta>
         {project.tag}
         {children}
-      </span>
+      </ListItemMeta>
     </>
   );
 }

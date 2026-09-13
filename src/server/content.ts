@@ -77,7 +77,10 @@ const baseFrontmatter = z.object({
   title: z.string(),
 });
 
-const allSkills = collection(skillFiles, baseFrontmatter);
+const allSkills = collection(
+  skillFiles,
+  baseFrontmatter.extend({ category: z.string() })
+);
 
 const allPosts = collection(
   postFiles,

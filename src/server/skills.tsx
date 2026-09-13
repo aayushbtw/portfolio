@@ -11,7 +11,7 @@ function sortedSkills() {
 const skillListFn = createServerFn({ method: "GET" }).handler(
   (): SkillListItem[] =>
     sortedSkills().map((skill) => ({
-      description: skill.description,
+      category: skill.category,
       slug: skill.slug,
       title: skill.title,
     }))

@@ -1,5 +1,6 @@
 ---
 title: Writing Guide
+category: Writing
 description: Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.
 ---
 

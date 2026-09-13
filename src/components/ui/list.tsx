@@ -40,14 +40,28 @@ function ListItemTitle({ className, ...props }: React.ComponentProps<"span">) {
   );
 }
 
-function ListItemDescription({
-  className,
-  ...props
-}: React.ComponentProps<"p">) {
+function ListItemLeader({ className, ...props }: React.ComponentProps<"span">) {
   return (
-    <p
-      className={cn("mt-xs text-fg-4 leading-5", className)}
-      data-slot="list-item-description"
+    <span
+      aria-hidden="true"
+      className={cn(
+        "bg-bg-2 group-hover/list-item:bg-border h-px min-w-md flex-1 transition-colors duration-150 ease-out",
+        className
+      )}
+      data-slot="list-item-leader"
+      {...props}
+    />
+  );
+}
+
+function ListItemMeta({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      className={cn(
+        "gap-xs text-fg-3 flex shrink-0 items-center text-sm [&_svg]:size-[0.9em]",
+        className
+      )}
+      data-slot="list-item-meta"
       {...props}
     />
   );
@@ -69,8 +83,9 @@ function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
 export {
   List,
   ListItem,
-  ListItemDescription,
   ListItemHover,
+  ListItemLeader,
   ListItemLink,
+  ListItemMeta,
   ListItemTitle,
 };
