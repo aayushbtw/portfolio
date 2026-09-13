@@ -6,9 +6,11 @@ import {
   NetisionIcon,
   TwitterIcon,
 } from "~/components/icons";
+import { NowPlaying } from "~/components/now-playing";
 import { PageDescription } from "~/components/page-description";
 import { PostList } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
+import { IconLink } from "~/components/ui/icon-link";
 import { Page } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
@@ -34,7 +36,7 @@ function HomePage() {
 
   return (
     <Page>
-      <section>
+      <section className="relative">
         <h1>{config.name}</h1>
 
         <PageDescription>
@@ -42,47 +44,52 @@ function HomePage() {
 
           <p>
             Currently a full-stack engineer at{" "}
-            <HeaderLink
+            <IconLink
               external
+              variant="pill"
               href="https://www.netision.com"
               onMouseEnter={haptic}
             >
               <NetisionIcon />
               Netision
-            </HeaderLink>
+            </IconLink>
             , building a multi-agent platform that turns complex data into
             clear, intuitive insights.
           </p>
 
           <p>
             Reach me via{" "}
-            <HeaderLink
+            <IconLink
               href={`mailto:${config.socials.mail}`}
               onMouseEnter={haptic}
             >
               <MailIcon />
               Mail
-            </HeaderLink>{" "}
+            </IconLink>{" "}
             /{" "}
-            <HeaderLink
+            <IconLink
               external
               href={`https://www.x.com/${config.socials.twitter}`}
               onMouseEnter={haptic}
             >
               <TwitterIcon />X
-            </HeaderLink>
+            </IconLink>
             , or find my work on{" "}
-            <HeaderLink
+            <IconLink
               external
               href={`https://github.com/${config.socials.github}`}
               onMouseEnter={haptic}
             >
               <GithubIcon />
               Github
-            </HeaderLink>
+            </IconLink>
             .
           </p>
         </PageDescription>
+
+        {/* Out of flow so a track arriving shifts nothing, and so the `h1` keeps
+            `PageDescription` as its typeset sibling. */}
+        <NowPlaying className="-top-xs absolute end-0" />
       </section>
 
       <section>
@@ -95,21 +102,5 @@ function HomePage() {
         <PostList posts={posts} />
       </section>
     </Page>
-  );
-}
-
-function HeaderLink({
-  external,
-  href,
-  ...props
-}: React.ComponentProps<"a"> & { external?: boolean }) {
-  return (
-    <a
-      className="icon-link"
-      href={href}
-      {...props}
-      rel={external ? "noopener" : undefined}
-      target={external ? "_blank" : undefined}
-    />
   );
 }

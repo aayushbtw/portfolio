@@ -2,48 +2,28 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 interface LayoutContextValue {
-  crumb: string | null;
   right: ReactNode;
-  setCrumb: (label: string | null) => void;
   setRight: (node: ReactNode) => void;
 }
 
 const LayoutContext = createContext<LayoutContextValue>({
-  crumb: null,
   right: null,
-  setCrumb: () => {
-    // stands in until a provider mounts
-  },
   setRight: () => {
     // stands in until a provider mounts
   },
 });
 
 function LayoutProvider({ children }: { children: ReactNode }) {
-  const [crumb, setCrumb] = useState<string | null>(null);
   const [right, setRight] = useState<ReactNode>(null);
   return (
-    <LayoutContext.Provider value={{ crumb, right, setCrumb, setRight }}>
+    <LayoutContext.Provider value={{ right, setRight }}>
       {children}
     </LayoutContext.Provider>
   );
 }
 
-function useCrumb() {
-  return useContext(LayoutContext).crumb;
-}
-
 function useRightColumn() {
   return useContext(LayoutContext).right;
-}
-
-function Crumb({ children }: { children: string }) {
-  const { setCrumb } = useContext(LayoutContext);
-  useEffect(() => {
-    setCrumb(children);
-    return () => setCrumb(null);
-  }, [children, setCrumb]);
-  return null;
 }
 
 function RightColumn({ children }: { children: ReactNode }) {
@@ -55,4 +35,4 @@ function RightColumn({ children }: { children: ReactNode }) {
   return null;
 }
 
-export { Crumb, LayoutProvider, RightColumn, useCrumb, useRightColumn };
+export { LayoutProvider, RightColumn, useRightColumn };

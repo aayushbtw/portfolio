@@ -40,9 +40,9 @@
   --spacing-xl: calc(var(--spacing) * 12); /* 48px */
   --spacing-2xl: calc(var(--spacing) * 24); /* 96px */
 
-  --radius-xs: 0.25rem; /* 4px */
-  --radius-sm: 0.375rem; /* 6px */
-  --radius-md: 0.5rem; /* 8px */
+  --radius-xs: 0.5rem; /* 8px */
+  --radius-sm: 0.625rem; /* 10px */
+  --radius-md: 0.75rem; /* 12px */
 
   --container-content: 644px;
 
@@ -66,15 +66,11 @@
 
   /* In `@theme` rather than at top level so the keyframes are dropped when
      nothing uses the animation. */
-  --animate-eq-bar: eq-bar 0.9s ease-in-out infinite;
+  --animate-disc: disc 6s linear infinite;
 
-  @keyframes eq-bar {
-    0%,
-    100% {
-      transform: scaleY(0.35);
-    }
-    50% {
-      transform: scaleY(1);
+  @keyframes disc {
+    to {
+      transform: rotate(1turn);
     }
   }
 }
@@ -121,20 +117,8 @@
   @apply text-fg-1 decoration-border-strong hover:decoration-brand underline underline-offset-3 transition-colors duration-150 ease-out;
 }
 
-@utility icon-link {
-  @apply animated-link;
-
-  & svg {
-    @apply me-xs text-fg-3 mb-0.5 inline-block size-4;
-  }
-
-  &:hover svg {
-    @apply text-fg-2;
-  }
-}
-
-/* The breadcrumb comes before the content in the DOM, so keyboard users
-   otherwise walk the trail on every page. */
+/* The back link comes before the content in the DOM, so keyboard users
+   otherwise tab through it on every page. */
 @utility skip-link {
   @apply focus-visible:top-md focus-visible:start-md focus-visible:bg-bg-1 focus-visible:px-md focus-visible:py-sm focus-visible:text-fg-1 sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:no-underline;
 }

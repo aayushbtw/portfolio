@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
-import { useSyncExternalStore } from "react";
 
 import {
   HoverCard,
@@ -9,50 +8,40 @@ import {
 } from "~/components/ui/hover-card";
 import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { useLive } from "~/lib/spotify";
+import { cn } from "~/lib/utils";
 import type { SpotifyTrack } from "~/server/spotify";
 
-// Tailwind's `lg`. A media query string can't read the token, so this is a
-// second copy of it: change both or neither.
-const DESKTOP = "(min-width: 64rem)";
-
-function useIsDesktop() {
-  return useSyncExternalStore(
-    (onStoreChange) => {
-      const query = window.matchMedia(DESKTOP);
-      query.addEventListener("change", onStoreChange);
-      return () => query.removeEventListener("change", onStoreChange);
-    },
-    () => window.matchMedia(DESKTOP).matches,
-    () => false
-  );
-}
-
-function NowPlaying() {
-  const isDesktop = useIsDesktop();
-  const { data: live } = useLive({ enabled: isDesktop });
+function NowPlaying({ className }: { className?: string }) {
+  const { data: live } = useLive();
   const track = live?.nowPlaying.isPlaying ? live.nowPlaying.track : null;
 
-  if (!(isDesktop && track)) {
+  if (!track) {
     return null;
   }
+
+  const src = track.album.images.at(-1)?.url ?? track.album.images[0]?.url;
 
   return (
     <HoverCard>
       <HoverCardTrigger
-        className="gap-sm flex max-w-[min(20rem,50vw)] items-center no-underline"
-        // The visible text names the track, not where the link goes.
+        className={cn("block rounded-full no-underline", className)}
         render={
           <Link
-            aria-label={`${track.name} by ${track.artists[0].name} — open the music page`}
+            aria-label={`Listening to ${track.name} by ${track.artists[0].name}. Open the music page`}
             to="/music"
           />
         }
       >
-        <Bars />
-        <span className="min-w-0 truncate text-sm">
-          {track.artists[0].name}
-          <span className="text-fg-3"> — </span>
-          <span className="text-fg-2">{track.name}</span>
+        <span className="animate-disc bg-bg-2 ring-fg-1/10 block size-6 overflow-hidden rounded-full ring-1">
+          {src ? (
+            <Image
+              alt=""
+              className="size-full object-cover"
+              height={48}
+              src={src}
+              width={48}
+            />
+          ) : null}
         </span>
       </HoverCardTrigger>
 
@@ -65,22 +54,6 @@ function NowPlaying() {
         <TrackCard track={track} />
       </HoverCardContent>
     </HoverCard>
-  );
-}
-
-const BAR_DELAYS = ["0s", "0.15s", "0.3s"];
-
-function Bars() {
-  return (
-    <span aria-hidden className="gap-xs flex h-2.5 shrink-0 items-end">
-      {BAR_DELAYS.map((delay) => (
-        <span
-          className="animate-eq-bar bg-brand inline-block h-3 w-0.5 origin-bottom rounded-[1px]"
-          key={delay}
-          style={{ animationDelay: delay }}
-        />
-      ))}
-    </span>
   );
 }
 

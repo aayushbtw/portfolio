@@ -1,83 +1,49 @@
-import { CaretRight } from "@phosphor-icons/react/CaretRight";
+import { ArrowBendUpLeft } from "@phosphor-icons/react/ArrowBendUpLeft";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useRouterState } from "@tanstack/react-router";
 
-import { useCrumb } from "~/components/layout-provider";
 import { useHaptics } from "~/lib/haptics";
 
 const sections: Record<string, { label: string; to: LinkProps["to"] }> = {
-  music: { label: "Music", to: "/music" },
   skills: { label: "Skills", to: "/skills" },
-  usage: { label: "Usage", to: "/usage" },
   writings: { label: "Writings", to: "/writings" },
 };
 
-interface Crumb {
-  label: string;
-  to?: LinkProps["to"];
-}
-
-function trail(pathname: string, leaf: string | null): Crumb[] {
+function parent(pathname: string) {
   const segments = pathname.split("/").filter(Boolean);
-  const crumbs: Crumb[] = [{ label: "Home", to: "/" }];
 
-  for (const [index, segment] of segments.entries()) {
-    const section = sections[segment];
-    const last = index === segments.length - 1;
-
-    if (section) {
-      crumbs.push({ label: section.label, to: last ? undefined : section.to });
-      continue;
-    }
-
-    crumbs.push({ label: leaf ?? segment.replaceAll("-", " ") });
+  if (segments.length === 0) {
+    return null;
   }
 
-  return crumbs;
+  if (segments.length === 1) {
+    return { label: "Home", to: "/" as const };
+  }
+
+  return sections[segments[0]] ?? { label: "Home", to: "/" as const };
 }
 
-function Breadcrumbs() {
+function BackLink() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const leaf = useCrumb();
   const { trigger } = useHaptics();
 
-  const crumbs = trail(pathname, leaf);
+  const target = parent(pathname);
 
-  if (crumbs.length < 2) {
+  if (!target) {
     return null;
   }
 
   return (
-    <nav aria-label="Breadcrumb" className="not-typeset min-w-0">
-      <ol className="gap-xs flex items-center text-sm [&_a]:no-underline">
-        {crumbs.map((crumb, index) => (
-          <li className="gap-xs flex min-w-0 items-center" key={crumb.label}>
-            {index > 0 && (
-              <CaretRight
-                aria-hidden="true"
-                className="text-fg-4 size-3.5 shrink-0"
-                weight="light"
-              />
-            )}
-
-            {crumb.to ? (
-              <Link
-                className="text-fg-3 hover:text-fg-1 shrink-0 transition-colors duration-150"
-                onClick={() => trigger("click")}
-                to={crumb.to}
-              >
-                {crumb.label}
-              </Link>
-            ) : (
-              <span aria-current="page" className="text-fg-1 truncate">
-                {crumb.label}
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
-    </nav>
+    // `-mt` centres the circle on the title's first line beside it.
+    <Link
+      aria-label={`Back to ${target.label}`}
+      className="not-typeset bg-bg-2 p-sm text-fg-3 hover:bg-border hover:text-fg-1 lg:-mt-sm flex w-fit rounded-full transition-colors duration-150 ease-out"
+      onClick={() => trigger("click")}
+      to={target.to}
+    >
+      <ArrowBendUpLeft aria-hidden="true" className="size-4" weight="light" />
+    </Link>
   );
 }
 
-export { Breadcrumbs };
+export { BackLink };

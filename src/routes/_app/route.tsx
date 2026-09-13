@@ -1,11 +1,15 @@
 import { useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { Hotkey } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useMatch,
+  useNavigate,
+} from "@tanstack/react-router";
 
-import { Breadcrumbs } from "~/components/breadcrumbs";
+import { BackLink } from "~/components/back-link";
 import { useRightColumn } from "~/components/layout-provider";
-import { NowPlaying } from "~/components/now-playing";
 import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { useHaptics } from "~/lib/haptics";
 
@@ -38,44 +42,36 @@ function useHotkeys() {
 
 function AppLayout() {
   const right = useRightColumn();
+  const home = useMatch({ from: "/_app/", shouldThrow: false });
   useHotkeys();
 
   return (
-    // Every item names its row and column: auto placement refuses a taken cell
-    // and opens an implicit column instead.
-    <div className="typeset gap-x-lg gap-y-xl px-md pt-md lg:gap-x-xl grid grid-rows-[var(--spacing-lg)_auto] lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]">
-      {/* `z` keeps it out of the blur's backdrop, which is what the blur
-          samples. `self-start`, or it stretches and has nowhere to stick. */}
-      <div className="lg:top-md z-40 col-start-1 row-start-1 lg:sticky lg:row-span-2 lg:self-start">
-        <Breadcrumbs />
-      </div>
+    <>
+      <ProgressiveBlur className="fixed z-30" position="top" />
 
-      <div className="lg:top-md hidden lg:sticky lg:col-start-3 lg:row-span-2 lg:row-start-1 lg:block lg:self-start lg:justify-self-end">
-        <NowPlaying />
-      </div>
-
-      <main
-        // Owns the bottom padding so the sticky blur below has it to travel.
-        className="max-w-content pb-2xl lg:pb-xl col-start-1 row-start-2 mx-auto w-full min-w-0 lg:col-start-2"
-        id="main"
+      <div
+        className="typeset group/frame px-md gap-y-lg lg:gap-x-xl grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]"
+        data-home={home ? "" : undefined}
       >
-        <Outlet />
-      </main>
+        {/* `self-start`, or it stretches and has nowhere to stick. */}
+        <div className="pt-xl lg:pt-2xl lg:sticky lg:top-0 lg:self-start lg:justify-self-end">
+          <BackLink />
+        </div>
 
-      <div className="hidden lg:col-start-3 lg:row-start-2 lg:block">
-        {right}
+        <main
+          // Clears the bottom blur at the end of the page.
+          className="max-w-content lg:pt-2xl pb-2xl lg:pb-xl group-data-home/frame:mt-xl lg:group-data-home/frame:mt-2xl mx-auto w-full min-w-0"
+          id="main"
+        >
+          <Outlet />
+        </main>
+
+        <div className="lg:pt-2xl lg:gap-xl hidden lg:sticky lg:top-0 lg:flex lg:flex-col lg:self-start">
+          {right}
+        </div>
       </div>
 
-      {/* Spanning both rows, so neither starts on the page's first line.
-          `inset-x-auto` undoes the component's `inset-x-0`, which on a sticky
-          box is a threshold, not an offset. `-mx` gives the filter something
-          to sample past the column's edge. */}
-      <ProgressiveBlur
-        className="-mx-md lg:-mx-xl sticky inset-x-auto top-0 z-30 col-start-1 row-span-2 row-start-1 self-start lg:col-start-2"
-        position="top"
-      />
-
-      <ProgressiveBlur className="-mx-md lg:-mx-xl sticky inset-x-auto bottom-0 z-30 col-start-1 row-span-2 row-start-1 self-end lg:col-start-2" />
-    </div>
+      <ProgressiveBlur className="fixed z-30" />
+    </>
   );
 }

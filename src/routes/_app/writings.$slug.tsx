@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Crumb, RightColumn } from "~/components/layout-provider";
+import { RightColumn } from "~/components/layout-provider";
 import { TableOfContents } from "~/components/table-of-contents";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
@@ -53,8 +53,6 @@ function WritingPage() {
 
   return (
     <section>
-      <Crumb>{post.title}</Crumb>
-
       <article>
         <h1 className="mb-sm text-balance">{post.title}</h1>
         <time className="text-fg-3 text-sm tracking-tight">
@@ -66,7 +64,7 @@ function WritingPage() {
 
       {post.headings.length > 0 && (
         <RightColumn>
-          <aside className="top-xl sticky hidden lg:block">
+          <aside>
             <nav>
               <TableOfContents headings={post.headings} />
             </nav>
