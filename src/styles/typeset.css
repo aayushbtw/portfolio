@@ -416,6 +416,10 @@
     @apply font-bold leading-tight;
   }
 
+  .typeset :where(section > h2) {
+    @apply text-fg-3;
+  }
+
   /* Not the browser's 700: the site's scale tops out at 450. */
   .typeset :where(strong, b) {
     @apply font-bold;
