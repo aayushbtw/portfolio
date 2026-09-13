@@ -5,7 +5,7 @@ import { cn } from "~/lib/utils";
 function PageDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("[--typeset-flow:var(--spacing-sm)]", className)}
+      className={cn("[--typeset-flow:0.9em]", className)}
       data-slot="page-description"
       {...props}
     />
