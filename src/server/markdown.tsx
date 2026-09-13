@@ -1,32 +1,16 @@
 import "@tanstack/react-start/server-only";
 import { createTanStackMarkdownHighlighter } from "@tanstack/highlight/markdown";
-import type { ComponentNode, MarkdownDocument } from "@tanstack/markdown";
-import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
-import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
-import { parseMarkdown } from "@tanstack/markdown/parser";
+import type { MarkdownDocument } from "@tanstack/markdown";
 import { Markdown } from "@tanstack/markdown/react";
 import type { MarkdownComponents } from "@tanstack/markdown/react";
 import type { ComponentPropsWithoutRef, ReactElement } from "react";
 
 import { After, Before, Compare } from "~/components/compare";
+import { Demo } from "~/components/demo";
 import { ShowcaseImage } from "~/components/showcase";
 import { highlighter } from "~/lib/highlight";
 
 const highlightCode = createTanStackMarkdownHighlighter(highlighter);
-
-// A comment component with no `tagName` renders as one generic element for every
-// name, so the components map cannot tell `showcase` from `showcase-image`.
-// Naming the tag is what makes it addressable.
-function transformComponent(node: ComponentNode): ComponentNode {
-  return { ...node, properties: node.attributes, tagName: `md-${node.name}` };
-}
-
-// The renderer has to be handed the same extensions the document was parsed
-// with.
-const extensions = [
-  commentComponentsExtension({ transformComponent }),
-  headingCollectionExtension(),
-];
 
 function MarkdownLink({ href, ...props }: ComponentPropsWithoutRef<"a">) {
   const external = href?.startsWith("http") ?? false;
@@ -87,19 +71,11 @@ const components = {
   "md-after": After,
   "md-before": Before,
   "md-compare": Compare,
+  "md-demo": Demo,
   "md-showcase": "figure",
   "md-showcase-caption": "figcaption",
   "md-showcase-image": MarkdownShowcaseImage,
 } satisfies MarkdownComponents;
-
-// Called once per file at module scope in `~/server/content`, never per render.
-function parseContent(source: string): MarkdownDocument {
-  return parseMarkdown(source, {
-    extensions,
-    frontmatter: true,
-    headingIds: true,
-  });
-}
 
 function renderMarkdown(document: MarkdownDocument): ReactElement {
   return (
@@ -113,4 +89,4 @@ function renderMarkdown(document: MarkdownDocument): ReactElement {
   );
 }
 
-export { parseContent, renderMarkdown };
+export { renderMarkdown };

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { content } from "tomekit/content";
 
 import { config } from "~/lib/config";
-import { allPosts, allSkills } from "~/server/content";
 
 interface Entry {
   lastmod?: string;
@@ -14,20 +14,28 @@ function entries(): Entry[] {
     { path: "/" },
     { path: "/writings" },
     { path: "/skills" },
+    { path: "/explorations" },
     { path: "/music" },
     { path: "/usage" },
   ];
 
-  const posts: Entry[] = allPosts.map((post) => ({
-    lastmod: (post.modifiedAt ?? post.publishedAt).split("T")[0],
-    path: `/writings/${post.slug}`,
-  }));
+  const documents: Entry[] = Object.values(content).flatMap((collection) =>
+    collection.findMany().map((document) => ({
+      lastmod: lastModified(document)?.split("T")[0],
+      path: document.url,
+    }))
+  );
 
-  const skillEntries: Entry[] = allSkills.map((skill) => ({
-    path: `/skills/${skill.slug}`,
-  }));
+  return [...staticPaths, ...documents];
+}
 
-  return [...staticPaths, ...posts, ...skillEntries];
+function lastModified(document: object) {
+  if ("modifiedAt" in document && typeof document.modifiedAt === "string") {
+    return document.modifiedAt;
+  }
+  if ("publishedAt" in document && typeof document.publishedAt === "string") {
+    return document.publishedAt;
+  }
 }
 
 function toXml(list: Entry[]) {

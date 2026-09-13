@@ -1,16 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import type { SkillListItem } from "~/components/skill-list";
-import { allSkills, loadEntry } from "~/server/content";
-
-function sortedSkills() {
-  return allSkills.toSorted((a, b) => a.title.localeCompare(b.title));
-}
+import { loadEntry, skills } from "~/server/content";
 
 // Plain data, not a rendered element. See the note in server/posts.tsx.
 const skillListFn = createServerFn({ method: "GET" }).handler(
   (): SkillListItem[] =>
-    sortedSkills().map((skill) => ({
+    skills.findMany({ orderBy: { title: "asc" } }).map((skill) => ({
       category: skill.category,
       slug: skill.slug,
       title: skill.title,
@@ -19,7 +15,7 @@ const skillListFn = createServerFn({ method: "GET" }).handler(
 
 const skillBySlugFn = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
-  .handler(({ data: slug }) => loadEntry(allSkills, slug));
+  .handler(({ data: slug }) => loadEntry(skills, slug));
 
 function getSkillList() {
   return skillListFn();
