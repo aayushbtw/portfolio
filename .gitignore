@@ -7,6 +7,7 @@ dist
 .content-collections
 
 routeTree.gen.ts
+tomekit-env.d.ts
 
 .env
 .env.*
