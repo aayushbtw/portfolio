@@ -40,9 +40,10 @@ function useActiveHeading(headings: Heading[]) {
 
   const subscribe = useCallback(
     (onStoreChange: () => void) => {
-      const elements = headings
-        .map((h) => document.querySelector(`#${CSS.escape(h.id)}`))
-        .filter(Boolean) as HTMLElement[];
+      const elements = headings.flatMap((h) => {
+        const element = document.querySelector(`#${CSS.escape(h.id)}`);
+        return element instanceof HTMLElement ? [element] : [];
+      });
 
       const ids = new Set(headings.map((h) => h.id));
       let hashOverride = "";

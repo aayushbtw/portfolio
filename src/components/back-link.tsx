@@ -4,11 +4,15 @@ import { Link, useRouterState } from "@tanstack/react-router";
 
 import { useHaptics } from "~/lib/haptics";
 
-const sections: Record<string, { label: string; to: LinkProps["to"] }> = {
+const sections = {
   explorations: { label: "Explorations", to: "/explorations" },
   skills: { label: "Skills", to: "/skills" },
   writings: { label: "Writings", to: "/writings" },
-};
+} satisfies Record<string, { label: string; to: LinkProps["to"] }>;
+
+function isSection(segment: string): segment is keyof typeof sections {
+  return Object.hasOwn(sections, segment);
+}
 
 function parent(pathname: string) {
   const segments = pathname.split("/").filter(Boolean);
@@ -21,7 +25,11 @@ function parent(pathname: string) {
     return { label: "Home", to: "/" as const };
   }
 
-  return sections[segments[0]] ?? { label: "Home", to: "/" as const };
+  const [section] = segments;
+
+  return isSection(section)
+    ? sections[section]
+    : { label: "Home", to: "/" as const };
 }
 
 function BackLink() {

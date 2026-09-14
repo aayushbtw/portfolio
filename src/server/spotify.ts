@@ -87,6 +87,7 @@ async function getAccessToken(): Promise<string> {
 }
 
 async function json<T>(res: Response): Promise<T> {
+  // SAFETY: each caller names the response shape Spotify documents for its endpoint; it is not validated.
   return (await res.json()) as T;
 }
 

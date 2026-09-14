@@ -1,10 +1,11 @@
-import { explorations } from "~/components/explorations";
+import { explorations, isExploration } from "~/components/explorations";
 
 function Demo({ name }: { name: string }) {
-  const Exploration = explorations[name];
-  if (!Exploration) {
+  if (!isExploration(name)) {
     throw new Error(`No exploration registered as "${name}"`);
   }
+
+  const Exploration = explorations[name];
 
   return (
     <div

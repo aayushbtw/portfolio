@@ -2,8 +2,12 @@ import type { ComponentType } from "react";
 
 import { ChatInput } from "~/components/explorations/chat-input";
 
-const explorations: Record<string, ComponentType> = {
+const explorations = {
   "chat-input": ChatInput,
-};
+} satisfies Record<string, ComponentType>;
 
-export { explorations };
+function isExploration(name: string): name is keyof typeof explorations {
+  return Object.hasOwn(explorations, name);
+}
+
+export { explorations, isExploration };

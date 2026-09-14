@@ -251,12 +251,17 @@ function measure(
   elements: Record<Moving, HTMLElement | null>,
   point: (element: HTMLElement) => Point
 ) {
-  const result = {} as Record<Moving, Point>;
-  for (const key of KEYS) {
+  function at(key: Moving): Point {
     const element = elements[key];
-    result[key] = element ? point(element) : { x: 0, y: 0 };
+    return element ? point(element) : { x: 0, y: 0 };
   }
-  return result;
+
+  return {
+    mic: at("mic"),
+    plus: at("plus"),
+    send: at("send"),
+    text: at("text"),
+  };
 }
 
 function layoutPoint(element: HTMLElement): Point {
