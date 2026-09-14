@@ -2,6 +2,7 @@
 title: Chat Input
 description: A chat box that grows from one row into two once your message needs more than one line.
 publishedAt: 2026-09-13
+draft: true
 ---
 
 <!-- ::demo name="chat-input" -->

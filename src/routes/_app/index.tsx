@@ -112,10 +112,12 @@ function HomePage() {
         <PostList posts={posts} />
       </section>
 
-      <section>
-        <h2>Explorations</h2>
-        <PostList posts={explorations} to="/explorations/$slug" />
-      </section>
+      {explorations.length > 0 && (
+        <section>
+          <h2>Explorations</h2>
+          <PostList posts={explorations} to="/explorations/$slug" />
+        </section>
+      )}
     </Page>
   );
 }

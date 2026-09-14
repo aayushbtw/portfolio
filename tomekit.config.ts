@@ -39,6 +39,7 @@ export default defineConfig({
       directory: "content/explorations",
       schema: z.object({
         description: z.string(),
+        draft: z.boolean().default(false),
         publishedAt: z.iso.date(),
         title: z.string(),
       }),
