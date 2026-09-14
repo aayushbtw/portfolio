@@ -138,12 +138,12 @@ Each axis is cleared with a `--<axis>-*: initial` reset before it is redeclared,
 
 Colour, and one weight step that is really an optical correction.
 
-| Role            | Treatment                           |
-| --------------- | ----------------------------------- |
-| Page title      | `h1` as typeset styles it. No class |
+| Role            | Treatment                                |
+| --------------- | ---------------------------------------- |
+| Page title      | `h1` as typeset styles it. No class      |
 | Section label   | a bare `<h2>` in a `<section>`. No class |
-| Field label     | `text-fg-3` written directly        |
-| Everything else | body: `fg-4`                        |
+| Field label     | `text-fg-3` written directly             |
+| Everything else | body: `fg-4`                             |
 
 Every heading is `fg-1` at body size and body weight, and separates from copy by colour alone: black against `fg-4`. The `h1` alone adds `font-bold`. **A section label steps down to `fg-3` instead.** It names the list under it rather than being read, so it sits quieter than the rows it labels; a heading inside an `article` is part of the text and stays `fg-1`. The selector is `section > h2`, which is why the markup rule under Spacing matters here too. To signal importance mid-text, step the colour up.
 
