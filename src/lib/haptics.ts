@@ -88,7 +88,7 @@ export function useHaptics() {
   const ctx = useRef<AudioContext | null>(null);
   const activeSource = useRef<AudioScheduledSourceNode | null>(null);
 
-  const trigger = useCallback(async (sound: Sound) => {
+  const trigger = useCallback((sound: Sound) => {
     ctx.current ??= new AudioContext();
     const audioCtx = ctx.current;
 
@@ -102,11 +102,14 @@ export function useHaptics() {
       activeSource.current = sounds[sound](audioCtx);
     }
 
-    if (audioCtx.state === "suspended") {
-      await audioCtx.resume();
+    if (audioCtx.state !== "suspended") {
+      play();
+
+      return;
     }
 
-    play();
+    // Haptics are decorative: a context the browser refuses to resume stays silent.
+    audioCtx.resume().then(play, () => undefined);
   }, []);
 
   return { trigger };

@@ -35,7 +35,7 @@ function useHotkeys() {
       sequence: ["G", destination.key],
       callback: () => {
         trigger("click");
-        navigate({ to: destination.to });
+        void navigate({ to: destination.to });
       },
     }))
   );
