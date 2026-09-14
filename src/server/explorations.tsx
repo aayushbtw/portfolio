@@ -1,22 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
+import { collections } from "tomekit/content";
 
-import { datedList, explorations, loadEntry } from "~/server/content";
+import { listDocuments, renderDocument } from "~/server/content";
 
-// Plain data, not a rendered element. See the note in server/posts.tsx.
-const explorationListFn = createServerFn({ method: "GET" })
-  .validator((limit?: number) => limit)
-  .handler(({ data: limit }) => datedList(explorations, limit));
+const getExplorations = createServerFn({ method: "GET" }).handler(() =>
+  listDocuments(collections.get("explorations"))
+);
 
-const explorationBySlugFn = createServerFn({ method: "GET" })
+const getExploration = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
-  .handler(({ data: slug }) => loadEntry(explorations, slug));
+  .handler(({ data: slug }) =>
+    renderDocument(collections.get("explorations"), slug)
+  );
 
-function getExplorationList(limit?: number) {
-  return explorationListFn({ data: limit });
-}
-
-function getExplorationBySlug(slug: string) {
-  return explorationBySlugFn({ data: slug });
-}
-
-export { getExplorationBySlug, getExplorationList };
+export { getExploration, getExplorations };

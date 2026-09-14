@@ -1,10 +1,29 @@
 import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
+import { formatNumericDate, toUtcDate } from "~/lib/utils";
 
 interface PostListItem {
   date: string;
   slug: string;
   title: string;
   year: number;
+}
+
+interface DatedDocument {
+  publishedAt: string;
+  slug: string;
+  title: string;
+}
+
+function postListItems(documents: readonly DatedDocument[]): PostListItem[] {
+  // Calendar-day strings sort chronologically as text.
+  return documents
+    .toSorted((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .map(({ publishedAt, slug, title }) => ({
+      date: formatNumericDate(publishedAt),
+      slug,
+      title,
+      year: toUtcDate(publishedAt).getUTCFullYear(),
+    }));
 }
 
 function PostList({
@@ -38,4 +57,4 @@ function PostList({
   );
 }
 
-export { PostList, type PostListItem };
+export { PostList, type PostListItem, postListItems };

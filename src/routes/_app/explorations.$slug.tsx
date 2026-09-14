@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
-import { getExplorationBySlug } from "~/server/explorations";
+import { getExploration } from "~/server/explorations";
 
 export const Route = createFileRoute("/_app/explorations/$slug")({
-  loader: ({ params: { slug } }) => getExplorationBySlug(slug),
+  loader: ({ params: { slug } }) => getExploration({ data: slug }),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

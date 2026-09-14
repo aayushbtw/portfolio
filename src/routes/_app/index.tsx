@@ -8,7 +8,7 @@ import {
 } from "~/components/icons";
 import { NowPlaying } from "~/components/now-playing";
 import { PageDescription } from "~/components/page-description";
-import { PostList } from "~/components/post-list";
+import { PostList, postListItems } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
 import { IconLink } from "~/components/ui/icon-link";
 import { Page } from "~/components/ui/page";
@@ -16,16 +16,19 @@ import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { projects } from "~/lib/projects";
 import { seo } from "~/lib/seo";
-import { getExplorationList } from "~/server/explorations";
-import { getPostList } from "~/server/posts";
+import { getExplorations } from "~/server/explorations";
+import { getWritings } from "~/server/writings";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
     const [posts, explorations] = await Promise.all([
-      getPostList(5),
-      getExplorationList(5),
+      getWritings(),
+      getExplorations(),
     ]);
-    return { explorations, posts };
+    return {
+      explorations: postListItems(explorations).slice(0, 5),
+      posts: postListItems(posts).slice(0, 5),
+    };
   },
   head: () => seo({ title: config.name, description: config.description }),
   headers: () => ({

@@ -5,10 +5,10 @@ import { TableOfContents } from "~/components/table-of-contents";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
-import { getPostBySlug } from "~/server/posts";
+import { getWriting } from "~/server/writings";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: ({ params: { slug } }) => getPostBySlug(slug),
+  loader: ({ params: { slug } }) => getWriting({ data: slug }),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { PostList } from "~/components/post-list";
+import { PostList, postListItems } from "~/components/post-list";
 import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
-import { getExplorationList } from "~/server/explorations";
+import { getExplorations } from "~/server/explorations";
 
 const title = "Explorations";
 const description = "React components I built to try out an idea.";
 
 export const Route = createFileRoute("/_app/explorations/")({
-  loader: () => getExplorationList(),
+  loader: async () => postListItems(await getExplorations()),
   head: () => seo({ title, description }),
   component: ExplorationsPage,
 });

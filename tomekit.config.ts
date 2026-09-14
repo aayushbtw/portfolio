@@ -2,7 +2,7 @@ import type { ComponentNode } from "@tanstack/markdown";
 import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
 import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
-import { defineCollection, defineConfig } from "tomekit";
+import { defineConfig } from "tomekit";
 import type { Source, TransformContext } from "tomekit";
 import { z } from "zod";
 
@@ -35,7 +35,7 @@ function parse<TMetadata extends object>(
 
 export default defineConfig({
   collections: {
-    explorations: defineCollection({
+    explorations: {
       directory: "content/explorations",
       schema: z.object({
         description: z.string(),
@@ -43,17 +43,18 @@ export default defineConfig({
         title: z.string(),
       }),
       transform: parse,
-    }),
-    skills: defineCollection({
+    },
+    skills: {
       directory: "content/skills",
       schema: z.object({
         category: z.string(),
         description: z.string(),
+        publishedAt: z.iso.date(),
         title: z.string(),
       }),
       transform: parse,
-    }),
-    writings: defineCollection({
+    },
+    writings: {
       directory: "content/posts",
       schema: z.object({
         description: z.string(),
@@ -63,6 +64,6 @@ export default defineConfig({
         title: z.string(),
       }),
       transform: parse,
-    }),
+    },
   },
 });

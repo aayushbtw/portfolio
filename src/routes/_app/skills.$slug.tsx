@@ -9,10 +9,10 @@ import {
 } from "~/components/install";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
-import { getSkillBySlug } from "~/server/skills";
+import { getSkill } from "~/server/skills";
 
 export const Route = createFileRoute("/_app/skills/$slug")({
-  loader: ({ params: { slug } }) => getSkillBySlug(slug),
+  loader: ({ params: { slug } }) => getSkill({ data: slug }),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

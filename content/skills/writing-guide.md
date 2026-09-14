@@ -2,6 +2,7 @@
 title: Writing Guide
 category: Writing
 description: Write, review, and improve articles and blog posts with clear structure, strong voice, and polished prose.
+publishedAt: 2026-09-08
 ---
 
 Ask an agent to write a post and you get the same draft every time. It hedges every claim, puts a title on top that nobody would click, and opens with a paragraph of background before it gets to the point.
