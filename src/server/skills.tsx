@@ -6,9 +6,14 @@ import { loadEntry, skills } from "~/server/content";
 // Plain data, not a rendered element. See the note in server/posts.tsx.
 const skillListFn = createServerFn({ method: "GET" }).handler(
   (): SkillListItem[] =>
-    skills.all
-      .toSorted((a, b) => a.title.localeCompare(b.title))
-      .map(({ category, slug, title }) => ({ category, slug, title }))
+    skills
+      .documents()
+      .toSorted((a, b) => a.metadata.title.localeCompare(b.metadata.title))
+      .map(({ metadata: { category, title }, slug }) => ({
+        category,
+        slug,
+        title,
+      }))
 );
 
 const skillBySlugFn = createServerFn({ method: "GET" })

@@ -3,7 +3,7 @@ import { commentComponentsExtension } from "@tanstack/markdown/extensions/commen
 import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
 import { defineCollection, defineConfig } from "tomekit";
-import type { BaseDocument, TransformContext } from "tomekit";
+import type { Source, TransformContext } from "tomekit";
 import { z } from "zod";
 
 // A comment component with no `tagName` renders as one generic element for every
@@ -18,17 +18,18 @@ const extensions = [
   headingCollectionExtension(),
 ];
 
-function parse<T extends BaseDocument>(
-  { content, file: _file, slug, ...frontmatter }: T,
+function parse<TMetadata extends object>(
+  { body, metadata, slug }: Source<TMetadata>,
   { collection }: TransformContext
 ) {
-  const document = parseMarkdown(content, { extensions, headingIds: true });
+  const document = parseMarkdown(body, { extensions, headingIds: true });
   return {
-    ...frontmatter,
-    document,
-    headings: (document.headings ?? []).filter((h) => h.level === 2),
-    slug,
-    url: `/${collection}/${slug}`,
+    body: document,
+    metadata: {
+      ...metadata,
+      headings: (document.headings ?? []).filter((h) => h.level === 2),
+      url: `/${collection}/${slug}`,
+    },
   };
 }
 

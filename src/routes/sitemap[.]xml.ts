@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { content } from "tomekit/content";
-import type { AnyDocument } from "tomekit/content";
+import { collections } from "tomekit/content";
+import type { DocumentOf } from "tomekit/content";
 
 import { config } from "~/lib/config";
 
@@ -20,22 +20,23 @@ function entries(): Entry[] {
     { path: "/usage" },
   ];
 
-  const documents: Entry[] = Object.values(content)
-    .flatMap((collection): readonly AnyDocument[] => collection.all)
+  const documents: Entry[] = collections
+    .names()
+    .flatMap((name) => collections.get(name).documents())
     .map((document) => ({
       lastmod: lastModified(document)?.split("T")[0],
-      path: document.url,
+      path: document.metadata.url,
     }));
 
   return [...staticPaths, ...documents];
 }
 
-function lastModified(document: AnyDocument) {
-  if ("modifiedAt" in document && document.modifiedAt !== undefined) {
-    return document.modifiedAt;
+function lastModified({ metadata }: DocumentOf) {
+  if ("modifiedAt" in metadata && metadata.modifiedAt !== undefined) {
+    return metadata.modifiedAt;
   }
-  if ("publishedAt" in document) {
-    return document.publishedAt;
+  if ("publishedAt" in metadata) {
+    return metadata.publishedAt;
   }
 }
 
