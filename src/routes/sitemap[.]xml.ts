@@ -35,6 +35,7 @@ function lastModified({ metadata }: DocumentOf) {
   if ("modifiedAt" in metadata && metadata.modifiedAt !== undefined) {
     return metadata.modifiedAt;
   }
+
   if ("publishedAt" in metadata) {
     return metadata.publishedAt;
   }

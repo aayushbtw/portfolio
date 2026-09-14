@@ -20,6 +20,7 @@ export const Route = createFileRoute("/api/og")({
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const title = url.searchParams.get("title") ?? config.name;
+
         const description =
           url.searchParams.get("description") ?? config.description;
 

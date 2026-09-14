@@ -6,6 +6,7 @@ import { seo } from "~/lib/seo";
 import { getExplorations } from "~/server/explorations";
 
 const title = "Explorations";
+
 const description = "React components I built to try out an idea.";
 
 export const Route = createFileRoute("/_app/explorations/")({

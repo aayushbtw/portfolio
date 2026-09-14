@@ -23,6 +23,7 @@ function parse<TMetadata extends object>(
   { collection }: TransformContext
 ) {
   const document = parseMarkdown(body, { extensions, headingIds: true });
+
   return {
     body: document,
     metadata: {

@@ -21,6 +21,7 @@ const compact = new Intl.NumberFormat("en", {
   maximumFractionDigits: 2,
   notation: "compact",
 });
+
 const exact = new Intl.NumberFormat("en");
 
 export function formatCompact(value: number) {

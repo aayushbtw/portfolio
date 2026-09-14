@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_app/explorations/$slug")({
     if (!loaderData) {
       return {};
     }
+
     return seo({
       title: loaderData.title,
       description: loaderData.description,

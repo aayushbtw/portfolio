@@ -3,6 +3,7 @@ import { setResponseHeader } from "@tanstack/react-start/server";
 import { env } from "cloudflare:workers";
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
+
 const API = "https://api.spotify.com/v1";
 
 interface SpotifyImage {
@@ -35,12 +36,14 @@ interface NowPlaying {
 }
 
 let cachedToken: { value: string; expiresAt: number } | null = null;
+
 let inflightToken: Promise<string> | null = null;
 
 async function getAccessToken(): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
     return cachedToken.value;
   }
+
   if (inflightToken) {
     return inflightToken;
   }
@@ -50,6 +53,7 @@ async function getAccessToken(): Promise<string> {
       env;
 
     const basic = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
+
     const res = await fetch(TOKEN_URL, {
       body: new URLSearchParams({
         grant_type: "refresh_token",
@@ -76,6 +80,7 @@ async function getAccessToken(): Promise<string> {
       expiresAt: Date.now() + (expires_in - 60) * 1000,
       value: access_token,
     };
+
     return access_token;
   })();
 
@@ -93,6 +98,7 @@ async function json<T>(res: Response): Promise<T> {
 
 async function spotifyFetch(path: string): Promise<Response> {
   const token = await getAccessToken();
+
   const res = await fetch(`${API}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -182,9 +188,11 @@ async function getNowPlaying(): Promise<NowPlaying> {
 
 async function getRecentlyPlayed(): Promise<SpotifyTrack[]> {
   const res = await spotifyFetch("/me/player/recently-played?limit=10");
+
   const { items } = await json<{
     items: { track: RawTrack; played_at: string }[];
   }>(res);
+
   return items.map((i) => mapTrack(i.track, i.played_at));
 }
 
@@ -192,7 +200,9 @@ async function getTopArtists(): Promise<SpotifyArtist[]> {
   const res = await spotifyFetch(
     "/me/top/artists?time_range=short_term&limit=3"
   );
+
   const { items } = await json<{ items: RawArtist[] }>(res);
+
   return items.map(mapArtist);
 }
 
@@ -200,7 +210,9 @@ async function getTopTracks(): Promise<SpotifyTrack[]> {
   const res = await spotifyFetch(
     "/me/top/tracks?time_range=short_term&limit=3"
   );
+
   const { items } = await json<{ items: RawTrack[] }>(res);
+
   return items.map((t) => mapTrack(t));
 }
 
@@ -209,6 +221,7 @@ export const getTops = createServerOnlyFn(async () => {
     getTopArtists(),
     getTopTracks(),
   ]);
+
   return { topArtists, topTracks };
 });
 
@@ -217,6 +230,7 @@ export const getLive = createServerOnlyFn(async () => {
     getNowPlaying(),
     getRecentlyPlayed(),
   ]);
+
   return { nowPlaying, recentlyPlayed };
 });
 
@@ -228,6 +242,7 @@ const getTopsFn = createServerFn({ method: "GET" }).handler(() => {
     "Cache-Control",
     "public, s-maxage=86400, stale-while-revalidate=604800"
   );
+
   return getTops();
 });
 

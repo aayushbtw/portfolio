@@ -13,7 +13,9 @@ export const Route = createFileRoute("/_app/writings/$slug")({
     if (!loaderData) {
       return {};
     }
+
     const post = loaderData;
+
     return {
       ...seo({
         title: post.title,

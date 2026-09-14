@@ -38,6 +38,7 @@ function PostList({
       {posts.map((post, i) => {
         // Once per run, so a span of two years reads as two groups.
         const showYear = i === 0 || posts[i - 1].year !== post.year;
+
         return (
           <ListItemLink
             className="gap-md grid grid-cols-[56px_minmax(0,1fr)_auto] items-center rounded-full"

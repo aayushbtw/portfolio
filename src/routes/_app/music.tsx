@@ -12,6 +12,7 @@ import { getTopsFn } from "~/server/spotify";
 import type { SpotifyArtist, SpotifyTrack } from "~/server/spotify";
 
 const title = "Music";
+
 const description = "What I’m listening to on Spotify.";
 
 export const Route = createFileRoute("/_app/music")({

@@ -28,6 +28,7 @@ function ProgressiveBlur({
     >
       {LAYERS.map(({ blur, transparent }, i) => {
         const maskImage = `linear-gradient(${direction}, transparent ${transparent}%, black 100%)`;
+
         return (
           <div
             className="absolute inset-0"

@@ -26,6 +26,7 @@ async function renderDocument<TMetadata extends object, TSlug extends string>(
   slug: string
 ) {
   const document = collection.get(slug);
+
   if (!document) {
     throw notFound();
   }

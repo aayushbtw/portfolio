@@ -16,6 +16,7 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
       />
       {headings.map((h) => {
         const isActive = activeId === h.id;
+
         return (
           <li key={h.id}>
             <a
@@ -42,6 +43,7 @@ function useActiveHeading(headings: Heading[]) {
     (onStoreChange: () => void) => {
       const elements = headings.flatMap((h) => {
         const element = document.querySelector(`#${CSS.escape(h.id)}`);
+
         return element instanceof HTMLElement ? [element] : [];
       });
 
@@ -52,20 +54,25 @@ function useActiveHeading(headings: Heading[]) {
         if (hashOverride) {
           const id = hashOverride;
           hashOverride = "";
+
           return id;
         }
+
         let active = headings[0]?.id ?? "";
+
         for (const el of elements) {
           if (el.getBoundingClientRect().top <= SCROLL_OFFSET) {
             active = el.id;
           }
         }
+
         return active;
       }
 
       function flush() {
         rafRef.current = 0;
         const active = compute();
+
         if (active !== stateRef.current) {
           stateRef.current = active;
           onStoreChange();
@@ -80,6 +87,7 @@ function useActiveHeading(headings: Heading[]) {
 
       function onHashChange() {
         const hash = window.location.hash.slice(1);
+
         if (ids.has(hash)) {
           hashOverride = hash;
           flush();
@@ -90,6 +98,7 @@ function useActiveHeading(headings: Heading[]) {
       onHashChange();
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("hashchange", onHashChange);
+
       return () => {
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("hashchange", onHashChange);

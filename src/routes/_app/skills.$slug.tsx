@@ -17,6 +17,7 @@ export const Route = createFileRoute("/_app/skills/$slug")({
     if (!loaderData) {
       return {};
     }
+
     return seo({
       title: loaderData.title,
       description: loaderData.description,

@@ -14,6 +14,7 @@ const highlightCode = createTanStackMarkdownHighlighter(highlighter);
 
 function MarkdownLink({ href, ...props }: ComponentPropsWithoutRef<"a">) {
   const external = href?.startsWith("http") ?? false;
+
   return (
     <a
       href={href}
@@ -41,6 +42,7 @@ function MarkdownShowcaseImage({
 // heading's children and the `#` is drawn in CSS.
 function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
   const Tag = `h${level}` as const;
+
   return function MarkdownHeading({
     children,
     id,

@@ -25,6 +25,7 @@ export const Route = createFileRoute("/_app/")({
       getWritings(),
       getExplorations(),
     ]);
+
     return {
       explorations: postListItems(explorations).slice(0, 5),
       posts: postListItems(posts).slice(0, 5),
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/_app/")({
 function HomePage() {
   const { explorations, posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
+
   function haptic() {
     trigger("tick");
   }

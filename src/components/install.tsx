@@ -132,6 +132,7 @@ function highlightShell(command: string) {
     .tokens.map((token) => {
       const key = `${offset}-${token.value}`;
       offset += token.value.length;
+
       return { className: token.className, key, value: token.value };
     });
 }

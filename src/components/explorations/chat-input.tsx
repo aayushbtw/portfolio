@@ -8,7 +8,9 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 
 const MAX_TEXT_HEIGHT = 144;
+
 const MOVE = { duration: 300, easing: "cubic-bezier(0.32, 0.72, 0, 1)" };
+
 const FADE = { duration: 150, easing: "ease-out" };
 
 type Moving = "mic" | "plus" | "send" | "text";
@@ -34,17 +36,20 @@ function ChatInput() {
 
   const frameRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
   const moving = useRef<Record<Moving, HTMLElement | null>>({
     mic: null,
     plus: null,
     send: null,
     text: null,
   });
+
   const before = useRef<Snapshot | null>(null);
 
   function capture() {
     const frame = frameRef.current;
     const form = formRef.current;
+
     if (frame && form && !before.current) {
       before.current = {
         expanded,
@@ -65,6 +70,7 @@ function ChatInput() {
     const frame = frameRef.current;
     const form = formRef.current;
     const { text } = moving.current;
+
     if (!(frame && form && text)) {
       return;
     }
@@ -77,15 +83,19 @@ function ChatInput() {
     // stops the box from flipping back and forth at the wrap point.
     if (!expanded && wraps) {
       setExpanded(true);
+
       return;
     }
+
     if (expanded && value === "") {
       setExpanded(false);
+
       return;
     }
 
     const first = before.current;
     before.current = null;
+
     if (
       first &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -96,6 +106,7 @@ function ChatInput() {
 
   function submit(event: React.SyntheticEvent) {
     event.preventDefault();
+
     if (value.trim()) {
       update("");
     }
@@ -206,6 +217,7 @@ function play(
   const expanded = Object.hasOwn(form.dataset, "expanded");
   const layout = measure(elements, layoutPoint);
   const target = form.offsetHeight;
+
   const moved = KEYS.some(
     (key) =>
       layout[key].x !== first.layout[key].x ||
@@ -234,6 +246,7 @@ function play(
     const x = first.seen[key].x - layout[key].x;
     const y = first.seen[key].y - layout[key].y;
     const collapsing = key === "text" && first.expanded && !expanded;
+
     if (element && !collapsing && (x !== 0 || y !== 0)) {
       element.animate(
         [{ translate: `${x}px ${y}px` }, { translate: "0 0" }],
@@ -253,6 +266,7 @@ function measure(
 ) {
   function at(key: Moving): Point {
     const element = elements[key];
+
     return element ? point(element) : { x: 0, y: 0 };
   }
 
@@ -271,6 +285,7 @@ function layoutPoint(element: HTMLElement): Point {
 function seenPoint(element: HTMLElement, form: HTMLElement): Point {
   const box = element.getBoundingClientRect();
   const origin = form.getBoundingClientRect();
+
   return {
     x: Math.round(box.left - origin.left),
     y: Math.round(box.top - origin.top),

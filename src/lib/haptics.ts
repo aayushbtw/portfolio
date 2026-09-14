@@ -11,6 +11,7 @@ const nodeCache = new WeakMap<AudioContext, AudioNodes>();
 
 function getNodes(ctx: AudioContext): AudioNodes {
   let nodes = nodeCache.get(ctx);
+
   if (!nodes) {
     const clickBuffer = ctx.createBuffer(
       1,
@@ -33,6 +34,7 @@ function getNodes(ctx: AudioContext): AudioNodes {
     nodes = { clickBuffer, clickFilter, clickGain, tickGain };
     nodeCache.set(ctx, nodes);
   }
+
   return nodes;
 }
 
@@ -41,6 +43,7 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   const { clickBuffer, clickFilter } = getNodes(ctx);
 
   const data = clickBuffer.getChannelData(0);
+
   for (let i = 0; i < data.length; i += 1) {
     data[i] = (Math.random() * 2 - 1) * Math.exp(-i / 25);
   }
@@ -88,17 +91,21 @@ export function useHaptics() {
   const trigger = useCallback(async (sound: Sound) => {
     ctx.current ??= new AudioContext();
     const audioCtx = ctx.current;
+
     function play() {
       try {
         activeSource.current?.stop();
       } catch {
         // already stopped
       }
+
       activeSource.current = sounds[sound](audioCtx);
     }
+
     if (audioCtx.state === "suspended") {
       await audioCtx.resume();
     }
+
     play();
   }, []);
 

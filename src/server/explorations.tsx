@@ -14,6 +14,7 @@ const getExploration = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(({ data: slug }) => {
     const explorations = collections.get("explorations");
+
     if (!import.meta.env.DEV && explorations.get(slug)?.metadata.draft) {
       throw notFound();
     }

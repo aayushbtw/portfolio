@@ -15,6 +15,7 @@ const LayoutContext = createContext<LayoutContextValue>({
 
 function LayoutProvider({ children }: { children: ReactNode }) {
   const [right, setRight] = useState<ReactNode>(null);
+
   return (
     <LayoutContext.Provider value={{ right, setRight }}>
       {children}
@@ -30,8 +31,10 @@ function RightColumn({ children }: { children: ReactNode }) {
   const { setRight } = useContext(LayoutContext);
   useEffect(() => {
     setRight(children);
+
     return () => setRight(null);
   }, [children, setRight]);
+
   return null;
 }
 
