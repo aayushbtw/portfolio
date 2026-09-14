@@ -16,7 +16,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "tomekit/content*": ["./.tomekit/content*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

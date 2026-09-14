@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { content } from "tomekit/content";
+import type { AnyDocument } from "tomekit/content";
 
 import { config } from "~/lib/config";
 
@@ -19,21 +20,21 @@ function entries(): Entry[] {
     { path: "/usage" },
   ];
 
-  const documents: Entry[] = Object.values(content).flatMap((collection) =>
-    collection.findMany().map((document) => ({
+  const documents: Entry[] = Object.values(content)
+    .flatMap((collection): readonly AnyDocument[] => collection.all)
+    .map((document) => ({
       lastmod: lastModified(document)?.split("T")[0],
       path: document.url,
-    }))
-  );
+    }));
 
   return [...staticPaths, ...documents];
 }
 
-function lastModified(document: object) {
-  if ("modifiedAt" in document && typeof document.modifiedAt === "string") {
+function lastModified(document: AnyDocument) {
+  if ("modifiedAt" in document && document.modifiedAt !== undefined) {
     return document.modifiedAt;
   }
-  if ("publishedAt" in document && typeof document.publishedAt === "string") {
+  if ("publishedAt" in document) {
     return document.publishedAt;
   }
 }

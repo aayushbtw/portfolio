@@ -6,11 +6,9 @@ import { loadEntry, skills } from "~/server/content";
 // Plain data, not a rendered element. See the note in server/posts.tsx.
 const skillListFn = createServerFn({ method: "GET" }).handler(
   (): SkillListItem[] =>
-    skills.findMany({ orderBy: { title: "asc" } }).map((skill) => ({
-      category: skill.category,
-      slug: skill.slug,
-      title: skill.title,
-    }))
+    skills.all
+      .toSorted((a, b) => a.title.localeCompare(b.title))
+      .map(({ category, slug, title }) => ({ category, slug, title }))
 );
 
 const skillBySlugFn = createServerFn({ method: "GET" })

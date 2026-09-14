@@ -3,6 +3,7 @@ import { commentComponentsExtension } from "@tanstack/markdown/extensions/commen
 import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
 import { defineCollection, defineConfig } from "tomekit";
+import type { BaseDocument, TransformContext } from "tomekit";
 import { z } from "zod";
 
 // A comment component with no `tagName` renders as one generic element for every
@@ -17,9 +18,9 @@ const extensions = [
   headingCollectionExtension(),
 ];
 
-function parse<T extends { content: string; file: unknown; slug: string }>(
+function parse<T extends BaseDocument>(
   { content, file: _file, slug, ...frontmatter }: T,
-  section: string
+  { collection }: TransformContext
 ) {
   const document = parseMarkdown(content, { extensions, headingIds: true });
   return {
@@ -27,51 +28,40 @@ function parse<T extends { content: string; file: unknown; slug: string }>(
     document,
     headings: (document.headings ?? []).filter((h) => h.level === 2),
     slug,
-    url: `/${section}/${slug}`,
+    url: `/${collection}/${slug}`,
   };
 }
 
-// Frontmatter dates stay calendar-day strings: `~/lib/utils` parses them in UTC.
-const date = z.string();
-
-const writings = defineCollection({
-  directory: "content/posts",
-  include: "*.md",
-  name: "writings",
-  schema: z.object({
-    description: z.string(),
-    image: z.string().optional(),
-    modifiedAt: date.optional(),
-    publishedAt: date,
-    title: z.string(),
-  }),
-  transform: (document) => parse(document, "writings"),
-});
-
-const skills = defineCollection({
-  directory: "content/skills",
-  include: "*.md",
-  name: "skills",
-  schema: z.object({
-    category: z.string(),
-    description: z.string(),
-    title: z.string(),
-  }),
-  transform: (document) => parse(document, "skills"),
-});
-
-const explorations = defineCollection({
-  directory: "content/explorations",
-  include: "*.md",
-  name: "explorations",
-  schema: z.object({
-    description: z.string(),
-    publishedAt: date,
-    title: z.string(),
-  }),
-  transform: (document) => parse(document, "explorations"),
-});
-
 export default defineConfig({
-  collections: [writings, skills, explorations],
+  collections: {
+    explorations: defineCollection({
+      directory: "content/explorations",
+      schema: z.object({
+        description: z.string(),
+        publishedAt: z.iso.date(),
+        title: z.string(),
+      }),
+      transform: parse,
+    }),
+    skills: defineCollection({
+      directory: "content/skills",
+      schema: z.object({
+        category: z.string(),
+        description: z.string(),
+        title: z.string(),
+      }),
+      transform: parse,
+    }),
+    writings: defineCollection({
+      directory: "content/posts",
+      schema: z.object({
+        description: z.string(),
+        image: z.string().optional(),
+        modifiedAt: z.iso.date().optional(),
+        publishedAt: z.iso.date(),
+        title: z.string(),
+      }),
+      transform: parse,
+    }),
+  },
 });

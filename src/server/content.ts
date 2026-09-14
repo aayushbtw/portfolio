@@ -1,21 +1,19 @@
 import "@tanstack/react-start/server-only";
 import { notFound } from "@tanstack/react-router";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import type { CollectionQuery } from "tomekit";
-import { content } from "tomekit/content";
+import type { Collection } from "tomekit";
 
 import type { PostListItem } from "~/components/post-list";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
 import { renderMarkdown } from "~/server/markdown";
 
-const { explorations, skills, writings } = content;
-
 function datedList<
   TEntry extends { publishedAt: string; slug: string; title: string },
->(collection: CollectionQuery<TEntry>, limit?: number): PostListItem[] {
+>(collection: Collection<TEntry>, limit?: number): PostListItem[] {
   // Calendar-day strings sort chronologically as text.
-  return collection
-    .findMany({ orderBy: { publishedAt: "desc" }, take: limit })
+  return collection.all
+    .toSorted((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, limit)
     .map((entry) => ({
       date: formatNumericDate(entry.publishedAt),
       slug: entry.slug,
@@ -30,8 +28,8 @@ async function loadEntry<
     document: Parameters<typeof renderMarkdown>[0];
     slug: string;
   },
->(collection: CollectionQuery<TEntry>, slug: string) {
-  const entry = collection.findUnique({ slug });
+>(collection: Collection<TEntry>, slug: string) {
+  const entry = collection.get(slug);
   if (!entry) {
     throw notFound();
   }
@@ -44,4 +42,7 @@ async function loadEntry<
   };
 }
 
-export { datedList, explorations, loadEntry, skills, writings };
+export { datedList, loadEntry };
+export { default as explorations } from "tomekit/content/explorations";
+export { default as skills } from "tomekit/content/skills";
+export { default as writings } from "tomekit/content/writings";
