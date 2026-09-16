@@ -9,6 +9,11 @@ type Project = {
 
 const projects: Project[] = [
   {
+    href: "https://tomekit.aayush.cv",
+    name: "Tomekit",
+    tag: "Content collections",
+  },
+  {
     href: "https://type.aayush.cv",
     name: "Type",
     tag: "Typing test",
