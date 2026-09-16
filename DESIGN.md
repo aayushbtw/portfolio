@@ -167,7 +167,7 @@ The content column is `--container-content`, **644px**, used as `max-w-content` 
 
 No chrome is `fixed`. Chrome pinned to the window has the page scrolling under it, and a screenshot passing beneath a line of dark text is unreadable however the band over it is drawn: a scrim cuts a white stripe across a post with an image in it. Chrome in a gutter cannot be scrolled under, so nothing has to be hidden. The two blur bands are the exception, pinned to the window outside the grid: they carry no text, and the gutters' content sits below the top padding, so nothing readable passes under them but the page itself.
 
-**The one thing that reaches outside the frame** is the anchor offset. The blur band is 48px tall, so a heading jumped to from the table of contents would land underneath it, and headings with an `id` carry a `scroll-margin-block-start` in typeset.css to clear it. A decorative element generating a compensating rule in another file is accepted here: the band stays, so the rule stays with it.
+**The one thing that reaches outside the frame** is the anchor offset. Headings with an `id` carry a `2xl` `scroll-margin-block-start` in typeset.css, the gutters' top padding, so a heading jumped to lands level with the table of contents and clear of the blur band.
 
 **The home page starts lower.** It has no back link and is the one page read as an introduction rather than a destination, so `main` adds `xl` on top, `2xl` from `lg`. The frame decides this from the matched route, not the route itself: where a page starts is the frame's job, the same way `Page` owns the gaps inside it.
 
