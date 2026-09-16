@@ -224,8 +224,8 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
       tomekit:
-        specifier: ^0.6.0
-        version: 0.6.0(@voidzero-dev/vite-plus-core@0.3.2(@types/node@26.4.1)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1))
+        specifier: ^0.7.0
+        version: 0.7.0(@voidzero-dev/vite-plus-core@0.3.2(@types/node@26.4.1)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1))
       workers-og:
         specifier: ^0.0.27
         version: 0.0.27
@@ -2856,8 +2856,8 @@ packages:
     resolution: {integrity: sha512-yau8yJdTt989Mm0Bd/236QnzEiPf2xLLTqUZRUJOo/3CB078LSwzei343DgtJVmfJKJE3TMINY1u42SQsP6mXw==}
     engines: {node: '>=14.0.0'}
 
-  tomekit@0.6.0:
-    resolution: {integrity: sha512-qrWuB8+aRlC0jL8L9liRrGG6PcetS1BaXkwA1qFLTgapS3K9OYVWSLipY+aNPf3fdaO31KN3OxDetls1+d5mfQ==}
+  tomekit@0.7.0:
+    resolution: {integrity: sha512-0nJP3JdWeMIgK7u+sLb14eCsInYhRXK1b9GT0EIukPjgZNh5I4z23g2/PrNREGHQ8wAAJfghNFh1aw76QT5KrA==}
     engines: {node: '>=24'}
     peerDependencies:
       vite: '>=8.0.0'
@@ -5125,7 +5125,7 @@ snapshots:
 
   tinyrainbow@3.1.1: {}
 
-  tomekit@0.6.0(@voidzero-dev/vite-plus-core@0.3.2(@types/node@26.4.1)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1)):
+  tomekit@0.7.0(@voidzero-dev/vite-plus-core@0.3.2(@types/node@26.4.1)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1)):
     dependencies:
       vite: '@voidzero-dev/vite-plus-core@0.3.2(@types/node@26.4.1)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1)'
       yaml: 2.9.1
