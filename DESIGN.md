@@ -209,7 +209,7 @@ Defined with `@utility` in app.css so they compose with variants and merge corre
 | --- | --- |
 | `skip-link` | Off-screen until focused, then a real target top-left. One per document |
 | `animated-link` | Inline prose link: underline that turns `brand` on hover. Applied to every `a` inside `typeset`, so you rarely write it |
-| `scroll-fade-end` | Fades the trailing edge of a horizontal scroller, and only when it actually overflows |
+| `scroll-fade-x` | Fades whichever edge of a horizontal scroller has more content past it, and neither when it fits |
 | `indicator-brand` | Brand fill for the table-of-contents indicator and meter segments, softened toward its bottom edge |
 
 **A `@utility` earns its place two ways: it lands on tags the caller chooses, or it needs selectors a `className` cannot express.** `indicator-brand` sits on a nav span and a meter segment. That is the first kind. `skip-link` has a single call site and stays anyway: its long `focus-visible:` chain reads better in a stylesheet than in JSX.

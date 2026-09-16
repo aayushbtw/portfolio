@@ -91,21 +91,51 @@
    value at both ends because the animation is not an effect: it is the only way
    CSS can ask whether an element overflows, since a scroller with nothing to
    scroll has an inactive timeline and keeps its base style. */
-@utility scroll-fade-end {
+@property --scroll-fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --scroll-fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@utility scroll-fade-x {
   @supports (animation-timeline: scroll(self inline)) {
-    animation: scroll-fade-end linear both;
+    animation: scroll-fade-x linear both;
     animation-timeline: scroll(self inline);
+    /* The two solid layers exclude down to the border ring, so a bordered
+       scroller keeps its border while the content fades. */
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent,
+        black var(--scroll-fade-start),
+        black calc(100% - var(--scroll-fade-end)),
+        transparent
+      ),
+      linear-gradient(black, black), linear-gradient(black, black);
+    mask-clip: padding-box, padding-box, border-box;
+    mask-composite: add, exclude;
   }
 }
 
-@keyframes scroll-fade-end {
-  from,
+@keyframes scroll-fade-x {
+  from {
+    --scroll-fade-start: 0px;
+    --scroll-fade-end: var(--spacing-lg);
+  }
+  10%,
+  90% {
+    --scroll-fade-start: var(--spacing-lg);
+    --scroll-fade-end: var(--spacing-lg);
+  }
   to {
-    mask-image: linear-gradient(
-      to right,
-      black calc(100% - var(--spacing-lg)),
-      transparent
-    );
+    --scroll-fade-start: var(--spacing-lg);
+    --scroll-fade-end: 0px;
   }
 }
 
