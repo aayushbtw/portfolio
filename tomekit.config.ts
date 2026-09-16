@@ -38,17 +38,20 @@ export default defineConfig({
   collections: {
     explorations: {
       loader: directory("content/explorations"),
-      schema: z.object({
+      schema: z.strictObject({
         description: z.string(),
         draft: z.boolean().default(false),
         publishedAt: z.iso.date(),
         title: z.string(),
       }),
-      transform: parse,
+      transform: (source, context) =>
+        source.metadata.draft && !context.dev
+          ? context.skip("draft")
+          : parse(source, context),
     },
     skills: {
       loader: directory("content/skills"),
-      schema: z.object({
+      schema: z.strictObject({
         category: z.string(),
         description: z.string(),
         publishedAt: z.iso.date(),
@@ -58,7 +61,7 @@ export default defineConfig({
     },
     writings: {
       loader: directory("content/posts"),
-      schema: z.object({
+      schema: z.strictObject({
         description: z.string(),
         image: z.string().optional(),
         modifiedAt: z.iso.date().optional(),
