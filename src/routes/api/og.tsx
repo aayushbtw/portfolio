@@ -99,6 +99,8 @@ export const Route = createFileRoute("/api/og")({
             headers: {
               "Content-Type": "image/png",
               "Cache-Control": "public, max-age=31536000, immutable",
+              // Social crawlers must fetch it, so it's kept out of search here, not in robots.txt.
+              "X-Robots-Tag": "noindex",
             },
           }
         );
