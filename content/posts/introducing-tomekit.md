@@ -13,14 +13,20 @@ Every Markdown blog grows the same glue code: read a folder, parse the frontmatt
 
 ## What it does
 
-Point a collection at a folder and give it a schema:
+Point a collection at a folder and give it a schema in `tomekit.config.ts`:
 
 ```ts
+import { defineConfig, directory } from "tomekit";
+import { z } from "zod";
+
 export default defineConfig({
   collections: {
     posts: {
       loader: directory("content/posts"),
-      schema: z.strictObject({ title: z.string(), date: z.coerce.date() }),
+      schema: z.strictObject({
+        title: z.string(),
+        date: z.coerce.date(),
+      }),
     },
   },
 });
@@ -45,19 +51,19 @@ A slug from a URL is a plain string, so the same call returns the post or `undef
 
 Whatever `transform` returns, like rendered HTML or a Markdown AST, becomes the document's type. A reference field is typed as the other collection's slugs, so following it needs no `undefined` check either.
 
-Skipped documents leave the types too, so a draft skipped in production can't be linked from a production build.
+In dev, drafts keep their types, so you can preview and link them like any other post. A production build skips them, so they add nothing to the bundle.
 
 ## Performance
 
 The generated module holds finished data. Your server bundle ships no Markdown parser, and reading a post is a synchronous lookup.
 
-In dev, a change reloads its collection and reruns `transform` only for files whose content changed. A full reload takes about 80 ms for 1,000 files and 710 ms for 10,000. That was fast enough that I left out a per-file cache, which is one less thing that can go stale.
+In dev, a change reloads its collection and reruns `transform` only for files whose content changed. On an M2 Pro, with this site's Markdown transform, editing one post takes about 100 ms with 1,000 posts. At 10,000 posts it takes about 1 s, because every file is still read and hashed. There's no cache on disk, so starting dev parses everything again: about 0.7 s for 1,000 posts.
 
 ## Design choices
 
 Most content bugs don't crash anything. A slug falls back to the file name, a post names an author who doesn't exist, or a typo in a folder path builds a blog with no posts. The site deploys and looks fine until someone clicks.
 
-A warning scrolls past in CI and nobody reads it, so tomekit fails the build instead: on an empty `slug`, a reference to a missing document, a directory that doesn't exist, or a `transform` that returns something that can't be written into a module.
+A warning scrolls past in CI and nobody reads it, so tomekit fails the build instead: on an empty `slug`, a reference to a missing document, a directory that doesn't exist, or a `transform` that returns something that can't be written into a module, like a function or a class instance.
 
 It only warns when the content could be right on purpose. An empty directory might be a blog with no posts yet. Unknown frontmatter keys are up to the schema: `z.object` drops them and `z.strictObject` fails on them, which is why every example uses strict.
 
@@ -78,4 +84,4 @@ Dev is gentler. The errors show in Vite's overlay, broken documents are left out
 
 ## Try it
 
-tomekit is still early and still evolving. The [docs](https://tomekit.aayush.cv) take you from install to a typed post, and if it deletes some glue code for you, a [star on GitHub](https://github.com/aayushbtw/tomekit) helps other people find it.
+tomekit is a work in progress, so expect a lot of breaking changes. Start with the [docs](https://tomekit.aayush.cv), check the [changelog](https://github.com/aayushbtw/tomekit/blob/main/packages/tomekit/CHANGELOG.md) for updates, and [open an issue](https://github.com/aayushbtw/tomekit/issues) for a bug or a feature you want.
