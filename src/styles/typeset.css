@@ -489,10 +489,11 @@
   }
 
   /* `block`, not `inline-block`: the `pre` is `whitespace-nowrap`, so the
-     newlines between the spans collapse and every line runs onto one. The `pre`
+     newlines between the spans collapse and every line runs onto one. The line
+     is `whitespace-pre` again, or its indentation collapses too. The `pre`
      carries no inline padding either, so the line owns both edges. */
   .typeset :where(pre.tm-code .th-line) {
-    @apply block w-max min-w-full pr-md leading-relaxed;
+    @apply block w-max min-w-full whitespace-pre pr-md leading-relaxed;
   }
 
   .typeset :where(pre.tm-code .th-line)::before {
