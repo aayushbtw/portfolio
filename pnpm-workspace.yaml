@@ -6,6 +6,8 @@ allowBuilds:
   workerd: true
 minimumReleaseAgeExclude:
   - tomekit
+  - "@cloudflare/vite-plugin@1.62.0"
+  - wrangler@4.143.0
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@1.0.0
   vite-plus: 1.0.0

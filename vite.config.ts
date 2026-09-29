@@ -11,7 +11,7 @@ const ignorePatterns = [
   ".claude/**",
   "pnpm-lock.yaml",
   "tools/oxlint/anti-slop/**",
-  "worker-configuration.d.ts",
+  ".cloudflare/**",
 ];
 
 export default defineConfig({
@@ -98,6 +98,7 @@ export default defineConfig({
     rsc(),
     viteReact(),
     cloudflare({
+      experimental: { newConfig: true },
       viteEnvironment: {
         childEnvironments: ["rsc"],
         name: "ssr",
