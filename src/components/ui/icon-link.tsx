@@ -5,6 +5,7 @@ import {
   durations,
   easings,
   media,
+  presses,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -24,7 +25,7 @@ const styles = stylex.create({
     lineHeight: "17px",
     paddingBottom: 1,
     paddingInline: 1,
-    transform: { default: null, ":active": "scale(0.97)" },
+    transform: { default: null, ":active": presses.link },
     transitionDuration: `${durations.hover}, ${durations.press}`,
     transitionProperty: "box-shadow, transform",
     transitionTimingFunction: `ease, ${easings.out}`,

@@ -9,6 +9,7 @@ import {
   fontSizes,
   lineHeights,
   media,
+  presses,
   radii,
   space,
 } from "~/styles/tokens.stylex";
@@ -36,7 +37,7 @@ const styles = stylex.create({
     paddingBlock: space.xs,
     paddingInline: space.md,
     textDecoration: "none",
-    transform: { default: null, ":active": "scale(0.99)" },
+    transform: { default: null, ":active": presses.row },
     transitionDuration: `${durations.hover}, ${durations.press}`,
     transitionProperty: "background-color, transform",
     transitionTimingFunction: `ease, ${easings.out}`,

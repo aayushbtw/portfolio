@@ -70,6 +70,12 @@ export const layout = stylex.defineConsts({
   sectionGap: "48px",
 });
 
+export const presses = stylex.defineConsts({
+  icon: "scale(0.95)",
+  link: "scale(0.97)",
+  row: "scale(0.99)",
+});
+
 export const easings = stylex.defineConsts({
   inOut: "cubic-bezier(0.77, 0, 0.175, 1)",
   out: "cubic-bezier(0.23, 1, 0.32, 1)",
@@ -79,6 +85,7 @@ export const easings = stylex.defineConsts({
 export const durations = stylex.defineConsts({
   enter: "700ms",
   hover: "150ms",
+  navigate: "350ms",
   popover: "180ms",
   press: "160ms",
 });

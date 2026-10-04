@@ -18,6 +18,7 @@ import {
   fontSizes,
   lineHeights,
   media,
+  presses,
   radii,
   shadows,
   space,
@@ -36,7 +37,7 @@ const styles = stylex.create({
   trigger: {
     borderRadius: radii.full,
     display: "block",
-    transform: { default: null, ":active": "scale(0.95)" },
+    transform: { default: null, ":active": presses.icon },
     transitionDuration: durations.press,
     transitionProperty: "transform",
     transitionTimingFunction: easings.out,

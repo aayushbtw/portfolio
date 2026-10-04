@@ -57,18 +57,19 @@ Never `ease-in`: it delays the moment the eye is watching.
 
 ### Duration
 
-| Token     | For                                     |
-| --------- | --------------------------------------- |
-| `hover`   | Color changes on hover                  |
-| `press`   | Scale on `:active`                      |
-| `popover` | Small surfaces that open from a trigger |
-| `enter`   | The first-load page entrance only       |
+| Token      | For                                     |
+| ---------- | --------------------------------------- |
+| `hover`    | Color changes on hover                  |
+| `press`    | Scale on `:active`                      |
+| `popover`  | Small surfaces that open from a trigger |
+| `enter`    | The first-load page entrance only       |
+| `navigate` | Page entrance on every later navigation |
 
 Interface motion stays under 300ms. `enter` breaks that on purpose: it plays once per visit.
 
 ### Press and hover
 
-Pressables scale down on `:active`. The smaller the target, the bigger the give: a full-width row barely moves, so it doesn't visibly shrink.
+Pressables scale down on `:active`. Three tiers in `presses`: `icon` for small icon buttons, `link` for links and buttons, `row` for full-width rows. The smaller the target, the bigger the give: a full-width row barely moves, so it doesn't visibly shrink.
 
 A pressable that also changes color on hover transitions both, each on its own clock: color on `ease` + `hover`, transform on `out` + `press`.
 

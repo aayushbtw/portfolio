@@ -59,7 +59,7 @@ const styles = stylex.create({
   },
   // Every page after the first: the same language as the first load, quicker.
   navEnter: {
-    animationDuration: "350ms",
+    animationDuration: durations.navigate,
     animationFillMode: "both",
     animationName: { default: settle, [media.reducedMotion]: fade },
     animationTimingFunction: easings.out,
