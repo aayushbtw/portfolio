@@ -9,6 +9,7 @@ import {
   Scripts,
   useRouterState,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { Fallback } from "~/components/fallback";
 import { LayoutProvider } from "~/components/layout-provider";
@@ -49,10 +50,6 @@ export const Route = createRootRouteWithContext<{
         crossOrigin: "anonymous",
       },
       { rel: "stylesheet", href: appCss },
-      // In dev, StyleX serves its CSS here instead of appending to appCss.
-      ...(import.meta.env.DEV
-        ? [{ rel: "stylesheet", href: "/virtual:stylex.css" }]
-        : []),
       {
         rel: "apple-touch-icon",
         sizes: "180x180",
@@ -88,6 +85,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <link href={pageUrl} rel="canonical" />
         <meta content={pageUrl} property="og:url" />
         <HeadContent />
+        <DevStyleX />
       </head>
       <body {...stylex.props(styles.body)}>
         <LayoutProvider>{children}</LayoutProvider>
@@ -95,6 +93,20 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
+}
+
+// Builds append StyleX to appCss. Dev serves it separately, and the runtime
+// refetches it as server components add rules.
+function DevStyleX() {
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      void import("virtual:stylex:runtime");
+    }
+  }, []);
+
+  return import.meta.env.DEV ? (
+    <link href="/virtual:stylex.css" rel="stylesheet" />
+  ) : null;
 }
 
 function NotFound() {
