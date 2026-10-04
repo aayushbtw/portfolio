@@ -85,6 +85,7 @@ export const easings = stylex.defineConsts({
 export const durations = stylex.defineConsts({
   enter: "700ms",
   hover: "150ms",
+  move: "300ms",
   navigate: "350ms",
   popover: "180ms",
   press: "160ms",

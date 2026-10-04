@@ -55,7 +55,10 @@ const styles = stylex.create({
     insetInlineStart: `calc(-1 * ${space.sm})`,
     position: "absolute",
     top: 0,
-    transitionDuration: { default: "300ms", [media.reducedMotion]: "0s" },
+    transitionDuration: {
+      default: durations.move,
+      [media.reducedMotion]: "0s",
+    },
     transitionProperty: "transform",
     transitionTimingFunction: easings.inOut,
   },
