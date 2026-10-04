@@ -89,7 +89,7 @@ function AppLayout() {
           <BackLink />
         </div>
 
-        <main id="main" {...stylex.props(styles.main)}>
+        <main {...stylex.props(styles.main)}>
           <Outlet />
         </main>
 

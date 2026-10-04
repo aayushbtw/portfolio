@@ -68,7 +68,7 @@ function Fallback({
   message: string;
 }) {
   return (
-    <main id="main" {...stylex.props(styles.main)}>
+    <main {...stylex.props(styles.main)}>
       <div {...stylex.props(styles.hero)}>
         <h1 {...stylex.props(styles.code)}>{code}</h1>
         <p {...stylex.props(styles.label)}>{label}</p>

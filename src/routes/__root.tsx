@@ -13,13 +13,7 @@ import {
 import { Fallback } from "~/components/fallback";
 import { LayoutProvider } from "~/components/layout-provider";
 import { config } from "~/lib/config";
-import {
-  colors,
-  fonts,
-  fontSizes,
-  lineHeights,
-  space,
-} from "~/styles/tokens.stylex";
+import { colors, fonts, fontSizes, lineHeights } from "~/styles/tokens.stylex";
 
 import appCss from "~/styles/styles.css?url";
 
@@ -82,18 +76,6 @@ const styles = stylex.create({
     fontSize: fontSizes.base,
     lineHeight: lineHeights.prose,
   },
-  // The back link precedes the content in the DOM, so keyboard users would
-  // otherwise tab through it on every page.
-  skipLink: {
-    backgroundColor: colors.background,
-    clipPath: { default: "inset(50%)", ":focus-visible": "none" },
-    insetBlockStart: space.md,
-    insetInlineStart: space.md,
-    paddingBlock: space.xs,
-    paddingInline: space.md,
-    position: "fixed",
-    zIndex: 50,
-  },
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -108,9 +90,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body {...stylex.props(styles.body)}>
-        <a {...stylex.props(styles.skipLink)} href="#main">
-          Skip to content
-        </a>
         <LayoutProvider>{children}</LayoutProvider>
         <Scripts />
       </body>
