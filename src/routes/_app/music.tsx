@@ -70,8 +70,18 @@ const styles = stylex.create({
     lineHeight: lineHeights.row,
     paddingBlock: space.xs,
   },
+  // A hovered row drops the lines above and below it, so its fill isn't boxed in.
   divided: {
-    boxShadow: { default: shadows.divider, ":last-child": null },
+    boxShadow: {
+      default: shadows.divider,
+      ":last-child": "none",
+      [media.hover]: {
+        default: shadows.divider,
+        ":last-child": "none",
+        ":has(> a:hover)": "none",
+        ":has(+ * > a:hover)": "none",
+      },
+    },
   },
   // Bleeds past the column so the hover fill frames the row, not the text.
   link: {
