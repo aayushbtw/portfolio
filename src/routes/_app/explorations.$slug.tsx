@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { Page, PageHeader } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
 import { getExploration } from "~/server/explorations";
@@ -23,15 +24,17 @@ function ExplorationPage() {
   const exploration = Route.useLoaderData();
 
   return (
-    <section>
-      <article>
-        <h1 className="mb-sm text-balance">{exploration.title}</h1>
-        <time className="text-fg-3 text-sm tracking-tight">
-          {formatDate(exploration.publishedAt)}
-        </time>
+    <Page variant="compact">
+      <PageHeader
+        meta={
+          <time dateTime={exploration.publishedAt}>
+            {formatDate(exploration.publishedAt)}
+          </time>
+        }
+        title={exploration.title}
+      />
 
-        {exploration.body}
-      </article>
-    </section>
+      {exploration.body}
+    </Page>
   );
 }

@@ -1,21 +1,24 @@
-import { Image } from "@unpic/react";
+import * as stylex from "@stylexjs/stylex";
 
-function ShowcaseImage({
-  src,
-  alt = "",
-  height,
-}: {
-  src: string;
-  alt?: string;
-  height: number;
-}) {
+import { colors, radii } from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  image: {
+    borderRadius: radii.md,
+    boxShadow: `0 0 0 1px ${colors.fill}`,
+    height: "auto",
+    width: "100%",
+  },
+});
+
+function ShowcaseImage({ src, alt = "" }: { src: string; alt?: string }) {
   return (
-    <Image
+    <img
       alt={alt}
-      className="ring-fg-1/10 w-full ring-1 md:rounded-md"
-      height={height}
-      layout="fullWidth"
+      decoding="async"
+      loading="lazy"
       src={src}
+      {...stylex.props(styles.image)}
     />
   );
 }

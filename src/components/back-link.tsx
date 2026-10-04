@@ -1,8 +1,22 @@
 import { ArrowBendUpLeft } from "@phosphor-icons/react/ArrowBendUpLeft";
+import * as stylex from "@stylexjs/stylex";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useRouterState } from "@tanstack/react-router";
 
 import { useHaptics } from "~/lib/haptics";
+import { colors, media, radii, space } from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  link: {
+    backgroundColor: { default: colors.fill, ":hover": colors.fillStrong },
+    borderRadius: radii.full,
+    color: { default: colors.textMuted, ":hover": colors.textPrimary },
+    display: "flex",
+    marginTop: { default: 0, [media.lg]: `calc(-1 * ${space.xs})` },
+    padding: space.xs,
+    width: "fit-content",
+  },
+});
 
 const sections = {
   explorations: { label: "Explorations", to: "/explorations" },
@@ -43,14 +57,13 @@ function BackLink() {
   }
 
   return (
-    // `-mt` centres the circle on the title's first line beside it.
     <Link
       aria-label={`Back to ${target.label}`}
-      className="not-typeset bg-bg-2 p-sm text-fg-3 hover:bg-border hover:text-fg-1 lg:-mt-sm flex w-fit rounded-full transition-colors duration-150 ease-out"
+      {...stylex.props(styles.link)}
       onClick={() => trigger("click")}
       to={target.to}
     >
-      <ArrowBendUpLeft aria-hidden="true" className="size-4" weight="light" />
+      <ArrowBendUpLeft aria-hidden="true" size={16} weight="light" />
     </Link>
   );
 }

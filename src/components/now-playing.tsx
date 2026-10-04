@@ -1,3 +1,5 @@
+import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 
@@ -6,12 +8,66 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
-import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { useLive } from "~/lib/spotify";
-import { cn } from "~/lib/utils";
 import type { SpotifyTrack } from "~/server/spotify";
+import {
+  colors,
+  fontSizes,
+  lineHeights,
+  radii,
+  space,
+} from "~/styles/tokens.stylex";
 
-function NowPlaying({ className }: { className?: string }) {
+const styles = stylex.create({
+  trigger: {
+    borderRadius: radii.full,
+    display: "block",
+  },
+  disc: {
+    backgroundColor: colors.accent,
+    borderRadius: radii.full,
+    boxShadow: `0 0 0 1px ${colors.fillStrong}`,
+    display: "block",
+    height: 26,
+    overflow: "hidden",
+    width: 26,
+  },
+  cover: {
+    height: "100%",
+    objectFit: "cover",
+    width: "100%",
+  },
+  card: {
+    backgroundColor: "black",
+    height: 176,
+    position: "relative",
+    width: 256,
+  },
+  caption: {
+    backgroundImage: "linear-gradient(to top, rgb(0 0 0 / 0.7), transparent)",
+    bottom: 0,
+    color: "white",
+    display: "flex",
+    flexDirection: "column",
+    fontSize: fontSizes.sm,
+    insetInline: 0,
+    lineHeight: lineHeights.row,
+    paddingBottom: space.md,
+    paddingTop: space.xl,
+    paddingInline: space.md,
+    position: "absolute",
+  },
+  truncate: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  artists: {
+    opacity: 0.6,
+  },
+});
+
+function NowPlaying({ style }: { style?: StyleXStyles }) {
   const { data: live } = useLive();
   const track = live?.nowPlaying.isPlaying ? live.nowPlaying.track : null;
 
@@ -24,33 +80,28 @@ function NowPlaying({ className }: { className?: string }) {
   return (
     <HoverCard>
       <HoverCardTrigger
-        className={cn("block rounded-full no-underline", className)}
         render={
           <Link
             aria-label={`Listening to ${track.name} by ${track.artists[0].name}. Open the music page`}
             to="/music"
+            {...stylex.props(styles.trigger, style)}
           />
         }
       >
-        <span className="animate-disc bg-bg-2 ring-fg-1/10 block size-6 overflow-hidden rounded-full ring-1">
+        <span {...stylex.props(styles.disc)}>
           {src ? (
             <Image
               alt=""
-              className="size-full object-cover"
-              height={48}
+              height={52}
               src={src}
-              width={48}
+              width={52}
+              {...stylex.props(styles.cover)}
             />
           ) : null}
         </span>
       </HoverCardTrigger>
 
-      <HoverCardContent
-        align="end"
-        alignOffset={0}
-        className="w-64 overflow-hidden p-0"
-        side="bottom"
-      >
+      <HoverCardContent align="end" alignOffset={0} side="bottom">
         <TrackCard track={track} />
       </HoverCardContent>
     </HoverCard>
@@ -61,22 +112,20 @@ function TrackCard({ track }: { track: SpotifyTrack }) {
   const src = track.album.images[0]?.url ?? track.album.images.at(-1)?.url;
 
   return (
-    <div className="not-typeset relative h-44 bg-black">
+    <div {...stylex.props(styles.card)}>
       {src ? (
         <Image
           alt=""
-          className="size-full object-cover"
           height={352}
           src={src}
           width={256}
+          {...stylex.props(styles.cover)}
         />
       ) : null}
 
-      <ProgressiveBlur className="h-24" position="bottom" />
-
-      <div className="px-md pt-xl pb-md absolute inset-x-0 bottom-0 z-20 flex flex-col gap-0.5 bg-linear-to-t from-black/70 to-transparent">
-        <span className="truncate text-sm text-white">{track.name}</span>
-        <p className="truncate text-sm text-white/60">
+      <div {...stylex.props(styles.caption)}>
+        <span {...stylex.props(styles.truncate)}>{track.name}</span>
+        <p {...stylex.props(styles.truncate, styles.artists)}>
           {track.artists.map((a) => a.name).join(", ")}
         </p>
       </div>

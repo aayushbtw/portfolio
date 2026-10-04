@@ -6,7 +6,6 @@ import { Page } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
 import usage from "~/lib/usage.json";
 import {
-  cn,
   formatCompact,
   formatDate,
   formatNumber,
@@ -76,7 +75,7 @@ function UsagePage() {
       <section>
         <h2>Last {usage.days.length} active days</h2>
         {/* Each bar is a share of the busiest day, not of the year. */}
-        <BarGroup className="grid-cols-[auto_minmax(0,1fr)_auto]">
+        <BarGroup>
           {usage.days.map((day) => (
             <BarRow
               key={day.date}
@@ -88,7 +87,7 @@ function UsagePage() {
         </BarGroup>
       </section>
 
-      <p className="text-fg-3 text-sm">
+      <p>
         Last updated{" "}
         <time dateTime={usage.generatedAt}>
           {formatDate(usage.generatedAt)}
@@ -100,20 +99,11 @@ function UsagePage() {
 }
 
 function Figure({ children }: { children: React.ReactNode }) {
-  return <span className="text-fg-1 tabular-nums">{children}</span>;
+  return <span>{children}</span>;
 }
 
-function BarGroup({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "not-typeset mt-sm gap-x-md gap-y-sm text-fg-3 grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center",
-        className
-      )}
-      data-slot="bar-group"
-      {...props}
-    />
-  );
+function BarGroup(props: React.ComponentProps<"div">) {
+  return <div data-slot="bar-group" {...props} />;
 }
 
 function BarRow({
@@ -128,16 +118,14 @@ function BarRow({
   value: string;
 }) {
   return (
-    // `contents` so these cells join the group's grid rather than nest in it.
-    <div className="contents">
-      <span className="whitespace-nowrap">{label}</span>
+    <div>
+      <span>{label}</span>
       <Meter
-        className="min-w-0"
-        segments={[{ className: "indicator-brand", label, share: 100 }]}
+        segments={[{ label, share: 100 }]}
         value={Math.max(percent, 0.5)}
       />
-      <span className="text-end tabular-nums">{value}</span>
-      {share ? <span className="text-end tabular-nums">{share}</span> : null}
+      <span>{value}</span>
+      {share ? <span>{share}</span> : null}
     </div>
   );
 }

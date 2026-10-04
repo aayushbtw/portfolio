@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { PostList, postListItems } from "~/components/post-list";
-import { Page } from "~/components/ui/page";
+import { Page, PageHeader } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
 import { getExplorations } from "~/server/explorations";
 
@@ -19,11 +19,10 @@ function ExplorationsPage() {
   const explorations = Route.useLoaderData();
 
   return (
-    <Page>
-      <section>
-        <h1>{title}</h1>
-        <PostList posts={explorations} to="/explorations/$slug" />
-      </section>
+    <Page variant="compact">
+      <PageHeader description={description} title={title} />
+
+      <PostList posts={explorations} to="/explorations/$slug" />
     </Page>
   );
 }

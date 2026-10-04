@@ -1,0 +1,18 @@
+/* StyleX appends its generated CSS to this file at build time. */
+@import "@fontsource-variable/inter";
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/gray.css";
+@import "@radix-ui/colors/gray-alpha.css";
+@import "./reset.css";
+
+/* Line numbers are spans in the highlighter's HTML, which StyleX can't select. */
+pre[data-lang] code .th-line::before {
+  width: 2ch;
+  margin-right: 16px;
+  padding-right: 0;
+  color: var(--gray-a7);
+}
+
+pre[data-lang] code:not(:has(> .th-line + .th-line)) > .th-line::before {
+  display: none;
+}

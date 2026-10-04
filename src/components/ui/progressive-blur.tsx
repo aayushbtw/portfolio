@@ -1,4 +1,6 @@
-import { cn } from "~/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+
+import { layout, media, space } from "~/styles/tokens.stylex";
 
 const LAYERS = [
   { blur: 1, transparent: 0 },
@@ -6,33 +8,38 @@ const LAYERS = [
   { blur: 8, transparent: 66 },
 ];
 
-interface ProgressiveBlurProps {
-  className?: string;
-  position?: "top" | "bottom";
-}
+const styles = stylex.create({
+  blur: {
+    insetInline: 0,
+    pointerEvents: "none",
+    position: "fixed",
+    zIndex: 30,
+  },
+  // Ends where an anchored heading lands, so the fade frames it.
+  top: { height: { default: space.xl, [media.lg]: layout.pageTop }, top: 0 },
+  bottom: { bottom: 0, height: space.xl },
+  layer: {
+    inset: 0,
+    position: "absolute",
+  },
+});
 
 function ProgressiveBlur({
-  className,
   position = "bottom",
-}: ProgressiveBlurProps) {
+}: {
+  position?: "top" | "bottom";
+}) {
   const direction = `to ${position}`;
 
   return (
-    <div
-      className={cn(
-        "pointer-events-none absolute inset-x-0 z-10 h-12",
-        position === "top" ? "top-0" : "bottom-0",
-        className
-      )}
-      data-slot="progressive-blur"
-    >
+    <div aria-hidden="true" {...stylex.props(styles.blur, styles[position])}>
       {LAYERS.map(({ blur, transparent }, i) => {
         const maskImage = `linear-gradient(${direction}, transparent ${transparent}%, black 100%)`;
 
         return (
           <div
-            className="absolute inset-0"
             key={blur}
+            {...stylex.props(styles.layer)}
             style={{
               WebkitBackdropFilter: `blur(${blur}px)`,
               WebkitMaskImage: maskImage,

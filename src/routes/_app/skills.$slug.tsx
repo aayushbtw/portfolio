@@ -7,6 +7,7 @@ import {
   InstallLink,
   InstallLinks,
 } from "~/components/install";
+import { Page, PageHeader } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { getSkill } from "~/server/skills";
@@ -30,32 +31,30 @@ function SkillPage() {
   const skill = Route.useLoaderData();
 
   return (
-    <section>
-      <article>
-        <h1 className="text-balance">{skill.title}</h1>
+    <Page variant="compact">
+      <PageHeader title={skill.title} />
 
-        <Install className="mt-lg">
-          <InstallCommand
-            command={`npx skills add ${config.skillsRepo} --skill ${skill.slug}`}
-          />
-          <InstallLinks>
-            <InstallLink
-              href={`https://skills.sh/${config.skillsRepo}/${skill.slug}`}
-            >
-              <VercelIcon />
-              Skills
-            </InstallLink>
-            <InstallLink
-              href={`https://github.com/${config.skillsRepo}/blob/main/${skill.slug}/SKILL.md`}
-            >
-              <GithubIcon />
-              GitHub
-            </InstallLink>
-          </InstallLinks>
-        </Install>
+      <Install>
+        <InstallCommand
+          command={`npx skills add ${config.skillsRepo} --skill ${skill.slug}`}
+        />
+        <InstallLinks>
+          <InstallLink
+            href={`https://skills.sh/${config.skillsRepo}/${skill.slug}`}
+          >
+            <VercelIcon />
+            Skills
+          </InstallLink>
+          <InstallLink
+            href={`https://github.com/${config.skillsRepo}/blob/main/${skill.slug}/SKILL.md`}
+          >
+            <GithubIcon />
+            GitHub
+          </InstallLink>
+        </InstallLinks>
+      </Install>
 
-        {skill.body}
-      </article>
-    </section>
+      {skill.body}
+    </Page>
   );
 }

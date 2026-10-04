@@ -1,83 +1,106 @@
+import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
 import { createLink } from "@tanstack/react-router";
 
-import { cn } from "~/lib/utils";
+import {
+  colors,
+  fontSizes,
+  lineHeights,
+  media,
+  radii,
+  space,
+} from "~/styles/tokens.stylex";
 
-function List({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "not-typeset -mx-md mt-sm text-fg-3 [&_a]:no-underline",
-        className
-      )}
-      data-slot="list"
-      {...props}
-    />
-  );
+type Props<T extends keyof React.JSX.IntrinsicElements> = Omit<
+  React.ComponentProps<T>,
+  "className" | "style"
+> & { style?: StyleXStyles };
+
+const styles = stylex.create({
+  list: {
+    color: colors.textMuted,
+    lineHeight: lineHeights.row,
+    marginInline: `calc(-1 * ${space.md})`,
+  },
+  item: {
+    alignItems: "center",
+    backgroundColor: {
+      default: null,
+      [media.hover]: { default: null, ":hover": colors.fill },
+    },
+    borderRadius: radii.full,
+    display: "flex",
+    gap: space.xs,
+    paddingBlock: space.xs,
+    paddingInline: space.md,
+    textDecoration: "none",
+  },
+  title: {
+    color: colors.textPrimary,
+    minWidth: 0,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  leader: {
+    backgroundColor: {
+      default: colors.fill,
+      [stylex.when.ancestor(":hover")]: colors.fillStrong,
+    },
+    flexGrow: 1,
+    height: 1,
+    minWidth: space.md,
+  },
+  meta: {
+    alignItems: "center",
+    display: "flex",
+    flexShrink: 0,
+    fontSize: fontSizes.sm,
+    gap: space.xxs,
+  },
+  hover: {
+    alignItems: "center",
+    display: "flex",
+    marginInlineStart: "auto",
+    opacity: {
+      default: 1,
+      [media.hover]: {
+        default: 0,
+        [stylex.when.ancestor(":hover")]: 1,
+      },
+    },
+  },
+});
+
+function List({ style, ...props }: Props<"div">) {
+  return <div {...props} {...stylex.props(styles.list, style)} />;
 }
 
-function ListItem({ className, ...props }: React.ComponentProps<"a">) {
+function ListItem({ style, ...props }: Props<"a">) {
   return (
     <a
-      className={cn(
-        "group/list-item gap-md px-md py-sm hover:bg-bg-2 flex items-center rounded-md transition-colors duration-150",
-        className
-      )}
-      data-slot="list-item"
       {...props}
+      {...stylex.props(stylex.defaultMarker(), styles.item, style)}
     />
   );
 }
 
 const ListItemLink = createLink(ListItem);
 
-function ListItemTitle({ className, ...props }: React.ComponentProps<"span">) {
-  return (
-    <span
-      className={cn("text-fg-1", className)}
-      data-slot="list-item-title"
-      {...props}
-    />
-  );
+function ListItemTitle({ style, ...props }: Props<"span">) {
+  return <span {...props} {...stylex.props(styles.title, style)} />;
 }
 
-function ListItemLeader({ className, ...props }: React.ComponentProps<"span">) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "bg-bg-2 group-hover/list-item:bg-border h-px min-w-md flex-1 transition-colors duration-150 ease-out",
-        className
-      )}
-      data-slot="list-item-leader"
-      {...props}
-    />
-  );
+function ListItemLeader() {
+  return <span aria-hidden="true" {...stylex.props(styles.leader)} />;
 }
 
-function ListItemMeta({ className, ...props }: React.ComponentProps<"span">) {
-  return (
-    <span
-      className={cn(
-        "gap-xs text-fg-3 flex shrink-0 items-center text-sm [&_svg]:size-[0.9em]",
-        className
-      )}
-      data-slot="list-item-meta"
-      {...props}
-    />
-  );
+function ListItemMeta({ style, ...props }: Props<"span">) {
+  return <span {...props} {...stylex.props(styles.meta, style)} />;
 }
 
-function ListItemHover({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "gap-md text-fg-3 can-hover:opacity-0 can-hover:group-hover/list-item:opacity-100 ms-auto flex items-center opacity-100 transition-opacity duration-150 *:[svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      data-slot="list-item-hover"
-      {...props}
-    />
-  );
+function ListItemHover({ style, ...props }: Props<"div">) {
+  return <div {...props} {...stylex.props(styles.hover, style)} />;
 }
 
 export {

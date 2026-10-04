@@ -1,5 +1,7 @@
+import path from "node:path";
+
 import { cloudflare } from "@cloudflare/vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
+import stylex from "@stylexjs/unplugin/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import rsc from "@vitejs/plugin-rsc";
@@ -20,11 +22,7 @@ export default defineConfig({
     bracketSameLine: false,
     bracketSpacing: true,
     endOfLine: "lf",
-    ignorePatterns: [
-      ...ignorePatterns,
-      // Keeps oxfmt off the hand-ordered `@apply` lists in the site's own block.
-      "src/styles/typeset.css",
-    ],
+    ignorePatterns,
     jsxSingleQuote: false,
     printWidth: 80,
     proseWrap: "never",
@@ -33,9 +31,6 @@ export default defineConfig({
     singleQuote: false,
     sortImports: { ignoreCase: true, newlinesBetween: true, order: "asc" },
     sortPackageJson: true,
-    sortTailwindcss: {
-      functions: ["clsx", "cva", "tw", "twMerge", "cn", "twJoin", "tv"],
-    },
     tabWidth: 2,
     trailingComma: "es5",
     useTabs: false,
@@ -79,7 +74,6 @@ export default defineConfig({
   },
   plugins: lazyPlugins(() => [
     tomekit(),
-    tailwindcss(),
     tanstackStart({
       pages: [
         { path: "/", prerender: { enabled: false } },
@@ -96,6 +90,11 @@ export default defineConfig({
       },
     }),
     rsc(),
+    // Before the React plugin, or Fast Refresh breaks.
+    stylex({
+      aliases: { "~/*": [path.join(import.meta.dirname, "src/*")] },
+      useCSSLayers: true,
+    }),
     viteReact(),
     cloudflare({
       experimental: { newConfig: true },

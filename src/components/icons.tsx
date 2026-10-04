@@ -1,59 +1,10 @@
 type IconProps = React.ComponentProps<"svg">;
 
-function NetisionIcon(props: IconProps) {
-  return (
-    <svg
-      fill="none"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <title>Netision</title>
-      <g clipPath="url(#netision-a)">
-        <path d="M24 0H0v24h24z" fill="#3d00a3" />
-        <path
-          clipRule="evenodd"
-          d="M7.01786 6.01953c-.55152-.34386-1.21378.13024-1.21378.86893V18.0994c0 .5422.37081.9818.82823.9818h1.64866c.45735 0 .82808-.4394.82823-.9815l.00263-10.18135c.00015-.36473-.17033-.69948-.44265-.86927z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-        <path
-          clipRule="evenodd"
-          d="M6.6329 5.75894c-.53432.38106-.80148.57159-.79915.85017.00234.27858.27264.46284.81325.83138l7.2939 4.97231c.003.0021.0069.0009.0086-.0027l.0009-.0038.0124-2.0924c.0016-.2772.0024-.41585-.0531-.53015s-.1572-.18367-.3607-.32242L7.78283 5.53046c-.20678-.14097-.31015-.21145-.42346-.21013s-.2155.0742-.41988.21996z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-        <path
-          clipRule="evenodd"
-          d="M7.17333 5.37999c-.04996.03591-.09167.08575-.12145.14512-.10078.20097-.04355.46026.12753.57778l6.76839 4.64961c.002.0015.0046.0006.0057-.0017l.0006-.0025.0075-1.2725c.0028-.4725-.2091-.91073-.5554-1.14855L8.69865 5.09327c-.35483-.24374-.79433-.2386-1.14503.0134zM16.9712 17.9993c.5517.3489 1.2178-.1256 1.2179-.8678l.0027-11.24564c.0001-.5433-.3708-.98381-.8285-.98379l-1.6488.00005c-.4574.00002-.8282.44018-.8283.98324l-.0025 10.20294c0 .3634.1687.6973.439.8682z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-        <path
-          clipRule="evenodd"
-          d="M17.5969 18.1059c.3357-.2463.5036-.3695.5523-.5294.0341-.112.0323-.2347-.0049-.3453-.0532-.1579-.2245-.2744-.567-.5074l-7.5203-5.1141c-.003-.0021-.0069-.0009-.0086.0026l-.001.0038-.0122 2.0859c-.0017.2775-.0025.4163.053.5307.0557.1143.1576.1837.3615.3223l5.774 3.9267c.2033.1382.3049.2074.4165.207.1115-.0004.2128-.0702.4154-.2098z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-        <path
-          clipRule="evenodd"
-          d="M16.8293 18.6199c.0499-.0358.0916-.0855.1215-.1448.1009-.2009.0436-.4603-.1276-.5777l-6.7843-4.6489c-.002-.0014-.0046-.0006-.0058.0018l-.0006.0025-.0074 1.2712c-.0028.473.2096.9116.5564 1.1493l4.7211 3.2351c.3543.2428.7929.2377 1.143-.0134z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-      </g>
-      <defs>
-        <clipPath id="netision-a">
-          <rect fill="#fff" height="24" rx="4" width="24" />
-        </clipPath>
-      </defs>
-    </svg>
-  );
-}
-
 function GithubIcon(props: IconProps) {
   return (
     <svg
+      height="1em"
+      width="1em"
       aria-hidden="true"
       fill="none"
       viewBox="2 1.74 20 20"
@@ -71,6 +22,8 @@ function GithubIcon(props: IconProps) {
 function TwitterIcon(props: IconProps) {
   return (
     <svg
+      height="1em"
+      width="1em"
       aria-hidden="true"
       fill="none"
       viewBox="0.59 0.75 22.57 22.57"
@@ -88,6 +41,8 @@ function TwitterIcon(props: IconProps) {
 function MailIcon(props: IconProps) {
   return (
     <svg
+      height="1em"
+      width="1em"
       aria-hidden="true"
       fill="none"
       viewBox="2 2 20 20"
@@ -109,6 +64,8 @@ function MailIcon(props: IconProps) {
 function VercelIcon(props: IconProps) {
   return (
     <svg
+      height="1em"
+      width="1em"
       aria-hidden="true"
       fill="none"
       viewBox="1 0.72 21.73 21.73"
@@ -123,4 +80,22 @@ function VercelIcon(props: IconProps) {
   );
 }
 
-export { GithubIcon, MailIcon, NetisionIcon, TwitterIcon, VercelIcon };
+function MarkIcon(props: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      height="1em"
+      viewBox="0 0 200 200"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M86.75 77.05V28.5a6.5 6.5 0 0 1 6.5-6.5h13.5a6.5 6.5 0 0 1 6.5 6.5v48.55l42.05-24.27a6.5 6.5 0 0 1 8.87 2.37l6.75 11.7a6.5 6.5 0 0 1-2.37 8.87L126.5 100l42.05 24.28a6.5 6.5 0 0 1 2.37 8.87l-6.75 11.7a6.5 6.5 0 0 1-8.87 2.37l-42.05-24.27v48.55a6.5 6.5 0 0 1-6.5 6.5h-13.5a6.5 6.5 0 0 1-6.5-6.5v-48.55l-42.05 24.27a6.5 6.5 0 0 1-8.87-2.37l-6.75-11.7a6.5 6.5 0 0 1 2.37-8.87L73.5 100 31.45 75.72a6.5 6.5 0 0 1-2.37-8.87l6.75-11.7a6.5 6.5 0 0 1 8.87-2.37z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export { GithubIcon, MailIcon, MarkIcon, TwitterIcon, VercelIcon };

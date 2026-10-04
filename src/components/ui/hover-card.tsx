@@ -1,52 +1,57 @@
 "use client";
 
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card";
+import * as stylex from "@stylexjs/stylex";
 
-import { cn } from "~/lib/utils";
+import { colors, radii } from "~/styles/tokens.stylex";
 
-function HoverCard({ ...props }: PreviewCardPrimitive.Root.Props) {
-  return <PreviewCardPrimitive.Root data-slot="hover-card" {...props} />;
+const styles = stylex.create({
+  positioner: {
+    isolation: "isolate",
+    zIndex: 50,
+  },
+  popup: {
+    backgroundColor: colors.background,
+    borderColor: colors.fillStrong,
+    borderRadius: radii.md,
+    borderStyle: "solid",
+    borderWidth: 1,
+    boxShadow: `0 4px 16px ${colors.shadow}`,
+    overflow: "hidden",
+  },
+});
+
+function HoverCard(props: PreviewCardPrimitive.Root.Props) {
+  return <PreviewCardPrimitive.Root {...props} />;
 }
 
-function HoverCardTrigger({ ...props }: PreviewCardPrimitive.Trigger.Props) {
-  return (
-    <PreviewCardPrimitive.Trigger
-      delay={100}
-      data-slot="hover-card-trigger"
-      {...props}
-    />
-  );
+function HoverCardTrigger(props: PreviewCardPrimitive.Trigger.Props) {
+  return <PreviewCardPrimitive.Trigger delay={100} {...props} />;
 }
 
 function HoverCardContent({
-  className,
   side = "bottom",
   sideOffset = 4,
   align = "center",
   alignOffset = 4,
-  ...props
-}: PreviewCardPrimitive.Popup.Props &
+  children,
+}: Pick<PreviewCardPrimitive.Popup.Props, "children"> &
   Pick<
     PreviewCardPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
   return (
-    <PreviewCardPrimitive.Portal data-slot="hover-card-portal">
+    <PreviewCardPrimitive.Portal>
       <PreviewCardPrimitive.Positioner
         align={align}
         alignOffset={alignOffset}
-        className="isolate z-50"
         side={side}
         sideOffset={sideOffset}
+        {...stylex.props(styles.positioner)}
       >
-        <PreviewCardPrimitive.Popup
-          className={cn(
-            "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 bg-bg-1 p-md data-closed:animate-out data-open:animate-in origin-(--transform-origin) rounded-md border shadow-sm duration-100",
-            className
-          )}
-          data-slot="hover-card-content"
-          {...props}
-        />
+        <PreviewCardPrimitive.Popup {...stylex.props(styles.popup)}>
+          {children}
+        </PreviewCardPrimitive.Popup>
       </PreviewCardPrimitive.Positioner>
     </PreviewCardPrimitive.Portal>
   );

@@ -16,25 +16,20 @@ function ProjectList({ projects }: { projects: Project[] }) {
     <List>
       {projects.map((item) =>
         item.to ? (
-          <ListItemLink
-            className="gap-sm rounded-full"
-            key={item.name}
-            to={item.to}
-          >
+          <ListItemLink key={item.name} to={item.to}>
             <ProjectRow project={item}>
-              <ArrowRight aria-hidden="true" weight="light" />
+              <ArrowRight aria-hidden="true" size={13} weight="light" />
             </ProjectRow>
           </ListItemLink>
         ) : (
           <ListItem
-            className="gap-sm rounded-full"
             href={item.href}
             key={item.name}
             rel="noopener"
             target="_blank"
           >
             <ProjectRow project={item}>
-              <ArrowUpRight aria-hidden="true" weight="light" />
+              <ArrowUpRight aria-hidden="true" size={13} weight="light" />
             </ProjectRow>
           </ListItem>
         )
@@ -52,7 +47,7 @@ function ProjectRow({
 }) {
   return (
     <>
-      <ListItemTitle className="truncate">{project.name}</ListItemTitle>
+      <ListItemTitle>{project.name}</ListItemTitle>
       <ListItemLeader />
       <ListItemMeta>
         {project.tag}

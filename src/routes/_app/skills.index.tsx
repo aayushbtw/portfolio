@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { SkillList } from "~/components/skill-list";
-import { Page } from "~/components/ui/page";
+import { Page, PageHeader } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
 import { getSkills } from "~/server/skills";
 
@@ -27,11 +27,10 @@ function SkillsPage() {
   const skills = Route.useLoaderData();
 
   return (
-    <Page>
-      <section>
-        <h1>{title}</h1>
-        <SkillList skills={skills} />
-      </section>
+    <Page variant="compact">
+      <PageHeader description={description} title={title} />
+
+      <SkillList skills={skills} />
     </Page>
   );
 }

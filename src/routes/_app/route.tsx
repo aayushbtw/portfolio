@@ -1,17 +1,14 @@
+import * as stylex from "@stylexjs/stylex";
 import { useHotkeySequences } from "@tanstack/react-hotkeys";
 import type { Hotkey } from "@tanstack/react-hotkeys";
 import type { LinkProps } from "@tanstack/react-router";
-import {
-  createFileRoute,
-  Outlet,
-  useMatch,
-  useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 
 import { BackLink } from "~/components/back-link";
 import { useRightColumn } from "~/components/layout-provider";
 import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { useHaptics } from "~/lib/haptics";
+import { layout, media, space } from "~/styles/tokens.stylex";
 
 export const Route = createFileRoute("/_app")({
   component: AppLayout,
@@ -41,38 +38,65 @@ function useHotkeys() {
   );
 }
 
+const sticky = {
+  alignSelf: { default: null, [media.lg]: "start" },
+  position: { default: null, [media.lg]: "sticky" },
+  top: { default: null, [media.lg]: 0 },
+} as const;
+
+const styles = stylex.create({
+  frame: {
+    columnGap: layout.columnGap,
+    display: "grid",
+    gridTemplateColumns: {
+      default: "minmax(0, 1fr)",
+      [media.lg]: `1fr minmax(0, ${layout.content}) 1fr`,
+    },
+    paddingInline: layout.gutter,
+  },
+  back: {
+    ...sticky,
+    justifySelf: { default: null, [media.lg]: "end" },
+    paddingTop: { default: space.xl, [media.lg]: layout.pageTop },
+  },
+  main: {
+    marginInline: "auto",
+    maxWidth: layout.content,
+    minWidth: 0,
+    paddingBottom: layout.pageBottom,
+    paddingTop: { default: space.lg, [media.lg]: layout.pageTop },
+    width: "100%",
+  },
+  right: {
+    ...sticky,
+    display: { default: "none", [media.lg]: "flex" },
+    flexDirection: "column",
+    gap: layout.sectionGap,
+    paddingTop: layout.pageTop,
+  },
+});
+
 function AppLayout() {
   const right = useRightColumn();
-  const home = useMatch({ from: "/_app/", shouldThrow: false });
   useHotkeys();
 
   return (
     <>
-      <ProgressiveBlur className="fixed z-30" position="top" />
+      <ProgressiveBlur position="top" />
 
-      <div
-        className="typeset group/frame px-md gap-y-lg lg:gap-x-xl grid lg:grid-cols-[1fr_minmax(0,var(--container-content))_1fr]"
-        data-home={home ? "" : undefined}
-      >
-        {/* `self-start`, or it stretches and has nowhere to stick. */}
-        <div className="pt-xl lg:pt-2xl lg:sticky lg:top-0 lg:self-start lg:justify-self-end">
+      <div {...stylex.props(styles.frame)}>
+        <div {...stylex.props(styles.back)}>
           <BackLink />
         </div>
 
-        <main
-          // Clears the bottom blur at the end of the page.
-          className="max-w-content lg:pt-2xl pb-2xl lg:pb-xl group-data-home/frame:mt-xl lg:group-data-home/frame:mt-2xl mx-auto w-full min-w-0"
-          id="main"
-        >
+        <main id="main" {...stylex.props(styles.main)}>
           <Outlet />
         </main>
 
-        <div className="lg:pt-2xl lg:gap-xl hidden lg:sticky lg:top-0 lg:flex lg:flex-col lg:self-start">
-          {right}
-        </div>
+        <div {...stylex.props(styles.right)}>{right}</div>
       </div>
 
-      <ProgressiveBlur className="fixed z-30" />
+      <ProgressiveBlur />
     </>
   );
 }

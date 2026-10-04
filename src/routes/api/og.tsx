@@ -1,17 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ImageResponse, loadGoogleFont } from "workers-og";
 
+import { MarkIcon } from "~/components/icons";
 import { config } from "~/lib/config";
 
 const OG_SIZE = { width: 1200, height: 630 };
 
-/* Satori rasterises this on the edge with no stylesheet, so it cannot read the
-   @theme tokens. These are those tokens resolved to sRGB; keep them in step. */
+// Satori renders with no stylesheet, so these are the color tokens resolved.
 const OG_COLORS = {
-  bg1: "#ffffff",
-  fg1: "#030712",
-  fg2: "#6b7280",
-  brand: "#e06030",
+  accent: "#111111",
+  background: "#ffffff",
+  textPrimary: "#202020",
+  textSecondary: "#646464",
 };
 
 export const Route = createFileRoute("/api/og")({
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/og")({
         return new ImageResponse(
           <div
             style={{
-              background: OG_COLORS.bg1,
+              background: OG_COLORS.background,
               width: "100%",
               height: "100%",
               display: "flex",
@@ -42,13 +42,12 @@ export const Route = createFileRoute("/api/og")({
               padding: "80px",
             }}
           >
-            <div
-              style={{
-                width: "48px",
-                height: "4px",
-                background: OG_COLORS.brand,
-                borderRadius: "2px",
-              }}
+            <MarkIcon
+              color={OG_COLORS.accent}
+              height={56}
+              // The glyph sits inset in its viewBox; this aligns it with the text.
+              style={{ marginLeft: "-8px" }}
+              width={56}
             />
 
             <div
@@ -62,7 +61,7 @@ export const Route = createFileRoute("/api/og")({
                 style={{
                   fontFamily: "Inter",
                   fontSize: "62px",
-                  color: OG_COLORS.fg1,
+                  color: OG_COLORS.textPrimary,
                   lineHeight: "1.1",
                   // Satori takes px, so the scale's em values are resolved
                   // here. -1.38px is -0.0223em.
@@ -75,11 +74,11 @@ export const Route = createFileRoute("/api/og")({
                 style={{
                   fontFamily: "Inter",
                   fontSize: "34px",
-                  color: OG_COLORS.fg2,
+                  color: OG_COLORS.textSecondary,
                   lineHeight: "1.35",
                   // -0.74px is -0.0218em.
                   letterSpacing: "-0.74px",
-                  maxWidth: "75%",
+                  width: "780px",
                   textWrap: "pretty",
                 }}
               >

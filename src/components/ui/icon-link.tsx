@@ -1,37 +1,51 @@
-import { cva } from "class-variance-authority";
-import type { VariantProps } from "class-variance-authority";
+import * as stylex from "@stylexjs/stylex";
 
-import { cn } from "~/lib/utils";
+import { colors, space } from "~/styles/tokens.stylex";
 
-const iconLinkVariants = cva(
-  "gap-xs px-sm py-xs [&_svg]:text-fg-3 hover:[&_svg]:text-fg-2 inline-flex translate-y-[-0.06em] items-center rounded-full align-middle leading-none transition-colors duration-150 ease-out [&_svg]:size-[0.9em] [&_svg]:shrink-0",
-  {
-    defaultVariants: { variant: "underline" },
-    variants: {
-      variant: {
-        pill: "bg-bg-2 text-fg-1 hover:bg-border no-underline",
-        underline: "animated-link px-[0.5px]",
-      },
+const styles = stylex.create({
+  link: {
+    alignItems: "center",
+    borderBottomColor: {
+      default: colors.borderStrong,
+      ":hover": colors.textPrimary,
     },
-  }
-);
+    borderBottomStyle: "solid",
+    borderBottomWidth: 1,
+    color: colors.textPrimary,
+    display: "inline-flex",
+    gap: space.xxs,
+    lineHeight: "17px",
+    paddingInline: 1,
+  },
+  icon: {
+    display: "inline-flex",
+    fontSize: 13,
+    color: {
+      default: colors.textMuted,
+      [stylex.when.ancestor(":hover")]: colors.textSecondary,
+    },
+  },
+});
 
 function IconLink({
-  className,
+  children,
   external,
-  variant,
+  icon,
   ...props
-}: React.ComponentProps<"a"> &
-  VariantProps<typeof iconLinkVariants> & { external?: boolean }) {
+}: Omit<React.ComponentProps<"a">, "className" | "style"> & {
+  external?: boolean;
+  icon: React.ReactNode;
+}) {
   return (
     <a
-      className={cn(iconLinkVariants({ variant }), className)}
-      data-slot="icon-link"
-      data-variant={variant ?? "underline"}
       rel={external ? "noopener" : undefined}
       target={external ? "_blank" : undefined}
       {...props}
-    />
+      {...stylex.props(stylex.defaultMarker(), styles.link)}
+    >
+      <span {...stylex.props(styles.icon)}>{icon}</span>
+      {children}
+    </a>
   );
 }
 

@@ -1,31 +1,85 @@
 import { Check } from "@phosphor-icons/react/Check";
 import { Copy } from "@phosphor-icons/react/Copy";
+import * as stylex from "@stylexjs/stylex";
 import { useEffect, useRef, useState } from "react";
 
 import { useHaptics } from "~/lib/haptics";
 import { highlighter, SHELL_LANG } from "~/lib/highlight";
-import { cn } from "~/lib/utils";
+import {
+  colors,
+  fonts,
+  fontSizes,
+  lineHeights,
+  radii,
+  space,
+} from "~/styles/tokens.stylex";
 
 const RESET_DELAY = 1500;
 
-function Install({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "not-typeset gap-xs bg-bg-3 p-xs flex flex-col rounded-md border",
-        className
-      )}
-      data-slot="install"
-      {...props}
-    />
-  );
+const styles = stylex.create({
+  install: {
+    backgroundColor: colors.fill,
+    borderRadius: radii.md,
+    display: "flex",
+    flexDirection: "column",
+    gap: space.xxs,
+    padding: space.xxs,
+  },
+  command: {
+    alignItems: "center",
+    backgroundColor: colors.background,
+    borderRadius: radii.sm,
+    display: "flex",
+    fontFamily: fonts.mono,
+    fontSize: fontSizes.xs,
+    gap: space.md,
+    lineHeight: lineHeights.code,
+    paddingBlock: space.xs,
+    paddingInlineEnd: space.xs,
+    paddingInlineStart: space.md,
+  },
+  code: {
+    flexGrow: 1,
+    minWidth: 0,
+    overflowX: "auto",
+    scrollbarWidth: "none",
+    whiteSpace: "nowrap",
+  },
+  prompt: {
+    color: colors.textMuted,
+    userSelect: "none",
+  },
+  copy: {
+    borderRadius: radii.xs,
+    color: { default: colors.textMuted, ":hover": colors.textPrimary },
+    display: "flex",
+    padding: space.xxs,
+  },
+  links: {
+    display: "flex",
+    gap: space.xxs,
+  },
+  link: {
+    alignItems: "center",
+    backgroundColor: colors.background,
+    borderRadius: radii.sm,
+    color: { default: colors.textSecondary, ":hover": colors.textPrimary },
+    display: "flex",
+    flexGrow: 1,
+    flexBasis: 0,
+    fontSize: fontSizes.sm,
+    gap: space.xs,
+    justifyContent: "center",
+    lineHeight: lineHeights.row,
+    paddingBlock: space.xs,
+  },
+});
+
+function Install({ children }: { children: React.ReactNode }) {
+  return <div {...stylex.props(styles.install)}>{children}</div>;
 }
 
-function InstallCommand({
-  className,
-  command,
-  ...props
-}: Omit<React.ComponentProps<"div">, "children"> & { command: string }) {
+function InstallCommand({ command }: { command: string }) {
   const [copied, setCopied] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>(null);
   const { trigger } = useHaptics();
@@ -41,19 +95,9 @@ function InstallCommand({
   }
 
   return (
-    <div
-      className={cn(
-        "gap-md bg-bg-1 py-sm ps-md pe-sm flex items-center rounded-xs border font-mono",
-        className
-      )}
-      data-slot="install-command"
-      {...props}
-    >
-      <code
-        className="scroll-fade-x text-fg-4 min-w-0 flex-1 overflow-x-auto whitespace-nowrap"
-        translate="no"
-      >
-        <span className="text-fg-2 select-none">$ </span>
+    <div {...stylex.props(styles.command)}>
+      <code translate="no" {...stylex.props(styles.code)}>
+        <span {...stylex.props(styles.prompt)}>$ </span>
         {highlightShell(command).map((token) => (
           <span
             className={token.className && `th-token th-${token.className}`}
@@ -66,59 +110,33 @@ function InstallCommand({
 
       <button
         aria-label={copied ? "Copied" : "Copy command"}
-        className="p-xs text-fg-2 hover:text-fg-1 rounded-sm transition-[color,scale] duration-150 active:scale-[0.96]"
         onClick={copy}
         type="button"
+        {...stylex.props(styles.copy)}
       >
-        {/* Both stay mounted so the swap animates out as well as in. */}
-        <span className="relative block">
-          <Check
-            aria-hidden="true"
-            className={cn(
-              "text-brand absolute inset-0 size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
-              copied
-                ? "blur-0 scale-100 opacity-100"
-                : "scale-[0.25] opacity-0 blur-[4px]"
-            )}
-            weight="light"
-          />
-          <Copy
-            aria-hidden="true"
-            className={cn(
-              "size-4 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
-              copied
-                ? "scale-[0.25] opacity-0 blur-[4px]"
-                : "blur-0 scale-100 opacity-100"
-            )}
-            weight="light"
-          />
-        </span>
+        {copied ? (
+          <Check aria-hidden="true" size={16} weight="light" />
+        ) : (
+          <Copy aria-hidden="true" size={16} weight="light" />
+        )}
       </button>
     </div>
   );
 }
 
-function InstallLinks({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn("gap-xs flex", className)}
-      data-slot="install-links"
-      {...props}
-    />
-  );
+function InstallLinks({ children }: { children: React.ReactNode }) {
+  return <div {...stylex.props(styles.links)}>{children}</div>;
 }
 
-function InstallLink({ className, ...props }: React.ComponentProps<"a">) {
+function InstallLink(
+  props: Omit<React.ComponentProps<"a">, "className" | "style">
+) {
   return (
     <a
-      className={cn(
-        "gap-xs bg-bg-1 py-sm text-fg-2 hover:bg-bg-2 flex flex-1 items-center justify-center rounded-xs border no-underline transition-colors duration-150 *:[svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      data-slot="install-link"
       rel="noopener"
       target="_blank"
       {...props}
+      {...stylex.props(styles.link)}
     />
   );
 }

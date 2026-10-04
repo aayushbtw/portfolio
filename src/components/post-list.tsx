@@ -1,5 +1,20 @@
+import * as stylex from "@stylexjs/stylex";
+
 import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
+import { fontSizes, space } from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  row: {
+    display: "grid",
+    gap: space.md,
+    gridTemplateColumns: "56px minmax(0, 1fr) auto",
+  },
+  figure: {
+    fontSize: fontSizes.sm,
+    fontVariantNumeric: "tabular-nums",
+  },
+});
 
 interface PostListItem {
   date: string;
@@ -41,16 +56,16 @@ function PostList({
 
         return (
           <ListItemLink
-            className="gap-md grid grid-cols-[56px_minmax(0,1fr)_auto] items-center rounded-full"
             key={post.slug}
             params={{ slug: post.slug }}
+            style={styles.row}
             to={to}
           >
-            <span className="text-fg-3 tabular-nums">
+            <span {...stylex.props(styles.figure)}>
               {showYear ? post.year : ""}
             </span>
-            <ListItemTitle className="flex-1">{post.title}</ListItemTitle>
-            <time className="text-fg-3 tabular-nums">{post.date}</time>
+            <ListItemTitle>{post.title}</ListItemTitle>
+            <time {...stylex.props(styles.figure)}>{post.date}</time>
           </ListItemLink>
         );
       })}

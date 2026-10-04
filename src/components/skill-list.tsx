@@ -17,12 +17,11 @@ function SkillList({ skills }: { skills: SkillListItem[] }) {
     <List>
       {skills.map((skill) => (
         <ListItemLink
-          className="gap-sm rounded-full"
           key={skill.slug}
           params={{ slug: skill.slug }}
           to="/skills/$slug"
         >
-          <ListItemTitle className="truncate">{skill.title}</ListItemTitle>
+          <ListItemTitle>{skill.title}</ListItemTitle>
           <ListItemLeader />
           <ListItemMeta>{skill.category}</ListItemMeta>
         </ListItemLink>

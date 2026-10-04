@@ -1,6 +1,28 @@
-import { explorations, isExploration } from "~/components/explorations";
+import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
 
-function Demo({ name }: { name: string }) {
+import { explorations, isExploration } from "~/components/explorations";
+import { colors, radii, space } from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  frame: {
+    backgroundColor: colors.fill,
+    borderRadius: radii.md,
+    padding: space.xxs,
+  },
+  stage: {
+    alignItems: "center",
+    backgroundColor: colors.background,
+    borderRadius: radii.sm,
+    display: "flex",
+    justifyContent: "center",
+    minHeight: 384,
+    paddingBlock: space.xl,
+    paddingInline: space.md,
+  },
+});
+
+function Demo({ name, style }: { name: string; style?: StyleXStyles }) {
   if (!isExploration(name)) {
     throw new Error(`No exploration registered as "${name}"`);
   }
@@ -8,11 +30,8 @@ function Demo({ name }: { name: string }) {
   const Exploration = explorations[name];
 
   return (
-    <div
-      className="not-typeset my-md bg-bg-3 p-xs rounded-md border"
-      data-slot="demo"
-    >
-      <div className="bg-bg-1 px-md py-xl flex min-h-96 items-center justify-center rounded-xs border">
+    <div {...stylex.props(styles.frame, style)}>
+      <div {...stylex.props(styles.stage)}>
         <Exploration />
       </div>
     </div>

@@ -1,9 +1,10 @@
+import * as stylex from "@stylexjs/stylex";
 import { createFileRoute } from "@tanstack/react-router";
 
 import {
   GithubIcon,
   MailIcon,
-  NetisionIcon,
+  MarkIcon,
   TwitterIcon,
 } from "~/components/icons";
 import { NowPlaying } from "~/components/now-playing";
@@ -11,13 +12,14 @@ import { PageDescription } from "~/components/page-description";
 import { PostList, postListItems } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
 import { IconLink } from "~/components/ui/icon-link";
-import { Page } from "~/components/ui/page";
+import { Page, PageHeader, Section } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { projects } from "~/lib/projects";
 import { seo } from "~/lib/seo";
 import { getExplorations } from "~/server/explorations";
 import { getWritings } from "~/server/writings";
+import { colors } from "~/styles/tokens.stylex";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
@@ -38,6 +40,19 @@ export const Route = createFileRoute("/_app/")({
   component: HomePage,
 });
 
+const styles = stylex.create({
+  mark: {
+    color: colors.accent,
+    flexShrink: 0,
+    fontSize: 16,
+  },
+  nowPlaying: {
+    insetInlineEnd: 0,
+    position: "absolute",
+    top: -4,
+  },
+});
+
 function HomePage() {
   const { explorations, posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
@@ -48,77 +63,63 @@ function HomePage() {
 
   return (
     <Page>
-      <section className="relative">
-        <h1>{config.name}</h1>
-
+      <PageHeader
+        title={
+          <>
+            <MarkIcon {...stylex.props(styles.mark)} />
+            {config.name}
+          </>
+        }
+      >
         <PageDescription>
           <p>{config.description}</p>
-
-          <p>
-            Currently a full-stack engineer at{" "}
-            <IconLink
-              external
-              variant="pill"
-              href="https://www.netision.com"
-              onMouseEnter={haptic}
-            >
-              <NetisionIcon />
-              Netision
-            </IconLink>
-            , building a multi-agent platform that turns complex data into
-            clear, intuitive insights.
-          </p>
 
           <p>
             Reach me via{" "}
             <IconLink
               href={`mailto:${config.socials.mail}`}
+              icon={<MailIcon />}
               onMouseEnter={haptic}
             >
-              <MailIcon />
               Mail
             </IconLink>{" "}
             /{" "}
             <IconLink
               external
               href={`https://www.x.com/${config.socials.twitter}`}
+              icon={<TwitterIcon />}
               onMouseEnter={haptic}
             >
-              <TwitterIcon />X
+              X
             </IconLink>
             , or find my work on{" "}
             <IconLink
               external
               href={`https://github.com/${config.socials.github}`}
+              icon={<GithubIcon />}
               onMouseEnter={haptic}
             >
-              <GithubIcon />
               Github
             </IconLink>
             .
           </p>
         </PageDescription>
 
-        {/* Out of flow so a track arriving shifts nothing, and so the `h1` keeps
-            `PageDescription` as its typeset sibling. */}
-        <NowPlaying className="-top-xs absolute end-0" />
-      </section>
+        <NowPlaying style={styles.nowPlaying} />
+      </PageHeader>
 
-      <section>
-        <h2>Projects</h2>
+      <Section title="Projects">
         <ProjectList projects={projects} />
-      </section>
+      </Section>
 
-      <section>
-        <h2>Writings</h2>
+      <Section title="Writings">
         <PostList posts={posts} />
-      </section>
+      </Section>
 
       {explorations.length > 0 && (
-        <section>
-          <h2>Explorations</h2>
+        <Section title="Explorations">
           <PostList posts={explorations} to="/explorations/$slug" />
-        </section>
+        </Section>
       )}
     </Page>
   );

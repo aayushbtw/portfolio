@@ -5,8 +5,6 @@ import { Microphone } from "@phosphor-icons/react/Microphone";
 import { Plus } from "@phosphor-icons/react/Plus";
 import { useLayoutEffect, useRef, useState } from "react";
 
-import { cn } from "~/lib/utils";
-
 const MAX_TEXT_HEIGHT = 144;
 
 const MOVE = { duration: 300, easing: "cubic-bezier(0.32, 0.72, 0, 1)" };
@@ -123,24 +121,15 @@ function ChatInput() {
   }
 
   return (
-    // Holds the collapsed height so the box grows upward from a fixed bottom
-    // instead of re-centring, which would move everything inside it.
-    <div className="relative h-[42px] w-full max-w-[26rem]">
-      <div
-        // `clip`, not `hidden`: a hidden overflow still scrolls to follow the
-        // caret onto a new line, and that scroll is a visible jump.
-        className="bg-bg-3 focus-within:border-border-strong absolute inset-x-0 bottom-0 overflow-clip rounded-[20px] border transition-[border-color] duration-150 ease-out"
-        ref={frameRef}
-      >
+    <div>
+      <div ref={frameRef}>
         <form
-          className="group/chat gap-xs p-xs relative grid grid-cols-[auto_1fr_auto_auto] items-center"
           data-expanded={expanded ? "" : undefined}
           onSubmit={submit}
           ref={formRef}
         >
           <textarea
             aria-label="Message"
-            className="text-fg-1 placeholder:text-fg-3 px-xs group-data-expanded/chat:px-sm group-data-expanded/chat:pt-xs col-start-2 row-start-1 resize-none bg-transparent text-[16px] leading-6 group-data-expanded/chat:col-span-4 group-data-expanded/chat:col-start-1 focus-visible:outline-none"
             onChange={(event) => update(event.target.value)}
             onKeyDown={onKeyDown}
             placeholder="Ask anything"
@@ -152,35 +141,32 @@ function ChatInput() {
           />
 
           <IconButton
-            className="col-start-1 row-start-1 group-data-expanded/chat:row-start-2"
             label="Add files"
             ref={(element) => {
               moving.current.plus = element;
             }}
           >
-            <Plus aria-hidden="true" className="size-4" />
+            <Plus aria-hidden="true" />
           </IconButton>
 
           <IconButton
-            className="col-start-3 row-start-1 group-data-expanded/chat:row-start-2"
             label="Dictate"
             ref={(element) => {
               moving.current.mic = element;
             }}
           >
-            <Microphone aria-hidden="true" className="size-4" />
+            <Microphone aria-hidden="true" />
           </IconButton>
 
           <button
             aria-label="Send"
-            className="bg-fg-1 text-bg-1 disabled:bg-bg-2 disabled:text-fg-3 col-start-4 row-start-1 grid size-8 place-items-center rounded-full transition-[background-color,color,scale] duration-150 ease-out group-data-expanded/chat:row-start-2 not-disabled:active:scale-[0.96]"
             disabled={!value.trim()}
             ref={(element) => {
               moving.current.send = element;
             }}
             type="submit"
           >
-            <ArrowUp aria-hidden="true" className="size-4" />
+            <ArrowUp aria-hidden="true" />
           </button>
         </form>
       </div>
@@ -189,21 +175,10 @@ function ChatInput() {
 }
 
 function IconButton({
-  className,
   label,
   ...props
 }: React.ComponentProps<"button"> & { label: string }) {
-  return (
-    <button
-      aria-label={label}
-      className={cn(
-        "text-fg-3 hover:bg-bg-2 hover:text-fg-1 grid size-8 place-items-center rounded-full transition-[background-color,color,scale] duration-150 ease-out active:scale-[0.96]",
-        className
-      )}
-      type="button"
-      {...props}
-    />
-  );
+  return <button aria-label={label} type="button" {...props} />;
 }
 
 // Positions are relative to the form, never the viewport: the box is centred,

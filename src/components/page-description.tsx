@@ -1,15 +1,18 @@
-import { cn } from "~/lib/utils";
+import * as stylex from "@stylexjs/stylex";
 
-/* Sibling of the page `h1`, so typeset's `h1 + *` rule supplies the gap above
-   it; the tighter flow makes the title and its copy read as one block. */
-function PageDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn("[--typeset-flow:0.9em]", className)}
-      data-slot="page-description"
-      {...props}
-    />
-  );
+import { colors, space } from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  description: {
+    color: colors.textSecondary,
+    display: "flex",
+    flexDirection: "column",
+    gap: space.sm,
+  },
+});
+
+function PageDescription({ children }: { children: React.ReactNode }) {
+  return <div {...stylex.props(styles.description)}>{children}</div>;
 }
 
 export { PageDescription };

@@ -1,14 +1,57 @@
+import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
 import type { ReactNode } from "react";
 
-function Compare({ children }: { children?: ReactNode }) {
-  return (
-    <div
-      className="my-md gap-xs bg-bg-3 p-xs grid rounded-md border sm:grid-cols-2"
-      data-slot="compare"
-    >
-      {children}
-    </div>
-  );
+import {
+  colors,
+  fontSizes,
+  lineHeights,
+  media,
+  radii,
+  space,
+} from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  compare: {
+    backgroundColor: colors.fill,
+    borderRadius: radii.md,
+    display: "grid",
+    gap: space.xxs,
+    gridTemplateColumns: {
+      default: "minmax(0, 1fr)",
+      [media.sm]: "repeat(2, minmax(0, 1fr))",
+    },
+    padding: space.xxs,
+  },
+  side: {
+    backgroundColor: colors.background,
+    borderRadius: radii.sm,
+    display: "flex",
+    flexDirection: "column",
+  },
+  label: {
+    borderBlockEndColor: colors.fill,
+    borderBlockEndStyle: "solid",
+    borderBlockEndWidth: 1,
+    color: colors.textMuted,
+    fontSize: fontSizes.xs,
+    lineHeight: lineHeights.row,
+    paddingBlock: space.xs,
+    paddingInline: space.md,
+  },
+  body: {
+    padding: space.md,
+  },
+});
+
+function Compare({
+  children,
+  style,
+}: {
+  children?: ReactNode;
+  style?: StyleXStyles;
+}) {
+  return <div {...stylex.props(styles.compare, style)}>{children}</div>;
 }
 
 function Before({ children }: { children?: ReactNode }) {
@@ -21,11 +64,9 @@ function After({ children }: { children?: ReactNode }) {
 
 function Side({ children, name }: { children?: ReactNode; name: string }) {
   return (
-    <div className="bg-bg-1 flex flex-col rounded-xs border">
-      <p className="not-typeset px-md py-xs text-fg-2 border-b text-xs">
-        {name}
-      </p>
-      <div className="p-md *:first:mt-0">{children}</div>
+    <div {...stylex.props(styles.side)}>
+      <p {...stylex.props(styles.label)}>{name}</p>
+      <div {...stylex.props(styles.body)}>{children}</div>
     </div>
   );
 }

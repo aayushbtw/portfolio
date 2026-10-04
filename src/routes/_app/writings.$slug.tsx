@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { RightColumn } from "~/components/layout-provider";
 import { TableOfContents } from "~/components/table-of-contents";
+import { Page, PageHeader } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
 import { formatDate } from "~/lib/utils";
@@ -54,15 +55,17 @@ function WritingPage() {
   const post = Route.useLoaderData();
 
   return (
-    <section>
-      <article>
-        <h1 className="mb-sm text-balance">{post.title}</h1>
-        <time className="text-fg-3 text-sm tracking-tight">
-          {formatDate(post.publishedAt)}
-        </time>
+    <Page variant="compact">
+      <PageHeader
+        meta={
+          <time dateTime={post.publishedAt}>
+            {formatDate(post.publishedAt)}
+          </time>
+        }
+        title={post.title}
+      />
 
-        {post.body}
-      </article>
+      {post.body}
 
       {post.headings.length > 0 && (
         <RightColumn>
@@ -73,6 +76,6 @@ function WritingPage() {
           </aside>
         </RightColumn>
       )}
-    </section>
+    </Page>
   );
 }

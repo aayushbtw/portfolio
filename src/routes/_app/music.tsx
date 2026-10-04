@@ -86,9 +86,7 @@ function MusicPage() {
 }
 
 function TopsGrid({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="gap-xl grid grid-cols-1 md:grid-cols-2">{children}</div>
-  );
+  return <div>{children}</div>;
 }
 
 function TopsSkeleton() {
@@ -110,11 +108,11 @@ function TopsSkeleton() {
 
 function TrackSkeleton() {
   return (
-    <div className="-mx-md gap-md px-md py-sm flex items-center">
-      <Skeleton className="size-10 shrink-0 rounded-sm" />
-      <div className="gap-sm flex min-w-0 flex-1 flex-col">
-        <Skeleton className="h-4 w-32" />
-        <Skeleton className="h-4 w-24" />
+    <div>
+      <Skeleton />
+      <div>
+        <Skeleton />
+        <Skeleton />
       </div>
     </div>
   );
@@ -126,20 +124,12 @@ function TrackItem({ track }: { track: SpotifyTrack }) {
   return (
     <ListItem href={track.url} rel="noopener" target="_blank">
       {cover ? (
-        <Image
-          alt={track.name}
-          className="ring-fg-1/10 size-10 shrink-0 rounded-sm ring-1"
-          height={40}
-          src={cover}
-          width={40}
-        />
+        <Image alt={track.name} height={40} src={cover} width={40} />
       ) : null}
 
-      <div className="flex min-w-0 flex-col">
-        <span className="truncate">{track.name}</span>
-        <p className="text-fg-2 truncate">
-          {track.artists.map((a) => a.name).join(", ")}
-        </p>
+      <div>
+        <span>{track.name}</span>
+        <p>{track.artists.map((a) => a.name).join(", ")}</p>
       </div>
 
       <ListItemHover>
@@ -154,18 +144,10 @@ function ArtistItem({ artist }: { artist: SpotifyArtist }) {
 
   return (
     <ListItem href={artist.url} rel="noopener" target="_blank">
-      {photo ? (
-        <Image
-          alt=""
-          className="ring-fg-1/10 size-10 shrink-0 rounded-full ring-1"
-          height={40}
-          src={photo}
-          width={40}
-        />
-      ) : null}
+      {photo ? <Image alt="" height={40} src={photo} width={40} /> : null}
 
-      <div className="flex min-w-0 flex-col">
-        <span className="truncate">{artist.name}</span>
+      <div>
+        <span>{artist.name}</span>
       </div>
 
       <ListItemHover>
