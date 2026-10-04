@@ -93,6 +93,9 @@ export default defineConfig({
     // Before the React plugin, or Fast Refresh breaks.
     stylex({
       aliases: { "~/*": [path.join(import.meta.dirname, "src/*")] },
+      // The router transforms client and server code differently, so the line
+      // numbers in `data-style-src` disagree and fail hydration.
+      enableDebugDataProp: false,
       useCSSLayers: true,
     }),
     viteReact(),
