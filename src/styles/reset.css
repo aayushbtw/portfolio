@@ -65,6 +65,11 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  :focus-visible {
+    outline: 1.5px solid var(--gray-a8);
+    outline-offset: 2px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

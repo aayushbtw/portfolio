@@ -24,6 +24,10 @@ Edges are box-shadows, never `border`. Borders render unevenly across pixel dens
 
 Fills are backgrounds only. An edge that needs a hover color composes `colors.edgeStrong` into an inset shadow in place.
 
+## Focus
+
+One keyboard-only ring for everything, set once in the reset. It is a strong gray, not the brand color, which reads too harsh at that weight. It sits offset from the element so it never fights a hover fill. Components don't style focus themselves.
+
 ## Type
 
 Inter for everything, mono for code. Reach for color (`textSecondary`, `textMuted`) before a new size.
