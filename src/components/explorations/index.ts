@@ -1,11 +1,9 @@
 import type { ComponentType } from "react";
 
 import { ChatInput } from "~/components/explorations/chat-input";
-import { SegmentedControl } from "~/components/explorations/segmented-control";
 
 const explorations = {
   "chat-input": ChatInput,
-  "segmented-control": SegmentedControl,
 } satisfies Record<string, ComponentType>;
 
 function isExploration(name: string): name is keyof typeof explorations {
