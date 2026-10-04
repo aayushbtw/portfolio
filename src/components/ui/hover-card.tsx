@@ -3,7 +3,7 @@
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card";
 import * as stylex from "@stylexjs/stylex";
 
-import { colors, radii } from "~/styles/tokens.stylex";
+import { colors, durations, easings, radii } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   positioner: {
@@ -18,6 +18,18 @@ const styles = stylex.create({
     borderWidth: 1,
     boxShadow: `0 4px 16px ${colors.shadow}`,
     overflow: "hidden",
+    transformOrigin: "var(--transform-origin)",
+    transitionDuration: durations.popover,
+    transitionProperty: "opacity, transform",
+    transitionTimingFunction: easings.out,
+  },
+  hidden: {
+    opacity: 0,
+    transform: "scale(0.96)",
+  },
+  // Leaving is the system responding, so it is quicker than arriving.
+  leaving: {
+    transitionDuration: "120ms",
   },
 });
 
@@ -49,7 +61,17 @@ function HoverCardContent({
         sideOffset={sideOffset}
         {...stylex.props(styles.positioner)}
       >
-        <PreviewCardPrimitive.Popup {...stylex.props(styles.popup)}>
+        <PreviewCardPrimitive.Popup
+          className={({ transitionStatus }) =>
+            stylex.props(
+              styles.popup,
+              transitionStatus !== undefined &&
+                transitionStatus !== "idle" &&
+                styles.hidden,
+              transitionStatus === "ending" && styles.leaving
+            ).className ?? ""
+          }
+        >
           {children}
         </PreviewCardPrimitive.Popup>
       </PreviewCardPrimitive.Positioner>

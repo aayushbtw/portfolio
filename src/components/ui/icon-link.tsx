@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 
-import { colors, space } from "~/styles/tokens.stylex";
+import { colors, durations, easings, space } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   link: {
@@ -16,6 +16,10 @@ const styles = stylex.create({
     gap: space.xxs,
     lineHeight: "17px",
     paddingInline: 1,
+    transform: { default: null, ":active": "scale(0.97)" },
+    transitionDuration: `${durations.hover}, ${durations.press}`,
+    transitionProperty: "border-bottom-color, transform",
+    transitionTimingFunction: `ease, ${easings.out}`,
   },
   icon: {
     display: "inline-flex",
@@ -24,6 +28,9 @@ const styles = stylex.create({
       default: colors.textMuted,
       [stylex.when.ancestor(":hover")]: colors.textSecondary,
     },
+    transitionDuration: durations.hover,
+    transitionProperty: "color",
+    transitionTimingFunction: "ease",
   },
 });
 

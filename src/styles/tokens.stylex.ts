@@ -62,3 +62,16 @@ export const layout = stylex.defineConsts({
   pageTop: "96px",
   sectionGap: "48px",
 });
+
+export const easings = stylex.defineConsts({
+  out: "cubic-bezier(0.23, 1, 0.32, 1)",
+  // A small overshoot, for elements that should feel alive.
+  overshoot: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+});
+
+export const durations = stylex.defineConsts({
+  enter: "700ms",
+  hover: "150ms",
+  popover: "180ms",
+  press: "160ms",
+});

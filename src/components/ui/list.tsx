@@ -4,6 +4,8 @@ import { createLink } from "@tanstack/react-router";
 
 import {
   colors,
+  durations,
+  easings,
   fontSizes,
   lineHeights,
   media,
@@ -34,6 +36,10 @@ const styles = stylex.create({
     paddingBlock: space.xs,
     paddingInline: space.md,
     textDecoration: "none",
+    transform: { default: null, ":active": "scale(0.99)" },
+    transitionDuration: `${durations.hover}, ${durations.press}`,
+    transitionProperty: "background-color, transform",
+    transitionTimingFunction: `ease, ${easings.out}`,
   },
   title: {
     color: colors.textPrimary,
@@ -50,6 +56,9 @@ const styles = stylex.create({
     flexGrow: 1,
     height: 1,
     minWidth: space.md,
+    transitionDuration: durations.hover,
+    transitionProperty: "background-color",
+    transitionTimingFunction: "ease",
   },
   meta: {
     alignItems: "center",
@@ -69,6 +78,9 @@ const styles = stylex.create({
         [stylex.when.ancestor(":hover")]: 1,
       },
     },
+    transitionDuration: durations.hover,
+    transitionProperty: "opacity",
+    transitionTimingFunction: "ease",
   },
 });
 

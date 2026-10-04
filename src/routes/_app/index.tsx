@@ -12,14 +12,14 @@ import { PageDescription } from "~/components/page-description";
 import { PostList, postListItems } from "~/components/post-list";
 import { ProjectList } from "~/components/project-list";
 import { IconLink } from "~/components/ui/icon-link";
-import { Page, PageHeader, Section } from "~/components/ui/page";
+import { Page, PageHeader, Section, usePageEnter } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { useHaptics } from "~/lib/haptics";
 import { projects } from "~/lib/projects";
 import { seo } from "~/lib/seo";
 import { getExplorations } from "~/server/explorations";
 import { getWritings } from "~/server/writings";
-import { colors } from "~/styles/tokens.stylex";
+import { colors, easings } from "~/styles/tokens.stylex";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
@@ -40,7 +40,44 @@ export const Route = createFileRoute("/_app/")({
   component: HomePage,
 });
 
+const spin = stylex.keyframes({
+  from: { opacity: 0, transform: "rotate(-180deg) scale(0.85)" },
+});
+
+const write = stylex.keyframes({
+  from: { filter: "blur(4px)", opacity: 0, transform: "translateX(-4px)" },
+});
+
+const LETTER_MS = 20;
+
+const letters = Array.from(
+  new Intl.Segmenter("en", { granularity: "grapheme" }).segment(config.name),
+  ({ segment }) => segment
+);
+
 const styles = stylex.create({
+  spin: {
+    animationDuration: "700ms",
+    animationFillMode: "both",
+    animationName: spin,
+    animationTimingFunction: easings.out,
+  },
+  srOnly: {
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    whiteSpace: "nowrap",
+    width: 1,
+  },
+  letter: {
+    animationDuration: "400ms",
+    animationFillMode: "both",
+    animationName: write,
+    animationTimingFunction: easings.out,
+    display: "inline-block",
+    whiteSpace: "pre",
+  },
   mark: {
     color: colors.accent,
     flexShrink: 0,
@@ -53,6 +90,34 @@ const styles = stylex.create({
   },
 });
 
+function Title() {
+  const enter = usePageEnter();
+
+  return (
+    <>
+      <MarkIcon {...stylex.props(styles.mark, enter && styles.spin)} />
+      {enter ? (
+        <span>
+          <span {...stylex.props(styles.srOnly)}>{config.name}</span>
+          {letters.map((letter, i) => (
+            <span
+              aria-hidden="true"
+              key={i}
+              {...stylex.props(styles.letter)}
+              // Overlaps the glyph spin so the two read as one gesture.
+              style={{ animationDelay: `${60 + i * LETTER_MS}ms` }}
+            >
+              {letter}
+            </span>
+          ))}
+        </span>
+      ) : (
+        <span>{config.name}</span>
+      )}
+    </>
+  );
+}
+
 function HomePage() {
   const { explorations, posts } = Route.useLoaderData();
   const { trigger } = useHaptics();
@@ -62,15 +127,8 @@ function HomePage() {
   }
 
   return (
-    <Page>
-      <PageHeader
-        title={
-          <>
-            <MarkIcon {...stylex.props(styles.mark)} />
-            {config.name}
-          </>
-        }
-      >
+    <Page enter>
+      <PageHeader title={<Title />}>
         <PageDescription>
           <p>{config.description}</p>
 
