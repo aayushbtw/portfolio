@@ -1,4 +1,74 @@
+import * as stylex from "@stylexjs/stylex";
 import { useCallback, useRef, useSyncExternalStore } from "react";
+
+import {
+  colors,
+  durations,
+  easings,
+  fontSizes,
+  lineHeights,
+  media,
+  radii,
+  space,
+} from "~/styles/tokens.stylex";
+
+const styles = stylex.create({
+  root: {
+    position: "relative",
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    fontSize: fontSizes.sm,
+    lineHeight: lineHeights.row,
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    width: 240,
+  },
+  link: {
+    color: {
+      default: colors.textMuted,
+      [media.hover]: {
+        default: colors.textMuted,
+        ":hover": colors.textPrimary,
+      },
+    },
+    display: "block",
+    overflow: "hidden",
+    paddingBlock: 5,
+    textOverflow: "ellipsis",
+    transitionDuration: `${durations.hover}, 250ms`,
+    transitionProperty: "color, transform",
+    transitionTimingFunction: `ease, ${easings.out}`,
+    whiteSpace: "nowrap",
+  },
+  active: {
+    color: colors.textPrimary,
+    transform: "translateX(2px)",
+  },
+  // One row tall, so translating by its own height lands on the next row.
+  track: {
+    alignItems: "center",
+    display: "flex",
+    height: `calc(${lineHeights.row} + 10px)`,
+    insetInlineStart: `calc(-1 * ${space.sm})`,
+    position: "absolute",
+    top: 0,
+    transitionDuration: "300ms",
+    transitionProperty: "transform",
+    transitionTimingFunction: easings.inOut,
+  },
+  at: (index: number) => ({
+    transform: `translateY(${index * 100}%)`,
+  }),
+  marker: {
+    backgroundColor: colors.accent,
+    borderRadius: radii.full,
+    height: 8,
+    width: 2,
+  },
+});
 
 interface Heading {
   id: string;
@@ -94,29 +164,43 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
     }
   }
 
-  return (
-    <ul>
-      <span aria-hidden="true" />
-      {headings.map((h) => {
-        const isActive = activeId === h.id;
+  const activeIndex = headings.findIndex((h) => h.id === activeId);
 
-        return (
-          <li key={h.id}>
-            <a
-              data-status={isActive ? "active" : undefined}
-              href={`#${h.id}`}
-              onClick={(event) => onClick(event, h.id)}
-            >
-              {h.text}
-            </a>
-          </li>
-        );
-      })}
-    </ul>
+  return (
+    <div {...stylex.props(styles.root)}>
+      {activeIndex !== -1 && (
+        <span
+          aria-hidden="true"
+          {...stylex.props(styles.track, styles.at(activeIndex))}
+        >
+          <span {...stylex.props(styles.marker)} />
+        </span>
+      )}
+      <ul {...stylex.props(styles.list)}>
+        {headings.map((h) => {
+          const isActive = activeId === h.id;
+
+          return (
+            <li key={h.id}>
+              <a
+                aria-current={isActive ? "location" : undefined}
+                href={`#${h.id}`}
+                onClick={(event) => onClick(event, h.id)}
+                title={h.text}
+                {...stylex.props(styles.link, isActive && styles.active)}
+              >
+                {h.text}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
-const SCROLL_OFFSET = 120;
+// A heading takes over once it reaches the top third, where the eye is reading.
+const READING_LINE = 1 / 3;
 
 function useActiveHeading(headings: Heading[]) {
   const stateRef = useRef(headings[0]?.id ?? "");
@@ -143,9 +227,17 @@ function useActiveHeading(headings: Heading[]) {
         }
 
         let active = headings[0]?.id ?? "";
+        const line = window.innerHeight * READING_LINE;
+
+        // At the bottom, short last sections never reach the line; any visible one wins.
+        const atBottom =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 1;
+
+        const limit = atBottom ? window.innerHeight : line;
 
         for (const el of elements) {
-          if (el.getBoundingClientRect().top <= SCROLL_OFFSET) {
+          if (el.getBoundingClientRect().top <= limit) {
             active = el.id;
           }
         }

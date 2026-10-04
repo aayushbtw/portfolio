@@ -70,7 +70,7 @@ function WritingPage() {
       {post.headings.length > 0 && (
         <RightColumn>
           <aside>
-            <nav>
+            <nav aria-label="On this page">
               <TableOfContents headings={post.headings} />
             </nav>
           </aside>

@@ -64,6 +64,8 @@ export const layout = stylex.defineConsts({
 });
 
 export const easings = stylex.defineConsts({
+  // For things that travel across the screen: leave and arrive gently.
+  inOut: "cubic-bezier(0.77, 0, 0.175, 1)",
   out: "cubic-bezier(0.23, 1, 0.32, 1)",
   // A small overshoot, for elements that should feel alive.
   overshoot: "cubic-bezier(0.34, 1.56, 0.64, 1)",
