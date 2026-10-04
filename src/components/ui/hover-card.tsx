@@ -12,11 +12,8 @@ const styles = stylex.create({
   },
   popup: {
     backgroundColor: colors.background,
-    borderColor: colors.fillStrong,
     borderRadius: radii.md,
-    borderStyle: "solid",
-    borderWidth: 1,
-    boxShadow: `0 4px 16px ${colors.shadow}`,
+    boxShadow: `0 0 0 1px ${colors.fillStrong}, 0 4px 16px ${colors.shadow}`,
     overflow: "hidden",
     transformOrigin: "var(--transform-origin)",
     transitionDuration: durations.popover,

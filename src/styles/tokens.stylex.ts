@@ -14,6 +14,11 @@ export const colors = stylex.defineVars({
   textSecondary: "var(--gray-11)",
 });
 
+// A shadow, not a border: it takes no layout and stays crisp at 1x, where 0.5px doesn't.
+export const shadows = stylex.defineConsts({
+  card: "0 0 0 1px var(--gray-a2)",
+});
+
 export const fonts = stylex.defineConsts({
   mono: 'ui-monospace, "SF Mono", Menlo, monospace',
   sans: '"Inter Variable", -apple-system, BlinkMacSystemFont, sans-serif',

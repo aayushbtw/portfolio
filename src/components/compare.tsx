@@ -8,6 +8,7 @@ import {
   lineHeights,
   media,
   radii,
+  shadows,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -15,6 +16,7 @@ const styles = stylex.create({
   compare: {
     backgroundColor: colors.fill,
     borderRadius: radii.md,
+    boxShadow: shadows.card,
     display: "grid",
     gap: space.xxs,
     gridTemplateColumns: {
@@ -26,6 +28,7 @@ const styles = stylex.create({
   side: {
     backgroundColor: colors.background,
     borderRadius: radii.sm,
+    boxShadow: shadows.card,
     display: "flex",
     flexDirection: "column",
   },

@@ -2,18 +2,20 @@ import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 
 import { explorations, isExploration } from "~/components/explorations";
-import { colors, radii, space } from "~/styles/tokens.stylex";
+import { colors, radii, shadows, space } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   frame: {
     backgroundColor: colors.fill,
     borderRadius: radii.md,
+    boxShadow: shadows.card,
     padding: space.xxs,
   },
   stage: {
     alignItems: "center",
     backgroundColor: colors.background,
     borderRadius: radii.sm,
+    boxShadow: shadows.card,
     display: "flex",
     justifyContent: "center",
     minHeight: 384,
