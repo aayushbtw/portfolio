@@ -28,5 +28,5 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", ".cloudflare/types/index.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

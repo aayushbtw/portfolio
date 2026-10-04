@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "build": "vp build",
-    "cf-typegen": "cf workers types",
     "check": "vp check",
     "deploy": "cf deploy",
     "dev": "vp dev",

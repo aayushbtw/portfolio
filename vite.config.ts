@@ -100,8 +100,6 @@ export default defineConfig({
     }),
     viteReact(),
     cloudflare({
-      // `cf workers types` already writes them to `.cloudflare/types`.
-      types: { generate: false },
       viteEnvironment: {
         childEnvironments: ["rsc"],
         name: "ssr",

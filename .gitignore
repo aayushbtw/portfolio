@@ -4,7 +4,7 @@ node_modules
 dist
 .tanstack
 .cloudflare
-.wrangler
+worker-configuration.d.ts
 .content-collections
 
 routeTree.gen.ts
