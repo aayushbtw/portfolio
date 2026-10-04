@@ -19,7 +19,7 @@ import { projects } from "~/lib/projects";
 import { seo } from "~/lib/seo";
 import { getExplorations } from "~/server/explorations";
 import { getWritings } from "~/server/writings";
-import { colors, easings } from "~/styles/tokens.stylex";
+import { colors, easings, media } from "~/styles/tokens.stylex";
 
 export const Route = createFileRoute("/_app/")({
   loader: async () => {
@@ -48,6 +48,10 @@ const write = stylex.keyframes({
   from: { filter: "blur(4px)", opacity: 0, transform: "translateX(-4px)" },
 });
 
+const fade = stylex.keyframes({
+  from: { opacity: 0 },
+});
+
 const LETTER_MS = 20;
 
 const letters = Array.from(
@@ -59,7 +63,7 @@ const styles = stylex.create({
   spin: {
     animationDuration: "700ms",
     animationFillMode: "both",
-    animationName: spin,
+    animationName: { default: spin, [media.reducedMotion]: fade },
     animationTimingFunction: easings.out,
   },
   srOnly: {
@@ -73,7 +77,7 @@ const styles = stylex.create({
   letter: {
     animationDuration: "400ms",
     animationFillMode: "both",
-    animationName: write,
+    animationName: { default: write, [media.reducedMotion]: fade },
     animationTimingFunction: easings.out,
     display: "inline-block",
     whiteSpace: "pre",

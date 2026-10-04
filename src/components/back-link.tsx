@@ -8,9 +8,18 @@ import { colors, media, radii, space } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   link: {
-    backgroundColor: { default: colors.fill, ":hover": colors.fillStrong },
+    backgroundColor: {
+      default: colors.fill,
+      [media.hover]: { default: colors.fill, ":hover": colors.fillStrong },
+    },
     borderRadius: radii.full,
-    color: { default: colors.textMuted, ":hover": colors.textPrimary },
+    color: {
+      default: colors.textMuted,
+      [media.hover]: {
+        default: colors.textMuted,
+        ":hover": colors.textPrimary,
+      },
+    },
     display: "flex",
     marginTop: { default: 0, [media.lg]: `calc(-1 * ${space.xs})` },
     padding: space.xs,

@@ -58,7 +58,10 @@ const styles = stylex.create({
   hash: {
     color: colors.textMuted,
     insetInlineEnd: "100%",
-    opacity: { default: 0, [stylex.when.ancestor(":hover")]: 1 },
+    opacity: {
+      default: 0,
+      [media.hover]: { default: 0, [stylex.when.ancestor(":hover")]: 1 },
+    },
     paddingInlineEnd: 6,
     position: "absolute",
     userSelect: "none",
@@ -66,8 +69,11 @@ const styles = stylex.create({
   a: {
     color: colors.textPrimary,
     textDecorationColor: {
-      default: colors.borderStrong,
-      ":hover": colors.textPrimary,
+      default: colors.edgeStrong,
+      [media.hover]: {
+        default: colors.edgeStrong,
+        ":hover": colors.textPrimary,
+      },
     },
     textDecorationLine: "underline",
     textUnderlineOffset: 3,
@@ -87,10 +93,8 @@ const styles = stylex.create({
   },
   blockquote: {
     ...flow,
-    borderInlineStartColor: colors.borderStrong,
-    borderInlineStartStyle: "solid",
-    borderInlineStartWidth: 2,
-    paddingInlineStart: space.md,
+    boxShadow: `inset 2px 0 0 ${colors.edgeStrong}`,
+    paddingInlineStart: `calc(${space.md} + 2px)`,
   },
   code: {
     backgroundColor: colors.fillSubtle,

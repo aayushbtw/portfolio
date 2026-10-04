@@ -17,13 +17,19 @@ import {
   easings,
   fontSizes,
   lineHeights,
+  media,
   radii,
+  shadows,
   space,
 } from "~/styles/tokens.stylex";
 
 // A record being swapped: the new cover spins in over the old one.
 const swap = stylex.keyframes({
   from: { opacity: 0, transform: "rotate(-90deg) scale(0.5)" },
+});
+
+const fade = stylex.keyframes({
+  from: { opacity: 0 },
 });
 
 const styles = stylex.create({
@@ -38,7 +44,7 @@ const styles = stylex.create({
   disc: {
     backgroundColor: colors.accent,
     borderRadius: radii.full,
-    boxShadow: `0 0 0 1px ${colors.fillStrong}`,
+    boxShadow: shadows.ring,
     display: "block",
     height: 26,
     overflow: "hidden",
@@ -49,7 +55,10 @@ const styles = stylex.create({
   // A 26px disc needs a large scale change to read at all.
   motion: {
     transitionDuration: "500ms",
-    transitionProperty: "filter, opacity, transform",
+    transitionProperty: {
+      default: "filter, opacity, transform",
+      [media.reducedMotion]: "filter, opacity",
+    },
     transitionTimingFunction: easings.overshoot,
   },
   hidden: {
@@ -73,7 +82,7 @@ const styles = stylex.create({
   swap: {
     animationDuration: "600ms",
     animationFillMode: "both",
-    animationName: swap,
+    animationName: { default: swap, [media.reducedMotion]: fade },
     animationTimingFunction: easings.overshoot,
   },
   cover: {

@@ -19,6 +19,7 @@ import {
   fontSizes,
   lineHeights,
   media,
+  shadows,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -110,9 +111,7 @@ const styles = stylex.create({
     lineHeight: lineHeights.row,
   },
   head: {
-    borderBottomColor: colors.fill,
-    borderBottomStyle: "solid",
-    borderBottomWidth: 1,
+    boxShadow: shadows.rule,
     color: colors.textMuted,
     fontSize: fontSizes.sm,
   },
@@ -120,9 +119,7 @@ const styles = stylex.create({
     color: colors.textMuted,
   },
   divided: {
-    borderBottomColor: colors.fillSubtle,
-    borderBottomStyle: "solid",
-    borderBottomWidth: { default: 1, ":last-child": 0 },
+    boxShadow: { default: shadows.divider, ":last-child": null },
   },
   spacer: {
     flexGrow: 1,
@@ -144,7 +141,7 @@ const styles = stylex.create({
   reel: {
     animationDuration: "900ms",
     animationFillMode: "both",
-    animationName: roll,
+    animationName: { default: roll, [media.reducedMotion]: "none" },
     animationTimingFunction: easings.out,
     display: "flex",
     flexDirection: "column",

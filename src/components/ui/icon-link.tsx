@@ -1,32 +1,44 @@
 import * as stylex from "@stylexjs/stylex";
 
-import { colors, durations, easings, space } from "~/styles/tokens.stylex";
+import {
+  colors,
+  durations,
+  easings,
+  media,
+  space,
+} from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   link: {
-    alignItems: "center",
-    borderBottomColor: {
-      default: colors.borderStrong,
-      ":hover": colors.textPrimary,
+    alignItems: "baseline",
+    boxShadow: {
+      default: `inset 0 -1px 0 ${colors.edgeStrong}`,
+      [media.hover]: {
+        default: `inset 0 -1px 0 ${colors.edgeStrong}`,
+        ":hover": `inset 0 -1px 0 ${colors.textPrimary}`,
+      },
     },
-    borderBottomStyle: "solid",
-    borderBottomWidth: 1,
     color: colors.textPrimary,
     display: "inline-flex",
     gap: space.xxs,
     lineHeight: "17px",
+    paddingBottom: 1,
     paddingInline: 1,
     transform: { default: null, ":active": "scale(0.97)" },
     transitionDuration: `${durations.hover}, ${durations.press}`,
-    transitionProperty: "border-bottom-color, transform",
+    transitionProperty: "box-shadow, transform",
     transitionTimingFunction: `ease, ${easings.out}`,
   },
   icon: {
+    alignSelf: "center",
     display: "inline-flex",
     fontSize: 13,
     color: {
       default: colors.textMuted,
-      [stylex.when.ancestor(":hover")]: colors.textSecondary,
+      [media.hover]: {
+        default: colors.textMuted,
+        [stylex.when.ancestor(":hover")]: colors.textSecondary,
+      },
     },
     transitionDuration: durations.hover,
     transitionProperty: "color",

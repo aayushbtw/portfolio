@@ -14,6 +14,7 @@ import {
   fontSizes,
   layout,
   lineHeights,
+  media,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -29,6 +30,10 @@ const settle = stylex.keyframes({
     opacity: 0,
     transform: "translateY(6px)",
   },
+});
+
+const fade = stylex.keyframes({
+  from: { opacity: 0 },
 });
 
 const STAGGER_MS = 160;
@@ -49,14 +54,14 @@ const styles = stylex.create({
   enter: {
     animationDuration: durations.enter,
     animationFillMode: "both",
-    animationName: rise,
+    animationName: { default: rise, [media.reducedMotion]: fade },
     animationTimingFunction: easings.out,
   },
   // Every page after the first: the same language as the first load, quicker.
   navEnter: {
     animationDuration: "350ms",
     animationFillMode: "both",
-    animationName: settle,
+    animationName: { default: settle, [media.reducedMotion]: fade },
     animationTimingFunction: easings.out,
   },
   page: {

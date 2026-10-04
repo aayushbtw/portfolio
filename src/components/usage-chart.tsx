@@ -38,7 +38,7 @@ const definition = defineChart(
     marks: [
       crosshair({
         x: {
-          stroke: colors.borderStrong,
+          stroke: colors.edgeStrong,
           strokeOpacity: 1,
           strokeWidth: 1,
           strokeDasharray: "3 3",

@@ -19,6 +19,7 @@ import {
   lineHeights,
   media,
   radii,
+  shadows,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -60,9 +61,7 @@ const styles = stylex.create({
   },
   head: {
     alignItems: "center",
-    borderBottomColor: colors.fill,
-    borderBottomStyle: "solid",
-    borderBottomWidth: 1,
+    boxShadow: shadows.rule,
     color: colors.textMuted,
     display: "flex",
     fontSize: fontSizes.sm,
@@ -71,9 +70,7 @@ const styles = stylex.create({
     paddingBlock: space.xs,
   },
   divided: {
-    borderBottomColor: colors.fillSubtle,
-    borderBottomStyle: "solid",
-    borderBottomWidth: { default: 1, ":last-child": 0 },
+    boxShadow: { default: shadows.divider, ":last-child": null },
   },
   // Bleeds past the column so the hover fill frames the row, not the text.
   link: {
@@ -98,7 +95,7 @@ const styles = stylex.create({
   },
   cover: {
     borderRadius: radii.xs,
-    boxShadow: `0 0 0 1px ${colors.fillStrong}`,
+    boxShadow: shadows.ring,
     flexShrink: 0,
     height: 24,
     width: 24,
@@ -123,7 +120,10 @@ const styles = stylex.create({
   artists: {
     color: {
       default: colors.textMuted,
-      [stylex.when.ancestor(":hover")]: colors.textSecondary,
+      [media.hover]: {
+        default: colors.textMuted,
+        [stylex.when.ancestor(":hover")]: colors.textSecondary,
+      },
     },
     minWidth: 0,
     overflow: "hidden",

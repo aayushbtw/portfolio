@@ -3,7 +3,13 @@
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card";
 import * as stylex from "@stylexjs/stylex";
 
-import { colors, durations, easings, radii } from "~/styles/tokens.stylex";
+import {
+  colors,
+  durations,
+  easings,
+  radii,
+  shadows,
+} from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   positioner: {
@@ -13,7 +19,7 @@ const styles = stylex.create({
   popup: {
     backgroundColor: colors.background,
     borderRadius: radii.md,
-    boxShadow: `0 0 0 1px ${colors.fillStrong}, 0 4px 16px ${colors.shadow}`,
+    boxShadow: shadows.popover,
     overflow: "hidden",
     transformOrigin: "var(--transform-origin)",
     transitionDuration: durations.popover,

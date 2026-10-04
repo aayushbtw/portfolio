@@ -15,6 +15,7 @@ import {
   fonts,
   fontSizes,
   lineHeights,
+  media,
   radii,
   shadows,
   space,
@@ -59,7 +60,13 @@ const styles = stylex.create({
   },
   copy: {
     borderRadius: radii.xs,
-    color: { default: colors.textMuted, ":hover": colors.textPrimary },
+    color: {
+      default: colors.textMuted,
+      [media.hover]: {
+        default: colors.textMuted,
+        ":hover": colors.textPrimary,
+      },
+    },
     display: "flex",
     padding: space.xxs,
     transform: { default: null, ":active": "scale(0.96)" },
@@ -75,7 +82,10 @@ const styles = stylex.create({
     display: "flex",
     gridArea: "1 / 1",
     transitionDuration: "300ms",
-    transitionProperty: "opacity, filter, transform",
+    transitionProperty: {
+      default: "opacity, filter, transform",
+      [media.reducedMotion]: "opacity, filter",
+    },
     transitionTimingFunction: "ease-in-out",
   },
   // Blur bridges the two shapes so they read as one morph.
@@ -93,7 +103,13 @@ const styles = stylex.create({
     backgroundColor: colors.background,
     borderRadius: radii.sm,
     boxShadow: shadows.card,
-    color: { default: colors.textSecondary, ":hover": colors.textPrimary },
+    color: {
+      default: colors.textSecondary,
+      [media.hover]: {
+        default: colors.textSecondary,
+        ":hover": colors.textPrimary,
+      },
+    },
     display: "flex",
     flexGrow: 1,
     flexBasis: 0,

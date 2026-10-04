@@ -51,7 +51,10 @@ const styles = stylex.create({
   leader: {
     backgroundColor: {
       default: colors.fill,
-      [stylex.when.ancestor(":hover")]: colors.fillStrong,
+      [media.hover]: {
+        default: colors.fill,
+        [stylex.when.ancestor(":hover")]: colors.fillStrong,
+      },
     },
     flexGrow: 1,
     height: 1,
