@@ -29,7 +29,8 @@ const title = "Music";
 const description = "What I’m listening to on Spotify.";
 
 export const Route = createFileRoute("/_app/music")({
-  loader: () => ({ tops: getTopsFn() }),
+  // A Spotify outage or rate limit empties the tables instead of failing the page.
+  loader: () => ({ tops: getTopsFn().catch(() => null) }),
   head: () => seo({ title, description }),
   headers: () => ({
     "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
@@ -231,7 +232,7 @@ function MusicPage() {
   const { tops } = Route.useLoaderData();
 
   // `NowPlaying`'s key, so this reads the cache instead of polling twice.
-  const { data: live, dataUpdatedAt, isPending } = useLive();
+  const { data: live, isPending } = useLive();
   const nowPlaying = live?.nowPlaying;
 
   return (
@@ -265,7 +266,7 @@ function MusicPage() {
                   durationMs={track.durationMs}
                   isPlaying={nowPlaying?.isPlaying ?? false}
                   progressMs={nowPlaying?.progressMs ?? 0}
-                  reportedAt={dataUpdatedAt}
+                  reportedAt={live?.fetchedAt ?? 0}
                 />
               }
               track={track}
@@ -288,15 +289,21 @@ function MusicPage() {
           }
         >
           <Await promise={tops}>
-            {({ topArtists, topTracks }) => (
+            {(data) => (
               <>
                 <Table heading="Top tracks">
-                  <Rows empty="Nothing yet" items={topTracks}>
+                  <Rows
+                    empty={data ? "Nothing yet" : "Couldn’t reach Spotify"}
+                    items={data?.topTracks ?? []}
+                  >
                     {(track) => <TrackRow key={track.id} track={track} />}
                   </Rows>
                 </Table>
                 <Table heading="Top artists">
-                  <Rows empty="Nothing yet" items={topArtists}>
+                  <Rows
+                    empty={data ? "Nothing yet" : "Couldn’t reach Spotify"}
+                    items={data?.topArtists ?? []}
+                  >
                     {(artist) => <ArtistRow artist={artist} key={artist.id} />}
                   </Rows>
                 </Table>

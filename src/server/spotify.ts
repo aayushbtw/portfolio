@@ -216,23 +216,55 @@ async function getTopTracks(): Promise<SpotifyTrack[]> {
   return items.map((t) => mapTrack(t));
 }
 
-export const getTops = createServerOnlyFn(async () => {
-  const [topArtists, topTracks] = await Promise.all([
-    getTopArtists(),
-    getTopTracks(),
-  ]);
+// The edge cache is shared by every visitor a data center serves, so Spotify
+// sees one request per key per `seconds`, not one per visitor.
+async function cached<T>(
+  key: string,
+  seconds: number,
+  load: () => Promise<T>
+): Promise<T> {
+  const cache = await caches.open("spotify");
+  const request = new Request(`https://spotify.cache/${key}`);
+  const hit = await cache.match(request);
 
-  return { topArtists, topTracks };
-});
+  if (hit) {
+    return json<T>(hit);
+  }
 
-export const getLive = createServerOnlyFn(async () => {
-  const [nowPlaying, recentlyPlayed] = await Promise.all([
-    getNowPlaying(),
-    getRecentlyPlayed(),
-  ]);
+  const value = await load();
 
-  return { nowPlaying, recentlyPlayed };
-});
+  await cache.put(
+    request,
+    Response.json(value, {
+      headers: { "Cache-Control": `public, max-age=${seconds}` },
+    })
+  );
+
+  return value;
+}
+
+export const getTops = createServerOnlyFn(() =>
+  cached("tops", 60 * 60, async () => {
+    const [topArtists, topTracks] = await Promise.all([
+      getTopArtists(),
+      getTopTracks(),
+    ]);
+
+    return { topArtists, topTracks };
+  })
+);
+
+export const getLive = createServerOnlyFn(() =>
+  cached("live", 10, async () => {
+    const [nowPlaying, recentlyPlayed] = await Promise.all([
+      getNowPlaying(),
+      getRecentlyPlayed(),
+    ]);
+
+    // A cached copy can be up to 10s old; the page counts progress from here.
+    return { fetchedAt: Date.now(), nowPlaying, recentlyPlayed };
+  })
+);
 
 // GET + its own cache headers: the music route's `headers()` only covers the
 // document, so on client navigation this would otherwise be a separate
