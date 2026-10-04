@@ -10,7 +10,13 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import usage from "~/lib/usage.json";
 import { formatCompact, formatShortDate, toUtcDate } from "~/lib/utils";
-import { colors, fontSizes, lineHeights, space } from "~/styles/tokens.stylex";
+import {
+  colors,
+  easings,
+  fontSizes,
+  lineHeights,
+  space,
+} from "~/styles/tokens.stylex";
 
 const rows = usage.daily.map((day) => ({
   date: toUtcDate(day.date),
@@ -64,6 +70,12 @@ const definition = defineChart(
   }
 );
 
+// Ends unclipped: the fill mode drops it so hover marks can reach the edges.
+const draw = stylex.keyframes({
+  from: { clipPath: "inset(0 100% 0 0)" },
+  to: { clipPath: "inset(0 0 0 0)" },
+});
+
 const styles = stylex.create({
   plot: {
     display: "flex",
@@ -73,6 +85,11 @@ const styles = stylex.create({
   },
   chart: {
     "--ts-chart-1": colors.accent,
+    animationDelay: "150ms",
+    animationDuration: "1200ms",
+    animationFillMode: "backwards",
+    animationName: draw,
+    animationTimingFunction: easings.inOut,
     color: colors.textMuted,
     fontSize: fontSizes.xs,
     fontVariantNumeric: "tabular-nums",
