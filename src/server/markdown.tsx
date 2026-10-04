@@ -11,6 +11,7 @@ import type { ComponentPropsWithoutRef, ReactElement } from "react";
 
 import { After, Before, Compare } from "~/components/compare";
 import { Demo } from "~/components/demo";
+import { InstallBlock } from "~/components/install";
 import { ShowcaseImage } from "~/components/showcase";
 import {
   colors,
@@ -20,6 +21,7 @@ import {
   lineHeights,
   media,
   radii,
+  shadows,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -92,10 +94,8 @@ const styles = stylex.create({
   },
   code: {
     backgroundColor: colors.fillSubtle,
-    borderColor: colors.fill,
-    borderStyle: "solid",
-    borderWidth: 1,
     borderRadius: radii.xs,
+    boxShadow: shadows.card,
     color: colors.textPrimary,
     fontFamily: fonts.mono,
     fontSize: fontSizes.xs,
@@ -105,10 +105,8 @@ const styles = stylex.create({
   pre: {
     ...flow,
     backgroundColor: colors.fillSubtle,
-    borderColor: colors.fill,
-    borderStyle: "solid",
-    borderWidth: 1,
     borderRadius: radii.md,
+    boxShadow: shadows.card,
     color: colors.textPrimary,
     fontSize: fontSizes.xs,
     lineHeight: lineHeights.code,
@@ -196,6 +194,7 @@ const components = {
   "md-before": Before,
   "md-compare": (props) => <Compare {...props} style={styles.block} />,
   "md-demo": (props) => <Demo {...props} style={styles.block} />,
+  "md-install": (props) => <InstallBlock {...props} style={styles.block} />,
   "md-showcase": (props) => (
     <figure {...props} {...stylex.props(styles.figure)} />
   ),

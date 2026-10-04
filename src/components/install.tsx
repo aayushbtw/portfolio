@@ -1,16 +1,22 @@
+"use client";
+
 import { Check } from "@phosphor-icons/react/Check";
 import { Copy } from "@phosphor-icons/react/Copy";
 import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
 import { useEffect, useRef, useState } from "react";
 
 import { useHaptics } from "~/lib/haptics";
 import { highlighter, SHELL_LANG } from "~/lib/highlight";
 import {
   colors,
+  durations,
+  easings,
   fonts,
   fontSizes,
   lineHeights,
   radii,
+  shadows,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -20,6 +26,7 @@ const styles = stylex.create({
   install: {
     backgroundColor: colors.fill,
     borderRadius: radii.md,
+    boxShadow: shadows.card,
     display: "flex",
     flexDirection: "column",
     gap: space.xxs,
@@ -29,6 +36,7 @@ const styles = stylex.create({
     alignItems: "center",
     backgroundColor: colors.background,
     borderRadius: radii.sm,
+    boxShadow: shadows.card,
     display: "flex",
     fontFamily: fonts.mono,
     fontSize: fontSizes.xs,
@@ -54,6 +62,27 @@ const styles = stylex.create({
     color: { default: colors.textMuted, ":hover": colors.textPrimary },
     display: "flex",
     padding: space.xxs,
+    transform: { default: null, ":active": "scale(0.96)" },
+    transitionDuration: `${durations.hover}, ${durations.press}`,
+    transitionProperty: "color, transform",
+    transitionTimingFunction: `ease, ${easings.out}`,
+  },
+  // Both icons share one cell, so the swap is a crossfade in place.
+  icons: {
+    display: "grid",
+  },
+  icon: {
+    display: "flex",
+    gridArea: "1 / 1",
+    transitionDuration: "300ms",
+    transitionProperty: "opacity, filter, transform",
+    transitionTimingFunction: "ease-in-out",
+  },
+  // Blur bridges the two shapes so they read as one morph.
+  hidden: {
+    filter: "blur(4px)",
+    opacity: 0,
+    transform: "scale(0.25)",
   },
   links: {
     display: "flex",
@@ -63,6 +92,7 @@ const styles = stylex.create({
     alignItems: "center",
     backgroundColor: colors.background,
     borderRadius: radii.sm,
+    boxShadow: shadows.card,
     color: { default: colors.textSecondary, ":hover": colors.textPrimary },
     display: "flex",
     flexGrow: 1,
@@ -75,8 +105,14 @@ const styles = stylex.create({
   },
 });
 
-function Install({ children }: { children: React.ReactNode }) {
-  return <div {...stylex.props(styles.install)}>{children}</div>;
+function Install({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: StyleXStyles;
+}) {
+  return <div {...stylex.props(styles.install, style)}>{children}</div>;
 }
 
 function InstallCommand({ command }: { command: string }) {
@@ -114,11 +150,14 @@ function InstallCommand({ command }: { command: string }) {
         type="button"
         {...stylex.props(styles.copy)}
       >
-        {copied ? (
-          <Check aria-hidden="true" size={16} weight="light" />
-        ) : (
-          <Copy aria-hidden="true" size={16} weight="light" />
-        )}
+        <span aria-hidden="true" {...stylex.props(styles.icons)}>
+          <span {...stylex.props(styles.icon, !copied && styles.hidden)}>
+            <Check size={16} weight="light" />
+          </span>
+          <span {...stylex.props(styles.icon, copied && styles.hidden)}>
+            <Copy size={16} weight="light" />
+          </span>
+        </span>
       </button>
     </div>
   );
@@ -155,4 +194,19 @@ function highlightShell(command: string) {
     });
 }
 
-export { Install, InstallCommand, InstallLink, InstallLinks };
+/** Markdown's `::install`: just the command, for a package a post introduces. */
+function InstallBlock({
+  command,
+  style,
+}: {
+  command: string;
+  style?: StyleXStyles;
+}) {
+  return (
+    <Install style={style}>
+      <InstallCommand command={command} />
+    </Install>
+  );
+}
+
+export { Install, InstallBlock, InstallCommand, InstallLink, InstallLinks };

@@ -11,6 +11,8 @@ publishedAt: 2026-09-16
 
 Every Markdown blog grows the same glue code: read a folder, parse the frontmatter, cast it to a type you hope is right, and filter out drafts on every request. [tomekit](https://tomekit.aayush.cv) replaces that glue with one config file, and this site runs on it.
 
+<!-- ::install command="npm install tomekit" -->
+
 ## What it does
 
 Point a collection at a folder and give it a schema in `tomekit.config.ts`:
