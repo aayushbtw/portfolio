@@ -1,34 +1,28 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-interface LayoutContextValue {
-  right: ReactNode;
-  setRight: (node: ReactNode) => void;
-}
+const RightContext = createContext<ReactNode>(null);
 
-const LayoutContext = createContext<LayoutContextValue>({
-  right: null,
-  setRight: () => {
-    // stands in until a provider mounts
-  },
+const SetRightContext = createContext<(node: ReactNode) => void>(() => {
+  // stands in until a provider mounts
 });
 
 function LayoutProvider({ children }: { children: ReactNode }) {
   const [right, setRight] = useState<ReactNode>(null);
 
   return (
-    <LayoutContext.Provider value={{ right, setRight }}>
-      {children}
-    </LayoutContext.Provider>
+    <SetRightContext value={setRight}>
+      <RightContext value={right}>{children}</RightContext>
+    </SetRightContext>
   );
 }
 
 function useRightColumn() {
-  return useContext(LayoutContext).right;
+  return useContext(RightContext);
 }
 
 function RightColumn({ children }: { children: ReactNode }) {
-  const { setRight } = useContext(LayoutContext);
+  const setRight = useContext(SetRightContext);
   useEffect(() => {
     setRight(children);
 
