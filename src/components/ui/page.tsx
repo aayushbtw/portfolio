@@ -40,9 +40,9 @@ const STAGGER_MS = 160;
 
 const NAV_STAGGER_MS = 50;
 
-const EnterContext = createContext(false);
+const EnterContext = createContext<{ delay: number } | null>(null);
 
-/** Whether the page is playing its first-load entrance, for blocks with their own. */
+/** The first-load entrance this block is part of, for blocks with their own. */
 function usePageEnter() {
   return useContext(EnterContext);
 }
@@ -135,27 +135,28 @@ function Page({
   }, []);
 
   return (
-    <EnterContext value={mode === "first"}>
-      <div
-        {...stylex.props(styles.page, variant === "compact" && styles.compact)}
-      >
-        {mode
-          ? Children.toArray(children).map((child, i) => (
-              <div
-                key={i}
-                {...stylex.props(
-                  mode === "first" ? styles.enter : styles.navEnter
-                )}
-                style={{
-                  animationDelay: `${i * (mode === "first" ? STAGGER_MS : NAV_STAGGER_MS)}ms`,
-                }}
-              >
-                {child}
-              </div>
-            ))
-          : children}
-      </div>
-    </EnterContext>
+    <div
+      {...stylex.props(styles.page, variant === "compact" && styles.compact)}
+    >
+      {mode
+        ? Children.toArray(children).map((child, i) => {
+            const delay = i * (mode === "first" ? STAGGER_MS : NAV_STAGGER_MS);
+
+            return (
+              <EnterContext key={i} value={mode === "first" ? { delay } : null}>
+                <div
+                  {...stylex.props(
+                    mode === "first" ? styles.enter : styles.navEnter
+                  )}
+                  style={{ animationDelay: `${delay}ms` }}
+                >
+                  {child}
+                </div>
+              </EnterContext>
+            );
+          })
+        : children}
+    </div>
   );
 }
 

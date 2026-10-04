@@ -14,8 +14,6 @@ import {
 } from "~/lib/utils";
 import {
   colors,
-  durations,
-  easings,
   fontSizes,
   lineHeights,
   media,
@@ -31,18 +29,6 @@ export const Route = createFileRoute("/_app/usage")({
   head: () => seo({ title, description }),
   component: UsagePage,
 });
-
-const roll = stylex.keyframes({
-  from: { transform: "translateY(0)" },
-});
-
-const fill = stylex.keyframes({
-  from: { strokeDasharray: "0 100" },
-});
-
-const DIGIT_STAGGER_MS = 60;
-
-const RING_STAGGER_MS = 80;
 
 const styles = stylex.create({
   mark: {
@@ -124,42 +110,6 @@ const styles = stylex.create({
   spacer: {
     flexGrow: 1,
   },
-  srOnly: {
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    whiteSpace: "nowrap",
-    width: 1,
-  },
-  digit: {
-    display: "inline-block",
-    height: lineHeights.row,
-    overflow: "hidden",
-    verticalAlign: "top",
-  },
-  reel: {
-    animationDuration: "900ms",
-    animationFillMode: "both",
-    animationName: { default: roll, [media.reducedMotion]: "none" },
-    animationTimingFunction: easings.out,
-    display: "flex",
-    flexDirection: "column",
-  },
-  // Twenty faces, so even a 0 spins a full turn before landing.
-  landOn: (digit: number, delay: number) => ({
-    animationDelay: `${delay}ms`,
-    transform: `translateY(${-(10 + digit) * 5}%)`,
-  }),
-  fill: {
-    animationDuration: durations.enter,
-    animationFillMode: "both",
-    animationName: fill,
-    animationTimingFunction: easings.out,
-  },
-  after: (delay: number) => ({
-    animationDelay: `${delay}ms`,
-  }),
 });
 
 /** `<0.1%` rather than a rounded-down `0%`: tiny, not absent. */
@@ -169,7 +119,7 @@ function formatShare(share: number) {
 
 function UsagePage() {
   return (
-    <Page>
+    <Page enter>
       <PageHeader
         description={
           <>Tokens I’ve burned coding with Claude Code in {usage.year}.</>
@@ -184,26 +134,12 @@ function UsagePage() {
 
       <Section title="Overview">
         <dl {...stylex.props(styles.list)}>
-          <Stat
-            label="Tokens"
-            value={<Odometer value={formatCompact(usage.total)} />}
-          />
-          <Stat
-            label="Sessions"
-            value={<Odometer value={formatNumber(usage.sessions)} />}
-          />
-          <Stat
-            label="Active days"
-            value={<Odometer value={formatNumber(usage.activeDays)} />}
-          />
+          <Stat label="Tokens" value={formatCompact(usage.total)} />
+          <Stat label="Sessions" value={formatNumber(usage.sessions)} />
+          <Stat label="Active days" value={formatNumber(usage.activeDays)} />
           <Stat
             label="Busiest day"
-            value={
-              <>
-                <Odometer value={formatCompact(usage.peak.tokens)} /> on{" "}
-                {formatShortDate(usage.peak.date)}
-              </>
-            }
+            value={`${formatCompact(usage.peak.tokens)} on ${formatShortDate(usage.peak.date)}`}
           />
         </dl>
       </Section>
@@ -243,43 +179,6 @@ function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-const faces = Array.from({ length: 20 }, (_, i) => i % 10);
-
-/** Digits spin into place; separators and suffixes stay put. */
-function Odometer({ value }: { value: string }) {
-  let digitIndex = 0;
-
-  return (
-    <span>
-      <span {...stylex.props(styles.srOnly)}>{value}</span>
-      <span aria-hidden="true">
-        {Array.from(value, (char, i) => {
-          if (!/\d/.test(char)) {
-            return <span key={i}>{char}</span>;
-          }
-
-          const delay = digitIndex++ * DIGIT_STAGGER_MS;
-
-          return (
-            <span key={i} {...stylex.props(styles.digit)}>
-              <span
-                {...stylex.props(
-                  styles.reel,
-                  styles.landOn(Number(char), delay)
-                )}
-              >
-                {faces.map((face, j) => (
-                  <span key={j}>{face}</span>
-                ))}
-              </span>
-            </span>
-          );
-        })}
-      </span>
-    </span>
-  );
-}
-
 function ShareTable({
   heading,
   rows,
@@ -298,13 +197,13 @@ function ShareTable({
         </span>
       </div>
       <ul {...stylex.props(styles.list)}>
-        {rows.map((row, i) => (
+        {rows.map((row) => (
           <li key={row.label} {...stylex.props(styles.row, styles.divided)}>
             <span {...stylex.props(styles.label)}>{row.label}</span>
             <span aria-hidden="true" {...stylex.props(styles.spacer)} />
             <span {...stylex.props(styles.meta)}>
               <span {...stylex.props(styles.share)}>
-                <Ring index={i} share={row.share} />
+                <Ring share={row.share} />
                 <span {...stylex.props(styles.shareValue)}>
                   {formatShare(row.share)}
                 </span>
@@ -321,7 +220,7 @@ function ShareTable({
 }
 
 /** Non-zero shares keep a visible sliver; under 1% would otherwise vanish. */
-function Ring({ index, share }: { index: number; share: number }) {
+function Ring({ share }: { share: number }) {
   const arc = share > 0 ? Math.max(share, 3) : 0;
 
   return (
@@ -352,7 +251,6 @@ function Ring({ index, share }: { index: number; share: number }) {
         strokeLinecap="round"
         strokeWidth={2.5}
         transform="rotate(-90 8 8)"
-        {...stylex.props(styles.fill, styles.after(index * RING_STAGGER_MS))}
       />
     </svg>
   );

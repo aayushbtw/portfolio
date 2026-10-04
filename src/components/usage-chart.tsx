@@ -8,13 +8,16 @@ import { scaleUtc } from "d3-scale";
 import { curveMonotoneX } from "d3-shape";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
+import { usePageEnter } from "~/components/ui/page";
 import usage from "~/lib/usage.json";
 import { formatCompact, formatShortDate, toUtcDate } from "~/lib/utils";
 import {
   colors,
+  durations,
   easings,
   fontSizes,
   lineHeights,
+  media,
   space,
 } from "~/styles/tokens.stylex";
 
@@ -85,15 +88,20 @@ const styles = stylex.create({
   },
   chart: {
     "--ts-chart-1": colors.accent,
-    animationDelay: "150ms",
-    animationDuration: "1200ms",
-    animationFillMode: "backwards",
-    animationName: draw,
-    animationTimingFunction: easings.inOut,
     color: colors.textMuted,
     fontSize: fontSizes.xs,
     fontVariantNumeric: "tabular-nums",
   },
+  // The block's own fade covers reduced motion.
+  draw: {
+    animationDuration: durations.enter,
+    animationFillMode: "backwards",
+    animationName: { default: draw, [media.reducedMotion]: "none" },
+    animationTimingFunction: easings.inOut,
+  },
+  after: (delay: number) => ({
+    animationDelay: `${delay}ms`,
+  }),
   readout: {
     // Holds its line while nothing is hovered, so the plot never jumps.
     height: lineHeights.row,
@@ -156,6 +164,7 @@ function Readout({ hovered }: { hovered: Hovered | null }) {
 
 function UsageChart() {
   const [hovered, setHovered] = useState<Hovered | null>(null);
+  const delay = usePageEnter()?.delay ?? null;
 
   const onFocusChange = useCallback((point: ChartPoint<Row> | null) => {
     setHovered(point === null ? null : { row: point.datum, x: point.x });
@@ -165,7 +174,10 @@ function UsageChart() {
   const chart = useMemo(
     () => (
       <Chart
-        {...stylex.props(styles.chart)}
+        {...stylex.props(
+          styles.chart,
+          delay !== null && [styles.draw, styles.after(delay)]
+        )}
         ariaDescription={`Tokens processed per day from ${rows[0]?.label} to ${rows.at(-1)?.label}, including idle days.`}
         ariaLabel="Daily Claude Code tokens"
         definition={definition}
@@ -174,7 +186,7 @@ function UsageChart() {
         onFocusChange={onFocusChange}
       />
     ),
-    [onFocusChange]
+    [delay, onFocusChange]
   );
 
   return (
