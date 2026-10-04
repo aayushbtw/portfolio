@@ -2,28 +2,6 @@
   "year": 2026,
   "total": 9875984745,
   "sessions": 594,
-  "tokenTypes": [
-    {
-      "label": "Cache read",
-      "share": 98.2112,
-      "tokens": 9699325091
-    },
-    {
-      "label": "Cache write",
-      "share": 1.4637,
-      "tokens": 144553707
-    },
-    {
-      "label": "Output",
-      "share": 0.3224,
-      "tokens": 31844592
-    },
-    {
-      "label": "Input",
-      "share": 0.0026,
-      "tokens": 261355
-    }
-  ],
   "models": [
     {
       "name": "Opus 5",
@@ -495,7 +473,5 @@
       "tokens": 106041926
     }
   ],
-  "words": 7406988559,
-  "novels": 93000,
   "generatedAt": "2026-10-04T14:17:44.738Z"
 }

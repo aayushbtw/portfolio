@@ -1,5 +1,5 @@
 const compact = new Intl.NumberFormat("en", {
-  maximumFractionDigits: 1,
+  maximumFractionDigits: 2,
   notation: "compact",
 });
 

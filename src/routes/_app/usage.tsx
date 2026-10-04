@@ -16,7 +16,6 @@ import {
   colors,
   fontSizes,
   lineHeights,
-  media,
   shadows,
   space,
 } from "~/styles/tokens.stylex";
@@ -76,10 +75,10 @@ const styles = stylex.create({
   },
   shareValue: {
     textAlign: "end",
-    width: "3.5em",
+    width: "4.5em",
   },
-  breakout: {
-    marginInline: { default: null, [media.lg]: -128 },
+  bleed: {
+    marginInline: "calc(50% - 50vw)",
   },
   ring: {
     color: colors.accent,
@@ -89,7 +88,7 @@ const styles = stylex.create({
     color: colors.textPrimary,
     flexShrink: 0,
     textAlign: "end",
-    width: "4em",
+    width: "4.5em",
   },
   updated: {
     color: colors.textMuted,
@@ -112,9 +111,9 @@ const styles = stylex.create({
   },
 });
 
-/** `<0.1%` rather than a rounded-down `0%`: tiny, not absent. */
+/** `<0.01%` rather than a rounded-down `0%`: tiny, not absent. */
 function formatShare(share: number) {
-  return share < 0.1 ? "<0.1%" : `${share.toFixed(1)}%`;
+  return share < 0.01 ? "<0.01%" : `${share.toFixed(2)}%`;
 }
 
 function UsagePage() {
@@ -144,18 +143,14 @@ function UsagePage() {
         </dl>
       </Section>
 
-      <Section title="Daily tokens">
-        <div {...stylex.props(styles.breakout)}>
-          <UsageChart />
-        </div>
-      </Section>
+      <div {...stylex.props(styles.bleed)}>
+        <UsageChart />
+      </div>
 
       <ShareTable
         heading="Model"
         rows={usage.models.map((model) => ({ ...model, label: model.name }))}
       />
-
-      <ShareTable heading="Token type" rows={usage.tokenTypes} />
 
       <p {...stylex.props(styles.updated)}>
         Updated{" "}

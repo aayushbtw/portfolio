@@ -1,10 +1,10 @@
 import * as stylex from "@stylexjs/stylex";
-import { crosshair, defineChart, lineY } from "@tanstack/charts";
+import { crosshair, defineChart, lineY, link } from "@tanstack/charts";
 import { d3Curve } from "@tanstack/charts/d3/shape";
+import { decorative } from "@tanstack/charts/mark/decorative";
 import { Chart } from "@tanstack/charts/react";
 import type { ChartPoint } from "@tanstack/charts/react";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
-import { scaleUtc } from "d3-scale";
+import { scaleLinear, scaleUtc } from "d3-scale";
 import { curveMonotoneX } from "d3-shape";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -29,46 +29,68 @@ const rows = usage.daily.map((day) => ({
 
 type Row = (typeof rows)[number];
 
+const first = rows[0];
+
+const last = rows.at(-1);
+
+/** Pixels between the data's ends and the chart's edges. */
+const INSET = 64;
+
+const STROKE_WIDTH = 1.25;
+
 const curve = d3Curve(curveMonotoneX);
 
-const monthFormat = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  timeZone: "UTC",
-});
+const high = Math.max(...rows.map((row) => row.tokens));
+
+// Headroom past the peak and below zero, so the crosshair overhangs the line.
+const yDomain = [-high * 0.1, high * 1.1];
+
+// Flat runs from each end of the data out to the edge, sized in time so the
+// data itself stops `INSET` pixels short at any width.
+function runouts(width: number) {
+  if (!first || !last) {
+    return [];
+  }
+
+  const start = first.date.getTime();
+  const end = last.date.getTime();
+  const pad = ((end - start) * INSET) / Math.max(width - 2 * INSET, 1);
+
+  return [
+    { from: new Date(start - pad), to: first.date, tokens: first.tokens },
+    { from: last.date, to: new Date(end + pad), tokens: last.tokens },
+  ];
+}
 
 const definition = defineChart(
-  {
+  ({ width }) => ({
+    margin: 0,
     marks: [
       crosshair({
-        x: {
-          stroke: colors.edgeStrong,
-          strokeOpacity: 1,
-          strokeWidth: 1,
-          strokeDasharray: "3 3",
-        },
+        x: { stroke: colors.fillStrong, strokeOpacity: 1, strokeWidth: 1 },
         y: false,
       }),
-      lineY(rows, { x: "date", y: "tokens", curve, strokeWidth: 1.25 }),
+      decorative(
+        link(runouts(width), {
+          stroke: colors.textPrimary,
+          strokeWidth: STROKE_WIDTH,
+          x1: "from",
+          x2: "to",
+          y1: "tokens",
+          y2: "tokens",
+        })
+      ),
+      lineY(rows, { x: "date", y: "tokens", curve, strokeWidth: STROKE_WIDTH }),
     ],
     scales: {
-      x: {
-        scale: scaleUtc,
-        axis: {
-          line: false,
-          ticks: {
-            count: 4,
-            padding: 12,
-            size: 0,
-            format: (date) => monthFormat.format(date),
-          },
-        },
-      },
-      y: { scale: scaleLinear, axis: false },
+      x: { scale: scaleUtc, axis: false },
+      // An instance, not a factory: a factory's domain is inferred from the data.
+      y: { scale: scaleLinear().domain(yDomain), axis: false },
     },
-  },
+  }),
   {
     focus: "nearest-x",
-    focusRing: false,
+    focusRing: { fill: colors.background, radius: 3.5, strokeWidth: 1.5 },
     maxFocusDistance: Number.POSITIVE_INFINITY,
   }
 );
@@ -79,6 +101,12 @@ const draw = stylex.keyframes({
   to: { clipPath: "inset(0 0 0 0)" },
 });
 
+const fadeOnHover = {
+  transitionDuration: durations.hover,
+  transitionProperty: "opacity",
+  transitionTimingFunction: "ease",
+} as const;
+
 const styles = stylex.create({
   plot: {
     display: "flex",
@@ -87,8 +115,10 @@ const styles = stylex.create({
     minWidth: 0,
   },
   chart: {
-    "--ts-chart-1": colors.accent,
+    "--ts-chart-1": colors.textPrimary,
     color: colors.textMuted,
+    // An inline svg leaves descender space under it, unevening the gaps.
+    display: "flex",
     fontSize: fontSizes.xs,
     fontVariantNumeric: "tabular-nums",
   },
@@ -102,27 +132,51 @@ const styles = stylex.create({
   after: (delay: number) => ({
     animationDelay: `${delay}ms`,
   }),
-  readout: {
-    // Holds its line while nothing is hovered, so the plot never jumps.
-    height: lineHeights.row,
-    fontSize: fontSizes.sm,
+  // Holds its height while nothing is hovered, so the plot never jumps.
+  line: {
     fontVariantNumeric: "tabular-nums",
+    height: lineHeights.row,
     lineHeight: lineHeights.row,
     position: "relative",
   },
-  readoutBody: {
+  top: {
+    fontSize: fontSizes.sm,
+  },
+  bottom: {
+    color: colors.textMuted,
+    fontSize: fontSizes.xs,
+  },
+  follow: {
+    ...fadeOnHover,
     display: "flex",
-    gap: space.xs,
+    gap: space.xxs,
     insetBlockStart: 0,
     position: "absolute",
     translate: "-50% 0",
     whiteSpace: "nowrap",
   },
-  date: {
-    color: colors.textMuted,
+  end: {
+    ...fadeOnHover,
+    insetBlockStart: 0,
+    position: "absolute",
+    whiteSpace: "nowrap",
+  },
+  start: {
+    left: INSET,
+    translate: "-50% 0",
+  },
+  finish: {
+    right: INSET,
+    translate: "50% 0",
+  },
+  hidden: {
+    opacity: 0,
   },
   value: {
     color: colors.textPrimary,
+  },
+  unit: {
+    color: colors.textMuted,
   },
 });
 
@@ -132,32 +186,46 @@ interface Hovered {
   x: number;
 }
 
-function Readout({ hovered }: { hovered: Hovered | null }) {
-  const line = useRef<HTMLDivElement>(null);
+/** Tracks the hovered x inside its positioned parent, kept clear of the edges. */
+function Follow({
+  children,
+  hovered,
+}: {
+  children: (row: Row) => React.ReactNode;
+  hovered: Hovered | null;
+}) {
   const body = useRef<HTMLDivElement>(null);
+
+  // The last point stays rendered so leaving the chart fades it out in place.
+  const [shown, setShown] = useState(hovered);
+
+  if (hovered !== null && hovered !== shown) {
+    setShown(hovered);
+  }
 
   // Written straight to the node so following the pointer costs no second render.
   useLayoutEffect(() => {
-    if (hovered === null || line.current === null || body.current === null) {
+    const parent = body.current?.parentElement;
+
+    if (shown === null || !body.current || !parent) {
       return;
     }
 
     const half = body.current.offsetWidth / 2;
-    const width = line.current.offsetWidth;
-    const center = Math.min(Math.max(hovered.x, half), width - half);
+    const center = Math.min(Math.max(shown.x, half), parent.offsetWidth - half);
     body.current.style.left = `${center}px`;
-  }, [hovered]);
+  }, [shown]);
+
+  if (shown === null) {
+    return null;
+  }
 
   return (
-    <div ref={line} {...stylex.props(styles.readout)}>
-      {hovered === null ? null : (
-        <div ref={body} {...stylex.props(styles.readoutBody)}>
-          <span {...stylex.props(styles.date)}>{hovered.row.label}</span>
-          <span {...stylex.props(styles.value)}>
-            {formatCompact(hovered.row.tokens)}
-          </span>
-        </div>
-      )}
+    <div
+      ref={body}
+      {...stylex.props(styles.follow, hovered === null && styles.hidden)}
+    >
+      {children(shown.row)}
     </div>
   );
 }
@@ -178,11 +246,11 @@ function UsageChart() {
           styles.chart,
           delay !== null && [styles.draw, styles.after(delay)]
         )}
-        ariaDescription={`Tokens processed per day from ${rows[0]?.label} to ${rows.at(-1)?.label}, including idle days.`}
+        ariaDescription={`Tokens processed per day from ${first?.label} to ${last?.label}, including idle days.`}
         ariaLabel="Daily Claude Code tokens"
         definition={definition}
         height={160}
-        initialWidth={644}
+        initialWidth={1280}
         onFocusChange={onFocusChange}
       />
     ),
@@ -191,8 +259,42 @@ function UsageChart() {
 
   return (
     <div {...stylex.props(styles.plot)}>
-      <Readout hovered={hovered} />
+      <div {...stylex.props(styles.line, styles.top)}>
+        <Follow hovered={hovered}>
+          {(row) => (
+            <>
+              <span {...stylex.props(styles.value)}>
+                {formatCompact(row.tokens)}
+              </span>
+              <span {...stylex.props(styles.unit)}>tokens</span>
+            </>
+          )}
+        </Follow>
+      </div>
+
       {chart}
+
+      <div aria-hidden="true" {...stylex.props(styles.line, styles.bottom)}>
+        <span
+          {...stylex.props(
+            styles.end,
+            styles.start,
+            hovered !== null && styles.hidden
+          )}
+        >
+          {first?.label}
+        </span>
+        <span
+          {...stylex.props(
+            styles.end,
+            styles.finish,
+            hovered !== null && styles.hidden
+          )}
+        >
+          {last?.label}
+        </span>
+        <Follow hovered={hovered}>{(row) => row.label}</Follow>
+      </div>
     </div>
   );
 }

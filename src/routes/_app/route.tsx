@@ -52,6 +52,8 @@ const styles = stylex.create({
       default: "minmax(0, 1fr)",
       [media.lg]: `1fr minmax(0, ${layout.content}) 1fr`,
     },
+    // Full-bleed blocks span 100vw, which overhangs a classic scrollbar.
+    overflowX: "clip",
     paddingInline: layout.gutter,
   },
   back: {
