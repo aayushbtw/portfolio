@@ -6,8 +6,6 @@ allowBuilds:
   workerd: true
 minimumReleaseAgeExclude:
   - tomekit
-  - "@cloudflare/vite-plugin@1.62.0"
-  - wrangler@4.143.0
   - "@tanstack/intent@0.5.5"
   - "@voidzero-dev/vite-plus-core@1.1.0"
   - "@voidzero-dev/vite-plus-darwin-arm64@1.1.0"
