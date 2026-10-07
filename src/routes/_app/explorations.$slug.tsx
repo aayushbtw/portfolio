@@ -6,7 +6,7 @@ import { formatDate } from "~/lib/utils";
 import { getExploration } from "~/server/explorations";
 
 export const Route = createFileRoute("/_app/explorations/$slug")({
-  loader: ({ params: { slug } }) => getExploration({ data: slug }),
+  loader: async ({ params: { slug } }) => await getExploration({ data: slug }),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

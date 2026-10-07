@@ -1,7 +1,7 @@
 "use client";
 
-import { Check } from "@phosphor-icons/react/Check";
-import { Copy } from "@phosphor-icons/react/Copy";
+import { CheckIcon } from "@phosphor-icons/react/Check";
+import { CopyIcon } from "@phosphor-icons/react/Copy";
 import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 import { useEffect, useRef, useState } from "react";
@@ -137,14 +137,21 @@ function InstallCommand({ command }: { command: string }) {
   const timeout = useRef<ReturnType<typeof setTimeout>>(null);
   const { trigger } = useHaptics();
 
-  useEffect(() => () => clearTimeout(timeout.current ?? undefined), []);
+  useEffect(
+    () => () => {
+      clearTimeout(timeout.current ?? undefined);
+    },
+    []
+  );
 
   async function copy() {
     await navigator.clipboard.writeText(command);
     trigger("click");
     setCopied(true);
     clearTimeout(timeout.current ?? undefined);
-    timeout.current = setTimeout(() => setCopied(false), RESET_DELAY);
+    timeout.current = setTimeout(() => {
+      setCopied(false);
+    }, RESET_DELAY);
   }
 
   return (
@@ -163,16 +170,18 @@ function InstallCommand({ command }: { command: string }) {
 
       <button
         aria-label={copied ? "Copied" : "Copy command"}
-        onClick={copy}
+        onClick={() => {
+          void copy();
+        }}
         type="button"
         {...stylex.props(styles.copy)}
       >
         <span aria-hidden="true" {...stylex.props(styles.icons)}>
           <span {...stylex.props(styles.icon, !copied && styles.hidden)}>
-            <Check size={16} weight="light" />
+            <CheckIcon size={16} weight="light" />
           </span>
           <span {...stylex.props(styles.icon, copied && styles.hidden)}>
-            <Copy size={16} weight="light" />
+            <CopyIcon size={16} weight="light" />
           </span>
         </span>
       </button>
@@ -184,16 +193,14 @@ function InstallLinks({ children }: { children: React.ReactNode }) {
   return <div {...stylex.props(styles.links)}>{children}</div>;
 }
 
-function InstallLink(
-  props: Omit<React.ComponentProps<"a">, "className" | "style">
-) {
+function InstallLink({
+  children,
+  ...props
+}: Omit<React.ComponentProps<"a">, "className" | "style">) {
   return (
-    <a
-      rel="noopener"
-      target="_blank"
-      {...props}
-      {...stylex.props(styles.link)}
-    />
+    <a rel="noopener" target="_blank" {...props} {...stylex.props(styles.link)}>
+      {children}
+    </a>
   );
 }
 

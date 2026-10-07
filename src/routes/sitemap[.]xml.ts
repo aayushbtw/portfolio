@@ -31,21 +31,19 @@ function entries(): Entry[] {
   return [...staticPaths, ...documents];
 }
 
-function lastModified({ metadata }: DocumentOf) {
+function lastModified({ metadata }: DocumentOf): string | undefined {
   if ("modifiedAt" in metadata && metadata.modifiedAt !== undefined) {
     return metadata.modifiedAt;
   }
 
-  if ("publishedAt" in metadata) {
-    return metadata.publishedAt;
-  }
+  return "publishedAt" in metadata ? metadata.publishedAt : undefined;
 }
 
 function toXml(list: Entry[]) {
   const urls = list
     .map(({ path, lastmod }) => {
       const loc = `<loc>${config.siteUrl}${path}</loc>`;
-      const mod = lastmod ? `<lastmod>${lastmod}</lastmod>` : "";
+      const mod = lastmod === undefined ? "" : `<lastmod>${lastmod}</lastmod>`;
 
       return `<url>${loc}${mod}</url>`;
     })

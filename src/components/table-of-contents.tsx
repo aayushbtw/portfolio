@@ -87,6 +87,7 @@ let cancelScroll: (() => void) | undefined;
 
 /** Native smooth scroll has no say in speed or curve, so the tween is ours. */
 function scrollToElement(target: HTMLElement, onDone: () => void) {
+  // oxlint-disable-next-line unicorn/prefer-number-coercion -- `Number("4px")` is NaN
   const margin = Number.parseFloat(getComputedStyle(target).scrollMarginTop);
   const from = window.scrollY;
 
@@ -142,9 +143,9 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
     const modified =
       event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
 
-    const target = document.getElementById(id);
+    const target = document.querySelector(`#${CSS.escape(id)}`);
 
-    if (modified || event.button !== 0 || !target) {
+    if (modified || event.button !== 0 || !(target instanceof HTMLElement)) {
       return;
     }
 
@@ -188,7 +189,9 @@ function TableOfContents({ headings }: { headings: Heading[] }) {
               <a
                 aria-current={isActive ? "location" : undefined}
                 href={`#${h.id}`}
-                onClick={(event) => onClick(event, h.id)}
+                onClick={(event) => {
+                  onClick(event, h.id);
+                }}
                 title={h.text}
                 {...stylex.props(styles.link, isActive && styles.active)}
               >
@@ -210,8 +213,12 @@ function useActiveHeading(headings: Heading[]) {
   const rafRef = useRef(0);
   // Pins the clicked heading while a smooth scroll passes the ones before it.
   const lockRef = useRef("");
-  const notifyRef = useRef(() => {});
-  const releaseRef = useRef(() => {});
+  const notifyRef = useRef(() => {
+    // replaced once subscribed
+  });
+  const releaseRef = useRef(() => {
+    // replaced once subscribed
+  });
 
   const subscribe = useCallback(
     (onStoreChange: () => void) => {
@@ -311,7 +318,9 @@ function useActiveHeading(headings: Heading[]) {
     }
   }, []);
 
-  const release = useCallback(() => releaseRef.current(), []);
+  const release = useCallback(() => {
+    releaseRef.current();
+  }, []);
 
   const activeId = useSyncExternalStore(
     subscribe,

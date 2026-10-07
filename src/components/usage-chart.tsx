@@ -29,7 +29,7 @@ const rows = usage.daily.map((day) => ({
 
 type Row = (typeof rows)[number];
 
-const first = rows[0];
+const first = rows.at(0);
 
 const last = rows.at(-1);
 
@@ -232,7 +232,7 @@ function Follow({
 
 function UsageChart() {
   const [hovered, setHovered] = useState<Hovered | null>(null);
-  const delay = usePageEnter()?.delay ?? null;
+  const delay = usePageEnter();
 
   const onFocusChange = useCallback((point: ChartPoint<Row> | null) => {
     setHovered(point === null ? null : { row: point.datum, x: point.x });

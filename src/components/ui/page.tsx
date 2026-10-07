@@ -40,7 +40,8 @@ const STAGGER_MS = 160;
 
 const NAV_STAGGER_MS = 50;
 
-const EnterContext = createContext<{ delay: number } | null>(null);
+/** The entrance delay in ms, or null outside the first-load entrance. */
+const EnterContext = createContext<number | null>(null);
 
 /** The first-load entrance this block is part of, for blocks with their own. */
 function usePageEnter() {
@@ -122,6 +123,7 @@ function Page({
   variant?: "compact" | "page";
 }) {
   // Server and first client render agree: neither has navigated yet.
+  // oxlint-disable-next-line react/hook-use-state -- read once on mount, never set
   const [mode] = useState<"first" | "nav" | null>(() => {
     if (!entered) {
       return enter ? "first" : null;
@@ -139,11 +141,12 @@ function Page({
       {...stylex.props(styles.page, variant === "compact" && styles.compact)}
     >
       {mode
-        ? Children.toArray(children).map((child, i) => {
+        ? // oxlint-disable-next-line react/no-react-children -- each child staggers in on its own, so callers write plain JSX
+          Children.toArray(children).map((child, i) => {
             const delay = i * (mode === "first" ? STAGGER_MS : NAV_STAGGER_MS);
 
             return (
-              <EnterContext key={i} value={mode === "first" ? { delay } : null}>
+              <EnterContext key={i} value={mode === "first" ? delay : null}>
                 <div
                   {...stylex.props(
                     mode === "first" ? styles.enter : styles.navEnter
@@ -175,10 +178,12 @@ function PageHeader({
     <header {...stylex.props(styles.header)}>
       <div {...stylex.props(styles.heading)}>
         <h1 {...stylex.props(styles.title)}>{title}</h1>
-        {description ? (
+        {description === undefined ? null : (
           <p {...stylex.props(styles.description)}>{description}</p>
-        ) : null}
-        {meta ? <p {...stylex.props(styles.meta)}>{meta}</p> : null}
+        )}
+        {meta === undefined ? null : (
+          <p {...stylex.props(styles.meta)}>{meta}</p>
+        )}
       </div>
       {children}
     </header>

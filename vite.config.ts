@@ -6,72 +6,57 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import rsc from "@vitejs/plugin-rsc";
 import { tomekit } from "tomekit/vite";
+import ultraciteFmt from "ultracite/oxfmt";
+import antiSlop from "ultracite/oxlint/anti-slop";
+import core from "ultracite/oxlint/core";
+import react from "ultracite/oxlint/react";
+import tanstack from "ultracite/oxlint/tanstack";
 import { defineConfig, lazyPlugins } from "vite-plus";
-
-const ignorePatterns = [
-  "**/*.gen.*",
-  ".claude/**",
-  "pnpm-lock.yaml",
-  "tools/oxlint/anti-slop/**",
-  ".cloudflare/**",
-];
 
 export default defineConfig({
   fmt: {
-    arrowParens: "always",
-    bracketSameLine: false,
-    bracketSpacing: true,
-    endOfLine: "lf",
-    ignorePatterns,
-    jsxSingleQuote: false,
-    printWidth: 80,
-    proseWrap: "never",
-    quoteProps: "as-needed",
-    semi: true,
-    singleQuote: false,
-    sortImports: { ignoreCase: true, newlinesBetween: true, order: "asc" },
-    sortPackageJson: true,
-    tabWidth: 2,
-    trailingComma: "es5",
-    useTabs: false,
+    ...ultraciteFmt,
+    ignorePatterns: [
+      ...(ultraciteFmt.ignorePatterns ?? []),
+      "**/routeTree.gen.ts",
+      ".claude/**",
+    ],
   },
   lint: {
-    ignorePatterns,
-    jsPlugins: [
-      { name: "vite-plus", specifier: "vite-plus/oxlint-plugin" },
-      { name: "anti-slop", specifier: "./tools/oxlint/anti-slop/index.ts" },
-    ],
+    extends: [core, react, tanstack, antiSlop],
+    ignorePatterns: [...(core.ignorePatterns ?? []), ".claude/**"],
+    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
     options: { typeAware: true, typeCheck: true },
     rules: {
-      "anti-slop/no-array-filter-map": "error",
-      "anti-slop/no-chained-type-assertions": "error",
-      "anti-slop/no-conditional-empty-object-spread": "error",
-      "anti-slop/no-known-value-widening": "error",
-      "anti-slop/no-module-mocking": "error",
-      "anti-slop/no-object-parameters": "error",
-      "anti-slop/no-reduce-accumulator-copy": "error",
-      "anti-slop/no-reflect-apply": "error",
-      "anti-slop/no-reflect-get": "error",
-      "anti-slop/no-runtime-typeof": "error",
-      "anti-slop/no-shape-in-symbol-names": "error",
-      "anti-slop/no-unknown-parameters": "error",
-      "anti-slop/no-unknown-returns": "error",
-      "anti-slop/no-unknown-type-aliases": "error",
-      "anti-slop/no-unsafe-dictionary-type": "error",
-      "anti-slop/no-widen-then-assert": "error",
-      "anti-slop/require-readable-spacing": "error",
-      "anti-slop/require-safety-comment-for-type-assertion": "error",
-      // Hoisting is what lets a route's `component:` sit above the component it
-      // names. Callbacks and cleanups stay arrows: this rule only governs named
-      // functions bound to a variable.
+      // Hoisting lets a route's `component:` sit above the component it names.
       "func-style": ["error", "declaration", { allowArrowFunctions: false }],
-      // Paired with the rule above: declarations hoist, so naming one further
-      // up the file than its definition is the point, not a mistake.
       "no-use-before-define": ["error", { functions: false }],
-      "oxc/no-accumulating-spread": "error",
+      "react/function-component-definition": [
+        "error",
+        { namedComponents: "function-declaration" },
+      ],
+      // Base UI's checkbox is a span with a hidden input, so the label wraps it rather than pointing at it.
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        { controlComponents: ["Checkbox", "Switch"], depth: 3 },
+      ],
+      // `throw redirect(...)` and `throw notFound()` are how TanStack Router exits a loader.
+      "typescript/only-throw-error": [
+        "error",
+        {
+          allow: [
+            {
+              from: "package",
+              name: ["NotFoundError", "Redirect"],
+              package: "@tanstack/router-core",
+            },
+          ],
+        },
+      ],
       "vite-plus/prefer-vite-plus-imports": "error",
     },
   },
+  // oxlint-disable-next-line typescript/no-unsafe-return -- `@stylexjs/unplugin/vite` is typed as returning `any`
   plugins: lazyPlugins(() => [
     tomekit(),
     tanstackStart({

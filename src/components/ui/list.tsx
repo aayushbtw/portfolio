@@ -92,12 +92,11 @@ function List({ style, ...props }: Props<"div">) {
   return <div {...props} {...stylex.props(styles.list, style)} />;
 }
 
-function ListItem({ style, ...props }: Props<"a">) {
+function ListItem({ children, style, ...props }: Props<"a">) {
   return (
-    <a
-      {...props}
-      {...stylex.props(stylex.defaultMarker(), styles.item, style)}
-    />
+    <a {...props} {...stylex.props(stylex.defaultMarker(), styles.item, style)}>
+      {children}
+    </a>
   );
 }
 

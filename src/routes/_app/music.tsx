@@ -29,8 +29,7 @@ const title = "Music";
 const description = "What I’m listening to on Spotify.";
 
 export const Route = createFileRoute("/_app/music")({
-  // A Spotify outage or rate limit empties the tables instead of failing the page.
-  loader: () => ({ tops: getTopsFn().catch(() => null) }),
+  loader: () => ({ tops: getTopsOrNull() }),
   head: () => seo({ title, description }),
   headers: () => ({
     "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
@@ -224,7 +223,16 @@ function formatDuration(ms: number) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
-function smallest<T extends { url: string }>(images: T[]) {
+// A Spotify outage or rate limit empties the tables instead of failing the page.
+async function getTopsOrNull() {
+  try {
+    return await getTopsFn();
+  } catch {
+    return null;
+  }
+}
+
+function smallest(images: { url: string }[]) {
   return images.at(-1)?.url ?? images[0]?.url;
 }
 
@@ -323,7 +331,9 @@ function MusicPage() {
           {(track) => (
             <TrackRow
               key={`${track.id}-${track.playedAt}`}
-              meta={track.playedAt ? formatAgo(track.playedAt) : null}
+              meta={
+                track.playedAt === undefined ? null : formatAgo(track.playedAt)
+              }
               track={track}
             />
           )}
@@ -347,7 +357,7 @@ function Table({
       <div {...stylex.props(styles.head)}>
         <h2>{heading}</h2>
         <span aria-hidden="true" {...stylex.props(styles.spacer)} />
-        {column ? <span>{column}</span> : null}
+        {column === undefined ? null : <span>{column}</span>}
       </div>
       <ul {...stylex.props(styles.list)}>{children}</ul>
     </section>
@@ -505,17 +515,17 @@ function useElapsed(
   const [now, setNow] = useState(reportedAt);
 
   useEffect(() => {
-    setNow(Date.now());
-
-    if (!isPlaying) {
-      return;
-    }
-
     // Faster than a second so the clock flips close to the real boundary.
-    const id = setInterval(() => setNow(Date.now()), 250);
+    const id = isPlaying
+      ? setInterval(() => {
+          setNow(Date.now());
+        }, 250)
+      : undefined;
 
-    return () => clearInterval(id);
-  }, [isPlaying, reportedAt]);
+    return () => {
+      clearInterval(id);
+    };
+  }, [isPlaying]);
 
   const drift = isPlaying ? Math.max(now - reportedAt, 0) : 0;
 

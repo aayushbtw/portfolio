@@ -123,7 +123,8 @@ const styles = stylex.create({
 
 function NowPlaying({ style }: { style?: StyleXStyles }) {
   const { data: live } = useLive();
-  const track = live?.nowPlaying.isPlaying ? live.nowPlaying.track : null;
+  const track =
+    live?.nowPlaying.isPlaying === true ? live.nowPlaying.track : null;
 
   // The last track stays rendered while the disc leaves, and under the next cover while it fades in.
   const [shown, setShown] = useState(track);
@@ -151,7 +152,12 @@ function NowPlaying({ style }: { style?: StyleXStyles }) {
           />
         }
       >
-        <Disc leaving={leaving} onLeft={() => setShown(null)}>
+        <Disc
+          leaving={leaving}
+          onLeft={() => {
+            setShown(null);
+          }}
+        >
           {previous ? <Cover track={previous} /> : null}
           <span
             key={shown.id}
@@ -187,9 +193,13 @@ function Disc({
 
   // One frame at the hidden state first, so the transition has somewhere to start.
   useEffect(() => {
-    const frame = requestAnimationFrame(() => setMounted(true));
+    const frame = requestAnimationFrame(() => {
+      setMounted(true);
+    });
 
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (

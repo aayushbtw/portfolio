@@ -13,7 +13,7 @@ import { seo } from "~/lib/seo";
 import { getSkill } from "~/server/skills";
 
 export const Route = createFileRoute("/_app/skills/$slug")({
-  loader: ({ params: { slug } }) => getSkill({ data: slug }),
+  loader: async ({ params: { slug } }) => await getSkill({ data: slug }),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

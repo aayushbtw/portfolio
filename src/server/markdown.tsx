@@ -134,17 +134,23 @@ const styles = stylex.create({
   },
 });
 
-function MarkdownLink({ href, ...props }: ComponentPropsWithoutRef<"a">) {
+function MarkdownLink({
+  children,
+  href,
+  ...props
+}: ComponentPropsWithoutRef<"a">) {
   const external = href?.startsWith("http") ?? false;
 
   return (
     <a
       href={href}
-      rel={external ? "noopener" : undefined}
+      rel={external ? "noreferrer" : undefined}
       target={external ? "_blank" : undefined}
       {...props}
       {...stylex.props(styles.a)}
-    />
+    >
+      {children}
+    </a>
   );
 }
 
@@ -157,7 +163,9 @@ function MarkdownHeading({
 }: ComponentPropsWithoutRef<"h2">) {
   return (
     <h2 id={id} {...props} {...stylex.props(styles.h2)}>
-      {id ? (
+      {id === undefined ? (
+        children
+      ) : (
         <a
           href={`#${id}`}
           {...stylex.props(stylex.defaultMarker(), styles.headingLink)}
@@ -167,8 +175,6 @@ function MarkdownHeading({
           </span>
           {children}
         </a>
-      ) : (
-        children
       )}
     </h2>
   );

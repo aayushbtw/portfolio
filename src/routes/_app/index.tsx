@@ -95,12 +95,12 @@ const styles = stylex.create({
 });
 
 function Title() {
-  const enter = usePageEnter();
+  const entering = usePageEnter() !== null;
 
   return (
     <>
-      <MarkIcon {...stylex.props(styles.mark, enter && styles.spin)} />
-      {enter ? (
+      <MarkIcon {...stylex.props(styles.mark, entering && styles.spin)} />
+      {entering ? (
         <span>
           <span {...stylex.props(styles.srOnly)}>{config.name}</span>
           {letters.map((letter, i) => (

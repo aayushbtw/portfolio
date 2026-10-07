@@ -9,7 +9,7 @@ import { getLiveFn } from "~/server/spotify";
 function useLive({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     enabled,
-    queryFn: () => getLiveFn(),
+    queryFn: async () => await getLiveFn(),
     queryKey: ["spotify", "live"],
     refetchInterval: 10_000,
     refetchIntervalInBackground: false,

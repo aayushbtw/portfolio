@@ -45,7 +45,7 @@ async function getAccessToken(): Promise<string> {
   }
 
   if (inflightToken) {
-    return inflightToken;
+    return await inflightToken;
   }
 
   inflightToken = (async () => {
@@ -92,8 +92,8 @@ async function getAccessToken(): Promise<string> {
 }
 
 async function json<T>(res: Response): Promise<T> {
-  // SAFETY: each caller names the response shape Spotify documents for its endpoint; it is not validated.
-  return (await res.json()) as T;
+  // Each caller names the response shape Spotify documents for its endpoint; it is not validated.
+  return await res.json();
 }
 
 async function spotifyFetch(path: string): Promise<Response> {
@@ -228,7 +228,7 @@ async function cached<T>(
   const hit = await cache.match(request);
 
   if (hit) {
-    return json<T>(hit);
+    return await json<T>(hit);
   }
 
   const value = await load();
@@ -243,41 +243,43 @@ async function cached<T>(
   return value;
 }
 
-export const getTops = createServerOnlyFn(() =>
-  cached("tops", 60 * 60, async () => {
-    const [topArtists, topTracks] = await Promise.all([
-      getTopArtists(),
-      getTopTracks(),
-    ]);
+export const getTops = createServerOnlyFn(
+  async () =>
+    await cached("tops", 60 * 60, async () => {
+      const [topArtists, topTracks] = await Promise.all([
+        getTopArtists(),
+        getTopTracks(),
+      ]);
 
-    return { topArtists, topTracks };
-  })
+      return { topArtists, topTracks };
+    })
 );
 
-export const getLive = createServerOnlyFn(() =>
-  cached("live", 10, async () => {
-    const [nowPlaying, recentlyPlayed] = await Promise.all([
-      getNowPlaying(),
-      getRecentlyPlayed(),
-    ]);
+export const getLive = createServerOnlyFn(
+  async () =>
+    await cached("live", 10, async () => {
+      const [nowPlaying, recentlyPlayed] = await Promise.all([
+        getNowPlaying(),
+        getRecentlyPlayed(),
+      ]);
 
-    // A cached copy can be up to 10s old; the page counts progress from here.
-    return { fetchedAt: Date.now(), nowPlaying, recentlyPlayed };
-  })
+      // A cached copy can be up to 10s old; the page counts progress from here.
+      return { fetchedAt: Date.now(), nowPlaying, recentlyPlayed };
+    })
 );
 
 // GET + its own cache headers: the music route's `headers()` only covers the
 // document, so on client navigation this would otherwise be a separate
 // uncacheable request.
-const getTopsFn = createServerFn({ method: "GET" }).handler(() => {
+const getTopsFn = createServerFn({ method: "GET" }).handler(async () => {
   setResponseHeader(
     "Cache-Control",
     "public, s-maxage=86400, stale-while-revalidate=604800"
   );
 
-  return getTops();
+  return await getTops();
 });
 
-const getLiveFn = createServerFn().handler(() => getLive());
+const getLiveFn = createServerFn().handler(async () => await getLive());
 
 export { getLiveFn, getTopsFn };

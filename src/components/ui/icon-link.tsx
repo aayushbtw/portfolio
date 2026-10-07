@@ -58,8 +58,8 @@ function IconLink({
 }) {
   return (
     <a
-      rel={external ? "noopener" : undefined}
-      target={external ? "_blank" : undefined}
+      rel={external === true ? "noopener" : undefined}
+      target={external === true ? "_blank" : undefined}
       {...props}
       {...stylex.props(stylex.defaultMarker(), styles.link)}
     >

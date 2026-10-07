@@ -9,6 +9,6 @@ const getSkills = createServerFn({ method: "GET" }).handler(() =>
 
 const getSkill = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
-  .handler(({ data: slug }) => renderDocument(skills, slug));
+  .handler(async ({ data: slug }) => await renderDocument(skills, slug));
 
 export { getSkill, getSkills };

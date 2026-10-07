@@ -9,7 +9,7 @@ import { formatDate } from "~/lib/utils";
 import { getWriting } from "~/server/writings";
 
 export const Route = createFileRoute("/_app/writings/$slug")({
-  loader: ({ params: { slug } }) => getWriting({ data: slug }),
+  loader: async ({ params: { slug } }) => await getWriting({ data: slug }),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {};

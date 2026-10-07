@@ -53,7 +53,9 @@ function click(ctx: AudioContext): AudioScheduledSourceNode {
   const source = ctx.createBufferSource();
   source.buffer = clickBuffer;
   source.connect(clickFilter);
-  source.addEventListener("ended", () => source.disconnect());
+  source.addEventListener("ended", () => {
+    source.disconnect();
+  });
   source.start(t);
 
   return source;
@@ -73,7 +75,9 @@ function tick(ctx: AudioContext): AudioScheduledSourceNode {
   tickGain.gain.exponentialRampToValueAtTime(0.001, t + 0.018);
 
   osc.connect(tickGain);
-  osc.addEventListener("ended", () => osc.disconnect());
+  osc.addEventListener("ended", () => {
+    osc.disconnect();
+  });
   osc.start(t);
   osc.stop(t + 0.02);
 
@@ -84,13 +88,19 @@ const sounds = { click, tick } as const;
 
 type Sound = keyof typeof sounds;
 
+// Outside the hook: React Compiler can't lower `??=`.
+function contextOf(ref: { current: AudioContext | null }) {
+  ref.current ??= new AudioContext();
+
+  return ref.current;
+}
+
 export function useHaptics() {
   const ctx = useRef<AudioContext | null>(null);
   const activeSource = useRef<AudioScheduledSourceNode | null>(null);
 
   const trigger = useCallback((sound: Sound) => {
-    ctx.current ??= new AudioContext();
-    const audioCtx = ctx.current;
+    const audioCtx = contextOf(ctx);
 
     function play() {
       try {
@@ -108,8 +118,18 @@ export function useHaptics() {
       return;
     }
 
-    // Haptics are decorative: a context the browser refuses to resume stays silent.
-    audioCtx.resume().then(play, () => undefined);
+    async function resumeAndPlay() {
+      try {
+        await audioCtx.resume();
+      } catch {
+        // Haptics are decorative: a context the browser refuses to resume stays silent.
+        return;
+      }
+
+      play();
+    }
+
+    void resumeAndPlay();
   }, []);
 
   return { trigger };

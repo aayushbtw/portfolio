@@ -9,6 +9,6 @@ const getWritings = createServerFn({ method: "GET" }).handler(() =>
 
 const getWriting = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
-  .handler(({ data: slug }) => renderDocument(writings, slug));
+  .handler(async ({ data: slug }) => await renderDocument(writings, slug));
 
 export { getWriting, getWritings };

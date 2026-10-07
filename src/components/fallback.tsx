@@ -1,4 +1,4 @@
-import { ArrowRight } from "@phosphor-icons/react/ArrowRight";
+import { ArrowRightIcon } from "@phosphor-icons/react/ArrowRight";
 import * as stylex from "@stylexjs/stylex";
 
 import {
@@ -85,7 +85,7 @@ function Fallback({
                 <ListItemLeader />
                 <ListItemMeta>
                   {page.tag}
-                  <ArrowRight aria-hidden="true" size={13} weight="light" />
+                  <ArrowRightIcon aria-hidden="true" size={13} weight="light" />
                 </ListItemMeta>
               </ListItem>
             ))}

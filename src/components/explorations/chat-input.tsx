@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowUp } from "@phosphor-icons/react/ArrowUp";
-import { Microphone } from "@phosphor-icons/react/Microphone";
-import { Plus } from "@phosphor-icons/react/Plus";
+import { ArrowUpIcon } from "@phosphor-icons/react/ArrowUp";
+import { MicrophoneIcon } from "@phosphor-icons/react/Microphone";
+import { PlusIcon } from "@phosphor-icons/react/Plus";
 import { useLayoutEffect, useRef, useState } from "react";
 
 const MAX_TEXT_HEIGHT = 144;
@@ -80,12 +80,14 @@ function ChatInput() {
     // Collapsing only once empty, never when the text fits again, is what
     // stops the box from flipping back and forth at the wrap point.
     if (!expanded && wraps) {
+      // oxlint-disable-next-line react/set-state-in-effect -- only a laid-out textarea knows whether it wraps
       setExpanded(true);
 
       return;
     }
 
     if (expanded && value === "") {
+      // oxlint-disable-next-line react/set-state-in-effect -- collapses once the measured text is cleared
       setExpanded(false);
 
       return;
@@ -130,7 +132,9 @@ function ChatInput() {
         >
           <textarea
             aria-label="Message"
-            onChange={(event) => update(event.target.value)}
+            onChange={(event) => {
+              update(event.target.value);
+            }}
             onKeyDown={onKeyDown}
             placeholder="Ask anything"
             ref={(element) => {
@@ -146,7 +150,7 @@ function ChatInput() {
               moving.current.plus = element;
             }}
           >
-            <Plus aria-hidden="true" />
+            <PlusIcon aria-hidden="true" />
           </IconButton>
 
           <IconButton
@@ -155,7 +159,7 @@ function ChatInput() {
               moving.current.mic = element;
             }}
           >
-            <Microphone aria-hidden="true" />
+            <MicrophoneIcon aria-hidden="true" />
           </IconButton>
 
           <button
@@ -166,7 +170,7 @@ function ChatInput() {
             }}
             type="submit"
           >
-            <ArrowUp aria-hidden="true" />
+            <ArrowUpIcon aria-hidden="true" />
           </button>
         </form>
       </div>

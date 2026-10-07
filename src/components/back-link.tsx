@@ -1,4 +1,4 @@
-import { ArrowBendUpLeft } from "@phosphor-icons/react/ArrowBendUpLeft";
+import { ArrowBendUpLeftIcon } from "@phosphor-icons/react/ArrowBendUpLeft";
 import * as stylex from "@stylexjs/stylex";
 import type { LinkProps } from "@tanstack/react-router";
 import { Link, useRouterState } from "@tanstack/react-router";
@@ -69,10 +69,12 @@ function BackLink() {
     <Link
       aria-label={`Back to ${target.label}`}
       {...stylex.props(styles.link)}
-      onClick={() => trigger("click")}
+      onClick={() => {
+        trigger("click");
+      }}
       to={target.to}
     >
-      <ArrowBendUpLeft aria-hidden="true" size={16} weight="light" />
+      <ArrowBendUpLeftIcon aria-hidden="true" size={16} weight="light" />
     </Link>
   );
 }

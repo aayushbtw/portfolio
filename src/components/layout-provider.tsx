@@ -17,7 +17,7 @@ function LayoutProvider({ children }: { children: ReactNode }) {
   );
 }
 
-function useRightColumn() {
+function useRightColumn(): ReactNode {
   return useContext(RightContext);
 }
 
@@ -26,7 +26,9 @@ function RightColumn({ children }: { children: ReactNode }) {
   useEffect(() => {
     setRight(children);
 
-    return () => setRight(null);
+    return () => {
+      setRight(null);
+    };
   }, [children, setRight]);
 
   return null;

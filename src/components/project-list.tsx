@@ -1,5 +1,5 @@
-import { ArrowRight } from "@phosphor-icons/react/ArrowRight";
-import { ArrowUpRight } from "@phosphor-icons/react/ArrowUpRight";
+import { ArrowRightIcon } from "@phosphor-icons/react/ArrowRight";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/ArrowUpRight";
 import * as stylex from "@stylexjs/stylex";
 
 import {
@@ -48,7 +48,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
           <ListItemLink key={item.name} to={item.to}>
             <ProjectRow project={item}>
               <span {...stylex.props(styles.arrow, styles.internal)}>
-                <ArrowRight aria-hidden="true" size={13} weight="light" />
+                <ArrowRightIcon aria-hidden="true" size={13} weight="light" />
               </span>
             </ProjectRow>
           </ListItemLink>
@@ -61,7 +61,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
           >
             <ProjectRow project={item}>
               <span {...stylex.props(styles.arrow, styles.external)}>
-                <ArrowUpRight aria-hidden="true" size={13} weight="light" />
+                <ArrowUpRightIcon aria-hidden="true" size={13} weight="light" />
               </span>
             </ProjectRow>
           </ListItem>
