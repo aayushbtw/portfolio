@@ -29,7 +29,7 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
     rules: {
       // Hoisting lets a route's `component:` sit above the component it names.
-      "func-style": ["error", "declaration", { allowArrowFunctions: false }],
+      "func-style": ["error", "declaration", { allowArrowFunctions: true }],
       "no-use-before-define": ["error", { functions: false }],
       "react/function-component-definition": [
         "error",
