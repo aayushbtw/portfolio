@@ -1,37 +1,37 @@
 {
   "year": 2026,
-  "total": 10882569350,
+  "total": 10884130593,
   "sessions": 631,
   "models": [
     {
       "name": "Opus 5",
-      "share": 59.3837,
+      "share": 59.3752,
       "tokens": 6462472087
     },
     {
       "name": "Opus 5.5",
-      "share": 33.664,
-      "tokens": 3663504089
+      "share": 33.6615,
+      "tokens": 3663765984
     },
     {
       "name": "Opus 4.8",
-      "share": 5.4021,
+      "share": 5.4013,
       "tokens": 587882138
     },
     {
       "name": "Fable 5",
-      "share": 0.7319,
+      "share": 0.7318,
       "tokens": 79645923
     },
     {
       "name": "Sonnet 5",
-      "share": 0.7316,
+      "share": 0.7315,
       "tokens": 79614114
     },
     {
       "name": "Haiku 5.5",
-      "share": 0.0819,
-      "tokens": 8911542
+      "share": 0.0938,
+      "tokens": 10210890
     },
     {
       "name": "Haiku 4.5",
@@ -495,8 +495,8 @@
     },
     {
       "date": "2026-10-09",
-      "tokens": 31987273
+      "tokens": 33548516
     }
   ],
-  "generatedAt": "2026-10-09T07:48:06.416Z"
+  "generatedAt": "2026-10-09T07:51:48.246Z"
 }
