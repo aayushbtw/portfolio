@@ -14,11 +14,5 @@ Before editing files for a substantial task:
 
 ## Workflow
 
-- Check: `vpr check`, then `vpr build`.
-- Land: `main`.
 - Before deploy: `vpr usage`, then `vpr deploy`.
 - Review also checks: `DESIGN.md`.
-
-## Comments
-
-`DESIGN.md` holds the _why_. A comment that repeats it, or needs a paragraph, is a `DESIGN.md` edit instead.
