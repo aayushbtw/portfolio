@@ -28,11 +28,28 @@ None of the other checks ran the plugin. The tests ran the playbook scripts. `va
 
 The fix, `cd50e43`, prints `rules.md` through two SessionStart hooks split at `# Code Quality`, and moves the routing line to the top of the file. The two outputs are 7.4 KB and 5.3 KB, each under the limit.
 
+<!-- ::chart name="orbit-hook-output" -->
+
 A fresh verifier ran the same goal 12 times on the fix, and 11 runs started with `/orbit:start`. It also ran the parent 9 times and got 5, so the first verifier's 3 out of 3 was a small sample. Routing is a rate. Even so, 0 out of 6 meant orbit never ran for a goal typed without a command, and the split brought it back.
+
+<!-- ::chart name="orbit-routing" -->
 
 ## The verifier judges only what it runs
 
 The verifier is defined in `agents/verifier.md`, and its prompt opens with "You did not write this change. Judge it only by running it." It has Read, Grep, Glob and Bash, and no Edit or Write tool. It works in its own git worktree, checks out the head commit, and runs the change the way its user would, through the project's verify skill when it has one. Then it checks out the parent and runs the same steps, so it can report what differs between the two. It drives a change to prompts, like this one, with `claude -p` in a scratch repo. Its reply starts with `PASS`, `PASS+NOTES` or `FAIL`.
+
+```mermaid title="One verifier run"
+flowchart TD
+  change[Change] --> head[1. Check out head]
+  change --> parent[2. Check out parent]
+  head --> runHead[Run it like a user]
+  parent --> runParent[Same run]
+  runHead --> compare{Compare}
+  runParent --> compare
+  compare -->|PASS or PASS+NOTES| lands[Lands]
+  compare -->|FAIL| back[Goes back]
+  back -.-> change
+```
 
 Two rules from pstack's shipping playbook decide whose verdict counts. Only an agent that did not write the code can give one, because an author checks what it meant to build. And green CI or an approving review never counts, because neither one runs the change. A run that is inconclusive, or that drove the wrong screen, is a FAIL.
 

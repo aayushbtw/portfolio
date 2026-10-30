@@ -11,7 +11,9 @@ import type { ComponentPropsWithoutRef, ReactElement } from "react";
 
 import { After, Before, Compare } from "~/components/compare";
 import { Demo } from "~/components/demo";
+import { Diagram } from "~/components/diagram";
 import { InstallBlock } from "~/components/install";
+import { PostChart } from "~/components/post-charts/post-chart";
 import { ShowcaseImage } from "~/components/showcase";
 import {
   colors,
@@ -202,8 +204,10 @@ const components = {
   li: (props) => <li {...props} {...stylex.props(styles.li)} />,
   "md-after": After,
   "md-before": Before,
+  "md-chart": (props) => <PostChart {...props} style={styles.block} />,
   "md-compare": (props) => <Compare {...props} style={styles.block} />,
   "md-demo": (props) => <Demo {...props} style={styles.block} />,
+  "md-diagram": (props) => <Diagram {...props} style={styles.block} />,
   "md-install": (props) => <InstallBlock {...props} style={styles.block} />,
   "md-showcase": (props) => (
     <figure {...props} {...stylex.props(styles.figure)} />

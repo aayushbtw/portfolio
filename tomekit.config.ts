@@ -1,7 +1,12 @@
-import type { ComponentNode } from "@tanstack/markdown";
+import type {
+  BlockNode,
+  ComponentNode,
+  MarkdownExtension,
+} from "@tanstack/markdown";
 import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
 import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
+import { render, RenderError } from "ondine/compiler";
 import { defineConfig, directory } from "tomekit";
 import type {
   Entry,
@@ -19,9 +24,51 @@ function transformComponent(node: ComponentNode): ComponentNode {
   return { ...node, properties: node.attributes, tagName: `md-${node.name}` };
 }
 
+// Compiled here, at build time, so a page ships SVG and never the compiler.
+function mermaidDiagram(node: BlockNode, index: number): BlockNode {
+  if (node.type !== "code" || node.lang !== "mermaid") {
+    return node;
+  }
+
+  try {
+    const { svg } = render(node.value, {
+      fontSize: 13,
+      idPrefix: `mermaid-${index}`,
+      maxWidth: 644,
+    });
+
+    return {
+      attributes: {},
+      children: [],
+      name: "diagram",
+      properties: { svg, title: node.title ?? "" },
+      tagName: "md-diagram",
+      type: "component",
+    };
+  } catch (error) {
+    if (error instanceof RenderError) {
+      throw new TypeError(
+        `mermaid diagram: ${error.message} (line ${error.line}, column ${error.column} of the fence)`,
+        { cause: error }
+      );
+    }
+
+    throw error;
+  }
+}
+
+const mermaidExtension: MarkdownExtension = {
+  name: "mermaid",
+  transformDocument: (document) => ({
+    ...document,
+    children: document.children.map(mermaidDiagram),
+  }),
+};
+
 const extensions = [
   commentComponentsExtension({ transformComponent }),
   headingCollectionExtension(),
+  mermaidExtension,
 ];
 
 function parse<TMetadata extends object>(
