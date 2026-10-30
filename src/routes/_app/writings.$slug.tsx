@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { RightColumn } from "~/components/layout-provider";
+import { SeriesNav, SeriesParts } from "~/components/series";
 import { TableOfContents } from "~/components/table-of-contents";
 import { Page, PageHeader } from "~/components/ui/page";
 import { config } from "~/lib/config";
@@ -65,7 +66,13 @@ function WritingPage() {
         title={post.title}
       />
 
+      {post.series && <SeriesParts series={post.series} />}
+
       {post.body}
+
+      {post.series && (post.series.previous ?? post.series.next) && (
+        <SeriesNav series={post.series} />
+      )}
 
       {post.headings.length > 0 && (
         <RightColumn>

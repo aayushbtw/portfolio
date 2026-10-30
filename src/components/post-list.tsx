@@ -2,7 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 
 import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
 import { formatNumericDate, toUtcDate } from "~/lib/utils";
-import { fontSizes, space } from "~/styles/tokens.stylex";
+import { colors, fontSizes, space } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   row: {
@@ -14,10 +14,15 @@ const styles = stylex.create({
     fontSize: fontSizes.sm,
     fontVariantNumeric: "tabular-nums",
   },
+  series: {
+    color: colors.textMuted,
+    marginInlineStart: space.xs,
+  },
 });
 
 interface PostListItem {
   date: string;
+  series: string | undefined;
   slug: string;
   title: string;
   year: number;
@@ -25,6 +30,7 @@ interface PostListItem {
 
 interface DatedDocument {
   publishedAt: string;
+  series?: { parts: number; title: string };
   slug: string;
   title: string;
 }
@@ -33,8 +39,11 @@ function postListItems(documents: readonly DatedDocument[]): PostListItem[] {
   // Calendar-day strings sort chronologically as text.
   return documents
     .toSorted((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-    .map(({ publishedAt, slug, title }) => ({
+    .map(({ publishedAt, series, slug, title }) => ({
       date: formatNumericDate(publishedAt),
+      series:
+        series &&
+        `${series.title} · ${series.parts} ${series.parts === 1 ? "part" : "parts"}`,
       slug,
       title,
       year: toUtcDate(publishedAt).getUTCFullYear(),
@@ -64,7 +73,12 @@ function PostList({
             <span {...stylex.props(styles.figure)}>
               {showYear ? post.year : ""}
             </span>
-            <ListItemTitle>{post.title}</ListItemTitle>
+            <ListItemTitle>
+              {post.title}
+              {post.series !== undefined && (
+                <span {...stylex.props(styles.series)}>{post.series}</span>
+              )}
+            </ListItemTitle>
             <time {...stylex.props(styles.figure)}>{post.date}</time>
           </ListItemLink>
         );
