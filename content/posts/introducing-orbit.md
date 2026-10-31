@@ -47,37 +47,21 @@ Steps 4 and 5 are the point. The agent that wrote the code is the worst one to j
 
 Every reply ends with one `Next:` line that says what's left. `Next: nothing pending.` means the work is on `main`.
 
-## What I type
+## It tries before it asks
 
-Most of my goals are one lowercase line, and the wording picks the playbook.
-
-- `fix the flaky chat-scroll tests` reproduces the bug, fixes it and lands the fix.
-- `why are we on this branch?` answers with citations and changes nothing.
-- `sketch two layouts to decide` builds throwaway versions, shows both and recommends one.
-- `autopilot this queue: <items>` takes each item to `main` on its own.
-- Ending a goal with "im stepping away" makes orbit log every decision with its evidence, so I can review the run when I'm back.
-
-A few words change how far it goes. "don't ship" stops before landing, and `/orbit:ship` lands it later. "going to bed" keeps it running instead of stopping to ask. `/orbit:pause-safely` stops cleanly and leaves a note the next session picks up from.
-
-It also asks me fewer questions. When Claude is about to ask which approach I want, orbit's rules make it check whether running something would answer the question. On one run, a plan assumed subagents can't start their own subagents. Instead of asking me, orbit tested it in an empty repo, had the answer 12 seconds later, and changed the plan.
+When Claude is about to ask which approach I want, orbit's rules make it check whether running something would answer the question. On one run, a plan assumed subagents can't start their own subagents. Instead of asking me, orbit tested it in an empty repo, had the answer 12 seconds later, and changed the plan.
 
 ## Where it comes from
 
 Most of orbit is [pstack](https://github.com/cursor/plugins/tree/main/pstack), Lauren Tan's plugin built from the agent workflows Lauren uses every day at Cursor. orbit copies it at one fixed commit and ports it to Claude Code. It adds the `/orbit:start` command, rules loaded into every session, the plan reviewer, and landing by default. Every place orbit differs from pstack is listed with a reason in [docs/pstack-differences.md](https://github.com/aayushbtw/orbit/blob/main/docs/pstack-differences.md).
-
-## Where to start
-
-Don't let it land anything on day one. Give it one small bug with "don't ship" at the end, read the diff and the reply, and run `/orbit:ship` yourself when you're happy.
-
-Before you drop "don't ship", run `/orbit:create-verification-skill`. It writes a skill that teaches the verifier how to launch and drive your app. Without one, the verifier falls back to a generic browser or terminal driver.
 
 ## Limitations
 
 - **Claude Code only.**
 - **Every change runs the full loop.** A one-line fix still gets a fresh agent, a review and a verifier.
 - **It spends more tokens than a plain session.** Each piece and each verifier starts a new agent.
-- **Routing is a rate.** A goal typed without `/orbit:start` goes through orbit most of the time, not every time. [Part 2](/writings/what-the-verifier-caught) has the numbers.
+- **Routing is a rate.** A goal typed without `/orbit:start` goes through orbit most of the time, not every time. [Part 3](/writings/what-the-verifier-caught) has the numbers.
 
-## Try it
+## Next
 
-The [repo](https://github.com/aayushbtw/orbit) has the install steps, and [docs/usage.md](https://github.com/aayushbtw/orbit/blob/main/docs/usage.md) lists every command. [Part 2](/writings/what-the-verifier-caught) is the change that passed every test and still broke orbit, and how the verifier caught it.
+[Part 2](/writings/using-orbit) covers what to type, how to steer a run and how to set orbit up in a project. [Part 3](/writings/what-the-verifier-caught) is the change that passed every test and still broke orbit, and how the verifier caught it.

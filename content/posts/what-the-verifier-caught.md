@@ -3,7 +3,7 @@ title: What the verifier caught
 description: A change to orbit passed every test I had and still broke orbit for most goals. Only the agent that ran it like a user noticed.
 publishedAt: 2026-10-30
 series: Orbit
-part: 2
+part: 3
 ---
 
 The last step of every orbit change is a verifier. It's a new agent that didn't write the change and can't edit files. It runs the change the way a user would, next to the commit before it, and passes or fails it. [Part 1](/writings/introducing-orbit) covers the rest of the loop.
