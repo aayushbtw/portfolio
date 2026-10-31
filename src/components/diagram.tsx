@@ -15,6 +15,7 @@ const styles = stylex.create({
     backgroundColor: colors.fill,
     borderRadius: radii.md,
     boxShadow: shadows.card,
+    overflowX: "auto",
     padding: space.xxs,
   },
   stage: {
@@ -33,8 +34,11 @@ const styles = stylex.create({
     boxShadow: shadows.card,
     display: "flex",
     justifyContent: "center",
+    minWidth: "100%",
     paddingBlock: space.lg,
     paddingInline: space.md,
+    // Keeps the SVG at its compiled size, so a narrow screen scrolls the frame instead of shrinking the labels.
+    width: "max-content",
   },
   caption: {
     color: colors.textMuted,

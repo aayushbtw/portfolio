@@ -34,7 +34,8 @@ function mermaidDiagram(node: BlockNode, index: number): BlockNode {
     const { svg } = render(node.value, {
       fontSize: 13,
       idPrefix: `mermaid-${index}`,
-      maxWidth: 644,
+      // The 644px column minus the diagram frame's and stage's padding.
+      maxWidth: 604,
     });
 
     return {

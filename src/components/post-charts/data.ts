@@ -41,7 +41,7 @@ const postCharts = {
   },
   "orbit-hook-output": {
     description:
-      "Characters each SessionStart hook printed, against Claude Code's 10 KB limit. Parent: 7,777. Head: 12,609. Head trimmed: 9,634. Fix, first hook: 7,364. Fix, second hook: 5,292.",
+      "Characters each SessionStart hook printed, against Claude Code's 10 KB limit. Parent: 7,777. Head: 12,609. Head trimmed: 9,634. Fix, first hook: 7,328. Fix, second hook: 5,278.",
     kind: "size",
     // Claude Code reported 12,609 characters as 12.3 KB, so a KB here is 1,024.
     limit: { chars: 10_240, label: "10 KB limit" },
@@ -49,8 +49,8 @@ const postCharts = {
       { chars: 7777, label: "Parent" },
       { chars: 12_609, label: "Head" },
       { chars: 9634, label: "Head, trimmed" },
-      { chars: 7364, label: "Fix, hook 1" },
-      { chars: 5292, label: "Fix, hook 2" },
+      { chars: 7328, label: "Fix, hook 1" },
+      { chars: 5278, label: "Fix, hook 2" },
     ],
     title: "Hook output against the limit",
   },
