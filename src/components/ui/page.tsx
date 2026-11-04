@@ -42,6 +42,8 @@ const STAGGER_MS = 160;
 
 const NAV_STAGGER_MS = 50;
 
+const ROW_STAGGER_MS = 50;
+
 /** The entrance delay in ms, or null outside the first-load entrance. */
 const EnterContext = createContext<number | null>(null);
 
@@ -63,6 +65,12 @@ const styles = stylex.create({
   // Every page after the first: the same language as the first load, quicker.
   navEnter: {
     animationDuration: durations.navigate,
+    animationFillMode: "both",
+    animationName: { default: settle, [media.reducedMotion]: fade },
+    animationTimingFunction: easings.out,
+  },
+  rowEnter: {
+    animationDuration: durations.enter,
     animationFillMode: "both",
     animationName: { default: settle, [media.reducedMotion]: fade },
     animationTimingFunction: easings.out,
@@ -168,6 +176,29 @@ function Page({
   );
 }
 
+function EnterStagger({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactNode {
+  const delay = usePageEnter();
+
+  if (delay === null) {
+    return children;
+  }
+
+  // oxlint-disable-next-line react/no-react-children -- each row cascades in on its own, so callers write plain JSX
+  return Children.toArray(children).map((child, i) => (
+    <div
+      key={i}
+      {...stylex.props(styles.rowEnter)}
+      style={{ animationDelay: `${delay + (i + 1) * ROW_STAGGER_MS}ms` }}
+    >
+      {child}
+    </div>
+  ));
+}
+
 function PageHeader({
   children,
   description,
@@ -210,4 +241,4 @@ function Section({
   );
 }
 
-export { Page, PageHeader, Section, usePageEnter };
+export { EnterStagger, Page, PageHeader, Section, usePageEnter };

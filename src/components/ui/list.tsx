@@ -2,6 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 import { createLink } from "@tanstack/react-router";
 
+import { EnterStagger } from "~/components/ui/page";
 import {
   colors,
   durations,
@@ -88,8 +89,12 @@ const styles = stylex.create({
   },
 });
 
-function List({ style, ...props }: Props<"div">) {
-  return <div {...props} {...stylex.props(styles.list, style)} />;
+function List({ children, style, ...props }: Props<"div">) {
+  return (
+    <div {...props} {...stylex.props(styles.list, style)}>
+      <EnterStagger>{children}</EnterStagger>
+    </div>
+  );
 }
 
 function ListItem({ children, style, ...props }: Props<"a">) {
