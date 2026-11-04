@@ -76,4 +76,4 @@ I would hand a project to orbit in small steps and take the next one only after 
 
 **4. A queue.** Once single changes land cleanly, hand it a list with `autopilot this queue`. If you want to review before anything merges, say "build the stack, I'll land it" instead. orbit builds and verifies the same way, then hands you one stack of PRs to land with `/orbit:ship`.
 
-[Part 4](/writings/orbit-architecture) covers what is inside orbit: the rules, the playbooks and the agents that run them.
+The source is on [GitHub](https://github.com/aayushbtw/orbit). Start with `rules.md`, then the playbook for the kind of work you do most.
