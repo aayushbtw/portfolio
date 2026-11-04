@@ -36,6 +36,8 @@ const fade = stylex.keyframes({
   from: { opacity: 0 },
 });
 
+const ENTER_DELAY_MS = 50;
+
 const STAGGER_MS = 160;
 
 const NAV_STAGGER_MS = 50;
@@ -143,7 +145,10 @@ function Page({
       {mode
         ? // oxlint-disable-next-line react/no-react-children -- each child staggers in on its own, so callers write plain JSX
           Children.toArray(children).map((child, i) => {
-            const delay = i * (mode === "first" ? STAGGER_MS : NAV_STAGGER_MS);
+            const delay =
+              mode === "first"
+                ? ENTER_DELAY_MS + i * STAGGER_MS
+                : i * NAV_STAGGER_MS;
 
             return (
               <EnterContext key={i} value={mode === "first" ? delay : null}>

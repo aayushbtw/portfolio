@@ -95,12 +95,17 @@ const styles = stylex.create({
 });
 
 function Title() {
-  const entering = usePageEnter() !== null;
+  const delay = usePageEnter();
 
   return (
     <>
-      <MarkIcon {...stylex.props(styles.mark, entering && styles.spin)} />
-      {entering ? (
+      <MarkIcon
+        {...stylex.props(styles.mark, delay !== null && styles.spin)}
+        style={delay === null ? undefined : { animationDelay: `${delay}ms` }}
+      />
+      {delay === null ? (
+        <span>{config.name}</span>
+      ) : (
         <span>
           <span {...stylex.props(styles.srOnly)}>{config.name}</span>
           {letters.map((letter, i) => (
@@ -109,14 +114,12 @@ function Title() {
               key={i}
               {...stylex.props(styles.letter)}
               // Overlaps the glyph spin so the two read as one gesture.
-              style={{ animationDelay: `${60 + i * LETTER_MS}ms` }}
+              style={{ animationDelay: `${delay + 60 + i * LETTER_MS}ms` }}
             >
               {letter}
             </span>
           ))}
         </span>
-      ) : (
-        <span>{config.name}</span>
       )}
     </>
   );
