@@ -80,7 +80,13 @@ const styles = stylex.create({
   },
   strong: {
     color: colors.textPrimary,
-    fontWeight: 500,
+    fontWeight: 450,
+  },
+  img: {
+    ...flow,
+    display: "block",
+    height: "auto",
+    width: "100%",
   },
   ul: {
     ...flow,
@@ -199,6 +205,15 @@ const components = {
   ),
   code: MarkdownCode,
   h2: MarkdownHeading,
+  img: ({ alt = "", ...props }) => (
+    <img
+      alt={alt}
+      decoding="async"
+      loading="lazy"
+      {...props}
+      {...stylex.props(styles.img)}
+    />
+  ),
   li: (props) => <li {...props} {...stylex.props(styles.li)} />,
   "md-after": After,
   "md-before": Before,
