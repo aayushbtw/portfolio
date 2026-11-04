@@ -13,7 +13,6 @@ export function formatNumber(value: number) {
   return exact.format(value);
 }
 
-/** "1 part", "4 parts" */
 export function formatParts(count: number) {
   return `${count} ${count === 1 ? "part" : "parts"}`;
 }

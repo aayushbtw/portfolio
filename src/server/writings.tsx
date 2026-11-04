@@ -72,7 +72,6 @@ function seriesPosition({ part, title }: { part: number; title: string }) {
 
 type SeriesPosition = ReturnType<typeof seriesPosition>;
 
-// A series lists as one row, dated by its first part.
 const getWritings = createServerFn({ method: "GET" }).handler(() => [
   ...listDocuments(writings).filter(({ series }) => series === undefined),
   ...allSeries().map(({ parts, slug, title }) => ({
