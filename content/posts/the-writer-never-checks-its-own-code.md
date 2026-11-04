@@ -10,10 +10,7 @@ An agent that reviews its own change still has its plan in context. It reads the
 
 So in orbit, the agent that writes a change never decides it is done. A different agent does, and it starts with none of the writer's reasoning. [Part 1](/writings/introducing-orbit) covers the loop this sits in.
 
-<!-- ::start:showcase -->
-
-<!-- ::showcase-image src="/writings/orbit-verifier.svg" alt="The writer side plans the change and writes the code and its tests from the same plan. The diff goes to a verifier subagent that starts fresh, gets the goal and the diff but not the plan, and runs the old and new versions with no edit tools. PASS merges. FAIL sends the fix to a fresh writer." -->
-<!-- ::end:showcase -->
+![The writer side plans the change and writes the code and its tests from the same plan. The diff goes to a verifier subagent that starts fresh, gets the goal and the diff but not the plan, and runs the old and new versions with no edit tools. PASS merges. FAIL sends the fix to a fresh writer.](/writings/orbit-verifier.png)
 
 ## The verifier gets the goal, not the plan
 

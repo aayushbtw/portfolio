@@ -13,7 +13,8 @@ Plain Claude Code can't take one line that far. It says a fix works because the 
 [orbit](https://github.com/aayushbtw/orbit) is the plugin I built to fix that. It moves the process out of my prompt and into the plugin. I say what I want and how I'll know it worked. orbit decides the steps, and lands nothing until a separate agent has run the result the way I would.
 
 ```sh
-claude plugin marketplace add aayushbtw/orbit && claude plugin install orbit@orbit
+claude plugin marketplace add aayushbtw/orbit
+claude plugin install orbit@orbit
 ```
 
 ## Every change goes through the same loop
@@ -24,10 +25,7 @@ Every task starts with one command and a goal.
 /orbit:start <goal>
 ```
 
-<!-- ::start:showcase -->
-
-<!-- ::showcase-image src="/writings/orbit-flow.svg" alt="You run /orbit:start with a one-line goal. Claude picks the playbook and makes a worktree. A fresh subagent writes one unit, Claude reviews and runs it, and the loop repeats for the next unit. Claude cleans up the diff, a verifier subagent that never saw the code runs it, and the change merges only on PASS." -->
-<!-- ::end:showcase -->
+![You run /orbit:start with a one-line goal. Claude picks the playbook and makes a worktree. A fresh subagent writes one unit, Claude reviews and runs it, and the loop repeats for the next unit. Claude cleans up the diff, a verifier subagent that never saw the code runs it, and the change merges only on PASS.](/writings/orbit-flow.png)
 
 1. **It picks a playbook.** orbit reads the goal and decides what kind of work it is, such as a bug, a feature, a refactor or a question. Each kind has its own steps. A bug is reproduced before anyone writes the fix. A slow page gets a baseline number before any change. A question gets a cited answer and no edits.
 2. **It works in its own copy of the repo.** Each change gets its own git worktree, so several tasks can run at once without touching each other's files.
