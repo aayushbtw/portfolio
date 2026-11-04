@@ -12,7 +12,7 @@ orbit is almost all Markdown that Claude reads, in three kinds of file. Rules te
 
 orbit's rules live in one file, `rules.md`. When a Claude Code session starts, a hook prints it into the session, so the rules apply without me typing anything.
 
-The first line is the one that matters most. It sends any goal that does not name a skill through `/orbit:start`. That is why I can type "fix the flaky tests" without a command, and orbit still runs.
+The first line is the one that matters most. It sends any goal that does not name a skill through `/orbit:start`. That is why a goal typed with no command still runs through orbit.
 
 The rest is a list of triggers and defaults:
 

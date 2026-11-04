@@ -16,17 +16,17 @@ Most of what I type into orbit is one lowercase line after `/orbit:start`. Below
 
 orbit reads the goal, picks a playbook and writes its steps as a todo list. You can watch it work through the list. A step it decides to skip stays on the list with the reason, so nothing gets dropped quietly.
 
-The goal is plain English, and I give it the what, never the how. Most of mine are one lowercase line.
+The goal is plain English. It says what to do, not how.
 
-## What I type for each kind of work
+## The goal for each kind of work
 
-- **Something broke.** `/orbit:start fix the flaky chat-scroll tests`. It reproduces the bug first, commits the failing repro, and only then writes the fix.
-- **New behavior.** `/orbit:start share the asset card with /projects`. It reads the code around the change, sketches the shape, and builds it one piece at a time.
-- **A question.** `/orbit:start why are we on this branch? do we have things to merge or pending?`. It answers with citations and changes nothing.
+- **Something broke.** `/orbit:start fix <what broke>`. It reproduces the bug first, commits the failing repro, and only then writes the fix.
+- **New behavior.** `/orbit:start add <what it should do>`. It reads the code around the change, sketches the shape, and builds it one piece at a time.
+- **A question.** `/orbit:start <question>`. It answers with citations and changes nothing.
 - **A decision I cannot make on paper.** Put "sketch it to decide" or "mock it up" in the goal. It builds each option as throwaway code, shows me each one, recommends one and ships nothing.
 - **Work across several PRs.** `/orbit:start multi-PR plan: <goal>`. It writes a checklist with one section per PR and waits for my go.
 - **A list of independent changes.** `/orbit:start autopilot this queue: <items>`. Each item gets its own agent and worktree, and each one lands only after a verifier passes it.
-- **Something I will walk away from.** I end the goal with "take ownership, im stepping away". orbit logs every decision with its evidence, and a reviewer on a different model reads that log before the run hands back.
+- **Something I will walk away from.** Say in the goal that you are stepping away. orbit logs every decision with its evidence, and a reviewer on a different model reads that log before the run hands back.
 
 ## Steer a run with a few words
 
