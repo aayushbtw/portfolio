@@ -12,7 +12,6 @@ import {
 import { useEffect } from "react";
 
 import { Fallback } from "~/components/fallback";
-import { LayoutProvider } from "~/components/layout-provider";
 import { config } from "~/lib/config";
 import { colors, fonts, fontSizes, lineHeights } from "~/styles/tokens.stylex";
 
@@ -88,7 +87,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <DevStyleX />
       </head>
       <body {...stylex.props(styles.body)}>
-        <LayoutProvider>{children}</LayoutProvider>
+        {children}
         <Scripts />
       </body>
     </html>

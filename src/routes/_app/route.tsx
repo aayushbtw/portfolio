@@ -5,7 +5,6 @@ import type { LinkProps } from "@tanstack/react-router";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 
 import { BackLink } from "~/components/back-link";
-import { useRightColumn } from "~/components/layout-provider";
 import { ProgressiveBlur } from "~/components/ui/progressive-blur";
 import { useHaptics } from "~/lib/haptics";
 import { layout, media, space } from "~/styles/tokens.stylex";
@@ -69,17 +68,9 @@ const styles = stylex.create({
     paddingTop: { default: space.lg, [media.lg]: layout.pageTop },
     width: "100%",
   },
-  right: {
-    ...sticky,
-    display: { default: "none", [media.lg]: "flex" },
-    flexDirection: "column",
-    gap: layout.sectionGap,
-    paddingTop: layout.pageTop,
-  },
 });
 
 function AppLayout() {
-  const right = useRightColumn();
   useHotkeys();
 
   return (
@@ -94,8 +85,6 @@ function AppLayout() {
         <main {...stylex.props(styles.main)}>
           <Outlet />
         </main>
-
-        <div {...stylex.props(styles.right)}>{right}</div>
       </div>
 
       <ProgressiveBlur />

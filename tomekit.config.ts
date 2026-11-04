@@ -1,6 +1,5 @@
 import type { ComponentNode } from "@tanstack/markdown";
 import { commentComponentsExtension } from "@tanstack/markdown/extensions/comment-components";
-import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
 import { defineConfig, directory } from "tomekit";
 import type {
@@ -19,10 +18,7 @@ function transformComponent(node: ComponentNode): ComponentNode {
   return { ...node, properties: node.attributes, tagName: `md-${node.name}` };
 }
 
-const extensions = [
-  commentComponentsExtension({ transformComponent }),
-  headingCollectionExtension(),
-];
+const extensions = [commentComponentsExtension({ transformComponent })];
 
 function parse<TMetadata extends object>(
   { body, metadata, slug }: Source<TMetadata>,
@@ -34,7 +30,6 @@ function parse<TMetadata extends object>(
     body: document,
     metadata: {
       ...metadata,
-      headings: (document.headings ?? []).filter((h) => h.level === 2),
       url: `/${collection}/${slug}`,
     },
   };
