@@ -1,53 +1,53 @@
 {
   "year": 2026,
-  "total": 15551524166,
-  "sessions": 1080,
+  "total": 20695667336,
+  "sessions": 1483,
   "models": [
     {
       "name": "Opus 5.5",
-      "share": 52.2243,
-      "tokens": 8121667138
+      "share": 60.4467,
+      "tokens": 12509842716
     },
     {
       "name": "Opus 5",
-      "share": 41.5552,
+      "share": 31.2262,
       "tokens": 6462472087
     },
     {
+      "name": "claude-sonnet-5-5",
+      "share": 4.5908,
+      "tokens": 950105932
+    },
+    {
       "name": "Opus 4.8",
-      "share": 3.7802,
+      "share": 2.8406,
       "tokens": 587882138
     },
     {
-      "name": "claude-sonnet-5-5",
-      "share": 1.318,
-      "tokens": 204976505
-    },
-    {
       "name": "Fable 5",
-      "share": 0.5121,
+      "share": 0.3848,
       "tokens": 79645923
     },
     {
       "name": "Sonnet 5",
-      "share": 0.5119,
+      "share": 0.3847,
       "tokens": 79614114
     },
     {
       "name": "Haiku 5.5",
-      "share": 0.0946,
-      "tokens": 14715910
+      "share": 0.1235,
+      "tokens": 25554075
     },
     {
       "name": "Haiku 4.5",
-      "share": 0.0035,
+      "share": 0.0027,
       "tokens": 550351
     }
   ],
-  "activeDays": 103,
+  "activeDays": 109,
   "peak": {
-    "date": "2026-10-26",
-    "tokens": 755106808
+    "date": "2026-10-30",
+    "tokens": 1237638522
   },
   "daily": [
     {
@@ -577,7 +577,35 @@
     {
       "date": "2026-10-28",
       "tokens": 119113805
+    },
+    {
+      "date": "2026-10-29",
+      "tokens": 810358589
+    },
+    {
+      "date": "2026-10-30",
+      "tokens": 1237638522
+    },
+    {
+      "date": "2026-10-31",
+      "tokens": 993227037
+    },
+    {
+      "date": "2026-11-01",
+      "tokens": 0
+    },
+    {
+      "date": "2026-11-02",
+      "tokens": 782580973
+    },
+    {
+      "date": "2026-11-03",
+      "tokens": 756169561
+    },
+    {
+      "date": "2026-11-04",
+      "tokens": 564168488
     }
   ],
-  "generatedAt": "2026-10-28T16:40:58.583Z"
+  "generatedAt": "2026-11-04T18:08:46.742Z"
 }
