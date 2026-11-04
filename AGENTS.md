@@ -16,3 +16,4 @@ Before editing files for a substantial task:
 
 - Before deploy: `vpr usage`, then `vpr deploy`.
 - Review also checks: `DESIGN.md`.
+- Worktree: none. Work on a branch in this checkout, not in a worktree.
