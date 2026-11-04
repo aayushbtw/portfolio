@@ -4,11 +4,7 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Writing images - long cache (1 year), revalidate if updated
-/writings/*
-  Cache-Control: public, max-age=31536000
-
-# Other static images
+# Static images, including the ones under /writings
 /*.png
   Cache-Control: public, max-age=31536000
 
