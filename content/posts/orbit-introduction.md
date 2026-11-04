@@ -1,5 +1,5 @@
 ---
-title: Introducing orbit
+title: Introduction
 description: A Claude Code plugin that holds the process, so a one-line goal is enough, and lands nothing until a second agent has run it.
 publishedAt: 2026-11-04
 series: Orbit
@@ -34,7 +34,7 @@ Every task starts with one command and a goal.
 5. **It cleans the diff.** Before review, orbit strips AI slop and comments that only repeat the code.
 6. **A verifier runs it before it lands.** Another new agent, one that cannot edit files, runs the change and the commit before it the way a user would, and returns pass or fail. A fail sends the work back.
 
-Steps 4 and 6 are the point. The agent that wrote the code is the worst one to judge it. [Part 2](/writings/the-writer-never-checks-its-own-code) is about why, and about a bug that rule caught after the tests passed.
+Steps 4 and 6 are the point. The agent that wrote the code is the worst one to judge it. [Part 2](/writings/orbit-verification) is about why, and about a bug that rule caught after the tests passed.
 
 ## It tries before it asks
 
@@ -51,4 +51,4 @@ Most of orbit is [pstack](https://github.com/cursor/plugins/tree/main/pstack), L
 - **It spends more tokens than a plain session.** Each piece and each verifier starts a new agent.
 - **Routing is a rate.** A goal typed without `/orbit:start` goes through orbit most of the time, not every time. In one test it was 11 runs out of 12.
 
-[Part 2](/writings/the-writer-never-checks-its-own-code) covers why the writer never checks its own code. [Part 3](/writings/using-orbit) covers what to type and how to set orbit up in a project. [Part 4](/writings/how-orbit-works) opens orbit up: the rules, the playbooks and the agents behind the loop.
+[Part 2](/writings/orbit-verification) covers why the writer never checks its own code. [Part 3](/writings/orbit-usage) covers what to type and how to set orbit up in a project. [Part 4](/writings/orbit-architecture) opens orbit up: the rules, the playbooks and the agents behind the loop.

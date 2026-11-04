@@ -1,5 +1,5 @@
 ---
-title: The agent that writes the code never checks it
+title: Verification
 description: Why orbit verifies every change in a fresh agent that has no edit tools, and the bug that rule caught after the tests passed.
 publishedAt: 2026-11-04
 series: Orbit
@@ -8,7 +8,7 @@ part: 2
 
 An agent that reviews its own change still has its plan in context. It reads the diff as what it meant to write, not what it wrote. Its tests come from the same plan, so they pass for the same reasons the code does. A green suite proves only that the code agrees with itself.
 
-So in orbit, the agent that writes a change never decides it is done. A different agent does, and it starts with none of the writer's reasoning. [Part 1](/writings/introducing-orbit) covers the loop this sits in.
+So in orbit, the agent that writes a change never decides it is done. A different agent does, and it starts with none of the writer's reasoning. [Part 1](/writings/orbit-introduction) covers the loop this sits in.
 
 ![The writer side plans the change and writes the code and its tests from the same plan. The diff goes to a verifier subagent that starts fresh, gets the goal and the diff but not the plan, and runs the old and new versions with no edit tools. PASS merges. FAIL sends the fix to a fresh writer.](/writings/orbit-verifier.png)
 
@@ -48,4 +48,4 @@ Any agent setup with subagents can split the two jobs.
 - Make it run the old version too, so it reports a before and an after.
 - Count "I couldn't tell" as a fail.
 
-[Part 3](/writings/using-orbit) covers what to type into orbit and how to set it up in a project.
+[Part 3](/writings/orbit-usage) covers what to type into orbit and how to set it up in a project.

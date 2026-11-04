@@ -1,12 +1,12 @@
 ---
-title: How orbit works
+title: Architecture
 description: What is inside orbit. The rules every session loads, the playbooks that set the steps, and the agents that write, commit and verify the code.
 publishedAt: 2026-11-04
 series: Orbit
 part: 4
 ---
 
-orbit is almost all Markdown that Claude reads, in three kinds of file. Rules tell Claude when to reach for what, skills hold the steps for each kind of work, and agents do the jobs the main chat should not do itself. [Part 1](/writings/introducing-orbit) shows the loop they add up to, and [Part 2](/writings/the-writer-never-checks-its-own-code) covers why the writer and the verifier are different agents.
+orbit is almost all Markdown that Claude reads, in three kinds of file. Rules tell Claude when to reach for what, skills hold the steps for each kind of work, and agents do the jobs the main chat should not do itself. [Part 1](/writings/orbit-introduction) shows the loop they add up to, and [Part 2](/writings/orbit-verification) covers why the writer and the verifier are different agents.
 
 ## Rules load into every session
 

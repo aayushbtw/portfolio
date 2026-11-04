@@ -1,12 +1,12 @@
 ---
-title: Using orbit
+title: Usage
 description: What to type into orbit for each kind of work, how to steer a run, and how to set it up in a new project.
 publishedAt: 2026-11-04
 series: Orbit
 part: 3
 ---
 
-Most of what I type into orbit is one lowercase line after `/orbit:start`. Below is the line for each kind of work, the few words that change how a run behaves, and the order I would hand a new project to orbit. [docs/usage.md](https://github.com/aayushbtw/orbit/blob/main/docs/usage.md) lists every command, and [Part 1](/writings/introducing-orbit) covers what orbit is.
+Most of what I type into orbit is one lowercase line after `/orbit:start`. Below is the line for each kind of work, the few words that change how a run behaves, and the order I would hand a new project to orbit. [docs/usage.md](https://github.com/aayushbtw/orbit/blob/main/docs/usage.md) lists every command, and [Part 1](/writings/orbit-introduction) covers what orbit is.
 
 ## Start every task the same way
 
@@ -76,4 +76,4 @@ I would hand a project to orbit in small steps and take the next one only after 
 
 **4. A queue.** Once single changes land cleanly, hand it a list with `autopilot this queue`. If you want to review before anything merges, say "build the stack, I'll land it" instead. orbit builds and verifies the same way, then hands you one stack of PRs to land with `/orbit:ship`.
 
-[Part 4](/writings/how-orbit-works) covers what is inside orbit: the rules, the playbooks and the agents that run them.
+[Part 4](/writings/orbit-architecture) covers what is inside orbit: the rules, the playbooks and the agents that run them.
