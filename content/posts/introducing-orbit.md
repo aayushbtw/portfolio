@@ -1,7 +1,7 @@
 ---
 title: Introducing orbit
 description: A Claude Code plugin that holds the process, so a one-line goal is enough, and lands nothing until a second agent has run it.
-publishedAt: 2026-10-30
+publishedAt: 2026-11-04
 series: Orbit
 part: 1
 ---

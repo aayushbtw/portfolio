@@ -1,7 +1,7 @@
 ---
 title: How orbit works
 description: What is inside orbit. The rules every session loads, the playbooks that set the steps, and the agents that write, commit and verify the code.
-publishedAt: 2026-10-30
+publishedAt: 2026-11-04
 series: Orbit
 part: 4
 ---
