@@ -17,7 +17,7 @@ claude plugin marketplace add aayushbtw/orbit
 claude plugin install orbit@orbit
 ```
 
-## Every change goes through the same loop
+## How a task runs
 
 Every task starts with one command and a goal.
 
@@ -34,17 +34,17 @@ Every task starts with one command and a goal.
 5. **It cleans the diff.** Before review, orbit strips AI slop and comments that only repeat the code.
 6. **A verifier runs it before it lands.** Another new agent, one that cannot edit files, runs the change and the commit before it the way a user would, and returns pass or fail. A fail sends the work back.
 
-Steps 4 and 6 are the point. The agent that wrote the code is the worst one to judge it. [Part 2](/writings/orbit-principles) covers why, along with the other ideas orbit is built on.
+Steps 4 and 6 matter most, because the agent that wrote the code is the worst one to check it. [Part 2](/writings/orbit-principles) explains why.
 
-## It tries before it asks
+## It runs a test instead of asking
 
 When Claude is about to ask which approach I want, orbit's rules make it check whether running something would answer the question. On one run, a plan assumed subagents cannot start their own subagents. Instead of asking me, orbit tested it in an empty repo, had the answer 12 seconds later, and changed the plan.
 
-## Most of orbit is pstack
+## Built on pstack
 
 Most of orbit is [pstack](https://github.com/cursor/plugins/tree/main/pstack), Lauren Tan's plugin built from the agent workflows Lauren uses every day at Cursor. orbit copies it at one fixed commit and ports it to Claude Code. It adds the `/orbit:start` command, rules loaded into every session, the plan reviewer, and landing by default. Every place orbit differs from pstack is listed with a reason in [docs/pstack-differences.md](https://github.com/aayushbtw/orbit/blob/main/docs/pstack-differences.md).
 
-## Every change pays for the full loop
+## Limits
 
 - **Claude Code only.**
 - **Every change runs the full loop.** A one-line fix still gets a fresh agent, a review and a verifier.

@@ -23,7 +23,7 @@ The rest is a list of triggers and defaults:
 
 Claude Code only keeps about 10 KB of a single hook's output, and `rules.md` is past that. So two hooks print it in two halves. Before the split, one change pushed the file over the limit and cut off the routing line. orbit then skipped plain goals in 6 test runs out of 6. Every test still passed, and only the verifier caught it.
 
-## Skills hold the steps
+## Skills hold the steps for each task
 
 `/orbit:start` reads the goal and picks a playbook. A playbook is one Markdown file per kind of work, such as bug, feature, refactor, perf or investigate. Each one opens with a stance, lists numbered steps, and ends with what the final reply has to contain. The bug playbook, for example, has to reproduce the bug on the real app before anyone writes the fix.
 
@@ -34,11 +34,11 @@ Every playbook that changes code goes through the same four gates.
 3. **Delegate.** The main chat does not write code. A fresh agent writes each piece.
 4. **Opening a PR.** Clean up the diff, then land it or open a PR.
 
-Under the playbooks sit 24 principles, copied from pstack, like "prove it works", "fix root causes" and "subtract before you add". Each is its own skill with the situation that triggers it. Claude reads one only when that situation comes up, and the reply names each principle that changed a decision. That makes it easy to steer. I can say "apply subtract before you add" and Claude knows what I mean.
+Under the playbooks sit 24 principles, one skill each. [Part 2](/writings/orbit-principles#every-rule-has-a-name) covers how Claude uses them.
 
 Around those are helper skills that playbooks call and I can run directly. `/orbit:how` and `/orbit:why` explain code. `/orbit:architect` sketches a design before code. `/orbit:interrogate` has two reviewers pick a change apart.
 
-## The agent that writes the code never judges it
+## Each agent has one job
 
 The main chat plans, reviews and decides. Everything else goes to an agent with one job.
 
@@ -50,9 +50,9 @@ The main chat plans, reviews and decides. Everything else goes to an agent with 
 
 Each new piece of work gets a fresh agent, never a resumed one. Instructions sent to an agent mid-run can get lost. A fresh agent gets one brief with everything it needs.
 
-The split exists for one reason. An agent that wrote the code is a bad judge of it. pstack's shipping playbook only counts a verdict from an agent that did not write the change, "because an author checks what it meant to build." So the writer, the reviewer and the verifier are always three different agents.
+[Part 2](/writings/orbit-principles#a-different-agent-checks-each-change) explains why the writer, the reviewer and the verifier are always different agents.
 
-## Copied from pstack, with every difference written down
+## How orbit stays close to pstack
 
 orbit started as a port of [pstack](https://github.com/cursor/plugins/tree/main/pstack), Lauren Tan's plugin, and I keep it close. orbit copies pstack at one fixed commit, `9580c23`. Every place orbit differs has a row in [docs/pstack-differences.md](https://github.com/aayushbtw/orbit/blob/main/docs/pstack-differences.md). Each row quotes pstack, says what orbit does instead and gives the reason.
 
