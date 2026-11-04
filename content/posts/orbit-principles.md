@@ -1,6 +1,6 @@
 ---
 title: Principles
-description: The ideas orbit is built on. A separate agent checks each change, hard designs get several attempts, experiments replace questions, each kind of task has its own steps, and every rule has a name.
+description: The ideas orbit is built on. A separate agent checks each change, hard designs get several attempts, and experiments replace questions.
 publishedAt: 2026-11-04
 series: Orbit
 part: 2
