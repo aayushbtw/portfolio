@@ -42,7 +42,8 @@ const STAGGER_MS = 160;
 
 const NAV_STAGGER_MS = 50;
 
-const ROW_STAGGER_MS = 50;
+// Five rows land inside one STAGGER_MS slot, so a list finishes before the next section starts.
+const ROW_STAGGER_MS = 30;
 
 /** The entrance delay in ms, or null outside the first-load entrance. */
 const EnterContext = createContext<number | null>(null);
