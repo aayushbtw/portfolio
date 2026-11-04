@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 
 import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
-import { formatNumericDate, toUtcDate } from "~/lib/utils";
+import { formatNumericDate, formatParts, toUtcDate } from "~/lib/utils";
 import { colors, fontSizes, space } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
@@ -14,7 +14,7 @@ const styles = stylex.create({
     fontSize: fontSizes.sm,
     fontVariantNumeric: "tabular-nums",
   },
-  series: {
+  parts: {
     color: colors.textMuted,
     marginInlineStart: space.xs,
   },
@@ -22,31 +22,38 @@ const styles = stylex.create({
 
 interface PostListItem {
   date: string;
-  series: string | undefined;
+  lead: number | undefined;
+  /** Set when the row is a series, which links to its own page. */
+  parts?: number;
   slug: string;
   title: string;
-  year: number;
 }
 
 interface DatedDocument {
+  parts?: number;
   publishedAt: string;
-  series?: { parts: number; title: string };
   slug: string;
   title: string;
+}
+
+function year({ publishedAt }: DatedDocument) {
+  return toUtcDate(publishedAt).getUTCFullYear();
 }
 
 function postListItems(documents: readonly DatedDocument[]): PostListItem[] {
   // Calendar-day strings sort chronologically as text.
   return documents
     .toSorted((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-    .map(({ publishedAt, series, slug, title }) => ({
-      date: formatNumericDate(publishedAt),
-      series:
-        series &&
-        `${series.title} · ${series.parts} ${series.parts === 1 ? "part" : "parts"}`,
-      slug,
-      title,
-      year: toUtcDate(publishedAt).getUTCFullYear(),
+    .map((document, i, sorted) => ({
+      date: formatNumericDate(document.publishedAt),
+      // Once per run, so a span of two years reads as two groups.
+      lead:
+        i === 0 || year(sorted[i - 1]) !== year(document)
+          ? year(document)
+          : undefined,
+      parts: document.parts,
+      slug: document.slug,
+      title: document.title,
     }));
 }
 
@@ -59,30 +66,25 @@ function PostList({
 }) {
   return (
     <List>
-      {posts.map((post, i) => {
-        // Once per run, so a span of two years reads as two groups.
-        const showYear = i === 0 || posts[i - 1].year !== post.year;
-
-        return (
-          <ListItemLink
-            key={post.slug}
-            params={{ slug: post.slug }}
-            style={styles.row}
-            to={to}
-          >
-            <span {...stylex.props(styles.figure)}>
-              {showYear ? post.year : ""}
-            </span>
-            <ListItemTitle>
-              {post.title}
-              {post.series !== undefined && (
-                <span {...stylex.props(styles.series)}>{post.series}</span>
-              )}
-            </ListItemTitle>
-            <time {...stylex.props(styles.figure)}>{post.date}</time>
-          </ListItemLink>
-        );
-      })}
+      {posts.map((post) => (
+        <ListItemLink
+          key={post.slug}
+          params={{ slug: post.slug }}
+          style={styles.row}
+          to={post.parts === undefined ? to : "/series/$slug"}
+        >
+          <span {...stylex.props(styles.figure)}>{post.lead}</span>
+          <ListItemTitle>
+            {post.title}
+            {post.parts !== undefined && (
+              <span {...stylex.props(styles.parts)}>
+                {formatParts(post.parts)}
+              </span>
+            )}
+          </ListItemTitle>
+          <time {...stylex.props(styles.figure)}>{post.date}</time>
+        </ListItemLink>
+      ))}
     </List>
   );
 }

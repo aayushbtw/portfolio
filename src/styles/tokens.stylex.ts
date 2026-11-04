@@ -18,6 +18,7 @@ export const shadows = stylex.defineConsts({
   popover: "0 0 0 1px var(--gray-a4), 0 4px 16px var(--black-a6)",
   ring: "0 0 0 1px var(--gray-a4)",
   rule: "inset 0 -1px 0 var(--gray-a3)",
+  ruleTop: "inset 0 1px 0 var(--gray-a3)",
 });
 
 export const fonts = stylex.defineConsts({

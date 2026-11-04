@@ -3,6 +3,7 @@ import { collections } from "tomekit/content";
 import type { DocumentOf } from "tomekit/content";
 
 import { config } from "~/lib/config";
+import { allSeries } from "~/server/writings";
 
 interface Entry {
   lastmod?: string;
@@ -28,7 +29,15 @@ function entries(): Entry[] {
       path: document.metadata.url,
     }));
 
-  return [...staticPaths, ...documents];
+  const series: Entry[] = allSeries().map(({ parts, slug }) => ({
+    lastmod: parts
+      .map(({ publishedAt }) => publishedAt)
+      .toSorted()
+      .at(-1),
+    path: `/series/${slug}`,
+  }));
+
+  return [...staticPaths, ...documents, ...series];
 }
 
 function lastModified({ metadata }: DocumentOf): string | undefined {

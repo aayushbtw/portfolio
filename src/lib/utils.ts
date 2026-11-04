@@ -13,6 +13,11 @@ export function formatNumber(value: number) {
   return exact.format(value);
 }
 
+/** "1 part", "4 parts" */
+export function formatParts(count: number) {
+  return `${count} ${count === 1 ? "part" : "parts"}`;
+}
+
 /**
  * Dates are parsed *and* formatted in UTC, so the server and the browser agree
  * whatever timezone either sits in. Parsing a bare "2026-03-27" as local time

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { SeriesNav, SeriesParts } from "~/components/series";
+import { SeriesNav, SeriesPartLink } from "~/components/series";
 import { Page, PageHeader } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
@@ -57,14 +57,20 @@ function WritingPage() {
     <Page variant="compact">
       <PageHeader
         meta={
-          <time dateTime={post.publishedAt}>
-            {formatDate(post.publishedAt)}
-          </time>
+          <>
+            <time dateTime={post.publishedAt}>
+              {formatDate(post.publishedAt)}
+            </time>
+            {post.series && (
+              <>
+                {" · "}
+                <SeriesPartLink series={post.series} />
+              </>
+            )}
+          </>
         }
         title={post.title}
       />
-
-      {post.series && <SeriesParts series={post.series} />}
 
       {post.body}
 

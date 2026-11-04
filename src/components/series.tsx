@@ -1,109 +1,131 @@
 import * as stylex from "@stylexjs/stylex";
+import { Link } from "@tanstack/react-router";
 
+import type { SeriesPosition } from "~/server/writings";
 import {
-  List,
-  ListItem,
-  ListItemLink,
-  ListItemTitle,
-} from "~/components/ui/list";
-import { Section } from "~/components/ui/page";
-import type { Series } from "~/server/writings";
-import { colors, fontSizes, space } from "~/styles/tokens.stylex";
+  colors,
+  durations,
+  easings,
+  fontSizes,
+  lineHeights,
+  media,
+  presses,
+  shadows,
+  space,
+} from "~/styles/tokens.stylex";
 
-// Rows share one leading column sized to its widest entry, so titles align.
 const styles = stylex.create({
-  list: {
+  partLink: {
+    color: "inherit",
+    textDecorationColor: {
+      default: colors.edgeStrong,
+      [media.hover]: {
+        default: colors.edgeStrong,
+        ":hover": colors.textMuted,
+      },
+    },
+    textDecorationLine: "underline",
+    textUnderlineOffset: 3,
+    transitionDuration: durations.hover,
+    transitionProperty: "text-decoration-color",
+    transitionTimingFunction: "ease",
+  },
+  nav: {
+    boxShadow: shadows.ruleTop,
+    columnGap: space.md,
     display: "grid",
-    gridTemplateColumns: "auto minmax(0, 1fr)",
+    gridTemplateColumns: {
+      default: "minmax(0, 1fr)",
+      [media.sm]: "repeat(2, minmax(0, 1fr))",
+    },
+    marginBlockStart: space.xl,
+    paddingBlockStart: space.lg,
+    rowGap: space.lg,
   },
-  row: {
-    display: "grid",
-    gap: space.md,
-    gridColumn: "1 / -1",
-    gridTemplateColumns: "subgrid",
+  cell: {
+    display: "flex",
+    flexDirection: "column",
+    gap: space.xxs,
+    textDecoration: "none",
+    transform: { default: null, ":active": presses.link },
+    transitionDuration: durations.press,
+    transitionProperty: "transform",
+    transitionTimingFunction: easings.out,
   },
-  lead: {
-    fontSize: fontSizes.sm,
-    fontVariantNumeric: "tabular-nums",
+  next: {
+    alignItems: "flex-end",
+    gridColumn: { default: null, [media.sm]: 2 },
+    textAlign: "end",
   },
-  current: {
-    backgroundColor: null,
-    transform: null,
-  },
-  muted: {
+  label: {
     color: colors.textMuted,
+    fontSize: fontSizes.sm,
+    lineHeight: lineHeights.row,
+  },
+  title: {
+    color: {
+      default: colors.textSecondary,
+      [media.hover]: {
+        default: colors.textSecondary,
+        [stylex.when.ancestor(":hover")]: colors.textPrimary,
+      },
+    },
+    lineHeight: lineHeights.prose,
+    transitionDuration: durations.hover,
+    transitionProperty: "color",
+    transitionTimingFunction: "ease",
   },
 });
 
-function SeriesParts({ series }: { series: Series }) {
+function SeriesPartLink({ series }: { series: SeriesPosition }) {
   return (
-    <Section
-      title={`Part ${series.part} of ${series.parts.length} in ${series.title}`}
+    <Link
+      params={{ slug: series.slug }}
+      to="/series/$slug"
+      {...stylex.props(styles.partLink)}
     >
-      <List style={styles.list}>
-        {series.parts.map(({ part, slug, title }) =>
-          // An `a` without `href` is HTML's placeholder for the current page.
-          part === series.part ? (
-            <ListItem
-              aria-current="page"
-              key={slug}
-              style={[styles.row, styles.current]}
-            >
-              <span {...stylex.props(styles.lead)}>{part}</span>
-              <ListItemTitle>{title}</ListItemTitle>
-            </ListItem>
-          ) : (
-            <ListItemLink
-              key={slug}
-              params={{ slug }}
-              style={styles.row}
-              to="/writings/$slug"
-            >
-              <span {...stylex.props(styles.lead)}>{part}</span>
-              <ListItemTitle style={styles.muted}>{title}</ListItemTitle>
-            </ListItemLink>
-          )
-        )}
-      </List>
-    </Section>
+      Part {series.part} of {series.parts.length} in {series.title}
+    </Link>
   );
 }
 
-function SeriesNav({ series }: { series: Series }) {
+function SeriesNav({ series }: { series: SeriesPosition }) {
   return (
-    <nav aria-label={`${series.title} series`}>
-      <List style={styles.list}>
-        {series.previous && (
-          <SeriesLink label="Previous" part={series.previous} rel="prev" />
-        )}
-        {series.next && (
-          <SeriesLink label="Next" part={series.next} rel="next" />
-        )}
-      </List>
+    <nav aria-label={`${series.title} series`} {...stylex.props(styles.nav)}>
+      {series.previous && (
+        <SeriesNavLink label="Previous" part={series.previous} rel="prev" />
+      )}
+      {series.next && (
+        <SeriesNavLink label="Next" part={series.next} rel="next" />
+      )}
     </nav>
   );
 }
 
-function SeriesLink({
+function SeriesNavLink({
   label,
   part,
   rel,
 }: {
   label: string;
-  part: Series["parts"][number];
+  part: SeriesPosition["parts"][number];
   rel: "next" | "prev";
 }) {
   return (
-    <ListItemLink
+    <Link
       params={{ slug: part.slug }}
       rel={rel}
-      style={styles.row}
       to="/writings/$slug"
+      {...stylex.props(
+        stylex.defaultMarker(),
+        styles.cell,
+        rel === "next" && styles.next
+      )}
     >
-      <span {...stylex.props(styles.lead)}>{label}</span>
-      <ListItemTitle>{part.title}</ListItemTitle>
-    </ListItemLink>
+      <span {...stylex.props(styles.label)}>{label}</span>
+      <span {...stylex.props(styles.title)}>{part.title}</span>
+    </Link>
   );
 }
 
-export { SeriesNav, SeriesParts };
+export { SeriesNav, SeriesPartLink };
