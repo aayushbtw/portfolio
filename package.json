@@ -9,6 +9,7 @@
     "deploy": "cf deploy",
     "dev": "vp dev",
     "fix": "vp check --fix",
+    "fonts": "uv run scripts/subset-fonts.py",
     "preview": "vp preview",
     "usage": "node scripts/token-usage.ts"
   },

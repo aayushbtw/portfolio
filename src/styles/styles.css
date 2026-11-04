@@ -1,5 +1,5 @@
 /* StyleX appends its generated CSS to this file at build time. */
-@import "@fontsource-variable/inter";
+@import "./fonts.css";
 @import "@radix-ui/colors/black-alpha.css";
 @import "@radix-ui/colors/gray.css";
 @import "@radix-ui/colors/gray-alpha.css";

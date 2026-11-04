@@ -19,6 +19,7 @@ export default defineConfig({
     ignorePatterns: [
       ...(ultraciteFmt.ignorePatterns ?? []),
       "**/routeTree.gen.ts",
+      "src/styles/fonts.css",
       ".claude/**",
     ],
   },

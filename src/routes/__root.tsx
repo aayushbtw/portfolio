@@ -1,4 +1,3 @@
-import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import * as stylex from "@stylexjs/stylex";
 import { createThemeCss } from "@tanstack/highlight/theme";
 import { githubLightTheme } from "@tanstack/highlight/themes/github-light";
@@ -11,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 
+import interLatin from "~/assets/fonts/inter-latin.woff2?url";
 import { Fallback } from "~/components/fallback";
 import { config } from "~/lib/config";
 import { colors, fonts, fontSizes, lineHeights } from "~/styles/tokens.stylex";
