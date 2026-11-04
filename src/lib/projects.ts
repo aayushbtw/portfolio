@@ -19,9 +19,9 @@ const projects: Project[] = [
     tag: "Content collections",
   },
   {
-    href: "https://type.aayush.cv",
-    name: "Type",
-    tag: "Typing test",
+    href: "https://github.com/aayushbtw/orbit",
+    name: "Orbit",
+    tag: "Claude Code plugin",
   },
   {
     href: "https://github.com/aayushbtw/octo",
