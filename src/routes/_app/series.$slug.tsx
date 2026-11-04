@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { PostList } from "~/components/post-list";
+import { SeriesParts } from "~/components/series";
 import { Page, PageHeader } from "~/components/ui/page";
 import { seo } from "~/lib/seo";
-import { formatNumericDate, formatParts } from "~/lib/utils";
+import { formatDate, formatParts } from "~/lib/utils";
 import { getSeries } from "~/server/writings";
 
 export const Route = createFileRoute("/_app/series/$slug")({
@@ -23,22 +23,21 @@ export const Route = createFileRoute("/_app/series/$slug")({
 
 function SeriesPage() {
   const series = Route.useLoaderData();
+  const [{ publishedAt }] = series.parts;
 
   return (
     <Page variant="compact">
       <PageHeader
-        meta={formatParts(series.parts.length)}
+        meta={
+          <>
+            <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
+            {` · ${formatParts(series.parts.length)}`}
+          </>
+        }
         title={series.title}
       />
 
-      <PostList
-        posts={series.parts.map(({ part, publishedAt, slug, title }) => ({
-          date: formatNumericDate(publishedAt),
-          lead: part,
-          slug,
-          title,
-        }))}
-      />
+      <SeriesParts parts={series.parts} />
     </Page>
   );
 }

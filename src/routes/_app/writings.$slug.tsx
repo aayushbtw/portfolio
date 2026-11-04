@@ -15,10 +15,13 @@ export const Route = createFileRoute("/_app/writings/$slug")({
     }
 
     const post = loaderData;
+    const title = post.series
+      ? `${post.series.title}: ${post.title}`
+      : post.title;
 
     return {
       ...seo({
-        title: post.title,
+        title,
         description: post.description,
         meta: [
           { property: "og:type", content: "article" },
@@ -36,9 +39,9 @@ export const Route = createFileRoute("/_app/writings/$slug")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            headline: post.title,
+            headline: title,
             description: post.description,
-            image: `${config.siteUrl}/api/og?title=${encodeURIComponent(post.title)}`,
+            image: `${config.siteUrl}/api/og?title=${encodeURIComponent(title)}`,
             author: { "@type": "Person", name: config.name },
             datePublished: post.publishedAt,
             dateModified: post.modifiedAt ?? post.publishedAt,

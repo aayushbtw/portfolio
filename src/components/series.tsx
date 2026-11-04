@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { Link } from "@tanstack/react-router";
 
+import { List, ListItemLink } from "~/components/ui/list";
 import type { SeriesPosition } from "~/server/writings";
 import {
   colors,
@@ -10,11 +11,37 @@ import {
   lineHeights,
   media,
   presses,
+  radii,
   shadows,
   space,
 } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
+  part: (digits: number) => ({
+    alignItems: "baseline",
+    // A pill radius bulges on a row that wraps to several lines.
+    borderRadius: radii.md,
+    columnGap: space.sm,
+    display: "grid",
+    gridTemplateColumns: `${digits}ch minmax(0, 1fr)`,
+    paddingBlock: space.sm,
+  }),
+  partNumber: {
+    fontSize: fontSizes.sm,
+    fontVariantNumeric: "tabular-nums",
+  },
+  partText: {
+    display: "flex",
+    flexDirection: "column",
+    gap: space.xxs,
+  },
+  partTitle: {
+    color: colors.textPrimary,
+  },
+  partDescription: {
+    fontSize: fontSizes.sm,
+    lineHeight: lineHeights.prose,
+  },
   partLink: {
     color: "inherit",
     textDecorationColor: {
@@ -128,4 +155,29 @@ function SeriesNavLink({
   );
 }
 
-export { SeriesNav, SeriesPartLink };
+function SeriesParts({ parts }: { parts: SeriesPosition["parts"] }) {
+  const digits = String(parts.length).length;
+
+  return (
+    <List>
+      {parts.map((part) => (
+        <ListItemLink
+          key={part.slug}
+          params={{ slug: part.slug }}
+          style={styles.part(digits)}
+          to="/writings/$slug"
+        >
+          <span {...stylex.props(styles.partNumber)}>{part.part}</span>
+          <span {...stylex.props(styles.partText)}>
+            <span {...stylex.props(styles.partTitle)}>{part.title}</span>
+            <span {...stylex.props(styles.partDescription)}>
+              {part.description}
+            </span>
+          </span>
+        </ListItemLink>
+      ))}
+    </List>
+  );
+}
+
+export { SeriesNav, SeriesPartLink, SeriesParts };

@@ -5,6 +5,7 @@ import { writings } from "tomekit/content";
 import { listDocuments, renderDocument } from "~/server/content";
 
 interface SeriesPart {
+  description: string;
   part: number;
   publishedAt: string;
   slug: string;
@@ -27,6 +28,7 @@ function seriesNamed(title: string): Series {
         metadata.series?.title === title
           ? [
               {
+                description: metadata.description,
                 part: metadata.series.part,
                 publishedAt: metadata.publishedAt,
                 slug,
