@@ -1,6 +1,6 @@
-import { StackIcon } from "@phosphor-icons/react/Stack";
 import * as stylex from "@stylexjs/stylex";
 
+import { SeriesMark } from "~/components/series";
 import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
 import { formatNumericDate, formatParts, toUtcDate } from "~/lib/utils";
 import { fontSizes, space } from "~/styles/tokens.stylex";
@@ -21,10 +21,7 @@ const styles = stylex.create({
     gap: space.md,
   },
   parts: {
-    alignItems: "center",
-    display: "flex",
     fontSize: fontSizes.xs,
-    gap: space.xxs,
   },
   srOnly: {
     clipPath: "inset(50%)",
@@ -93,13 +90,12 @@ function PostList({
           <ListItemTitle>{post.title}</ListItemTitle>
           <span {...stylex.props(styles.figure, styles.meta)}>
             {post.parts !== undefined && (
-              <span {...stylex.props(styles.parts)}>
-                <StackIcon aria-hidden="true" size="1em" />
+              <SeriesMark style={styles.parts}>
                 <span aria-hidden="true">{post.parts}</span>
                 <span {...stylex.props(styles.srOnly)}>
                   {formatParts(post.parts)}
                 </span>
-              </span>
+              </SeriesMark>
             )}
             <time>{post.date}</time>
           </span>

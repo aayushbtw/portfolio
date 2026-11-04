@@ -112,6 +112,13 @@ const styles = stylex.create({
     fontVariantNumeric: "tabular-nums",
     lineHeight: lineHeights.row,
   },
+  metaRow: {
+    alignItems: "center",
+    columnGap: space.md,
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
   section: {
     display: "flex",
     flexDirection: "column",
@@ -204,13 +211,19 @@ function PageHeader({
   children,
   description,
   meta,
+  metaEnd,
   title,
 }: {
   children?: React.ReactNode;
   description?: React.ReactNode;
   meta?: React.ReactNode;
+  /** Sits at the right end of the meta line, wrapping below it when it can't fit. */
+  metaEnd?: React.ReactNode;
   title: React.ReactNode;
 }) {
+  const metaLine =
+    meta === undefined ? null : <p {...stylex.props(styles.meta)}>{meta}</p>;
+
   return (
     <header {...stylex.props(styles.header)}>
       <div {...stylex.props(styles.heading)}>
@@ -218,8 +231,13 @@ function PageHeader({
         {description === undefined ? null : (
           <p {...stylex.props(styles.description)}>{description}</p>
         )}
-        {meta === undefined ? null : (
-          <p {...stylex.props(styles.meta)}>{meta}</p>
+        {metaEnd === undefined ? (
+          metaLine
+        ) : (
+          <div {...stylex.props(styles.meta, styles.metaRow)}>
+            {metaLine}
+            {metaEnd}
+          </div>
         )}
       </div>
       {children}

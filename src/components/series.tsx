@@ -1,4 +1,6 @@
+import { StackIcon } from "@phosphor-icons/react/Stack";
 import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
 import { Link } from "@tanstack/react-router";
 
 import { List, ListItemLink } from "~/components/ui/list";
@@ -42,13 +44,21 @@ const styles = stylex.create({
     fontSize: fontSizes.sm,
     lineHeight: lineHeights.prose,
   },
+  mark: {
+    alignItems: "center",
+    display: "flex",
+    gap: space.xxs,
+  },
   partLink: {
     color: "inherit",
+    textDecoration: "none",
+  },
+  partLabel: {
     textDecorationColor: {
       default: colors.edgeStrong,
       [media.hover]: {
         default: colors.edgeStrong,
-        ":hover": colors.textMuted,
+        [stylex.when.ancestor(":hover")]: colors.textMuted,
       },
     },
     textDecorationLine: "underline",
@@ -104,14 +114,34 @@ const styles = stylex.create({
   },
 });
 
+function SeriesMark({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: StyleXStyles;
+}) {
+  return (
+    <span {...stylex.props(styles.mark, style)}>
+      <StackIcon aria-hidden="true" size="1em" />
+      {children}
+    </span>
+  );
+}
+
 function SeriesPartLink({ series }: { series: SeriesPosition }) {
   return (
     <Link
+      aria-label={`Part ${series.part} of ${series.parts.length} in ${series.title}`}
       params={{ slug: series.slug }}
       to="/writings/$slug"
-      {...stylex.props(styles.partLink)}
+      {...stylex.props(stylex.defaultMarker(), styles.partLink)}
     >
-      Part {series.part} of {series.parts.length} in {series.title}
+      <SeriesMark>
+        <span {...stylex.props(styles.partLabel)}>
+          {`${series.part} / ${series.parts.length} in ${series.title}`}
+        </span>
+      </SeriesMark>
     </Link>
   );
 }
@@ -180,4 +210,4 @@ function SeriesParts({ parts }: { parts: SeriesPosition["parts"] }) {
   );
 }
 
-export { SeriesNav, SeriesPartLink, SeriesParts };
+export { SeriesMark, SeriesNav, SeriesPartLink, SeriesParts };

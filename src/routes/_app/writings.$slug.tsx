@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { SeriesNav, SeriesPartLink, SeriesParts } from "~/components/series";
+import {
+  SeriesMark,
+  SeriesNav,
+  SeriesPartLink,
+  SeriesParts,
+} from "~/components/series";
 import { Page, PageHeader } from "~/components/ui/page";
 import { config } from "~/lib/config";
 import { seo } from "~/lib/seo";
@@ -102,12 +107,8 @@ function SeriesPage({ series }: { series: Series }) {
   return (
     <Page variant="compact">
       <PageHeader
-        meta={
-          <>
-            <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
-            {` · ${formatParts(series.parts.length)}`}
-          </>
-        }
+        meta={<time dateTime={publishedAt}>{formatDate(publishedAt)}</time>}
+        metaEnd={<SeriesMark>{formatParts(series.parts.length)}</SeriesMark>}
         title={series.title}
       />
 
@@ -121,18 +122,11 @@ function WritingPage({ post }: { post: Post }) {
     <Page variant="compact">
       <PageHeader
         meta={
-          <>
-            <time dateTime={post.publishedAt}>
-              {formatDate(post.publishedAt)}
-            </time>
-            {post.series && (
-              <>
-                {" · "}
-                <SeriesPartLink series={post.series} />
-              </>
-            )}
-          </>
+          <time dateTime={post.publishedAt}>
+            {formatDate(post.publishedAt)}
+          </time>
         }
+        metaEnd={post.series && <SeriesPartLink series={post.series} />}
         title={post.title}
       />
 
