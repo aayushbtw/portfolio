@@ -1,8 +1,9 @@
+import { StackIcon } from "@phosphor-icons/react/Stack";
 import * as stylex from "@stylexjs/stylex";
 
 import { List, ListItemLink, ListItemTitle } from "~/components/ui/list";
 import { formatNumericDate, formatParts, toUtcDate } from "~/lib/utils";
-import { colors, fontSizes, space } from "~/styles/tokens.stylex";
+import { fontSizes, space } from "~/styles/tokens.stylex";
 
 const styles = stylex.create({
   row: {
@@ -14,9 +15,24 @@ const styles = stylex.create({
     fontSize: fontSizes.sm,
     fontVariantNumeric: "tabular-nums",
   },
+  meta: {
+    alignItems: "center",
+    display: "flex",
+    gap: space.md,
+  },
   parts: {
-    color: colors.textMuted,
-    marginInlineStart: space.xs,
+    alignItems: "center",
+    display: "flex",
+    fontSize: fontSizes.xs,
+    gap: space.xxs,
+  },
+  srOnly: {
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    whiteSpace: "nowrap",
+    width: 1,
   },
 });
 
@@ -74,15 +90,19 @@ function PostList({
           to={post.parts === undefined ? to : "/series/$slug"}
         >
           <span {...stylex.props(styles.figure)}>{post.lead}</span>
-          <ListItemTitle>
-            {post.title}
+          <ListItemTitle>{post.title}</ListItemTitle>
+          <span {...stylex.props(styles.figure, styles.meta)}>
             {post.parts !== undefined && (
               <span {...stylex.props(styles.parts)}>
-                {formatParts(post.parts)}
+                <StackIcon aria-hidden="true" size="1em" />
+                <span aria-hidden="true">{post.parts}</span>
+                <span {...stylex.props(styles.srOnly)}>
+                  {formatParts(post.parts)}
+                </span>
               </span>
             )}
-          </ListItemTitle>
-          <time {...stylex.props(styles.figure)}>{post.date}</time>
+            <time>{post.date}</time>
+          </span>
         </ListItemLink>
       ))}
     </List>
