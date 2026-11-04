@@ -11,6 +11,8 @@ import type {
 } from "tomekit";
 import { z } from "zod";
 
+import { seriesSlug } from "./src/lib/utils";
+
 // A comment component with no `tagName` renders as one generic element for every
 // name, so the components map cannot tell `showcase` from `showcase-image`.
 // Naming the tag is what makes it addressable.
@@ -63,6 +65,31 @@ function seriesIssues(entries: readonly Entry<FileInfo>[]): LoadIssue[] {
   });
 }
 
+// A series page lives at /writings/<series slug>, beside its parts, so a post
+// with that slug would never be reachable.
+function seriesSlugIssues(entries: readonly Entry<FileInfo>[]): LoadIssue[] {
+  const titles = new Set(
+    entries.flatMap(({ metadata }) => {
+      const fields = seriesFields.safeParse(metadata);
+
+      return fields.success ? [fields.data.series] : [];
+    })
+  );
+
+  return [...titles].flatMap((title) => {
+    const clash = entries.find(({ slug }) => slug === seriesSlug(title));
+
+    return clash
+      ? [
+          {
+            file: clash.file?.path,
+            message: `slug "${clash.slug}" is taken by the page of series "${title}". Rename the post`,
+          },
+        ]
+      : [];
+  });
+}
+
 export default defineConfig({
   collections: {
     explorations: {
@@ -95,7 +122,11 @@ export default defineConfig({
 
           return {
             ...result,
-            issues: [...(result.issues ?? []), ...seriesIssues(result.entries)],
+            issues: [
+              ...(result.issues ?? []),
+              ...seriesIssues(result.entries),
+              ...seriesSlugIssues(result.entries),
+            ],
           };
         },
       },

@@ -17,6 +17,14 @@ export function formatParts(count: number) {
   return `${count} ${count === 1 ? "part" : "parts"}`;
 }
 
+export function seriesSlug(title: string) {
+  return title
+    .toLowerCase()
+    .split(/[^a-z0-9]+/u)
+    .filter(Boolean)
+    .join("-");
+}
+
 /**
  * Dates are parsed *and* formatted in UTC, so the server and the browser agree
  * whatever timezone either sits in. Parsing a bare "2026-03-27" as local time

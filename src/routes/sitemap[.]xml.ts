@@ -34,7 +34,7 @@ function entries(): Entry[] {
       .map(({ publishedAt }) => publishedAt)
       .toSorted()
       .at(-1),
-    path: `/series/${slug}`,
+    path: `/writings/${slug}`,
   }));
 
   return [...staticPaths, ...documents, ...series];

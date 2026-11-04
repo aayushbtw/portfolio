@@ -29,7 +29,6 @@ const styles = stylex.create({
 
 const sections = {
   explorations: { label: "Explorations", to: "/explorations" },
-  series: { label: "Writings", to: "/writings" },
   skills: { label: "Skills", to: "/skills" },
   writings: { label: "Writings", to: "/writings" },
 } satisfies Record<string, { label: string; to: LinkProps["to"] }>;

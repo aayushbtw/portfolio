@@ -2,6 +2,7 @@ import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { writings } from "tomekit/content";
 
+import { seriesSlug } from "~/lib/utils";
 import { listDocuments, renderDocument } from "~/server/content";
 
 interface SeriesPart {
@@ -38,11 +39,7 @@ function seriesNamed(title: string): Series {
           : []
       )
       .toSorted((a, b) => a.part - b.part),
-    slug: title
-      .toLowerCase()
-      .split(/[^a-z0-9]+/u)
-      .filter(Boolean)
-      .join("-"),
+    slug: seriesSlug(title),
     title,
   };
 }
@@ -82,18 +79,34 @@ const getWritings = createServerFn({ method: "GET" }).handler(() => [
   })),
 ]);
 
+function seriesWithSlug(slug: string) {
+  return allSeries().find((s) => s.slug === slug);
+}
+
 const getWriting = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
+    // tomekit.config.ts fails the build when a post's slug is a series slug.
+    const series = seriesWithSlug(slug);
+
+    if (series) {
+      return { kind: "series" as const, series };
+    }
+
     const post = await renderDocument(writings, slug);
 
-    return { ...post, series: post.series && seriesPosition(post.series) };
+    return {
+      kind: "post" as const,
+      post: { ...post, series: post.series && seriesPosition(post.series) },
+    };
   });
+
+type Writing = Awaited<ReturnType<typeof getWriting>>;
 
 const getSeries = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(({ data: slug }) => {
-    const series = allSeries().find((s) => s.slug === slug);
+    const series = seriesWithSlug(slug);
 
     if (!series) {
       throw notFound();
@@ -102,4 +115,11 @@ const getSeries = createServerFn({ method: "GET" })
     return series;
   });
 
-export { allSeries, getSeries, getWriting, getWritings, type SeriesPosition };
+export {
+  allSeries,
+  getSeries,
+  getWriting,
+  getWritings,
+  type SeriesPosition,
+  type Writing,
+};

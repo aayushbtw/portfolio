@@ -87,7 +87,7 @@ function PostList({
           key={post.slug}
           params={{ slug: post.slug }}
           style={styles.row}
-          to={post.parts === undefined ? to : "/series/$slug"}
+          to={post.parts === undefined ? to : "/writings/$slug"}
         >
           <span {...stylex.props(styles.figure)}>{post.lead}</span>
           <ListItemTitle>{post.title}</ListItemTitle>

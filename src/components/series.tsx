@@ -108,7 +108,7 @@ function SeriesPartLink({ series }: { series: SeriesPosition }) {
   return (
     <Link
       params={{ slug: series.slug }}
-      to="/series/$slug"
+      to="/writings/$slug"
       {...stylex.props(styles.partLink)}
     >
       Part {series.part} of {series.parts.length} in {series.title}
