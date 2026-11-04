@@ -6,7 +6,7 @@ series: Orbit
 part: 4
 ---
 
-orbit is almost all Markdown that Claude reads, in three kinds of file. Rules tell Claude when to reach for what, skills hold the steps for each kind of work, and agents do the jobs the main chat should not do itself. [Part 1](/writings/orbit-introduction) shows the loop they add up to, and [Part 2](/writings/orbit-verification) covers why the writer and the verifier are different agents.
+orbit is almost all Markdown that Claude reads, in three kinds of file. Rules tell Claude when to reach for what, skills hold the steps for each kind of work, and agents do the jobs the main chat should not do itself. [Part 1](/writings/orbit-introduction) shows the loop they add up to, and [Part 2](/writings/orbit-principles) covers the ideas behind them.
 
 ## Rules load into every session
 
