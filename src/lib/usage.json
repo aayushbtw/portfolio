@@ -1,53 +1,63 @@
 {
   "year": 2026,
-  "total": 20703794612,
-  "sessions": 1485,
+  "total": 28689660020,
+  "sessions": 1749,
   "models": [
     {
       "name": "Opus 5.5",
-      "share": 60.4622,
-      "tokens": 12517963025
+      "share": 70.3367,
+      "tokens": 20179347333
     },
     {
       "name": "Opus 5",
-      "share": 31.2139,
+      "share": 22.5254,
       "tokens": 6462472087
     },
     {
       "name": "Sonnet 5.5",
-      "share": 4.589,
-      "tokens": 950105932
+      "share": 4.1685,
+      "tokens": 1195935031
     },
     {
       "name": "Opus 4.8",
-      "share": 2.8395,
+      "share": 2.0491,
       "tokens": 587882138
     },
     {
       "name": "Fable 5",
-      "share": 0.3847,
+      "share": 0.2776,
       "tokens": 79645923
     },
     {
       "name": "Sonnet 5",
-      "share": 0.3845,
+      "share": 0.2775,
       "tokens": 79614114
     },
     {
+      "name": "claude-fable-5-2",
+      "share": 0.2218,
+      "tokens": 63632591
+    },
+    {
       "name": "Haiku 5.5",
-      "share": 0.1235,
-      "tokens": 25561042
+      "share": 0.1161,
+      "tokens": 33295391
+    },
+    {
+      "name": "claude-fable-5-1",
+      "share": 0.0244,
+      "tokens": 6991612
     },
     {
       "name": "Haiku 4.5",
-      "share": 0.0027,
-      "tokens": 550351
+      "share": 0.0029,
+      "tokens": 843800
     }
   ],
-  "activeDays": 109,
+  "activeDays": 120,
   "peak": {
-    "date": "2026-10-30",
-    "tokens": 1237638522
+    "date": "2026-11-14",
+    "tokens": 1667681454
   },
   "daily": [
     {
@@ -604,8 +614,52 @@
     },
     {
       "date": "2026-11-04",
-      "tokens": 572295764
+      "tokens": 1045522358
+    },
+    {
+      "date": "2026-11-05",
+      "tokens": 560002566
+    },
+    {
+      "date": "2026-11-06",
+      "tokens": 30550633
+    },
+    {
+      "date": "2026-11-07",
+      "tokens": 943055942
+    },
+    {
+      "date": "2026-11-08",
+      "tokens": 712615451
+    },
+    {
+      "date": "2026-11-09",
+      "tokens": 1472357429
+    },
+    {
+      "date": "2026-11-10",
+      "tokens": 513649717
+    },
+    {
+      "date": "2026-11-11",
+      "tokens": 587483237
+    },
+    {
+      "date": "2026-11-12",
+      "tokens": 308540385
+    },
+    {
+      "date": "2026-11-13",
+      "tokens": 516877417
+    },
+    {
+      "date": "2026-11-14",
+      "tokens": 1667681454
+    },
+    {
+      "date": "2026-11-15",
+      "tokens": 199824583
     }
   ],
-  "generatedAt": "2026-11-04T18:09:48.737Z"
+  "generatedAt": "2026-11-15T20:01:40.246Z"
 }
