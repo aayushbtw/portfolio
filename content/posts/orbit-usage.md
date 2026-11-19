@@ -6,7 +6,7 @@ series: Orbit
 part: 3
 ---
 
-The words in your `/orbit:start` goal decide which steps run, whether the change lands, and whether Orbit stops to ask you. Orbit writes the steps as a todo list you can watch, and a step it skips stays on the list with the reason. [docs/usage.md](https://github.com/aayushbtw/orbit/blob/main/docs/usage.md) lists every command.
+The words in your `/orbit:start` goal decide which steps run, whether the change lands, and whether Orbit stops to ask you. Orbit puts the steps in the host's own task list, and a step it skips stays there with the reason. When the goal holds two or more separate tasks, the reply also shows a checklist of those tasks. [docs/usage.md](https://github.com/aayushbtw/orbit/blob/main/docs/usage.md) lists every command.
 
 ## The goal for each kind of work
 
@@ -21,7 +21,7 @@ The words in your `/orbit:start` goal decide which steps run, whether the change
 ## Steer a run with a few words
 
 - **"don't ship"** stops the change before it lands. Run `/orbit:ship` when you are ready, and a verifier checks it first.
-- **"continue"** or **"do it"** picks the todo list back up. **"new task"** starts a fresh one.
+- **"continue"** or **"do it"** picks the task list back up. **"new task"** starts a fresh one.
 - **"going to bed"** or **"don't stop"** keeps it running instead of pausing to ask.
 
 To stop in the middle of a task, run `/orbit:pause-safely`. It finishes the current step, commits a work-in-progress checkpoint and writes a resume note. In a new session, `/orbit:session-pickup` reads that note and the git log and carries on without redoing finished work.
@@ -40,15 +40,17 @@ Every reply ends with one `Next:` line.
 - `/orbit:how <subsystem>` explains how something works and where new code belongs.
 - `/orbit:why <code or decision>` explains why code is the way it is, from git history and PRs.
 
-## Set up a new project in four steps
+## Set up a new project in five steps
 
 Take each step only after the last one has held up.
 
-**1. One small bug, no landing.** Give it something low stakes and end the goal with "don't ship". Read the diff and the reply, then run `/orbit:ship` yourself.
+**1. Run `/orbit:setup`.** It reports each missing tool with its install command, checks the git repo and its Workflow block, compares the installed Orbit with the marketplace copy, and checks what Codex and Grok load. In a T3 thread it also asks which providers fill the seats on another family. It changes nothing until you say yes.
 
-**2. A verify skill.** Run `/orbit:create-verification-skill` once. It reads the repo and writes a skill that tells the verifier how to launch your app, check it is healthy, drive it, and clean up. Without one, the verifier falls back to a generic browser or terminal driver, which knows nothing about your app. With the skill in place, I stop adding "don't ship".
+**2. One small bug, no landing.** Give it something low stakes and end the goal with "don't ship". Read the diff and the reply, then run `/orbit:ship` yourself.
 
-**3. A Workflow block for anything your project does differently.** Orbit assumes [Vite+](https://viteplus.dev), runs `vpr check` before landing, and fast-forwards onto `main`. If your project differs, add a `## Workflow` block to its AGENTS.md with only the lines that differ.
+**3. A verify skill.** Run `/orbit:create-verification-skill` once. It reads the repo and writes a skill that tells the verifier how to launch your app, check it is healthy, drive it, and clean up. Without one, the verifier falls back to a generic browser or terminal driver, which knows nothing about your app. With the skill in place, I stop adding "don't ship".
+
+**4. A Workflow block for anything your project does differently.** Orbit assumes [Vite+](https://viteplus.dev), runs `vpr check` before landing, and fast-forwards onto `main`. If your project differs, add a `## Workflow` block to its AGENTS.md with only the lines that differ. When a project has no block and no `vpr`, `/orbit:setup` offers a filled one.
 
 ```md
 ## Workflow
@@ -62,8 +64,9 @@ Take each step only after the last one has held up.
 - `Check` replaces the commands that must pass before anything lands.
 - `Land: pr` makes Orbit open a PR, take it through review comments and CI, and merge it once a verifier passes it. This is the one to use on a team.
 - `Before code` names a guide for a path. Every agent writing code under that path reads it first.
-- `Review also checks` names docs the plan reviewer reads.
+- `Review also checks` names docs read before planning and at review.
+- A `### Models` table under the block sets the model and effort for each kind of work, and for roles such as the verifier.
 
-**4. A queue.** Once single changes land cleanly, hand it a list with `autopilot this queue`. If you want to review before anything merges, say "build the stack, I'll land it" instead. Orbit builds and verifies the same way, then hands you one stack of PRs to land with `/orbit:ship`.
+**5. A queue.** Once single changes land cleanly, hand it a list with `autopilot this queue`. If you want to review before anything merges, say "build the stack, I'll land it" instead. Orbit builds and verifies the same way, then hands you one stack of PRs to land with `/orbit:ship`.
 
 The source is on [GitHub](https://github.com/aayushbtw/orbit). Start with `rules.md`, then the playbook for the kind of work you do most.
