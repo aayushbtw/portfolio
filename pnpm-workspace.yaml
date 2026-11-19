@@ -20,3 +20,6 @@ catalog:
   vite-plus: 1.7.0
 overrides:
   vite@*: "catalog:"
+  sharp@<0.35.5: ^0.35.5
+  undici@<7.30.1: ^7.30.2
+  zod@<4.6.6: ^4.6.7
