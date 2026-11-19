@@ -7,16 +7,6 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - tomekit
   - "@tanstack/intent@0.5.5"
-  - "@voidzero-dev/vite-plus-core@1.1.0"
-  - "@voidzero-dev/vite-plus-darwin-arm64@1.1.0"
-  - "@voidzero-dev/vite-plus-darwin-x64@1.1.0"
-  - "@voidzero-dev/vite-plus-linux-arm64-gnu@1.1.0"
-  - "@voidzero-dev/vite-plus-linux-arm64-musl@1.1.0"
-  - "@voidzero-dev/vite-plus-linux-x64-gnu@1.1.0"
-  - "@voidzero-dev/vite-plus-linux-x64-musl@1.1.0"
-  - "@voidzero-dev/vite-plus-win32-arm64-msvc@1.1.0"
-  - "@voidzero-dev/vite-plus-win32-x64-msvc@1.1.0"
-  - vite-plus@1.1.0
   - "@tanstack/react-start-rsc@0.1.63"
   - "@tanstack/react-start-server@1.167.50"
   - "@tanstack/react-start@1.169.2"
@@ -26,12 +16,7 @@ minimumReleaseAgeExclude:
   - "@tanstack/start-plugin-core@1.171.53"
   - "@tanstack/start-server-core@1.169.43"
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@1.1.0
-  vite-plus: 1.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8000
+  vite-plus: 1.7.0
 overrides:
   vite@*: "catalog:"
-peerDependencyRules:
-  allowAny:
-    - vite
-  allowedVersions:
-    vite: "*"
