@@ -1,63 +1,63 @@
 {
   "year": 2026,
-  "total": 32144142160,
-  "sessions": 2261,
+  "total": 34302946968,
+  "sessions": 2386,
   "models": [
     {
       "name": "Opus 5.5",
-      "share": 73.1722,
-      "tokens": 23520585746
+      "share": 74.0863,
+      "tokens": 25413780176
     },
     {
       "name": "Opus 5",
-      "share": 20.1047,
+      "share": 18.8394,
       "tokens": 6462472087
     },
     {
       "name": "Sonnet 5.5",
-      "share": 3.8522,
-      "tokens": 1238265907
+      "share": 3.8036,
+      "tokens": 1304749721
     },
     {
       "name": "Opus 4.8",
-      "share": 1.8289,
+      "share": 1.7138,
       "tokens": 587882138
     },
     {
       "name": "claude-fable-5-2",
-      "share": 0.3736,
-      "tokens": 120096493
+      "share": 0.9275,
+      "tokens": 318162369
     },
     {
       "name": "Fable 5",
-      "share": 0.2478,
+      "share": 0.2322,
       "tokens": 79645923
     },
     {
       "name": "Sonnet 5",
-      "share": 0.2477,
+      "share": 0.2321,
       "tokens": 79614114
     },
     {
       "name": "Haiku 5.5",
-      "share": 0.1485,
-      "tokens": 47744340
+      "share": 0.1423,
+      "tokens": 48805028
     },
     {
       "name": "claude-fable-5-1",
-      "share": 0.0218,
+      "share": 0.0204,
       "tokens": 6991612
     },
     {
       "name": "Haiku 4.5",
-      "share": 0.0026,
+      "share": 0.0025,
       "tokens": 843800
     }
   ],
-  "activeDays": 124,
+  "activeDays": 125,
   "peak": {
-    "date": "2026-11-14",
-    "tokens": 1667681454
+    "date": "2026-11-19",
+    "tokens": 1851750307
   },
   "daily": [
     {
@@ -674,8 +674,12 @@
     },
     {
       "date": "2026-11-19",
-      "tokens": 996672463
+      "tokens": 1851750307
+    },
+    {
+      "date": "2026-11-20",
+      "tokens": 1303726964
     }
   ],
-  "generatedAt": "2026-11-19T19:58:53.138Z"
+  "generatedAt": "2026-11-20T18:05:47.565Z"
 }
